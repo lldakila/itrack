@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- END Custom CSS-->
   </head>
-  <body ng-app="dashboard" ng-controller="dashboardCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
+  <body ng-app="groups" ng-controller="groupsCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
 
     <!-- navbar-fixed-top-->
     <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
@@ -122,15 +122,15 @@
       <!-- main menu content-->
       <div class="main-menu-content">
         <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-			<li class="nav-item active"><a href="index.html"><i class="icon-dashboard"></i><span data-i18n="nav.form_layouts.form_layout_basic" class="menu-title">Dashboard</span></a></li>
+			<li class="nav-item"><a href="index.html"><i class="icon-dashboard"></i><span data-i18n="nav.form_layouts.form_layout_basic" class="menu-title">Dashboard</span></a></li>
 			<li class=" nav-item"><a href="#"><i class="icon-copy2"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Documents</span></a>
 				<ul class="menu-content">
 				  <li><a href="card-statistics.html" data-i18n="nav.cards.card_statistics" class="menu-item">Receive Document</a></li>
 				</ul>
 			</li>
-			<li class=" nav-item"><a href="#"><i class="icon-group"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Groups</span></a>
+			<li class="nav-item"><a href="#"><i class="icon-group"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Groups</span></a>
 				<ul class="menu-content">
-				  <li><a href="groups-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Group</a></li>
+				  <li class="active"><a href="groups-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Group</a></li>
 				  <li><a href="groups-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
 				</ul>
 			</li>
@@ -147,80 +147,80 @@
       <div class="content-wrapper">
         <div class="content-header row">
         </div>
-        <div class="content-body"><!-- stats -->
-<div class="row">
-    <div class="col-xl-3 col-lg-6 col-xs-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-block">
-                    <div class="media">
-                        <div class="media-body text-xs-left">
-                            <h3 class="pink">{{documents.outgoings.length}}</h3>
-                            <span>Outgoing Documents</span>
-                        </div>
-                        <div class="media-right media-middle">
-                            <i class="icon-outbox pink font-large-2 float-xs-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-xs-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-block">
-                    <div class="media">
-                        <div class="media-body text-xs-left">
-                            <h3 class="teal">{{documents.incomings.length}}</h3>
-                            <span>Incoming Documents</span>
-                        </div>
-                        <div class="media-right media-middle">
-                            <i class="icon-inbox2 teal font-large-2 float-xs-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-xs-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-block">
-                    <div class="media">
-                        <div class="media-body text-xs-left">
-                            <h3 class="deep-orange">{{documents.transactions.length}}</h3>
-                            <span>For Transactions</span>
-                        </div>
-                        <div class="media-right media-middle">
-                            <i class="icon-arrow-right4 deep-orange font-large-2 float-xs-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-xs-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-block">
-                    <div class="media">
-                        <div class="media-body text-xs-left">
-                            <h3 class="cyan">423</h3>
-                            <span>Support Tickets</span>
-                        </div>
-                        <div class="media-right media-middle">
-                            <i class="icon-ios-help-outline cyan font-large-2 float-xs-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--/ stats -->
-
-        </div>
+		<!-- stats -->
+        <div class="content-body">
+			<div class="row">
+				<div class="col-lg-12">
+					<button class="btn btn-info" ng-click="app.add(this)" ng-show="controls.add" ng-disabled="!controls.btns.ok"><i class="icon-user-plus2"></i> Add</button>
+					<button class="btn btn-info" ng-click="app.edit(this)" ng-show="controls.edit" ng-disabled="!controls.btns.ok"><i class="icon-edit2"></i> Edit</button>
+				</div>
+			</div><hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card" style="height: 943px;" data-height="">
+						<div class="card-header">
+							<h4 class="card-title" id="basic-layout-form">Goups</h4>
+							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+							<div class="heading-elements">
+								<ul class="list-inline mb-0">
+									<li><a data-action="collapse"><i class="icon-minus4"></i></a></li>
+									<li><a data-action="reload"><i class="icon-reload"></i></a></li>
+									<li><a data-action="expand"><i class="icon-expand2"></i></a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="card-body collapse in" aria-expanded="true" style="">
+							<div class="card-block">
+								<form class="form" novalidate autocomplete="off" name="formHolder.group">
+									<div class="form-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="projectinput1">Group Name</label>
+													<input type="text" class="form-control" name="group_name" ng-class="{'is-invalid': formHolder.group.group_name.$touched && formHolder.group.group_name.$invalid}" ng-model="group.group_name" ng-disabled="controls.btns.ok" required>
+													<div class="invalid-feedback">Group Name is required</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="projectinput2">Group Description</label>
+													<input type="text" class="form-control" name="group_description" ng-class="{'is-invalid': formHolder.group.group_description.$touched && formHolder.group.group_description.$invalid}" ng-model="group.group_description" ng-disabled="controls.btns.ok" required>
+													<div class="invalid-feedback">Group Description is required</div>
+												</div>
+											</div>
+										</div>
+										
+									<div class="row">
+										<div class="col-md-12">
+											<div class="card" ng-repeat="p in privileges">
+												<div class="card-header bg-light">
+												<h5>
+													{{p.description}}
+												</h5>
+												</div>
+												<div class="card-body">
+													<div class="row mt-4">
+														<div class="col-md-4" ng-repeat="pp in p.privileges" style="margin-bottom: 50px;">
+															<div class="toggle-switch" data-ts-color="primary">
+																<label for="{{p.id}}{{$index}}" class="ts-label">{{pp.description}}</label>
+																<input id="{{p.id}}{{$index}}" type="checkbox" hidden="hidden" ng-model="pp.value" ng-check="pp.value" ng-disabled="controls.btns.ok">
+																<label for="{{p.id}}{{$index}}" class="ts-helper"></label>
+															</div>														
+														</div>													
+													</div>												
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<!--/ stats -->
       </div>
     </div>
     <!-- ////////////////////////////////////////////////////////////////////////////-->
@@ -275,8 +275,8 @@
 	<script src="modules/growl.js"></script>
 	<script src="modules/notifications.js"></script>
 	<script src="modules/module-access.js"></script>
-	<script src="modules/dashboard.js"></script>
+	<script src="modules/groups-profile.js"></script>
 	<!-- controller -->
-	<script src="controllers/dashboard.js"></script>
+	<script src="controllers/groups-profile.js"></script>
   </body>
 </html>
