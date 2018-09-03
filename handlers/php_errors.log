@@ -1,0 +1,6 @@
+[11-Jul-2018 08:29:58 Asia/Manila] PHP Parse error:  syntax error, unexpected '"privileges"' (T_CONSTANT_ENCAPSED_STRING), expecting ')' in C:\Users\sly\Desktop\UwAmp310\www\dts\system_privileges.php on line 94
+[11-Jul-2018 08:30:00 Asia/Manila] PHP Parse error:  syntax error, unexpected '"privileges"' (T_CONSTANT_ENCAPSED_STRING), expecting ')' in C:\Users\sly\Desktop\UwAmp310\www\dts\system_privileges.php on line 94
+[11-Jul-2018 08:30:00 Asia/Manila] PHP Parse error:  syntax error, unexpected '"privileges"' (T_CONSTANT_ENCAPSED_STRING), expecting ')' in C:\Users\sly\Desktop\UwAmp310\www\dts\system_privileges.php on line 94
+[11-Jul-2018 11:48:38 Asia/Manila] PHP Notice:  Undefined index: pw in C:\Users\sly\Desktop\UwAmp310\www\dts\handlers\login.php on line 8
+[11-Jul-2018 11:48:38 Asia/Manila] PHP Stack trace:
+[11-Jul-2018 11:48:38 Asia/Manila] PHP   1. {main}() C:\Users\sly\Desktop\UwAmp310\www\dts\handlers\login.php:0

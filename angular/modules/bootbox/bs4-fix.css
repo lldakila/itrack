@@ -1,0 +1,9 @@
+/*
+** bootbox fix
+*/
+.bootbox .modal-header h4 {
+    order: 0!important;
+}
+.bootbox .modal-header button {
+    order: 1!important;
+}
