@@ -152,16 +152,13 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			var onOk = function() {
 				
 				$http({
-					method: 'POST',
-					url: 'handlers/profile-delete.php',
-					data: {id: id}
+					method: 'DELETE',
+					url: 'api/accounts/delete/'+id,
 				}).then(function mySuccess(response) {
 					
 						$window.location.href = "users-list.html";
 						
 				}, function myError(response) {
-			
-			
 			
 				});
 
@@ -189,9 +186,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 		self.load = function(scope,id) {
 			
 			$http({
-			  method: 'POST',
-			  url: 'handlers/user-view.php',
-			  data: {id: id}
+			  method: 'GET',
+			  url: 'api/accounts/view/'+id,
 			}).then(function mySuccess(response) {
 				
 				scope.user = angular.copy(response.data);			
@@ -209,9 +205,16 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			// validation
 			if (validate.form(scope,'user')) return;
 			
+			var url = 'api/accounts/add';
+			var method = 'POST';
+			if (scope.user.id != 0) {
+				url = 'api/accounts/update';
+				method = 'PUT';
+			};
+			
 			$http({
-			  method: 'POST',
-			  url: 'handlers/profile-save.php',
+			  method: method,
+			  url: url,
 			  data: scope.user
 			}).then(function mySuccess(response) {
 				
@@ -238,10 +241,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 
 			$http({
 			  method: 'GET',
-			  url: 'handlers/users-list.php'
+			  url: 'api/accounts/list'
 			}).then(function mySuccess(response) {
 				
-
 				scope.users = angular.copy(response.data);	
 
 				scope.filterData = scope.users; // for pagination
