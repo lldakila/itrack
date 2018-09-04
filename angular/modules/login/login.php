@@ -4,6 +4,9 @@ $_POST = json_decode(file_get_contents('php://input'), true);
 
 require_once '../../../db.php';
 
+$_POST['uname'] = (isset($_POST['uname']))?$_POST['uname']:"";
+$_POST['pw'] = (isset($_POST['pw']))?$_POST['pw']:"";
+
 $con = new pdo_db();
 $sql = "SELECT id, group_id, div_id FROM users WHERE uname = '$_POST[uname]' AND pw = '$_POST[pw]'";
 $account = $con->getData($sql);

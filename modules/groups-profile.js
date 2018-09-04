@@ -116,14 +116,13 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			
 		};
 		
-		self.deleteConfirm = function(scope,id) {			
+		self.deleteConfirm = function(scope,id) {		
 			
 			var onOk = function() {
 				
 				$http({
-					method: 'POST',
-					url: 'handlers/groups-delete.php',
-					data: {id: id}
+					method: 'DELETE',
+					url: 'api/groups/delete/'+id,
 				}).then(function mySuccess(response) {
 					
 						$window.location.href = "groups-list.html";
@@ -158,9 +157,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 		self.load = function(scope,id) {
 			
 			$http({
-			  method: 'POST',
-			  url: 'handlers/groups-view.php',
-			  data: {id: id}
+			  method: 'GET',
+			  url: 'api/groups/view/'+id,
 			}).then(function mySuccess(response) {
 				
 				scope.group = angular.copy(response.data);
@@ -179,9 +177,16 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			// validation
 			if (validate.form(scope,'group')) return;
 			
+			var url = 'api/groups/add';
+			var method = 'POST';
+			if (scope.group.id != 0) {
+				url = 'api/groups/update';
+				method = 'PUT';
+			};
+			
 			$http({
-			  method: 'POST',
-			  url: 'handlers/groups-save.php',
+			  method: method,
+			  url: url,
 			  data: {group: scope.group, privileges: scope.privileges}
 			}).then(function mySuccess(response) {
 				
@@ -190,6 +195,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 					scope.groups.id = 0;
 					scope.privileges = [];
 				};
+
 				scope.controls.btns.ok = true;
 				scope.controls.btns.cancel = true;					
 				
@@ -209,7 +215,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 
 			$http({
 			  method: 'GET',
-			  url: 'handlers/groups-list.php'
+			  url: 'api/groups/list'
 			}).then(function mySuccess(response) {
 				
 				scope.groups = angular.copy(response.data);	
@@ -228,11 +234,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 		function privileges(scope) {
 			
 			$http({
-			  method: 'POST',
-			  url: 'handlers/privileges.php',
-			  data: {id: scope.group.id}
+			  method: 'GET',
+			  url: 'api/groups/privileges/'+scope.group.id,
 			}).then(function mySuccess(response) {
-				
+
 				scope.privileges = angular.copy(response.data);
 				
 			}, function myError(response) {
