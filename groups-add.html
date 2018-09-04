@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css/app.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/switch.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu.css">
@@ -128,6 +129,12 @@
 				  <li><a href="card-statistics.html" data-i18n="nav.cards.card_statistics" class="menu-item">Receive Document</a></li>
 				</ul>
 			</li>
+			<li class=" nav-item"><a href="#"><i class="icon-user"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Accounts</span></a>
+				<ul class="menu-content">
+				  <li><a href="user-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Account</a></li>
+				  <li><a href="users-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
+				</ul>
+			</li>
 			<li class="nav-item"><a href="#"><i class="icon-group"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Groups</span></a>
 				<ul class="menu-content">
 				  <li class="active"><a href="groups-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Group</a></li>
@@ -150,14 +157,26 @@
 		<!-- stats -->
         <div class="content-body">
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-6">
 					<button class="btn btn-info" ng-click="app.add(this)" ng-show="controls.add" ng-disabled="!controls.btns.ok"><i class="icon-plus3"></i> Add</button>
 					<button class="btn btn-info" ng-click="app.edit(this)" ng-show="controls.edit" ng-disabled="!controls.btns.ok"><i class="icon-edit2"></i> Edit</button>
 				</div>
+				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-lg-6">
+						<div class="breadcrumb-wrapper col-xs-12">
+						  <ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.html" class="info">iTrack</a>
+							</li>
+							<li class="breadcrumb-item">Groups
+							</li>
+							<li class="breadcrumb-item active">Add Group
+							</li>
+						  </ol>
+						</div>
+					</div>
 			</div><hr>
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="card" style="height: 943px;" data-height="">
+					<div class="card">
 						<div class="card-header">
 							<h4 class="card-title" id="basic-layout-form">Goups</h4>
 							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
@@ -173,46 +192,55 @@
 							<div class="card-block">
 								<form class="form" novalidate autocomplete="off" name="formHolder.group">
 									<div class="form-body">
+									
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
 													<label for="projectinput1">Group Name</label>
 													<input type="text" class="form-control" name="group_name" ng-class="{'is-invalid': formHolder.group.group_name.$touched && formHolder.group.group_name.$invalid}" ng-model="group.group_name" ng-disabled="controls.btns.ok" required>
-													<div class="invalid-feedback">Group Name is required</div>
+													<span class="help-block danger" ng-show="formHolder.group.group_name.$touched && formHolder.group.group_name.$invalid">Group Name is required</span>
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
 													<label for="projectinput2">Group Description</label>
 													<input type="text" class="form-control" name="group_description" ng-class="{'is-invalid': formHolder.group.group_description.$touched && formHolder.group.group_description.$invalid}" ng-model="group.group_description" ng-disabled="controls.btns.ok" required>
-													<div class="invalid-feedback">Group Description is required</div>
+													<span class="help-block danger" ng-show="formHolder.group.group_description.$touched && formHolder.group.group_description.$invalid">Group Description is required</span>
 												</div>
 											</div>
 										</div>
 										
-									<div class="row">
-										<div class="col-md-12">
-											<div class="card" ng-repeat="p in privileges">
-												<div class="card-header bg-light">
-												<h5>
-													{{p.description}}
-												</h5>
-												</div>
-												<div class="card-body">
-													<div class="row mt-4">
-														<div class="col-md-4" ng-repeat="pp in p.privileges" style="margin-bottom: 50px;">
-															<div class="toggle-switch" data-ts-color="primary">
-																<label for="{{p.id}}{{$index}}" class="ts-label">{{pp.description}}</label>
-																<input id="{{p.id}}{{$index}}" type="checkbox" hidden="hidden" ng-model="pp.value" ng-check="pp.value" ng-disabled="controls.btns.ok">
-																<label for="{{p.id}}{{$index}}" class="ts-helper"></label>
-															</div>														
-														</div>													
-													</div>												
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="card" ng-repeat="p in privileges">
+													<div class="card-header bg-light">
+													<h5>{{p.description}}</h5>
+													</div>
+													<div class="card-body">
+														<div class="row">
+															<div class="col-lg-4" ng-repeat="pp in p.privileges" style="margin-bottom: 10px;">															
+																<label for="{{p.id}}{{$index}}" class="ts-label" style="margin-left: 10px;">{{pp.description}}</label>
+																<div class="checkbox" style="margin-left: 10px;">
+																	<label class="switch">
+																	  <input id="{{p.id}}{{$index}}" type="checkbox" hidden="hidden" ng-model="pp.value" ng-check="pp.value" ng-disabled="controls.btns.ok">
+																	  <span class="slider round"></span>
+																	</label>
+																</div>
+																 <!-- <label for="{{p.id}}{{$index}}" class="ts-helper"></label>-->
+															</div>													
+														</div>												
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									
+										
+										<div class="row">
+											<div class="col-lg-12">
+												<button class="btn btn-info" ng-click="app.save(this)" ng-disabled="controls.btns.ok" ng-show="controls.ok">Save</button>
+												<button class="btn btn-secondary" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">Cancel</button>
+											</div>
+										</div>
+										
 									</div>
 								</form>
 							</div>
@@ -222,6 +250,7 @@
 			</div>
 		<!--/ stats -->
       </div>
+    </div>
     </div>
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
