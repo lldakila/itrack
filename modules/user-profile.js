@@ -1,10 +1,10 @@
 angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap','ngRoute','module-access','notifications-module']).config(function($routeProvider) {
     $routeProvider
         .when('/:option/:id', {
-            templateUrl: 'user-profile.html'
+            templateUrl: 'user-add.html'
         })
         .when('/:option/:id', {
-            templateUrl: 'user-profile.html'
+            templateUrl: 'user-add.html'
         });		
 }).factory('app', function($http,$timeout,$window,$routeParams,$location,validate,bootstrapModal,access) {
 	
@@ -134,7 +134,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 		
 		self.view = function(scope,row) {
 			
-			$window.location.href = "user-profile.html#!/view/"+row.id;
+			$window.location.href = "user-add.html#!/view/"+row.id;
 			
 		};
 		self.delete = function(scope,row){
@@ -143,7 +143,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			
 			scope.views.currentPage = scope.currentPage;
 			
-			$window.location.href = "user-profile.html#!/delete/"+row.id;
+			$window.location.href = "user-add.html#!/delete/"+row.id;
 			
 		};
 		
