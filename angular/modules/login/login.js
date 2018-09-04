@@ -6,7 +6,7 @@ angular.module('login-module', []).service('loginService', function($http, $wind
 
 		$http({
 		  method: 'POST',
-		  url: '../angular/modules/login/login.php',
+		  url: 'angular/modules/login/login.php',
 		  data: scope.account
 		}).then(function mySucces(response) {
 
