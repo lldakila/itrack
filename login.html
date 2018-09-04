@@ -14,13 +14,8 @@ if (isset($_SESSION['id'])) header("location: index.html");
     <meta name="description" content="Robust admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Login Page - Robust Free Bootstrap Admin Template</title>
-    <link rel="apple-touch-icon" sizes="60x60" href="app-assets/images/ico/apple-icon-60.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="app-assets/images/ico/apple-icon-76.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="app-assets/images/ico/apple-icon-120.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="app-assets/images/ico/apple-icon-152.png">
-    <link rel="shortcut icon" type="image/x-icon" href="app-assets/images/ico/favicon.ico">
-    <link rel="shortcut icon" type="image/png" href="app-assets/images/ico/favicon-32.png">
+    <title>Document Tracking System</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/ico/itrack-icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -56,7 +51,7 @@ if (isset($_SESSION['id'])) header("location: index.html");
         <div class="card border-grey border-lighten-3 m-0">
             <div class="card-header no-border">
                 <div class="card-title text-xs-center">
-                    <div class="p-1"><img src="images/logo/pglu.png" alt="branding logo" style=" height: 80px; width: 100%;"></div>
+                    <div class="p-1"><img src="images/logo/pglu.png" alt="branding logo" style=" height: 75px; width: 100%;"></div>
                 </div>
                 <h6 class="card-subtitle line-on-side text-muted text-xs-center font-small-3 pt-2"><span>Login with iTrack</span></h6>
             </div>
@@ -64,13 +59,13 @@ if (isset($_SESSION['id'])) header("location: index.html");
                 <div class="card-block">
                     <form ng-submit="login(this)" class="form-horizontal form-simple" autocomplete="off" novalidate>
                         <fieldset class="form-group position-relative has-icon-left mb-0">
-                            <input type="text" class="form-control form-control-lg input-lg" name="uname" ng-model="account.uname" placeholder="Your Username" required>
+                            <input type="text" class="form-control form-control-lg input-lg" name="uname" ng-model="account.uname" placeholder="Your Username">
                             <div class="form-control-position">
                                 <i class="icon-head"></i>
                             </div>
                         </fieldset>
                         <fieldset class="form-group position-relative has-icon-left">
-                            <input type="password" class="form-control form-control-lg input-lg" name="pw" ng-model="account.pw" placeholder="Enter Password" required>
+                            <input type="password" class="form-control form-control-lg input-lg" name="pw" ng-model="account.pw" placeholder="Enter Password">
                             <div class="form-control-position">
                                 <i class="icon-key3"></i>
                             </div>
