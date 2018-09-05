@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css/app.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/switch.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu.css">
@@ -34,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- END Custom CSS-->
   </head>
-  <body ng-app="groupsList" ng-controller="groupsListCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
+  <body ng-app="accountList" ng-controller="accountListCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
 
     <!-- navbar-fixed-top-->
     <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
@@ -128,16 +129,16 @@
 				  <li><a href="card-statistics.html" data-i18n="nav.cards.card_statistics" class="menu-item">Receive Document</a></li>
 				</ul>
 			</li>
-			<li class=" nav-item"><a href="#"><i class="icon-sitemap"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Accounts</span></a>
+			<li class=" nav-item"><a href="#"><i class="icon-group"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Accounts</span></a>
 				<ul class="menu-content">
 				  <li><a href="account-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Account</a></li>
-				  <li><a href="account-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
+				  <li class="active"><a href="account-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
 				</ul>
 			</li>
 			<li class="nav-item"><a href="#"><i class="icon-sitemap"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Groups</span></a>
 				<ul class="menu-content">
 				  <li><a href="groups-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Group</a></li>
-				  <li class="active"><a href="groups-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
+				  <li><a href="groups-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
 				</ul>
 			</li>
 			<li class="nav-item"><a href="#"><i class="icon-gear"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Maintenance</span></a>
@@ -176,7 +177,7 @@
 					  <ol class="breadcrumb">
 						<li class="breadcrumb-item"><a href="index.html" class="info">iTrack</a>
 						</li>
-						<li class="breadcrumb-item">Groups
+						<li class="breadcrumb-item">Accounts
 						</li>
 						<li class="breadcrumb-item active">List
 						</li>
@@ -203,24 +204,34 @@
 								<table class="table table-bordered ">
 									<thead>
 										<tr>
-											<th>Group Name</th>
-											<th>Group Description</th>
+											<th>ID</th>
+											<th>Group</th>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Position</th>
+											<th>Office</th>
+											<th>Username</th>
 											<th>Options</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="gr in filterData = (groups | filter:search) | pagination: currentPage:pageSize">
-											<td>{{gr.group_name}}</td>
-											<td>{{gr.group_description}}</td>
+										<tr ng-repeat="u in filterData = (users | filter:search) | pagination: currentPage:pageSize">
+											<td>{{u.employee_id}}</td>
+											<td>{{u.group_name}}</td>
+											<td>{{u.fname}}</td>
+											<td>{{u.lname}}</td>
+											<td>{{u.position}}</td>
+											<td>{{u.div_id}}</td>
+											<td>{{u.uname}}</td>
 											<td>
-												<button class="btn btn-info" ng-click="app.view(this,gr)"><i class="icon-edit2"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,gr)"><i class="icon-trash-o"></i></button>
+												<button class="btn btn-info" ng-click="app.view(this,u)"><i class="icon-edit2"></i></button>
+												<button class="btn btn-secondary" ng-click="app.delete(this,u)"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>
 									</tbody>
 									<tfoot>
 										<tr>
-											<td colspan="3" style="text-align: right;">
+											<td colspan="9" style="text-align: right;">
 												<div class="float-right bg-info.bg-darken-1"><ul uib-pagination direction-links="false" boundary-links="true" total-items="filterData.length" ng-model="currentPage" max-size="maxSize"></ul></div>
 											</td>
 										</tr>											
@@ -273,6 +284,7 @@
 	<script src="angular/angular-sanitize.min.js"></script>
 	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
 	
+		
 	<script src="angular/modules/account/account.js"></script>
 	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
 	<script src="angular/modules/growl/growl.js"></script>
@@ -286,8 +298,8 @@
 	<script src="modules/growl.js"></script>
 	<script src="modules/notifications.js"></script>
 	<script src="modules/module-access.js"></script>
-	<script src="modules/groups.js"></script>
+	<script src="modules/accounts.js"></script>
 	<!-- controller -->
-	<script src="controllers/group-list.js"></script>
+	<script src="controllers/account-list.js"></script>
   </body>
 </html>

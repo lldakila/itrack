@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- END Custom CSS-->
   </head>
-  <body ng-app="groupsList" ng-controller="groupsListCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
+  <body ng-app="transactions" ng-controller="transactionsCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
 
     <!-- navbar-fixed-top-->
     <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
@@ -137,14 +137,14 @@
 			<li class="nav-item"><a href="#"><i class="icon-sitemap"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Groups</span></a>
 				<ul class="menu-content">
 				  <li><a href="groups-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Group</a></li>
-				  <li class="active"><a href="groups-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
+				  <li><a href="groups-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
 				</ul>
 			</li>
 			<li class="nav-item"><a href="#"><i class="icon-gear"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Maintenance</span></a>
 				<ul class="menu-content">
 				  <li><a href="offices.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-bank"></i>Offices</a></li>
 				  <li><a href="document-types.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-files-empty"></i>Document Types</a></li>
-				  <li><a href="transactions.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-arrow-swap"></i>Transactions</a></li>
+				  <li class="active"><a href="transactions.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-arrow-swap"></i>Transactions</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -176,14 +176,21 @@
 					  <ol class="breadcrumb">
 						<li class="breadcrumb-item"><a href="index.html" class="info">iTrack</a>
 						</li>
-						<li class="breadcrumb-item">Groups
+						<li class="breadcrumb-item">Maintenance
 						</li>
-						<li class="breadcrumb-item active">List
+						<li class="breadcrumb-item active">Transactions
 						</li>
 					  </ol>
 					</div>
 				</div>
-			</div><br>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<button class="btn btn-info float-lg-right" ng-click="app.add(this,null)">Add</button>
+				</div>
+			</div>
+			
+			<br>
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="card">
@@ -203,25 +210,27 @@
 								<table class="table table-bordered ">
 									<thead>
 										<tr>
-											<th>Group Name</th>
-											<th>Group Description</th>
-											<th>Options</th>
+											<th>Transaction</th>
+											<th>Days</th>
+											<th>Shortname</th>
+											<th>Actions</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="gr in filterData = (groups | filter:search) | pagination: currentPage:pageSize">
-											<td>{{gr.group_name}}</td>
-											<td>{{gr.group_description}}</td>
+										<tr ng-repeat="tran in filterData = (trans | filter:search) | pagination: currentPage:pageSize">
+											<td>{{tran.transaction}}</td>
+											<td>{{tran.days}}</td>
+											<td>{{tran.shortname}}</td>
 											<td>
-												<button class="btn btn-info" ng-click="app.view(this,gr)"><i class="icon-edit2"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,gr)"><i class="icon-trash-o"></i></button>
+												<button class="btn btn-info" ng-click="app.add(this,tran)"><i class="icon-edit2"></i></button>
+												<button class="btn btn-secondary" ng-click="app.delete(this,tran)"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>
 									</tbody>
 									<tfoot>
 										<tr>
-											<td colspan="3" style="text-align: right;">
-												<div class="float-right bg-info.bg-darken-1"><ul uib-pagination direction-links="false" boundary-links="true" total-items="filterData.length" ng-model="currentPage" max-size="maxSize"></ul></div>
+											<td colspan="4" style="text-align: right;">
+												<div class="float-right"><ul uib-pagination direction-links="false" boundary-links="true" total-items="filterData.length" ng-model="currentPage" max-size="maxSize"></ul></div>
 											</td>
 										</tr>											
 									</tfoot>
@@ -273,6 +282,7 @@
 	<script src="angular/angular-sanitize.min.js"></script>
 	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
 	
+		
 	<script src="angular/modules/account/account.js"></script>
 	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
 	<script src="angular/modules/growl/growl.js"></script>
@@ -286,8 +296,9 @@
 	<script src="modules/growl.js"></script>
 	<script src="modules/notifications.js"></script>
 	<script src="modules/module-access.js"></script>
-	<script src="modules/groups.js"></script>
+	<script src="modules/transcations.js"></script>
+
 	<!-- controller -->
-	<script src="controllers/group-list.js"></script>
+	<script src="controllers/transcations.js"></script>
   </body>
 </html>

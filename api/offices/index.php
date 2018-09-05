@@ -18,28 +18,22 @@ $container['con'] = function ($container) {
 	return $con;
 };
 
-# list accounts
+# list offices
 $app->get('/list', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
 	
-	$users = $con->getData("SELECT *, (SELECT offices.shortname FROM offices WHERE offices.id = users.div_id) div_id, (SELECT groups.group_name FROM groups WHERE groups.id = users.group_id) group_name FROM users ORDER BY users.id");	
+	$offices = $con->getData("SELECT *,(SELECT departments.dept FROM departments WHERE departments.id = offices.dept_id) dept FROM offices");	
 	
-	foreach ($users as $i => $user) {
-	
-		unset($users[$i]['pw']);
-		
-	};
-
-    return $response->withJson($users);
+    return $response->withJson($offices);
 
 });
 
-# add account
+# add office
 $app->post('/add', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "users";
+	$con->table = "offices";
 
 	$data = $request->getParsedBody();
 	
@@ -48,11 +42,11 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 
 });
 
-# update account
+# update office
 $app->put('/update', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "users";
+	$con->table = "offices";
 
 	$data = $request->getParsedBody();
 
@@ -60,39 +54,34 @@ $app->put('/update', function (Request $request, Response $response, array $args
 
 });
 
-# view account
+# view office
 $app->get('/view/{id}', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "users";
+	$con->table = "offices";
 
-	$user = $con->get(array("id"=>$args['id']));
-	
-	$group_id = ($user[0]['group_id'])?$user[0]['group_id']:0;
+	$office = $con->get(array("id"=>$args['id']));
 
-	$group = $con->getData("SELECT id, group_name FROM groups WHERE id = $group_id");
+	if ($office[0]['dept_id']==null) $office[0]['dept_id'] = 0;
 
-	$user[0]['group_id'] = ($user[0]['group_id'])?$group[0]:array("id"=>0,"group_name"=>"");
+	$dept_id = $con->getData("SELECT id, dept, shortname FROM departments WHERE id = ".$office[0]['dept_id']);
 
-	$div_id = ($user[0]['div_id'])?$user[0]['div_id']:0;
+	$office[0]['dept_id'] = (count($dept_id))?$dept_id[0]:array("id"=>0,"dept"=>"","shortname"=>"");
 
-	$office = $con->getData("SELECT id, office FROM offices WHERE id = $div_id");
-
-	$user[0]['div_id'] = ($office)?$office[0]:array("id"=>0,"office"=>"");
-
-    return $response->withJson($user[0]);
+    return $response->withJson($office[0]);
 
 });
 
-# delete account
+
+# delete office
 $app->delete('/delete/{id}', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "users";
+	$con->table = "offices";
 	
-	$user = array("id"=>$args['id']);
+	$office = array("id"=>$args['id']);
 
-	$con->deleteData($user);
+	$con->deleteData($office);
 
 });
 
