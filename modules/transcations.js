@@ -107,7 +107,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 				title = 'Edit Transaction Type Info';
 				
 				$http({
-				  method: 'POST',
+				  method: 'GET',
 				  url: 'api/transactions/view/'+tran.id
 				}).then(function mySuccess(response) {
 					
