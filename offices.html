@@ -130,6 +130,8 @@
 			</li>
 			<li class=" nav-item"><a href="#"><i class="icon-sitemap"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Accounts</span></a>
 				<ul class="menu-content">
+				  <li><a href="account-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Account</a></li>
+				  <li><a href="account-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
 				</ul>
 			</li>
 			<li class="nav-item"><a href="#"><i class="icon-sitemap"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Groups</span></a>
@@ -140,6 +142,7 @@
 			</li>
 			<li class="nav-item"><a href="#"><i class="icon-gear"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Maintenance</span></a>
 				<ul class="menu-content">
+				  <li class="active"><a href="offices.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-bank"></i>Offices</a></li>
 				  <li><a href="document-types.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-files-empty"></i>Document Types</a></li>
 				  <li><a href="transactions.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-arrow-swap"></i>Transactions</a></li>
 				</ul>
@@ -197,6 +200,7 @@
 							<div class="heading-elements">
 								<ul class="list-inline mb-0">
 									<li><a data-action="collapse"><i class="icon-minus4"></i></a></li>
+									<li><a data-action="reload" ng-click="app.list(this)"><i class="icon-reload"></i></a></li>
 									<li><a data-action="expand"><i class="icon-expand2"></i></a></li>
 								</ul>
 							</div>
