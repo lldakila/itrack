@@ -203,15 +203,15 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="projectinput1">Group Name</label>
-													<input type="text" class="form-control" name="group_name" ng-class="{'is-invalid': formHolder.group.group_name.$touched && formHolder.group.group_name.$invalid}" ng-model="group.group_name" ng-disabled="controls.btns.ok" required>
+													<label>Group Name</label>
+													<input type="text" class="form-control" name="group_name" ng-class="{'border-danger': formHolder.group.group_name.$touched && formHolder.group.group_name.$invalid}" ng-model="group.group_name" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.group.group_name.$touched && formHolder.group.group_name.$invalid">Group Name is required</span>
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="projectinput2">Group Description</label>
-													<input type="text" class="form-control" name="group_description" ng-class="{'is-invalid': formHolder.group.group_description.$touched && formHolder.group.group_description.$invalid}" ng-model="group.group_description" ng-disabled="controls.btns.ok" required>
+													<label>Group Description</label>
+													<input type="text" class="form-control" name="group_description" ng-class="{'border-danger': formHolder.group.group_description.$touched && formHolder.group.group_description.$invalid}" ng-model="group.group_description" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.group.group_description.$touched && formHolder.group.group_description.$invalid">Group Description is required</span>
 												</div>
 											</div>

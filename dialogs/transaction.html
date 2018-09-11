@@ -4,7 +4,7 @@
 			<div class="form-group">
 				<label>Transaction</label>
 				<div class="position-relative has-icon-left">
-					<input type="text" class="form-control" placeholder="Transaction" name="transaction" ng-class="{'is-invalid': formHolder.tran.transaction.$touched && formHolder.tran.transaction.$invalid}" ng-model="tran.transaction" required>
+					<input type="text" class="form-control square" placeholder="Transaction" name="transaction" ng-class="{'border-danger': formHolder.tran.transaction.$touched && formHolder.tran.transaction.$invalid}" ng-model="tran.transaction" required>
 					<span class="help-block danger" ng-show="formHolder.tran.transaction.$touched && formHolder.tran.transaction.$invalid">Transaction Type is required</span>
 					<div class="form-control-position">
 						<i class="icon-sitemap"></i>
@@ -18,7 +18,7 @@
 			<div class="form-group">
 				<label>Days</label>
 				<div class="position-relative has-icon-left">
-					<input type="text" class="form-control" placeholder="Days" name="days" ng-class="{'is-invalid': formHolder.tran.days.$touched && formHolder.tran.days.$invalid}" ng-model="tran.days" required>
+					<input type="text" class="form-control square" placeholder="Days" name="days" ng-class="{'border-danger': formHolder.tran.days.$touched && formHolder.tran.days.$invalid}" ng-model="tran.days" required>
 					<span class="help-block danger" ng-show="formHolder.tran.days.$touched && formHolder.tran.days.$invalid">Day is required</span>
 					<div class="form-control-position">
 						<i class="icon-calendar4"></i>
@@ -32,7 +32,7 @@
 			<div class="form-group">
 				<label>Short Name</label>
 				<div class="position-relative has-icon-left">
-					<input type="text" class="form-control" placeholder="Shortname" name="shortname" ng-class="{'is-invalid': formHolder.tran.shortname.$touched && formHolder.tran.shortname.$invalid}" ng-model="tran.shortname" required>
+					<input type="text" class="form-control" placeholder="Shortname" name="shortname" ng-class="{'border-danger': formHolder.tran.shortname.$touched && formHolder.tran.shortname.$invalid}" ng-model="tran.shortname" required>
 					<span class="help-block danger" ng-show="formHolder.tran.shortname.$touched && formHolder.tran.shortname.$invalid">Shortname is required</span>
 					<div class="form-control-position">
 						<i class="icon-reddit2"></i>
