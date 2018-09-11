@@ -131,14 +131,21 @@
 			</li>
 			<li class=" nav-item"><a href="#"><i class="icon-group"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Accounts</span></a>
 				<ul class="menu-content">
-				  <li><a href="user-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Account</a></li>
-				  <li><a href="users-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
+				  <li><a href="account-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Account</a></li>
+				  <li><a href="account-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
 				</ul>
 			</li>
 			<li class="nav-item"><a href="#"><i class="icon-sitemap"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Groups</span></a>
 				<ul class="menu-content">
 				  <li class="active"><a href="groups-add.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-plus-circle"></i>Add Group</a></li>
 				  <li><a href="groups-list.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
+				</ul>
+			</li>
+			<li class="nav-item"><a href="#"><i class="icon-gear"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Maintenance</span></a>
+				<ul class="menu-content">
+				  <li><a href="offices.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-bank"></i>Offices</a></li>
+				  <li><a href="document-types.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-files-empty"></i>Document Types</a></li>
+				  <li><a href="transactions.html" data-i18n="nav.cards.card_statistics" class="menu-item"><i class="icon-arrow-swap"></i>Transactions</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -256,7 +263,7 @@
 
 
     <footer class="footer footer-static footer-light navbar-border">
-      <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright  &copy; 2018 Document Tracking System. All rights reserved. </span></p>
+      <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright &copy; <b><?php echo date("Y"); ?></b> Document Tracking System. All rights reserved. </span></p>
     </footer>
 
     <!-- BEGIN VENDOR JS-->
@@ -290,7 +297,6 @@
 	<script src="angular/angular-sanitize.min.js"></script>
 	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
 	
-		
 	<script src="angular/modules/account/account.js"></script>
 	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
 	<script src="angular/modules/growl/growl.js"></script>
@@ -304,8 +310,8 @@
 	<script src="modules/growl.js"></script>
 	<script src="modules/notifications.js"></script>
 	<script src="modules/module-access.js"></script>
-	<script src="modules/groups-profile.js"></script>
+	<script src="modules/groups.js"></script>
 	<!-- controller -->
-	<script src="controllers/groups-profile.js"></script>
+	<script src="controllers/groups.js"></script>
   </body>
 </html>

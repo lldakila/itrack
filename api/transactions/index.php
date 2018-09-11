@@ -18,28 +18,22 @@ $container['con'] = function ($container) {
 	return $con;
 };
 
-# list accounts
+# list transactions
 $app->get('/list', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
 	
-	$users = $con->getData("SELECT *, (SELECT offices.shortname FROM offices WHERE offices.id = users.div_id) div_id, (SELECT groups.group_name FROM groups WHERE groups.id = users.group_id) group_name FROM users ORDER BY users.id");	
+	$trans = $con->getData("SELECT * FROM transactions");	
 	
-	foreach ($users as $i => $user) {
-	
-		unset($users[$i]['pw']);
-		
-	};
-
-    return $response->withJson($users);
+    return $response->withJson($trans);
 
 });
 
-# add account
+# add transaction
 $app->post('/add', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "users";
+	$con->table = "transactions";
 
 	$data = $request->getParsedBody();
 	
@@ -48,11 +42,11 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 
 });
 
-# update account
+# update transaction
 $app->put('/update', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "users";
+	$con->table = "transactions";
 
 	$data = $request->getParsedBody();
 
@@ -60,39 +54,28 @@ $app->put('/update', function (Request $request, Response $response, array $args
 
 });
 
-# view account
+# view transaction
 $app->get('/view/{id}', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "users";
+	$con->table = "transactions";
 
-	$user = $con->get(array("id"=>$args['id']));
-	
-	$group_id = ($user[0]['group_id'])?$user[0]['group_id']:0;
+	$tran = $con->get(array("id"=>$args['id']));
 
-	$group = $con->getData("SELECT id, group_name FROM groups WHERE id = $group_id");
-
-	$user[0]['group_id'] = ($user[0]['group_id'])?$group[0]:array("id"=>0,"group_name"=>"");
-
-	$div_id = ($user[0]['div_id'])?$user[0]['div_id']:0;
-
-	$office = $con->getData("SELECT id, office FROM offices WHERE id = $div_id");
-
-	$user[0]['div_id'] = ($office)?$office[0]:array("id"=>0,"office"=>"");
-
-    return $response->withJson($user[0]);
+    return $response->withJson($tran[0]);
 
 });
 
-# delete account
+
+# delete transaction
 $app->delete('/delete/{id}', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "users";
+	$con->table = "transactions";
 	
-	$user = array("id"=>$args['id']);
+	$tran = array("id"=>$args['id']);
 
-	$con->deleteData($user);
+	$con->deleteData($tran);
 
 });
 

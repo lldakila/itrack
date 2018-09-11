@@ -1,0 +1,44 @@
+<form name="formHolder.office" autocomplete="off" novalidate>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="form-group">
+				<label>Department</label>
+				<div class="position-relative has-icon-left">
+					<select id="single-select" class="form-control" name="dept_id" ng-class="{'is-invalid': formHolder.office.dept_id.$touched && formHolder.office.dept_id.$invalid}" ng-model="office.dept_id" ng-options="d.dept for d in departments track by d.id" required></select>
+					<span class="help-block danger" ng-show="formHolder.office.dept_id.$touched && formHolder.office.dept_id.$invalid">Department is required</span>
+					<div class="form-control-position">
+						<i class="icon-bank"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="form-group">
+				<label>Office</label>
+				<div class="position-relative has-icon-left">
+					<input type="text" class="form-control" placeholder="Office" name="office" ng-class="{'is-invalid': formHolder.office.office.$touched && formHolder.office.office.$invalid}" ng-model="office.office" required>
+					<span class="help-block danger" ng-show="formHolder.office.office.$touched && formHolder.office.office.$invalid">Office is required</span>
+					<div class="form-control-position">
+						<i class="icon-android-create"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="form-group">
+				<label>Shortname</label>
+				<div class="position-relative has-icon-left">
+					<input type="text" class="form-control" placeholder="Shortname" name="shortname" ng-class="{'is-invalid': formHolder.office.shortname.$touched && formHolder.office.shortname.$invalid}" ng-model="office.shortname" required>
+					<span class="help-block danger" ng-show="formHolder.office.shortname.$touched && formHolder.office.shortname.$invalid">Shortname is required</span>
+					<div class="form-control-position">
+						<i class="icon-reddit2"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
