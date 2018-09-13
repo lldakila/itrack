@@ -6,14 +6,14 @@ require_once '../../../classes.php';
 
 session_start();
 
-if (!isset($_SESSION['id'])) {
+if (!isset($_SESSION['itrack_user_id'])) {
 	header('X-Error-Message: Session timeout', true, 500);
 	exit();
 };
 
 $con = new pdo_db("users");
 
-$user = $con->get(["id"=>$_SESSION['id']],["employee_id","CONCAT(fname, ' ', lname) user","group_id","div_id"]);
+$user = $con->get(["id"=>$_SESSION['itrack_user_id']],["employee_id","CONCAT(fname, ' ', lname) user","group_id","div_id"]);
 
 $dir = "pictures/";
 $avatar = $dir."avatar.png";

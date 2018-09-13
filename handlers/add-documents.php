@@ -13,7 +13,7 @@ $con = new pdo_db("documents");
 
 session_start();
 
-$staff = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$_SESSION['id']);
+$staff = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$_SESSION['itrack_user_id']);
 
 # for notification
 
@@ -24,7 +24,7 @@ $office_origin = $_POST['origin']['office'];
 
 $com = $_POST['communication']['shortname'];
 $office = $_POST['origin']['shortname'];
-$_POST['user_id'] = $_SESSION['id'];
+$_POST['user_id'] = $_SESSION['itrack_user_id'];
 $_POST['origin'] = $_POST['origin']['id'];
 $_POST['doc_type'] = $_POST['doc_type']['id'];
 $_POST['communication'] = $_POST['communication']['id'];
@@ -86,7 +86,7 @@ if ($_POST['id']) { # update
 		$track = array(
 			"document_id"=>$id,
 			"document_status"=>"Received", # document status
-			"document_status_user"=>$_SESSION['id'],			
+			"document_status_user"=>$_SESSION['itrack_user_id'],			
 			"document_tracks_status"=>"transaction", # tracks status
 			"track_date"=>$track_date,
 			"track_office"=>$track_office,
