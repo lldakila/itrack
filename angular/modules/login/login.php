@@ -12,7 +12,7 @@ $sql = "SELECT id, group_id, div_id FROM users WHERE uname = '$uname' AND pw = '
 $account = $con->getData($sql);
 if (($con->rows) > 0) {
 	session_start();
-	$_SESSION['id'] = $account[0]['id'];
+	$_SESSION['itrack_user_id'] = $account[0]['id'];
 	$_SESSION['group'] = $account[0]['group_id'];
 	$_SESSION['office'] = $account[0]['div_id'];
 	echo json_encode(array("login"=>true));

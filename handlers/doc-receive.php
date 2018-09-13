@@ -19,7 +19,7 @@ $notifications = [];
 
 $liaisons = $con->getData("SELECT id FROM users WHERE div_id = ".$_SESSION['office']." AND group_id IN ".getAssignmentIds($assignments['group'],1,"group"));
 $office = $con->getData("SELECT id, office FROM offices WHERE id = ".$_SESSION['office']);
-$receive_by = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$_SESSION['id']);
+$receive_by = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$_SESSION['itrack_user_id']);
 #
 
 # preceding_track
@@ -36,7 +36,7 @@ switch ($_POST['next']['opt']) {
 		$track = array(
 			"document_id"=>$_POST['document']['id'],
 			"document_status"=>$document_status, # document status
-			"document_status_user"=>$_SESSION['id'],
+			"document_status_user"=>$_SESSION['itrack_user_id'],
 			"document_tracks_status"=>$document_tracks_status, # tracks status
 			"track_office"=>$_SESSION['office'],
 			"track_date"=>$track_date,
@@ -67,7 +67,7 @@ switch ($_POST['next']['opt']) {
 		$track = array(
 			"document_id"=>$_POST['document']['id'],
 			"document_status"=>$document_status, # document status
-			"document_status_user"=>$_SESSION['id'],
+			"document_status_user"=>$_SESSION['itrack_user_id'],
 			"document_tracks_status"=>$document_tracks_status, # tracks status
 			"track_office"=>$_SESSION['office'],
 			"track_date"=>$track_date,
@@ -95,7 +95,7 @@ switch ($_POST['next']['opt']) {
 		$track = array(
 			"document_id"=>$_POST['document']['id'],
 			"document_status"=>$document_status, # document status
-			"document_status_user"=>$_SESSION['id'],
+			"document_status_user"=>$_SESSION['itrack_user_id'],
 			"document_tracks_status"=>$document_tracks_status, # tracks status
 			"track_office"=>$_SESSION['office'],
 			"track_date"=>$track_date,

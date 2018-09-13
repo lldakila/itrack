@@ -28,7 +28,7 @@ $notifications = [];
 
 $track_date = date("Y-m-d H:i:s");
 
-$staff = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$_SESSION['id']);
+$staff = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$_SESSION['itrack_user_id']);
 
 $document_origin = $con->getData("SELECT origin FROM documents WHERE id = ".$_POST['document']['id']);
 
@@ -160,7 +160,7 @@ switch ($_POST['action']) {
 		$document_tracks_status = "filed";
 		// $track_option = $_POST['document']['track_option'];
 
-		$file_by = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$_SESSION['id']);		
+		$file_by = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$_SESSION['itrack_user_id']);		
 		$file_office = $con->getData("SELECT id, office FROM offices WHERE id = ".$_SESSION['office']);
 		$file_office_name = $file_office[0]['office'];		
 		
@@ -184,7 +184,7 @@ switch ($_POST['action']) {
 $track = array(
 	"document_id"=>$_POST['document']['id'],
 	"document_status"=>$document_status, # document status
-	"document_status_user"=>$_SESSION['id'],
+	"document_status_user"=>$_SESSION['itrack_user_id'],
 	"document_tracks_status"=>$document_tracks_status, # tracks status
 	"track_office"=>$track_office,
 	"track_date"=>$track_date,

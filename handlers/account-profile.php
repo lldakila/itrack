@@ -8,7 +8,7 @@ session_start();
 
 $con = new pdo_db("users");
 
-$user = $con->get(["id"=>$_SESSION['id']],["employee_id","CONCAT(fname, ' ', lname) user","group_id","div_id"]);
+$user = $con->get(["id"=>$_SESSION['itrack_user_id']],["employee_id","CONCAT(fname, ' ', lname) user","group_id","div_id"]);
 
 $dir = "pictures/";
 $avatar = $dir."avatar.png";
