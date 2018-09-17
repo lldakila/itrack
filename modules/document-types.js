@@ -14,6 +14,8 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 			scope.doc_types = [];
 			
+			scope.staffs = [];
+			
 			scope.views.currentPage = 1;
 
 		};
@@ -37,6 +39,21 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			});
 
 			return scope.formHolder[form].$invalid;
+			
+		};
+		
+		function staffs() {
+			
+			$http({
+				method: 'GET',
+				url: 'api/document-types/staffs'
+			}).then(function mySuccess(response) {
+				
+				scope.staffs = angular.copy(response.data);
+					
+			}, function myError(response) {
+		
+			});	
 			
 		};
 		
