@@ -12,6 +12,9 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			scope.doc_type = {};
 			scope.doc_type.id = 0;
 			
+			scope.doc_type.staff_assign = [];
+			scope.doc_type.staff_assign_dels = [];
+			
 			scope.doc_types = [];
 			
 			scope.staffs = [];
@@ -42,7 +45,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 		};
 		
-		function staffs() {
+		function staffs(scope) {
 			
 			$http({
 				method: 'GET',
@@ -115,15 +118,18 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add)) return;
 			
+			staffs(scope);
+			
 			var title = 'Add Document Types';
 			
 			if (doc_type == null) {				
 				
+				scope.doc_type = {};
+				scope.doc_type.id = 0;				
+				
 				scope.doc_type.staff_assign = [];
 				scope.doc_type.staff_assign_dels = [];
-			
-				scope.doc_type = {};
-				scope.doc_type.id = 0;
+				
 				
 			} else {
 				
@@ -192,7 +198,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 
 				scope.doc_type.staff_assign.push({
 					id: 0,
-					staff_name: 0,
+					fullname: '',
 				});
 
 			},
