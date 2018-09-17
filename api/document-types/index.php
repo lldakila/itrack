@@ -79,6 +79,23 @@ $app->delete('/delete/{id}', function (Request $request, Response $response, arr
 
 });
 
+$app->get('/staffs', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+	$con->table = "users";	
+
+	require_once '../../system_setup.php';	
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);
+	
+	$in = $setup->get_values_as_string(1);
+	
+	$staffs = $con->getData("SELECT id, CONCAT(fname, ' ', lname) fullname FROM users WHERE group_id IN ($in)");	
+
+    return $response->withJson($staffs);
+
+});
+
 $app->run();
 
 ?>
