@@ -4,7 +4,7 @@
 			<div class="form-group">
 				<label>Department Type</label>
 				<div class="position-relative has-icon-left">
-					<input type="text" class="form-control" placeholder="Document Type" name="document_type" ng-class="{'is-invalid': formHolder.doc_type.document_type.$touched && formHolder.doc_type.document_type.$invalid}" ng-model="doc_type.document_type" required>
+					<input type="text" class="form-control square" placeholder="Document Type" name="document_type" ng-class="{'border-danger': formHolder.doc_type.document_type.$touched && formHolder.doc_type.document_type.$invalid}" ng-model="doc_type.document_type" required>
 					<span class="help-block danger" ng-show="formHolder.doc_type.document_type.$touched && formHolder.doc_type.document_type.$invalid">Department Type is required</span>
 					<div class="form-control-position">
 						<i class="icon-android-create"></i>
@@ -18,7 +18,7 @@
 			<div class="form-group">
 				<label>Short Name</label>
 				<div class="position-relative has-icon-left">
-					<input type="text" class="form-control" placeholder="Shortname" name="shortname" ng-class="{'is-invalid': formHolder.doc_type.shortname.$touched && formHolder.doc_type.shortname.$invalid}" ng-model="doc_type.shortname" required>
+					<input type="text" class="form-control square" placeholder="Shortname" name="shortname" ng-class="{'border-danger': formHolder.doc_type.shortname.$touched && formHolder.doc_type.shortname.$invalid}" ng-model="doc_type.shortname" required>
 					<span class="help-block danger" ng-show="formHolder.doc_type.shortname.$touched && formHolder.doc_type.shortname.$invalid">Shortname is required</span>
 					<div class="form-control-position">
 						<i class="icon-social-reddit"></i>

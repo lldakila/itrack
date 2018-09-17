@@ -210,14 +210,14 @@
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Offices</label>
-													<select class="form-control" name="div_id" ng-class="{'is-invalid': formHolder.user.div_id.$touched && formHolder.user.div_id.$invalid}" ng-model="user.div_id" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="div_id" ng-class="{'border-danger': formHolder.user.div_id.$touched && formHolder.user.div_id.$invalid}" ng-model="user.div_id" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select>
 													<span class="help-block danger" ng-show="formHolder.user.div_id.$touched && formHolder.user.div_id.$invalid">Office is required</span>
 												</div>
 											</div>
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Groups</label>
-													<select class="form-control" name="group_id" ng-class="{'is-invalid': formHolder.user.group_id.$touched && formHolder.user.group_id.$invalid}" ng-model="user.group_id" ng-options="g.group_name for g in groups track by g.id" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="group_id" ng-class="{'border-danger': formHolder.user.group_id.$touched && formHolder.user.group_id.$invalid}" ng-model="user.group_id" ng-options="g.group_name for g in groups track by g.id" ng-disabled="controls.btns.ok" required></select>
 													<span class="help-block danger" ng-show="formHolder.user.group_id.$touched && formHolder.user.group_id.$invalid">Group is required</span>
 												</div>
 											</div>
@@ -227,7 +227,7 @@
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>First Name</label>
-													<input type="text" class="form-control" name="fname" ng-class="{'is-invalid': formHolder.user.fname.$touched && formHolder.user.fname.$invalid}" ng-model="user.fname" ng-disabled="controls.btns.ok" required>
+													<input type="text" class="form-control" name="fname" ng-class="{'border-danger': formHolder.user.fname.$touched && formHolder.user.fname.$invalid}" ng-model="user.fname" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.user.fname.$touched && formHolder.user.fname.$invalid">First Name is required</span>
 												</div>
 											</div>
@@ -240,7 +240,7 @@
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Last Name</label>
-													<input type="text" class="form-control" name="lname" ng-class="{'is-invalid': formHolder.user.lname.$touched && formHolder.user.lname.$invalid}" ng-model="user.lname" ng-disabled="controls.btns.ok" required>
+													<input type="text" class="form-control" name="lname" ng-class="{'border-danger': formHolder.user.lname.$touched && formHolder.user.lname.$invalid}" ng-model="user.lname" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.user.lname.$touched && formHolder.user.lname.$invalid">Last Name is required</span>
 												</div>
 											</div>
@@ -250,7 +250,7 @@
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Position</label>
-                                            <input type="text" class="form-control" name="position" ng-class="{'is-invalid': formHolder.user.position.$touched && formHolder.user.position.$invalid}" ng-model="user.position" ng-disabled="controls.btns.ok" required>
+                                            <input type="text" class="form-control" name="position" ng-class="{'border-danger': formHolder.user.position.$touched && formHolder.user.position.$invalid}" ng-model="user.position" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.user.position.$touched && formHolder.user.position.$invalid">Position is required</span>
 												</div>
 											</div>
@@ -272,14 +272,14 @@
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Username</label>
-													<input type="text" class="form-control" name="uname" ng-class="{'is-invalid': formHolder.user.uname.$touched && formHolder.user.uname.$invalid}" ng-model="user.uname" ng-disabled="controls.btns.ok" required>
+													<input type="text" class="form-control" name="uname" ng-class="{'border-danger': formHolder.user.uname.$touched && formHolder.user.uname.$invalid}" ng-model="user.uname" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.user.uname.$touched && formHolder.user.uname.$invalid">Username is required</span>
 												</div>
 											</div>
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Password</label>
-													<input type="password" name="pw" ng-class="{'form-control': true, 'is-invalid': formHolder.user.pw.$touched && formHolder.user.pw.$invalid}" ng-model="user.pw" ng-disabled="controls.btns.ok" required>
+													<input type="password" name="pw" ng-class="{'form-control': true, 'border-danger': formHolder.user.pw.$touched && formHolder.user.pw.$invalid}" ng-model="user.pw" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.user.pw.$touched && formHolder.user.pw.$invalid">Password is required</span>
 												</div>
 											</div>
