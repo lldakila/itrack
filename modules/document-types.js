@@ -102,6 +102,9 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 			if (doc_type == null) {				
 				
+				scope.doc_type.staff_assign = [];
+				scope.doc_type.staff_assign_dels = [];
+			
 				scope.doc_type = {};
 				scope.doc_type.id = 0;
 				
@@ -164,7 +167,49 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 		
 			bootstrapModal.box(scope,title,'dialogs/document-type.html',onOk);
 			
-		};	
+		};
+
+		self.staff_assign = {
+			
+			add: function(scope) {
+
+				scope.doc_type.staff_assign.push({
+					id: 0,
+					staff_name: 0,
+				});
+
+			},
+			
+			edit: function(scope,row) {
+				
+				row.disabled = !row.disabled;				
+				
+			},			
+			
+			delete: function(scope,row) {
+				
+				if (row.id > 0) {
+					scope.doc_type.staff_assign_dels.push(row.id);
+				};
+				
+				var staff_assigns = scope.doc_type.staff_assign;
+				var index = scope.doc_type.staff_assign.indexOf(row);
+				scope.doc_type.staff_assign = [];			
+				
+				angular.forEach(staff_assigns, function(d,i) {
+					
+					if (index != i) {
+						
+						delete d['$$hashKey'];
+						scope.doc_type.staff_assign.push(d);
+						
+					};
+					
+				});
+
+			}			
+			
+		};
 
 	};
 
