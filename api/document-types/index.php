@@ -62,6 +62,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 			} else {
 				
 				unset($staff_assigns[$index]['id']);
+				$staff_row = $con->insertObj($staff_assigns[$index]);
 				
 			}
 		
