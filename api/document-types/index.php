@@ -37,7 +37,37 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	
 	$data = $request->getParsedBody();
 	
+	$staff_assigns = $data['staff_assign'];
+	unset($data['staff_assign']);
+
+	$staff_assign_dels = $data['staff_assign_dels'];
+	unset($data['staff_assign_dels']);
 	
+	if (count($staff_assigns)) {
+
+		$con->table = "document_types_staffs";
+
+		foreach ($staff_assigns as $index => $value) {
+			
+			$staff_assigns[$index]['document_type'] = $data['id'];
+
+		}
+
+		foreach ($staff_assigns as $index => $value) {
+
+			if ($value['id']) {
+				
+				$staff_row = $con->updateObj($staff_assigns[$index],'id');
+				
+			} else {
+				
+				unset($staff_assigns[$index]['id']);
+				
+			}
+		
+		}
+		
+	};
 	
 	unset($data['id']);
 	$con->insertObj($data);
