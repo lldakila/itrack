@@ -44,7 +44,7 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 			buttons: {
 				cancel: {
 					label: 'Close',
-					className: 'btn-danger'
+					className: 'btn-danger move-right'
 				},
 				confirm: {
 					label: 'Ok',
