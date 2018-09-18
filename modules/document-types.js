@@ -225,7 +225,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 
 				scope.doc_type.staff_assign.push({
 					id: 0,
-					staff_id: 0,
+					fullname: '',
 				});
 
 			},
