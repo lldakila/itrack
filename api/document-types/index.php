@@ -61,7 +61,15 @@ $app->get('/view/{id}', function (Request $request, Response $response, array $a
 	$con->table = "document_types";
 
 	$doc_type = $con->get(array("id"=>$args['id']));
-
+	
+	foreach($doc_type as $key => $dt){
+		
+		$staff = $con->getData("SELECT * FROM document_types_staffs WHERE staff_id = ".$dt['id']);
+		$doc_type[$key]['staff_assign'] = $staff;
+	} 
+	
+	$doc_type[0]['staff_assign_dels'] = [];
+	
     return $response->withJson($doc_type[0]);
 
 });
