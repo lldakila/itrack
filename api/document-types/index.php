@@ -34,8 +34,10 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 
 	$con = $this->con;
 	$con->table = "document_types";
-
+	
 	$data = $request->getParsedBody();
+	
+	
 	
 	unset($data['id']);
 	$con->insertObj($data);
@@ -49,7 +51,48 @@ $app->put('/update', function (Request $request, Response $response, array $args
 	$con->table = "document_types";
 
 	$data = $request->getParsedBody();
+	
+	$staff_assigns = $data['staff_assign'];
+	unset($data['staff_assign']);
 
+	$staff_assign_dels = $data['staff_assign_dels'];
+	unset($data['staff_assign_dels']);
+	
+	# staff info
+	if (count($staff_assign_dels)) {
+
+		$con->table = "document_types_staffs";
+		$delete = $con->deleteData(array("id"=>implode(",",$staff_assign_dels)));		
+			
+	};
+
+	if (count($staff_assigns)) {
+
+		$con->table = "document_types_staffs";
+
+		foreach ($staff_assigns as $index => $value) {
+			
+			$staff_assigns[$index]['document_type'] = $data['id'];
+
+		}
+
+		foreach ($staff_assigns as $index => $value) {
+
+			if ($value['id']) {
+				
+				$staff_row = $con->updateObj($staff_assigns[$index],'id');
+				
+			} else {
+				
+				unset($staff_assigns[$index]['id']);
+				$staff_row = $con->insertObj($staff_assigns[$index]);
+				
+			}
+		
+		}
+		
+	};
+	
 	$con->updateObj($data,'id');
 
 });
@@ -64,8 +107,15 @@ $app->get('/view/{id}', function (Request $request, Response $response, array $a
 	
 	foreach($doc_type as $key => $dt){
 		
-		$staff = $con->getData("SELECT * FROM document_types_staffs WHERE staff_id = ".$dt['id']);
-		$doc_type[$key]['staff_assign'] = $staff;
+		$staff_assign = $con->getData("SELECT * FROM document_types_staffs WHERE document_type = ".$dt['id']);
+		
+			foreach($staff_assign as $i => $staff){
+				
+				$staffs = $con->getData("SELECT id, CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$staff['staff_id']);	
+				$staff_assign[$i]['staff_id'] = $staffs[0];
+			}
+		
+		$doc_type[$key]['staff_assign'] = $staff_assign;
 	} 
 	
 	$doc_type[0]['staff_assign_dels'] = [];

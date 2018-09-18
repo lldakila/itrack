@@ -9,6 +9,11 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			scope.formHolder = {};
 			scope.views = {};
 			
+			scope.controls = {
+				ok: {btn: false, label: 'Save'},
+				cancel: {btn: false, label: 'Cancel'},
+			};
+			
 			scope.doc_type = {};
 			scope.doc_type.id = 0;
 			
@@ -42,6 +47,21 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			});
 
 			return scope.formHolder[form].$invalid;
+			
+		};
+		
+		function mode(scope,row) {
+			
+			if (row == null) {
+				scope.controls.ok.label = 'Save';
+				scope.controls.ok.btn = false;
+				scope.controls.cancel.label = 'Cancel';
+				scope.controls.cancel.btn = false;
+			} else {
+				scope.controls.ok.label = 'Update';
+				scope.controls.cancel.label = 'Close';
+				scope.controls.ok.btn = true;			
+			}
 			
 		};
 		
@@ -89,6 +109,12 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to Delete?',onOk,onCancel);
 			
 		};
+		
+		self.edit = function(scope) {
+			
+			scope.controls.ok.btn = !scope.controls.ok.btn;
+			
+		};
 
 		self.list = function(scope) {
 			
@@ -119,6 +145,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add)) return;
 			
 			staffs(scope);
+			mode(scope,doc_type);
 			
 			var title = 'Add Document Types';
 			

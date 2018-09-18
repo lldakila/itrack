@@ -1,10 +1,15 @@
 <form name="formHolder.doc_type" autocomplete="off" novalidate>
 	<div class="row">
 		<div class="col-lg-12">
+			<button class="btn btn-secondary float-lg-right" ng-click="app.edit(this)"><i class="icon-edit2" ng-class="{'icon-edit2': controls.ok.btn, 'icon-ban': !controls.ok.btn}"></i></button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
 			<div class="form-group">
 				<label>Department Type</label>
 				<div class="position-relative has-icon-left">
-					<input type="text" class="form-control square" placeholder="Document Type" name="document_type" ng-class="{'border-danger': formHolder.doc_type.document_type.$touched && formHolder.doc_type.document_type.$invalid}" ng-model="doc_type.document_type" required>
+					<input type="text" class="form-control square" placeholder="Document Type" name="document_type" ng-class="{'border-danger': formHolder.doc_type.document_type.$touched && formHolder.doc_type.document_type.$invalid}" ng-model="doc_type.document_type" ng-disabled="controls.ok.btn" required>
 					<span class="help-block danger" ng-show="formHolder.doc_type.document_type.$touched && formHolder.doc_type.document_type.$invalid">Department Type is required</span>
 					<div class="form-control-position">
 						<i class="icon-android-create"></i>
@@ -18,7 +23,7 @@
 			<div class="form-group">
 				<label>Short Name</label>
 				<div class="position-relative has-icon-left">
-					<input type="text" class="form-control square" placeholder="Shortname" name="shortname" ng-class="{'border-danger': formHolder.doc_type.shortname.$touched && formHolder.doc_type.shortname.$invalid}" ng-model="doc_type.shortname" required>
+					<input type="text" class="form-control square" placeholder="Shortname" name="shortname" ng-class="{'border-danger': formHolder.doc_type.shortname.$touched && formHolder.doc_type.shortname.$invalid}" ng-model="doc_type.shortname" ng-disabled="controls.ok.btn" required>
 					<span class="help-block danger" ng-show="formHolder.doc_type.shortname.$touched && formHolder.doc_type.shortname.$invalid">Shortname is required</span>
 					<div class="form-control-position">
 						<i class="icon-social-reddit"></i>
@@ -28,14 +33,14 @@
 		</div>
 	</div>
 	<hr>
-	<button class="btn btn-info float-lg-right" ng-click="app.staff_assign.add(this)"><i class="icon-plus3"></i></button>
+	<button class="btn btn-info float-lg-right" ng-click="app.staff_assign.add(this)" ng-disabled="controls.ok.btn"><i class="icon-plus3"></i></button>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="form-group" ng-repeat="dt in doc_type.staff_assign">
 				<label>Staff Assign</label>
 				<div class="input-group">
 				<span class="input-group-addon"><i class="icon-user"></i></span>
-					<select class="form-control square" name="staff_id{{index}}" ng-model="dt.staff_id" ng-options="staff.fullname for staff in staffs track by staff.id"></select>
+					<select class="form-control square" name="staff_id{{index}}" ng-model="dt.staff_id" ng-options="staff_assign.fullname for staff_assign in staffs track by staff_assign.id" ng-disabled="controls.ok.btn"></select>
 					<span class="input-group-addon" style="cursor: pointer;" ng-click="app.staff_assign.delete(this,dt)"><i class="icon-remove"></i></span>
 				</div>
 			</div>
