@@ -41,37 +41,32 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	unset($data['staff_assign']);
 
 	$staff_assign_dels = $data['staff_assign_dels'];
-	unset($data['staff_assign_dels']);
-	
+	unset($data['staff_assign_dels']);	
+
+	unset($data['id']);
+	$con->insertObj($data);
+	$id = $con->insertId;
+
 	if (count($staff_assigns)) {
 
 		$con->table = "document_types_staffs";
 
 		foreach ($staff_assigns as $index => $value) {
 			
-			$staff_assigns[$index]['document_type'] = $data['id'];
+			$staff_assigns[$index]['document_type'] = $id;			
+			$staff_assigns[$index]['staff_id'] = $value['staff_id']['id'];
+			unset($staff_assigns[$index]['fullname']);
 
-		}
+		};
 
 		foreach ($staff_assigns as $index => $value) {
-
-			if ($value['id']) {
 				
-				$staff_row = $con->updateObj($staff_assigns[$index],'id');
-				
-			} else {
-				
-				unset($staff_assigns[$index]['id']);
-				$staff_row = $con->insertObj($staff_assigns[$index]);
-				
-			}
+			unset($value['id']);
+			$staff_row = $con->insertData($value);
 		
-		}
+		};
 		
 	};
-	
-	unset($data['id']);
-	$con->insertObj($data);
 
 });
 
@@ -79,7 +74,6 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 $app->put('/update', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "document_types";
 
 	$data = $request->getParsedBody();
 	
@@ -103,20 +97,19 @@ $app->put('/update', function (Request $request, Response $response, array $args
 
 		foreach ($staff_assigns as $index => $value) {
 			
-			$staff_assigns[$index]['document_type'] = $data['id'];
-
-		}
-
-		foreach ($staff_assigns as $index => $value) {
-
+			unset($value['fullname']);			
+			
 			if ($value['id']) {
 				
-				$staff_row = $con->updateObj($staff_assigns[$index],'id');
+				$value['staff_id'] = $value['staff_id']['id'];
+				$staff_row = $con->updateData($value,'id');
 				
 			} else {
 				
 				unset($staff_assigns[$index]['id']);
-				$staff_row = $con->insertObj($staff_assigns[$index]);
+				$value['staff_id'] = $value['staff_id']['id'];
+				$value['document_type'] = $data['id'];
+				$staff_row = $con->insertData($value);
 				
 			}
 		
@@ -124,6 +117,7 @@ $app->put('/update', function (Request $request, Response $response, array $args
 		
 	};
 	
+	$con->table = "document_types";	
 	$con->updateObj($data,'id');
 
 });
