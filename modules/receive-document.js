@@ -31,8 +31,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			scope.doc = {};
 			scope.doc.id = 0;
+			
 			scope.for_approval = false;
 			scope.for_routing = false;
+			
 			scope.doc.files = [];
 			scope.doc.attachments = [];
 			
@@ -128,7 +130,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 		self.save = function(scope) {
 		
-			uploadFiles.start(scope, function() {				
+			var addDocument = function() {	
 
 				/* if (scope.doc.files.length == 0) {
 					
@@ -161,7 +163,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					
 				});				
 				
-			});
+			};
+
+			uploadFiles.start(scope, addDocument);
 			
 		};
 		

@@ -54,6 +54,24 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 		}
 	};
 		
+}).directive('removeFile',function($timeout) {
+	
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+		
+			element.bind('click', function() {
+
+				var index = attrs.removeFile;
+
+				delete scope.documentFiles.splice(index,1);
+				scope.$apply();
+				
+			});
+			
+		}
+	};	
+	
 }).directive('addAttachments',function($http) {
 	
 	return {
