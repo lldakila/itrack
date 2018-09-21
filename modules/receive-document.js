@@ -32,9 +32,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.doc = {};
 			scope.doc.id = 0;
 			
+			scope.for_approval = false;
 			scope.for_routing = false;
-			scope.for_initial = false;
-			// scope.for_signature = false;
 			
 			scope.doc.files = [];
 			// scope.doc.attachments = [];
@@ -112,9 +111,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			scope.doc = {};
 			scope.doc.id = 0;
+			scope.for_approval = false;
 			scope.for_routing = false;
-			scope.for_initial = false;
-			// scope.for_signature = false;
 			scope.doc.files = [];
 			// scope.doc.attachments = [];
 			
@@ -273,7 +271,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 		self.actionChange = function(scope,a) {
 
-			var actions = {'for_routing': 'for_initial', 'for_initial': 'for_routing'};
+			var actions = {'for_routing': 'for_approval', 'for_approval': 'for_routing'};
 
 			if (scope.doc[a]) scope.doc[actions[a]] = false;
 			
