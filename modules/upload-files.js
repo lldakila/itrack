@@ -62,6 +62,8 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 		
 			element.bind('click', function() {
 
+				if (scope.controls.btns.ok) return;
+			
 				var index = attrs.removeFile;
 
 				delete scope.documentFiles.splice(index,1);
@@ -144,9 +146,11 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 		
 			var deferred = $q.defer();
 			var promise = deferred.promise;
-		
+			
+			scope.doc.files = [];
+			
 			angular.forEach(scope.documentFiles, function(item,i) {
-
+			
 				var $file = $(item.eid);
 				var file = $($file[0]).attr(types[item.type]);
 
@@ -154,14 +158,14 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 
 			});
 
-			angular.forEach(scope.attachmentFiles, function(item,i) {
+			/* angular.forEach(scope.attachmentFiles, function(item,i) {
 
 				var $file = $(item.eid);
 				var file = $($file[0]).attr(types[item.type]);
 
 				scope.doc.attachments.push({file: file, type: item.type});
 
-			});			
+			});	 */		
 
 			$q.all(scope.doc.files).then(function() {
 				callback();

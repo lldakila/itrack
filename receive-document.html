@@ -190,7 +190,7 @@
 							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 							<div class="heading-elements">
 								<ul class="list-inline mb-0">
-									<li><a data-action="expand" ng-click="app.print(this)" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon-print"></i></a></li>
+									<li><a href="javascript:;" ng-click="app.print(this)" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon-print"></i></a></li>
 								</ul>
 							</div>
 						</div>
@@ -202,6 +202,7 @@
 										<div class="row">
 											<div class="col-lg-6"></div>
 											<div class="col-lg-6">
+												<canvas id="barcode" style="display: none;"></canvas>
 												<div class="form-group">
 													<label>Barcode</label>
 													<div class="position-relative has-icon-left">
@@ -322,8 +323,9 @@
 										<hr>
 										<div class="row">
 											<div class="col-lg-12">
-												<button class="btn btn-info" ng-click="app.save(this)" ng-disabled="controls.btns.ok" ng-show="controls.ok">Save</button>
-												<button class="btn btn-secondary" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">Cancel</button>
+												<button class="btn btn-secondary float-lg-right" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">Cancel</button>											
+												<button class="btn btn-info float-lg-right" ng-click="app.save(this)" ng-disabled="controls.btns.ok" ng-show="controls.ok" style="margin-right: 10px;">Save</button>
+												<div class="clearfix"></div>
 											</div>
 										</div>
 										
