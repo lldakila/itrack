@@ -32,8 +32,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.doc = {};
 			scope.doc.id = 0;
 			
-			scope.for_initial = false;
 			scope.for_routing = false;
+			scope.for_initial = false;
+			// scope.for_signature = false;
 			
 			scope.doc.files = [];
 			// scope.doc.attachments = [];
@@ -111,8 +112,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			scope.doc = {};
 			scope.doc.id = 0;
-			scope.for_initial = false;
 			scope.for_routing = false;
+			scope.for_initial = false;
+			// scope.for_signature = false;
 			scope.doc.files = [];
 			// scope.doc.attachments = [];
 			
