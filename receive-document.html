@@ -33,6 +33,7 @@
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/files.css">
     <!-- END Custom CSS-->
   </head>
   <body ng-app="document" ng-controller="documentCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
@@ -189,7 +190,7 @@
 							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 							<div class="heading-elements">
 								<ul class="list-inline mb-0">
-									<li><a data-action="expand" ng-click="app.print(this)" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon-print"></i></a></li>
+									<li><a href="javascript:;" ng-click="app.print(this)" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon-print"></i></a></li>
 								</ul>
 							</div>
 						</div>
@@ -201,6 +202,7 @@
 										<div class="row">
 											<div class="col-lg-6"></div>
 											<div class="col-lg-6">
+												<canvas id="barcode" style="display: none;"></canvas>
 												<div class="form-group">
 													<label>Barcode</label>
 													<div class="position-relative has-icon-left">
@@ -292,11 +294,38 @@
 												</div>	
 											</div>
 										</div>
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="form-group">
+													<label>Files:</label>
+													<div class="images-container">
+														<div class="image-container" ng-repeat="df in documentFiles">
+															<div class="controls">
+																<a href="javascript:;" class="control-btn remove" remove-file="{{$index}}">
+																	<i class="icon-trash4"></i>
+																</a>
+															</div>
+															<object id="dfpdf{{$index}}" class="object" data="" ng-show="df.type == 'pdf'"></object>
+															<img id="dfimg{{$index}}" class="image" src="" ng-show="df.type == 'jpeg' || df.type == 'png'">															
+														</div>
+														<input type="file" style="display: none;" id="upload-files" add-files multiple>														
+														<a href="javascript:;" class="add-image" ng-click="app.addFile(this)">
+															<div class="image-container new">
+																<div class="image">
+																	<i class="icon-plus4"></i>
+																</div>
+															</div>
+														</a>														
+													</div>
+												</div>
+											</div>										
+										</div>
 										<hr>
 										<div class="row">
 											<div class="col-lg-12">
-												<button class="btn btn-info" ng-click="app.save(this)" ng-disabled="controls.btns.ok" ng-show="controls.ok">Save</button>
-												<button class="btn btn-secondary" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">Cancel</button>
+												<button class="btn btn-secondary float-lg-right" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">Cancel</button>											
+												<button class="btn btn-info float-lg-right" ng-click="app.save(this)" ng-disabled="controls.btns.ok" ng-show="controls.ok" style="margin-right: 10px;">Save</button>
+												<div class="clearfix"></div>
 											</div>
 										</div>
 										

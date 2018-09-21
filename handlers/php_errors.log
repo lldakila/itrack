@@ -1,0 +1,6 @@
+[21-Sep-2018 09:39:15 Asia/Manila] PHP Warning:  require_once(../assignments.php): failed to open stream: No such file or directory in C:\Users\sly\Desktop\UwAmp310\www\itrack\handlers\add-documents.php on line 6
+[21-Sep-2018 09:39:15 Asia/Manila] PHP Stack trace:
+[21-Sep-2018 09:39:15 Asia/Manila] PHP   1. {main}() C:\Users\sly\Desktop\UwAmp310\www\itrack\handlers\add-documents.php:0
+[21-Sep-2018 09:39:15 Asia/Manila] PHP Fatal error:  require_once(): Failed opening required '../assignments.php' (include_path='.;C:\php\pear') in C:\Users\sly\Desktop\UwAmp310\www\itrack\handlers\add-documents.php on line 6
+[21-Sep-2018 09:39:15 Asia/Manila] PHP Stack trace:
+[21-Sep-2018 09:39:15 Asia/Manila] PHP   1. {main}() C:\Users\sly\Desktop\UwAmp310\www\itrack\handlers\add-documents.php:0
