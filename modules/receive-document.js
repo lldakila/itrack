@@ -51,6 +51,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			scope.communications = [];		
 
+			scope.dt_add_params = [];
+			
 			$http({
 				method: 'GET',
 				url: 'api/receive-document/communications'
@@ -117,6 +119,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			// scope.doc.attachments = [];
 			
 			scope.documentFiles = [];
+
+			scope.dt_add_params = [];
 			
 		};
 		
@@ -175,6 +179,23 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			};
 
 			uploadFiles.start(scope, addDocument);
+			
+		};
+		
+		self.dtParams = function(scope,dt) {
+			
+			
+			$http({
+				method: 'GET',
+				url: 'api/receive-document/dt_add_params/'+dt.id
+			}).then(function mySuccess(response) {
+				
+				scope.dt_add_params = angular.copy(response.data);
+					
+			}, function myError(response) {
+		
+		
+			});
 			
 		};
 		

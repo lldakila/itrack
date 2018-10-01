@@ -225,9 +225,14 @@
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>Document Type</label>
-													<select class="form-control" name="doc_type" ng-class="{'border-danger': formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid}" ng-model="doc.doc_type" ng-options="d.document_type for d in document_types track by d.id" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="doc_type" ng-class="{'border-danger': formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid}" ng-model="doc.doc_type" ng-options="d.document_type for d in document_types track by d.id" ng-change="app.dtParams(this,doc.doc_type)" ng-disabled="controls.btns.ok" required></select>
 													<span class="help-block danger" ng-show="formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid">Document Type is required</span>
 												</div>
+												<div class="form-group" ng-repeat="param in dt_add_params">
+													<label>{{param.description}}</label>
+													<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id"></select>
+													<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value">
+												</div>												
 											</div>
 										</div>
 										

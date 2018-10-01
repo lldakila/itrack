@@ -73,6 +73,19 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 
 });
 
+# additional parameters
+$app->get('/dt_add_params/{id}', function (Request $request, Response $response, array $args) {
+
+	$id = $args['id'];
+	
+	require_once '../../dt-additional-params.php';
+	
+	$dt_add_params = get_params(dt_add_params,$id);
+	
+    return $response->withJson($dt_add_params);
+
+});
+
 # add document
 $app->post('/add', function (Request $request, Response $response, array $args) {
 
