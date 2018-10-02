@@ -18,6 +18,10 @@ $container['con'] = function ($container) {
 	return $con;
 };
 
+$container['view'] = function ($container) {
+    return new \Slim\Views\PhpRenderer('views/');
+};
+
 # communications
 $app->get('/communications', function (Request $request, Response $response, array $args) {
 
@@ -146,6 +150,12 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	
 	return $response->withJson($barcode[0]);
 
+});
+
+$app->get('/hello/{name}', function ($request, $response, $args) {
+    return $this->view->render($response, 'test.html', [
+        'name' => $args['name']
+    ]);
 });
 
 $app->run();
