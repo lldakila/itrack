@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit48288f7c1d81d6e6572eacb03a166e8b
+class ComposerStaticInit706c88f32ff6b8261c92063883a9a4ca
 {
     public static $files = array (
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
@@ -13,18 +13,13 @@ class ComposerStaticInit48288f7c1d81d6e6572eacb03a166e8b
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
-            'Slim\\Middleware\\' => 16,
+            'Slim\\Views\\' => 11,
             'Slim\\' => 5,
         ),
         'P' => 
         array (
-            'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
-        ),
-        'M' => 
-        array (
-            'Monolog\\' => 8,
         ),
         'I' => 
         array (
@@ -32,23 +27,18 @@ class ComposerStaticInit48288f7c1d81d6e6572eacb03a166e8b
         ),
         'F' => 
         array (
-            'Firebase\\JWT\\' => 13,
             'FastRoute\\' => 10,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Slim\\Middleware\\' => 
+        'Slim\\Views\\' => 
         array (
-            0 => __DIR__ . '/..' . '/tuupola/slim-jwt-auth/src',
+            0 => __DIR__ . '/..' . '/slim/php-view/src',
         ),
         'Slim\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/slim/Slim',
-        ),
-        'Psr\\Log\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'Psr\\Http\\Message\\' => 
         array (
@@ -58,17 +48,9 @@ class ComposerStaticInit48288f7c1d81d6e6572eacb03a166e8b
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Monolog\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
-        ),
         'Interop\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
-        ),
-        'Firebase\\JWT\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'FastRoute\\' => 
         array (
@@ -89,9 +71,9 @@ class ComposerStaticInit48288f7c1d81d6e6572eacb03a166e8b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit48288f7c1d81d6e6572eacb03a166e8b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit48288f7c1d81d6e6572eacb03a166e8b::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit48288f7c1d81d6e6572eacb03a166e8b::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit706c88f32ff6b8261c92063883a9a4ca::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit706c88f32ff6b8261c92063883a9a4ca::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit706c88f32ff6b8261c92063883a9a4ca::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
