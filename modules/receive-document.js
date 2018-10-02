@@ -191,6 +191,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			}).then(function mySuccess(response) {
 				
 				scope.dt_add_params = angular.copy(response.data);
+				scope.doc.document_dt_add_params = scope.dt_add_params;
 					
 			}, function myError(response) {
 		
@@ -292,10 +293,15 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 		self.actionChange = function(scope,a) {
 
-			var actions = {'for_routing': 'for_approval', 'for_approval': 'for_routing'};
+			var actions = ['for_initial','for_signature','for_routing'];
 
-			if (scope.doc[a]) scope.doc[actions[a]] = false;
-			
+			angular.forEach(actions, function(item,i) {
+				
+				if (a != item) scope.doc[item] = false;
+				else scope.doc[item] = true;
+				
+			});
+
 		};
 		
 	};
