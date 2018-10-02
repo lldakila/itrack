@@ -124,6 +124,12 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 		};
 		
+		self.edit = function(scope){
+			
+			scope.controls.btns.ok = !scope.controls.btns.ok;
+			
+		};
+		
 		self.cancel = function(scope) {
 			
 			scope.controls.btns.ok = true;
