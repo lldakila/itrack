@@ -73,6 +73,19 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 
 });
 
+# additional parameters
+$app->get('/dt_add_params/{id}', function (Request $request, Response $response, array $args) {
+
+	$id = $args['id'];
+	
+	require_once '../../dt-additional-params.php';
+	
+	$dt_add_params = get_params(dt_add_params,$id);
+	
+    return $response->withJson($dt_add_params);
+
+});
+
 # add document
 $app->post('/add', function (Request $request, Response $response, array $args) {
 
@@ -91,6 +104,11 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$office = $data['origin']['shortname'];
 	#
 
+	# document_dt_add_params
+	$document_dt_add_params = $data['document_dt_add_params'];
+	unset($data['document_dt_add_params']);
+	#
+	
 	$data['user_id'] = $_SESSION['itrack_user_id'];
 	$data['origin'] = $data['origin']['id'];
 	$data['doc_type'] = $data['doc_type']['id'];
@@ -116,6 +134,15 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	uploadFiles($con,$uploads,$barcode[0]['barcode'],$id);	
 	
 	$barcode[0]['document_date'] = date("M j, Y h:i:s A",strtotime($barcode[0]['document_date']));
+	
+	# document_dt_add_params
+	$con->table = "document_dt_add_params";
+	$document_dt_add_params_data = array(
+		"document_id"=>$id,
+		"params"=>json_encode($document_dt_add_params),
+	);
+	$con->insertData($document_dt_add_params_data);
+	#
 	
 	return $response->withJson($barcode[0]);
 

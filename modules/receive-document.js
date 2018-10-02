@@ -51,6 +51,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			scope.communications = [];		
 
+			scope.dt_add_params = [];
+			
 			$http({
 				method: 'GET',
 				url: 'api/receive-document/communications'
@@ -117,6 +119,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			// scope.doc.attachments = [];
 			
 			scope.documentFiles = [];
+
+			scope.dt_add_params = [];
 			
 		};
 		
@@ -175,6 +179,24 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			};
 
 			uploadFiles.start(scope, addDocument);
+			
+		};
+		
+		self.dtParams = function(scope,dt) {
+			
+			
+			$http({
+				method: 'GET',
+				url: 'api/receive-document/dt_add_params/'+dt.id
+			}).then(function mySuccess(response) {
+				
+				scope.dt_add_params = angular.copy(response.data);
+				scope.doc.document_dt_add_params = scope.dt_add_params;
+					
+			}, function myError(response) {
+		
+		
+			});
 			
 		};
 		
@@ -271,10 +293,15 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 		self.actionChange = function(scope,a) {
 
-			var actions = {'for_routing': 'for_approval', 'for_approval': 'for_routing'};
+			var actions = ['for_initial','for_signature','for_routing'];
 
-			if (scope.doc[a]) scope.doc[actions[a]] = false;
-			
+			angular.forEach(actions, function(item,i) {
+				
+				if (a != item) scope.doc[item] = false;
+				else scope.doc[item] = true;
+				
+			});
+
 		};
 		
 	};

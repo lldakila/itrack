@@ -225,9 +225,14 @@
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>Document Type</label>
-													<select class="form-control" name="doc_type" ng-class="{'border-danger': formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid}" ng-model="doc.doc_type" ng-options="d.document_type for d in document_types track by d.id" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="doc_type" ng-class="{'border-danger': formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid}" ng-model="doc.doc_type" ng-options="d.document_type for d in document_types track by d.id" ng-change="app.dtParams(this,doc.doc_type)" ng-disabled="controls.btns.ok" required></select>
 													<span class="help-block danger" ng-show="formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid">Document Type is required</span>
 												</div>
+												<div class="form-group" ng-repeat="param in dt_add_params">
+													<label>{{param.description}}</label>
+													<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id"></select>
+													<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value">
+												</div>												
 											</div>
 										</div>
 										
@@ -265,7 +270,7 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-lg-6 ">
+											<div class="col-lg-6">
 												<div class="form-group">
 													<label>Remarks</label>
 													<textarea rows="10" class="form-control" name="remarks" ng-model="doc.remarks" ng-disabled="controls.btns.ok"></textarea>
@@ -275,37 +280,35 @@
 												<div class="form-group">
 													<label>Action</label>
 													<hr>
-													<div class="col-lg-6">
-														<label>For Approval</label>
+													<div class="col-lg-4">
+														<label>For Initial</label>
 														<div class="checkbox" style="margin-left: 10px;">
 															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_approval" ng-model="doc.for_approval" ng-checked="doc.for_approval" ng-change="app.actionChange(this,'for_approval')" ng-disabled="controls.btns.ok" ng-required="!doc.for_approval && !doc.for_routing">
-															  <span class="slider round"></span>
-															</label>
-														</div>
-														<br>
-														<label>For Routing</label>
-														<div class="checkbox" style="margin-left: 10px;">
-															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.for_routing" ng-checked="doc.for_routing" ng-change="app.actionChange(this,'for_routing')" ng-disabled="controls.btns.ok" ng-required="!doc.for_approval && !doc.for_routing">
+															  <input type="checkbox" hidden="hidden" name="for_initial" ng-model="doc.for_initial" ng-checked="doc.for_initial" ng-change="app.actionChange(this,'for_initial')" ng-disabled="controls.btns.ok">
 															  <span class="slider round"></span>
 															</label>
 														</div>
 													</div>
-													
-													<div class="col-lg-6">
+													<div class="col-lg-4">														
 														<label>For Signature</label>
 														<div class="checkbox" style="margin-left: 10px;">
 															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_signature">
+															  <input type="checkbox" hidden="hidden" name="for_signature" ng-model="doc.for_signature" ng-checked="doc.for_signature" ng-change="app.actionChange(this,'for_signature')" ng-disabled="controls.btns.ok">
 															  <span class="slider round"></span>
 															</label>
 														</div>
-														<div class="alert alert-danger" style="margin-top: 15px;" ng-show="(formHolder.doc.for_approval.$touched && formHolder.doc.for_approval.$invalid) && (formHolder.doc.for_routing.$touched && formHolder.doc.for_routing.$invalid)">Action is required</div>
+													</div>
+													<div class="col-lg-4">														
+														<label>For Routing</label>
+														<div class="checkbox" style="margin-left: 10px;">
+															<label class="switch">
+															  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.for_routing" ng-checked="doc.for_routing" ng-change="app.actionChange(this,'for_routing')" ng-disabled="controls.btns.ok">
+															  <span class="slider round"></span>
+															</label>
+														</div>														
 													</div>
 												</div>
 											</div>
-
 										</div>
 										<div class="row">
 											<div class="col-lg-12">
