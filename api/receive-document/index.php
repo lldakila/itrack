@@ -152,12 +152,6 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 
 });
 
-$app->get('/hello/{name}', function ($request, $response, $args) {
-    return $this->view->render($response, 'test.html', [
-        'name' => $args['name']
-    ]);
-});
-
 $app->run();
 
 ?>
