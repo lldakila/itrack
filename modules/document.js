@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','bootstrap-growl']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,growl) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url) {
 	
 	function app() {
 
@@ -12,6 +12,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		};
 
 		self.data = function(scope) {
+			
+			url.init(scope);
 			
 			jspdf.init();
 
@@ -55,7 +57,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: 'api/receive-document/communications'
+				url: scope.url+'api/receive-document/communications'
 			}).then(function mySuccess(response) {
 				
 				scope.communications = angular.copy(response.data);
@@ -67,7 +69,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			$http({
 				method: 'GET',
-				url: 'api/receive-document/transactions'
+				url: scope.url+'api/receive-document/transactions'
 			}).then(function mySuccess(response) {
 				
 				scope.transactions = angular.copy(response.data);
@@ -79,7 +81,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: 'api/receive-document/offices'
+				url: scope.url+'api/receive-document/offices'
 			}).then(function mySuccess(response) {
 				
 				scope.offices = angular.copy(response.data);
@@ -91,7 +93,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: 'api/receive-document/doctype'
+				url: scope.url+'api/receive-document/doctype'
 			}).then(function mySuccess(response) {
 				
 				scope.document_types = angular.copy(response.data);
@@ -140,41 +142,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 		self.save = function(scope) {
 			
-			if (validate.form(scope,'doc')) return;
-				
-			var actions = 'false';
+			if (validate.form(scope,'doc')) return;			
 			
-			var controls = scope.formHolder.doc.$$controls;
-			
-			angular.forEach(controls,function(elem,i) {
-
-				if (elem.$$attr.name == 'for_initial') {
-					
-					actions+=(scope.doc.for_initial==undefined)?'||false':(scope.doc.for_initial)?'||true':'||false';
-					
-				};
-
-				if (elem.$$attr.name == 'for_signature') {
-					
-					actions+=(scope.doc.for_signature==undefined)?'||false':(scope.doc.for_signature)?'||true':'||false';
-					
-				};
-
-				if (elem.$$attr.name == 'for_routing') {
-					
-					actions+=(scope.doc.for_routing==undefined)?'||false':(scope.doc.for_routing)?'||true':'||false';
-					
-				};
-									
-			});
-
-			if (!eval(actions)) {
-				
-				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Pleas select an action');
-				return;
-				
-			};
-
 			var addDocument = function() {	
 
 				/* if (scope.doc.files.length == 0) {
@@ -187,7 +156,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				$http({
 				  method: 'POST',
-				  url: 'api/receive-document/add',
+				  url: scope.url+'api/receive-document/add',
 				  data: scope.doc
 				}).then(function mySuccess(response) {
 
@@ -220,7 +189,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: 'api/receive-document/dt_add_params/'+dt.id
+				url: scope.url+'api/receive-document/dt_add_params/'+dt.id
 			}).then(function mySuccess(response) {
 				
 				scope.dt_add_params = angular.copy(response.data);

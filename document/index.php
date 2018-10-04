@@ -24,12 +24,16 @@ $container['view'] = function ($container) {
 
 $app->get('/view/{id}', function ($request, $response, $args) {
 	
+	require_once '../path_url.php';
+	
 	# query
 	
 	#
 	
     return $this->view->render($response, 'document.html', [
-        'id' => $args['id']
+		'path'=>$base_path,	
+		'url'=>$base_url,
+        'id'=>$args['id']
     ]);
 	
 

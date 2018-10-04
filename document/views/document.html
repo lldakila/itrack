@@ -1,4 +1,4 @@
-<?php require_once 'authentication.php'; ?>
+<?php require_once $path.'authentication.php'; ?>
 <!DOCTYPE html>
 <html lang="en" data-textdirection="ltr" class="loading">
   <head>
@@ -14,26 +14,26 @@
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <!-- BEGIN VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/bootstrap.css">
     <!-- font icons-->
-    <link rel="stylesheet" type="text/css" href="app-assets/fonts/icomoon.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/fonts/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/vendors/css/extensions/pace.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/fonts/icomoon.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/fonts/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/vendors/css/extensions/pace.css">
     <!-- END VENDOR CSS-->
     <!-- BEGIN ROBUST CSS-->
-    <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/app.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/switch.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/app.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/switch.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-overlay-menu.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/core/menu/menu-types/vertical-overlay-menu.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/core/colors/palette-gradient.css">
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/files.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>assets/css/files.css">
     <!-- END Custom CSS-->
   </head>
   <body ng-app="document" ng-controller="documentCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
@@ -44,14 +44,14 @@
         <div class="navbar-header">
           <ul class="nav navbar-nav">
             <li class="nav-item mobile-menu hidden-md-up float-xs-left"><a class="nav-link nav-menu-main menu-toggle hidden-xs"><i class="icon-menu5 font-large-1"></i></a></li>
-            <li class="nav-item"><a href="index.html" class="navbar-brand nav-link"><img alt="branding logo" src="images/logo/itrack-logo-large.png" data-expand="images/logo/itrack-logo-large.png" data-collapse="images/logo/itrack-logo-small.png" class="brand-logo"></a></li>
+            <li class="nav-item"><a href="index.html" class="navbar-brand nav-link"><img alt="branding logo" src="<?=$url?>images/logo/itrack-logo-large.png" data-expand="<?=$url?>images/logo/itrack-logo-large.png" data-collapse="<?=$url?>images/logo/itrack-logo-small.png" class="brand-logo"></a></li>
             <li class="nav-item hidden-md-up float-xs-right"><a data-toggle="collapse" data-target="#navbar-mobile" class="nav-link open-navbar-container"><i class="icon-ellipsis pe-2x icon-icon-rotate-right-right"></i></a></li>
           </ul>
         </div>
         <div class="navbar-container content container-fluid">
           <div id="navbar-mobile" class="collapse navbar-toggleable-sm">
             <ul class="nav navbar-nav">
-              <li class="nav-item hidden-sm-down"><a class="nav-link nav-menu-main menu-toggle hidden-xs"><i class="icon-menu5">         </i></a></li>
+              <li class="nav-item hidden-sm-down"><a class="nav-link nav-menu-main menu-toggle hidden-xs"><i class="icon-menu5"></i></a></li>
               <li class="nav-item hidden-sm-down"><a href="#" class="nav-link nav-link-expand"><i class="ficon icon-expand2"></i></a></li>
             </ul>
             <ul class="nav navbar-nav float-xs-right">
@@ -102,7 +102,7 @@
                   <li class="dropdown-menu-footer"><a href="javascript:void(0)" class="dropdown-item text-muted text-xs-center">Read all notifications</a></li>
                 </ul>
               </li>
-              <li class="dropdown dropdown-user nav-item"><a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link dropdown-user-link"><span class="avatar avatar-online"><img src="{{profile.picture}}" alt="avatar"><i></i></span><span class="user-name">{{profile.user}}</span></a>
+              <li class="dropdown dropdown-user nav-item"><a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link dropdown-user-link"><span class="avatar avatar-online"><img src="<?=$url?>{{profile.picture}}" alt="avatar"><i></i></span><span class="user-name">{{profile.user}}</span></a>
                 <div class="dropdown-menu dropdown-menu-right" drop-down></div>
               </li>
             </ul>
@@ -124,29 +124,29 @@
       <!-- main menu content-->
       <div class="main-menu-content">
         <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-			<li class="nav-item"><a href="index.html"><i class="icon-dashboard"></i><span class="menu-title">Dashboard</span></a></li>
+			<li class="nav-item"><a href="<?=$url?>index.html"><i class="icon-dashboard"></i><span class="menu-title">Dashboard</span></a></li>
 			<li class=" nav-item"><a href="#"><i class="icon-copy2"></i><span class="menu-title">Documents</span></a>
 				<ul class="menu-content">
-				  <li><a href="receive-document.html" class="menu-item"><i class="icon-plus-circle"></i> Receive Document</a></li>
+				  <li><a href="<?=$url?>receive-document.html" class="menu-item"><i class="icon-plus-circle"></i> Receive Document</a></li>
 				</ul>
 			</li>
 			<li class=" nav-item"><a href="#"><i class="icon-group"></i><span class="menu-title">Accounts</span></a>
 				<ul class="menu-content">
-				  <li><a href="account-add.html" class="menu-item"><i class="icon-plus-circle"></i>Add Account</a></li>
-				  <li><a href="account-list.html" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
+				  <li><a href="<?=$url?>account-add.html" class="menu-item"><i class="icon-plus-circle"></i>Add Account</a></li>
+				  <li><a href="<?=$url?>account-list.html" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
 				</ul>
 			</li>
 			<li class="nav-item"><a href="#"><i class="icon-sitemap"></i><span class="menu-title">Groups</span></a>
 				<ul class="menu-content">
-				  <li><a href="groups-add.html" class="menu-item"><i class="icon-plus-circle"></i>Add Group</a></li>
-				  <li><a href="groups-list.html" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
+				  <li><a href="<?=$url?>groups-add.html" class="menu-item"><i class="icon-plus-circle"></i>Add Group</a></li>
+				  <li><a href="<?=$url?>groups-list.html" class="menu-item"><i class="icon-list-ul"></i>List</a></li>
 				</ul>
 			</li>
 			<li class="nav-item"><a href="#"><i class="icon-gear"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Maintenance</span></a>
 				<ul class="menu-content">
-				  <li><a href="offices.html" class="menu-item"><i class="icon-bank"></i>Offices</a></li>
-				  <li><a href="document-types.html" class="menu-item"><i class="icon-files-empty"></i>Document Types</a></li>
-				  <li><a href="transactions.html" class="menu-item"><i class="icon-arrow-swap"></i>Transactions</a></li>
+				  <li><a href="<?=$url?>offices.html" class="menu-item"><i class="icon-bank"></i>Offices</a></li>
+				  <li><a href="<?=$url?>document-types.html" class="menu-item"><i class="icon-files-empty"></i>Document Types</a></li>
+				  <li><a href="<?=$url?>transactions.html" class="menu-item"><i class="icon-arrow-swap"></i>Transactions</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -172,7 +172,7 @@
 				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-lg-6">
 						<div class="breadcrumb-wrapper col-xs-12">
 						  <ol class="breadcrumb">
-							<li class="breadcrumb-item"><a href="index.html" class="info">iTrack</a>
+							<li class="breadcrumb-item"><a href="<?=$url?>index.html" class="info">iTrack</a>
 							</li>
 							<li class="breadcrumb-item">Documents
 							</li>
@@ -364,56 +364,57 @@
     </footer>
 
     <!-- BEGIN VENDOR JS-->
-    <script src="app-assets/js/core/libraries/jquery.min.js" type="text/javascript"></script>
-    <script src="app-assets/vendors/js/ui/tether.min.js" type="text/javascript"></script>
-    <script src="app-assets/js/core/libraries/bootstrap.min.js" type="text/javascript"></script>
-    <script src="app-assets/vendors/js/ui/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
-    <script src="app-assets/vendors/js/ui/unison.min.js" type="text/javascript"></script>
-    <script src="app-assets/vendors/js/ui/blockUI.min.js" type="text/javascript"></script>
-    <script src="app-assets/vendors/js/ui/jquery.matchHeight-min.js" type="text/javascript"></script>
-    <script src="app-assets/vendors/js/ui/screenfull.min.js" type="text/javascript"></script>
-    <script src="app-assets/vendors/js/extensions/pace.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/js/core/libraries/jquery.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/vendors/js/ui/tether.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/js/core/libraries/bootstrap.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/vendors/js/ui/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/vendors/js/ui/unison.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/vendors/js/ui/blockUI.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/vendors/js/ui/jquery.matchHeight-min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/vendors/js/ui/screenfull.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/vendors/js/extensions/pace.min.js" type="text/javascript"></script>
     <!-- BEGIN VENDOR JS-->
     <!-- BEGIN PAGE VENDOR JS-->
-    <script src="app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN ROBUST JS-->
-    <script src="app-assets/js/core/app-menu.js" type="text/javascript"></script>
-    <script src="app-assets/js/core/app.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/js/core/app-menu.js" type="text/javascript"></script>
+    <script src="<?=$url?>app-assets/js/core/app.js" type="text/javascript"></script>
     <!-- END ROBUST JS-->
 	
 	<!-- jspdf and barcode -->
-	<script src="app-assets/js/jspdf/jspdf.min.js"></script>
-	<script src="app-assets/js/jspdf/jspdf.plugin.autotable.js"></script>
-	<script src="app-assets/js/jsbarcode/JsBarcode.all.min.js"></script>
+	<script src="<?=$url?>app-assets/js/jspdf/jspdf.min.js"></script>
+	<script src="<?=$url?>app-assets/js/jspdf/jspdf.plugin.autotable.js"></script>
+	<script src="<?=$url?>app-assets/js/jsbarcode/JsBarcode.all.min.js"></script>
 	
-	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css">	
-	<script src="angular/modules/bootbox/bootbox.min.js"></script>
-	<script src="angular/modules/growl/jquery.bootstrap-growl.min.js"></script>
-	<script src="angular/modules/blockui/jquery.blockUI.js"></script>
-	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css">
+	<link rel="stylesheet" href="<?=$url?>angular/modules/bootbox/bs4-fix.css">	
+	<script src="<?=$url?>angular/modules/bootbox/bootbox.min.js"></script>
+	<script src="<?=$url?>angular/modules/growl/jquery.bootstrap-growl.min.js"></script>
+	<script src="<?=$url?>angular/modules/blockui/jquery.blockUI.js"></script>
+	<link rel="stylesheet" href="<?=$url?>angular/modules/bootbox/bs4-fix.css">
 	
 	<!-- dependencies -->
-	<script src="angular/angular.min.js"></script>
-	<script src="angular/angular-route.min.js"></script>
-	<script src="angular/angular-sanitize.min.js"></script>
-	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
+	<script src="<?=$url?>angular/angular.min.js"></script>
+	<script src="<?=$url?>angular/angular-route.min.js"></script>
+	<script src="<?=$url?>angular/angular-sanitize.min.js"></script>
+	<script src="<?=$url?>angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
 	
-	<script src="angular/modules/account/account.js"></script>
-	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
-	<script src="angular/modules/growl/growl.js"></script>
-	<script src="angular/modules/blockui/blockui.js"></script>
-	<script src="angular/modules/validation/validate.js"></script>
-	<script src="angular/modules/post/window-open-post.js"></script>
+	<script src="<?=$url?>angular/modules/account/account-view.js"></script>
+	<script src="<?=$url?>angular/modules/bootbox/bootstrap-modal.js"></script>
+	<script src="<?=$url?>angular/modules/growl/growl.js"></script>
+	<script src="<?=$url?>angular/modules/blockui/blockui.js"></script>
+	<script src="<?=$url?>angular/modules/validation/validate.js"></script>
+	<script src="<?=$url?>angular/modules/post/window-open-post.js"></script>
 	
 	<!-- modules -->
-	<script src="modules/notifications.js"></script>
-	<script src="modules/module-access.js"></script>
-	<script src="modules/jspdf.js"></script>
-	<script src="modules/upload-files.js"></script>
-	<script src="modules/receive-document.js"></script>
+	<script src="<?=$url?>modules/url.js"></script>
+	<script src="<?=$url?>modules/notifications.js"></script>
+	<script src="<?=$url?>modules/module-access.js"></script>
+	<script src="<?=$url?>modules/jspdf.js"></script>
+	<script src="<?=$url?>modules/upload-files.js"></script>
+	<script src="<?=$url?>modules/document.js"></script>
 	
 	<!-- controller -->
-	<script src="controllers/receive-document.js"></script>
+	<script src="<?=$url?>controllers/document.js"></script>
   </body>
 </html>
