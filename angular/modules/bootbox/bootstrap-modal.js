@@ -5,6 +5,16 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 		var dialog = bootbox.confirm({
 			title: title,
 			message: content,
+			buttons: {
+				cancel: {
+					label: 'Close',
+					className: 'btn-danger move-right'
+				},
+				confirm: {
+					label: 'Ok',
+					className: 'btn-success'
+				}
+			},
 			callback: function (result) {
 				if (result) {
 					onOk(scope);

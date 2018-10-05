@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- END Custom CSS-->
   </head>
-  <body ng-app="transactions" ng-controller="transactionsCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
+  <body ng-app="options" ng-controller="optionsCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
 
     <!-- navbar-fixed-top-->
     <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
@@ -145,8 +145,8 @@
 				<ul class="menu-content">
 				  <li><a href="offices.html" class="menu-item">Offices</a></li>
 				  <li><a href="document-types.html" class="menu-item">Document Types</a></li>
-				  <li class="active"><a href="transactions.html" class="menu-item">Transactions</a></li>
-				  <li><a href="options.html" class="menu-item">Options</a></li>
+				  <li><a href="transactions.html" class="menu-item">Transactions</a></li>
+				  <li class="active"><a href="options.html" class="menu-item">Options</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -166,7 +166,7 @@
         <div class="content-body">
 			<div class="row">
 				<div class="content-header-left col-md-6 col-xs-12 mb-1">
-					<h2 class="content-header-title">Transactions</h2>
+					<h2 class="content-header-title">Options</h2>
 				</div>
 				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-xs-12">
 				<div class="breadcrumb-wrapper col-xs-12">
@@ -175,7 +175,7 @@
 					</li>
 					<li class="breadcrumb-item">Maintenance
 					</li>
-					<li class="breadcrumb-item active">Transactions
+					<li class="breadcrumb-item active">Options
 					</li>
 				  </ol>
 				</div>
@@ -212,26 +212,24 @@
 								<table class="table table-bordered ">
 									<thead>
 										<tr>
-											<th>Transaction</th>
-											<th>Days</th>
-											<th>Shortname</th>
+											<th>No</th>
+											<th>Options</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="tran in filterData = (trans | filter:search) | pagination: currentPage:pageSize">
-											<td>{{tran.transaction}}</td>
-											<td>{{tran.days}}</td>
-											<td>{{tran.shortname}}</td>
+										<tr ng-repeat="option in filterData = (options | filter:search) | pagination: currentPage:pageSize">
+											<td>{{option.id}}</td>
+											<td>{{option.choice}}</td>
 											<td>
-												<button class="btn btn-info" ng-click="app.add(this,tran)"><i class="icon-edit2"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,tran)"><i class="icon-trash-o"></i></button>
+												<button class="btn btn-info" ng-click="app.add(this,option)"><i class="icon-edit2"></i></button>
+												<button class="btn btn-secondary" ng-click="app.delete(this,option)"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>
 									</tbody>
 									<tfoot>
 										<tr>
-											<td colspan="4" style="text-align: right;">
+											<td colspan="3" style="text-align: right;">
 												<div class="float-right"><ul uib-pagination direction-links="false" boundary-links="true" total-items="filterData.length" ng-model="currentPage" max-size="maxSize"></ul></div>
 											</td>
 										</tr>											
@@ -284,7 +282,6 @@
 	<script src="angular/angular-sanitize.min.js"></script>
 	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
 	
-		
 	<script src="angular/modules/account/account.js"></script>
 	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
 	<script src="angular/modules/growl/growl.js"></script>
@@ -295,9 +292,9 @@
 	<!-- modules -->
 	<script src="modules/notifications.js"></script>
 	<script src="modules/module-access.js"></script>
-	<script src="modules/transcations.js"></script>
+	<script src="modules/options.js"></script>
 
 	<!-- controller -->
-	<script src="controllers/transcations.js"></script>
+	<script src="controllers/options.js"></script>
   </body>
 </html>
