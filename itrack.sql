@@ -3,18 +3,12 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 02, 2018 at 01:01 PM
+-- Generation Time: Oct 04, 2018 at 04:52 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `dts`
@@ -226,13 +220,6 @@ CREATE TABLE `document_types_staffs` (
   `document_type` int(11) DEFAULT NULL,
   `staff_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `document_types_staffs`
---
-
-INSERT INTO `document_types_staffs` (`id`, `document_type`, `staff_id`) VALUES
-(1, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -600,7 +587,7 @@ ALTER TABLE `documents`
 -- AUTO_INCREMENT for table `document_dt_add_params`
 --
 ALTER TABLE `document_dt_add_params`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `document_types`
 --
@@ -610,7 +597,7 @@ ALTER TABLE `document_types`
 -- AUTO_INCREMENT for table `document_types_staffs`
 --
 ALTER TABLE `document_types_staffs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `files`
 --
@@ -714,7 +701,3 @@ ALTER TABLE `tracks`
 --
 ALTER TABLE `tracks_options`
   ADD CONSTRAINT `tracks_options_ibfk_1` FOREIGN KEY (`track_id`) REFERENCES `tracks` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

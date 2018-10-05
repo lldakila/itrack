@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','bootstrap-growl']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,growl) {
 	
 	function app() {
 
@@ -124,12 +124,6 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 		};
 		
-		self.edit = function(scope){
-			
-			scope.controls.btns.ok = !scope.controls.btns.ok;
-			
-		};
-		
 		self.cancel = function(scope) {
 			
 			scope.controls.btns.ok = true;
@@ -146,8 +140,41 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 		self.save = function(scope) {
 			
-			if (validate.form(scope,'doc')) return;			
+			if (validate.form(scope,'doc')) return;
+				
+			var actions = 'false';
 			
+			var controls = scope.formHolder.doc.$$controls;
+			
+			angular.forEach(controls,function(elem,i) {
+
+				if (elem.$$attr.name == 'for_initial') {
+					
+					actions+=(scope.doc.for_initial==undefined)?'||false':(scope.doc.for_initial)?'||true':'||false';
+					
+				};
+
+				if (elem.$$attr.name == 'for_signature') {
+					
+					actions+=(scope.doc.for_signature==undefined)?'||false':(scope.doc.for_signature)?'||true':'||false';
+					
+				};
+
+				if (elem.$$attr.name == 'for_routing') {
+					
+					actions+=(scope.doc.for_routing==undefined)?'||false':(scope.doc.for_routing)?'||true':'||false';
+					
+				};
+									
+			});
+
+			if (!eval(actions)) {
+				
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Pleas select an action');
+				return;
+				
+			};
+
 			var addDocument = function() {	
 
 				/* if (scope.doc.files.length == 0) {

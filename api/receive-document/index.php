@@ -18,6 +18,10 @@ $container['con'] = function ($container) {
 	return $con;
 };
 
+$container['view'] = function ($container) {
+    return new \Slim\Views\PhpRenderer('views/');
+};
+
 # communications
 $app->get('/communications', function (Request $request, Response $response, array $args) {
 

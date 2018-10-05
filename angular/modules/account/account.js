@@ -23,7 +23,7 @@ angular.module('account-module', ['bootstrap-modal']).directive('dropDown', func
 				
 				$window.location.href = 'login.html';
 				
-			});			
+			});	
 			
 		}
 	};
