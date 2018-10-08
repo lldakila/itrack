@@ -213,7 +213,8 @@
 									<thead>
 										<tr>
 											<th>No</th>
-											<th>Options</th>
+											<th>Choice</th>
+											<th>Description</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
@@ -221,6 +222,7 @@
 										<tr ng-repeat="option in filterData = (options | filter:search) | pagination: currentPage:pageSize">
 											<td>{{option.id}}</td>
 											<td>{{option.choice}}</td>
+											<td>{{option.description}}</td>
 											<td>
 												<button class="btn btn-info" ng-click="app.add(this,option)"><i class="icon-edit2"></i></button>
 												<button class="btn btn-secondary" ng-click="app.delete(this,option)"><i class="icon-trash-o"></i></button>

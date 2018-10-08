@@ -23,7 +23,7 @@ $app->get('/list', function (Request $request, Response $response, array $args) 
 
 	$con = $this->con;
 	
-	$options = $con->getData("SELECT id, choice FROM options");	
+	$options = $con->getData("SELECT * FROM options");	
 	
     return $response->withJson($options);
 
