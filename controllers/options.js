@@ -1,6 +1,6 @@
-var app = angular.module('transactions',['account-module','app-module']);
+var app = angular.module('options',['account-module','app-module']);
 
-app.controller('transactionsCtrl',function($scope,app) {
+app.controller('optionsCtrl',function($scope,app) {
 	
 	$scope.app = app;
 	
