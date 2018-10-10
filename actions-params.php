@@ -1,9 +1,9 @@
 <?php
 
-define('dt_add_params', array(
+define('actions_params', array(
 	array(
 		"id"=>1,
-		"document_type"=>2,
+		"action_id"=>2,
 		"description"=>"Travel Orders",
 		"params"=>array(
 			array("id"=>1,"model"=>"destination","description"=>"Destination","type"=>"select","value"=>array("id"=>0,"description"=>"-"),"options"=>array(
@@ -17,13 +17,13 @@ define('dt_add_params', array(
 	),
 ));
 
-function get_params($dt_add_params,$id) {
+function get_params($actions_params,$id) {
 	
 	$params = [];
 
-	foreach ($dt_add_params as $i => $dt) {
+	foreach ($actions_params as $i => $dt) {
 
-		if ($id == $dt['document_type']) {
+		if ($id == $dt['action_id']) {
 			
 			$params = $dt['params'];
 			break;
