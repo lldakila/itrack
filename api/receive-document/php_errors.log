@@ -1,0 +1,21 @@
+[11-Oct-2018 14:46:05 Asia/Manila] Slim Application Error:
+Type: PDOException
+Code: 42S22
+Message: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'for_initial' in 'field list'
+File: C:\Users\sly\Desktop\UwAmp310\www\itrack\db.php
+Line: 235
+Trace: #0 C:\Users\sly\Desktop\UwAmp310\www\itrack\db.php(235): PDO->prepare('INSERT INTO doc...')
+#1 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\receive-document\index.php(132): pdo_db->insertData(Array)
+#2 [internal function]: Closure->{closure}(Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#3 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\vendor\slim\slim\Slim\Handlers\Strategies\RequestResponse.php(41): call_user_func(Object(Closure), Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#4 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\vendor\slim\slim\Slim\Route.php(356): Slim\Handlers\Strategies\RequestResponse->__invoke(Object(Closure), Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#5 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\vendor\slim\slim\Slim\MiddlewareAwareTrait.php(117): Slim\Route->__invoke(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#6 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\vendor\slim\slim\Slim\Route.php(334): Slim\Route->callMiddlewareStack(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#7 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\vendor\slim\slim\Slim\App.php(515): Slim\Route->run(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#8 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\vendor\slim\slim\Slim\MiddlewareAwareTrait.php(117): Slim\App->__invoke(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#9 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\vendor\slim\slim\Slim\App.php(406): Slim\App->callMiddlewareStack(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#10 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\vendor\slim\slim\Slim\App.php(314): Slim\App->process(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#11 C:\Users\sly\Desktop\UwAmp310\www\itrack\api\receive-document\index.php(155): Slim\App->run()
+#12 {main}
+View in rendered output by enabling the "displayErrorDetails" setting.
+
