@@ -3,27 +3,33 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 04, 2018 at 04:52 PM
+-- Generation Time: Oct 12, 2018 at 03:08 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
--- Database: `dts`
+-- Database: `itrack`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attachments`
+-- Table structure for table `actions_params`
 --
 
-CREATE TABLE `attachments` (
+CREATE TABLE `actions_params` (
   `id` int(11) NOT NULL,
   `document_id` int(11) NOT NULL,
-  `file_name` varchar(200) NOT NULL
+  `params` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -174,6 +180,14 @@ CREATE TABLE `documents` (
   `remarks` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `documents`
+--
+
+INSERT INTO `documents` (`id`, `user_id`, `doc_name`, `barcode`, `origin`, `other_origin`, `document_date`, `document_transaction_type`, `doc_type`, `communication`, `doc_action`, `remarks`) VALUES
+(1, 1, 'qwerty', 'OPG-10-2018-00001', 3, NULL, '2018-10-11 14:49:28', 1, 1, 1, NULL, NULL),
+(2, 1, 'sdfga', 'OPG-10-2018-00002', 3, NULL, '2018-10-11 15:49:28', 1, 1, 1, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -185,6 +199,13 @@ CREATE TABLE `document_dt_add_params` (
   `document_id` int(11) NOT NULL,
   `params` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `document_dt_add_params`
+--
+
+INSERT INTO `document_dt_add_params` (`id`, `document_id`, `params`) VALUES
+(1, 1, '[]');
 
 -- --------------------------------------------------------
 
@@ -304,10 +325,10 @@ INSERT INTO `offices` (`id`, `office`, `shortname`, `dept_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `options`
+-- Table structure for table `referral_options`
 --
 
-CREATE TABLE `options` (
+CREATE TABLE `referral_options` (
   `id` int(11) NOT NULL,
   `pre_phrase` varchar(100) DEFAULT NULL,
   `choice` varchar(250) DEFAULT NULL,
@@ -315,10 +336,10 @@ CREATE TABLE `options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `options`
+-- Dumping data for table `referral_options`
 --
 
-INSERT INTO `options` (`id`, `pre_phrase`, `choice`, `description`) VALUES
+INSERT INTO `referral_options` (`id`, `pre_phrase`, `choice`, `description`) VALUES
 (1, 'Flagged as', 'FOR COMMENT/RECOMMENDATION', 'flagged as For Comment/Recommendation'),
 (2, 'Flagged as', 'FOR DISSEMINATION', 'flagged as For Dissemination'),
 (3, 'Flagged as', 'RETURN DOCUMENTS TO ME', 'flagged as Return Documents to me'),
@@ -345,16 +366,10 @@ INSERT INTO `options` (`id`, `pre_phrase`, `choice`, `description`) VALUES
 CREATE TABLE `tracks` (
   `id` int(255) NOT NULL,
   `document_id` int(255) DEFAULT NULL,
-  `document_status` varchar(100) DEFAULT NULL,
-  `document_status_user` int(11) DEFAULT NULL,
-  `document_tracks_status` varchar(100) DEFAULT NULL,
-  `track_option` int(11) DEFAULT NULL,
-  `track_office` int(11) DEFAULT NULL,
-  `track_date` datetime DEFAULT NULL,
-  `route_office` int(11) DEFAULT NULL,
-  `route_user` int(11) DEFAULT NULL,
-  `preceding_track` int(11) DEFAULT NULL,
-  `remarks` varchar(1000) DEFAULT NULL,
+  `office_id` int(11) DEFAULT NULL,
+  `track_action` int(11) DEFAULT NULL,
+  `track_action_status` varchar(50) DEFAULT NULL,
+  `track_action_user` int(11) DEFAULT NULL,
   `system_log` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -433,11 +448,11 @@ INSERT INTO `users` (`id`, `fname`, `mname`, `lname`, `position`, `uname`, `pw`,
 --
 
 --
--- Indexes for table `attachments`
+-- Indexes for table `actions_params`
 --
-ALTER TABLE `attachments`
+ALTER TABLE `actions_params`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `document_id` (`document_id`);
+  ADD KEY `option_id` (`document_id`);
 
 --
 -- Indexes for table `communications`
@@ -520,9 +535,9 @@ ALTER TABLE `offices`
   ADD KEY `dept_id` (`dept_id`);
 
 --
--- Indexes for table `options`
+-- Indexes for table `referral_options`
 --
-ALTER TABLE `options`
+ALTER TABLE `referral_options`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -531,11 +546,7 @@ ALTER TABLE `options`
 ALTER TABLE `tracks`
   ADD PRIMARY KEY (`id`),
   ADD KEY `document_id` (`document_id`),
-  ADD KEY `destination` (`track_office`),
-  ADD KEY `route_office` (`route_office`),
-  ADD KEY `track_option` (`track_option`),
-  ADD KEY `route_user` (`route_user`),
-  ADD KEY `document_status_user` (`document_status_user`);
+  ADD KEY `office_id` (`office_id`);
 
 --
 -- Indexes for table `tracks_options`
@@ -564,9 +575,9 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `attachments`
+-- AUTO_INCREMENT for table `actions_params`
 --
-ALTER TABLE `attachments`
+ALTER TABLE `actions_params`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `departments`
@@ -582,7 +593,7 @@ ALTER TABLE `divisions`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `document_dt_add_params`
 --
@@ -619,10 +630,10 @@ ALTER TABLE `notifications`
 ALTER TABLE `offices`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT for table `options`
+-- AUTO_INCREMENT for table `referral_options`
 --
-ALTER TABLE `options`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+ALTER TABLE `referral_options`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `tracks`
 --
@@ -648,10 +659,10 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `attachments`
+-- Constraints for table `actions_params`
 --
-ALTER TABLE `attachments`
-  ADD CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `actions_params`
+  ADD CONSTRAINT `actions_params_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `divisions`
@@ -701,3 +712,7 @@ ALTER TABLE `tracks`
 --
 ALTER TABLE `tracks_options`
   ADD CONSTRAINT `tracks_options_ibfk_1` FOREIGN KEY (`track_id`) REFERENCES `tracks` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -6,7 +6,7 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 		
 		self.load = function(scope) {
 			
-			$http({
+			/* $http({
 				method: 'GET',
 				url: 'handlers/dashboard.php'				
 			}).then(function succes(response) {
@@ -15,7 +15,7 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 				
 			}, function error(response) {
 				
-			});
+			}); */
 			
 		};
 		

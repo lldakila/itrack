@@ -18,22 +18,22 @@ $container['con'] = function ($container) {
 	return $con;
 };
 
-# list options
+# list referral_options
 $app->get('/list', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
 	
-	$options = $con->getData("SELECT * FROM options");	
+	$referral_options = $con->getData("SELECT * FROM referral_options");	
 	
-    return $response->withJson($options);
+    return $response->withJson($referral_options);
 
 });
-
+ 
 # add option
 $app->post('/add', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "options";
+	$con->table = "referral_options";
 
 	$data = $request->getParsedBody();
 	
@@ -46,7 +46,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 $app->put('/update', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "options";
+	$con->table = "referral_options";
 
 	$data = $request->getParsedBody();
 
@@ -58,7 +58,7 @@ $app->put('/update', function (Request $request, Response $response, array $args
 $app->get('/view/{id}', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "options";
+	$con->table = "referral_options";
 
 	$option = $con->get(array("id"=>$args['id']));
 
@@ -71,7 +71,7 @@ $app->get('/view/{id}', function (Request $request, Response $response, array $a
 $app->delete('/delete/{id}', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
-	$con->table = "options";
+	$con->table = "referral_options";
 	
 	$option = array("id"=>$args['id']);
 
