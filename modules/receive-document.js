@@ -334,6 +334,22 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				else scope.doc[item] = true;
 				
 			});
+			
+			switch (actions) {
+
+				case "for_initial":
+
+				break;
+
+				case "for_signature":
+
+				break;
+
+				case "for_routing":
+
+				break;
+
+			};
 
 		};
 		
