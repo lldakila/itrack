@@ -285,7 +285,7 @@
 														<label>For Initial</label>
 														<div class="checkbox" style="margin-left: 10px;">
 															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_initial" ng-model="doc.for_initial" ng-checked="doc.for_initial" ng-change="app.actionChange(this,'for_initial')" ng-disabled="controls.btns.ok">
+															  <input type="checkbox" hidden="hidden" name="for_initial" ng-model="doc.for_initial" ng-checked="doc.for_initial" ng-change="app.actionChange(this,doc.for_initial,'for_initial')" ng-disabled="controls.btns.ok">
 															  <span class="slider round"></span>
 															</label>
 														</div>
@@ -294,7 +294,7 @@
 														<label>For Signature</label>
 														<div class="checkbox" style="margin-left: 10px;">
 															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_signature" ng-model="doc.for_signature" ng-checked="doc.for_signature" ng-change="app.actionChange(this,'for_signature')" ng-disabled="controls.btns.ok">
+															  <input type="checkbox" hidden="hidden" name="for_signature" ng-model="doc.for_signature" ng-checked="doc.for_signature" ng-change="app.actionChange(this,doc.for_signature,'for_signature')" ng-disabled="controls.btns.ok">
 															  <span class="slider round"></span>
 															</label>
 														</div>
@@ -303,7 +303,7 @@
 														<label>Route/Refer</label>
 														<div class="checkbox" style="margin-left: 10px;">
 															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.for_routing" ng-checked="doc.for_routing" ng-change="app.actionChange(this,'for_routing')" ng-disabled="controls.btns.ok">
+															  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.for_routing" ng-checked="doc.for_routing" ng-change="app.actionChange(this,doc.for_routing,'for_routing')" ng-disabled="controls.btns.ok">
 															  <span class="slider round"></span>
 															</label>
 														</div>														
@@ -313,10 +313,10 @@
 										</div>
 										<div class="row">
 											<div class="col-lg-6 offset-lg-6">
-												<div class="form-group">
+												<!-- <div class="form-group">
 													<label>To</label>
-													<input class="form-control">
-												</div>
+													<select class="form-control" ng-model="doc." ng-options=""></select>
+												</div> -->
 											</div>
 										</div>
 										<div class="row">

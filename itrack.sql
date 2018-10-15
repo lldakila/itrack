@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 12, 2018 at 03:08 PM
+-- Generation Time: Oct 15, 2018 at 05:02 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.3
 
@@ -180,14 +180,6 @@ CREATE TABLE `documents` (
   `remarks` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `documents`
---
-
-INSERT INTO `documents` (`id`, `user_id`, `doc_name`, `barcode`, `origin`, `other_origin`, `document_date`, `document_transaction_type`, `doc_type`, `communication`, `doc_action`, `remarks`) VALUES
-(1, 1, 'qwerty', 'OPG-10-2018-00001', 3, NULL, '2018-10-11 14:49:28', 1, 1, 1, NULL, NULL),
-(2, 1, 'sdfga', 'OPG-10-2018-00002', 3, NULL, '2018-10-11 15:49:28', 1, 1, 1, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -199,13 +191,6 @@ CREATE TABLE `document_dt_add_params` (
   `document_id` int(11) NOT NULL,
   `params` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `document_dt_add_params`
---
-
-INSERT INTO `document_dt_add_params` (`id`, `document_id`, `params`) VALUES
-(1, 1, '[]');
 
 -- --------------------------------------------------------
 
@@ -593,7 +578,7 @@ ALTER TABLE `divisions`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `document_dt_add_params`
 --
@@ -633,7 +618,7 @@ ALTER TABLE `offices`
 -- AUTO_INCREMENT for table `referral_options`
 --
 ALTER TABLE `referral_options`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `tracks`
 --

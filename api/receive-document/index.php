@@ -77,7 +77,7 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 
 });
 
-# additional parameters
+# document type additional parameters
 $app->get('/dt_add_params/{id}', function (Request $request, Response $response, array $args) {
 
 	$id = $args['id'];
@@ -89,6 +89,23 @@ $app->get('/dt_add_params/{id}', function (Request $request, Response $response,
     return $response->withJson($dt_add_params);
 
 });
+
+# action additional parameters
+$app->get('/action_params/{id}', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+
+	$id = $args['id'];
+	
+	// require_once '../../document-actions.php';
+	require_once '../../actions-params.php';
+	
+	// $action_params = get_params($action_params,$id);
+	
+    // return $response->withJson($action_params);
+
+});
+
 
 # add document
 $app->post('/add', function (Request $request, Response $response, array $args) {

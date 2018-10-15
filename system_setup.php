@@ -36,11 +36,11 @@ class setup {
 		
 	}
 
-	function get_values_as_string($id) {
-		
+	function get_setup_as_string($id) {
+
 		$values = array();
 		$values_string = "";
-		
+
 		foreach ($this->system_setup as $setup) {
 			
 			if ($setup['id'] == $id) $values = $setup['values'];
@@ -51,13 +51,13 @@ class setup {
 
 			if ($i == (count($values)-1)) $values_string = $values_string.$value['value'];
 			else $values_string = $values_string.$value['value'].",";
-			
+
 		};
-		
+
 		return $values_string;
-		
+
 	}
-	
+
 };
 
 ?>
