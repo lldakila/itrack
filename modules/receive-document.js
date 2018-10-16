@@ -204,8 +204,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					
 					barcode(response.data.barcode);
 
-					// scope.controls.btns.ok = true;
-					// scope.controls.btns.cancel = true;	
+					scope.controls.btns.ok = true;
+					scope.controls.btns.cancel = true;	
 
 					bui.hide();
 
@@ -347,13 +347,13 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				method: 'GET',
 				url: 'api/receive-document/action_params/'+da[a],
 			}).then(function mySuccess(response) {
-				
+
 				scope.action_add_params = angular.copy(response.data);
 				scope.doc.document_action_add_params = scope.action_add_params;
-					
+
 			}, function myError(response) {
-		
-		
+
+
 			});
 
 		};

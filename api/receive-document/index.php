@@ -100,9 +100,9 @@ $app->get('/action_params/{id}', function (Request $request, Response $response,
 	// require_once '../../document-actions.php';
 	require_once '../../actions-params.php';
 	
-	// $action_params = get_params($action_params,$id);
+	$action_params = get_params($actions_params,$id);
 	
-    // return $response->withJson($action_params);
+    return $response->withJson($action_params);
 
 });
 
@@ -130,41 +130,67 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	unset($data['document_dt_add_params']);
 	#
 
+	# document_action_add_params
+	$document_action_add_params = $data['document_action_add_params'];
+	unset($data['document_action_add_params']);
+	#	
+	
 	$data['user_id'] = $_SESSION['itrack_user_id'];
 	$data['origin'] = $data['origin']['id'];
 	$data['doc_type'] = $data['doc_type']['id'];
 	$data['communication'] = $data['communication']['id'];
 	$data['document_transaction_type'] = $data['document_transaction_type']['id'];	
+	
+	$track_action = 0;
+	
+	if ($data['for_initial']) $track_action = 1;
+	if ($data['for_signature']) $track_action = 2;
+	if ($data['for_routing']) $track_action = 3;
 
 	unset($data['for_initial']);
 	unset($data['for_signature']);
 	unset($data['for_routing']);
-
+	
 	$uploads = array("files"=>$data['files']);	
 	unset($data['files']);
 
 	$data['barcode'] = barcode($con,$data['origin'],$office,$com);
 
+	$data['dt_add_params'] = json_encode($document_dt_add_params);
+	
 	unset($data['id']);
 
 	$con->insertData($data);
 
 	$id = $con->insertId;
 
+	# first track
+	$con->table = "tracks";	
+	
+	require_once '../../system_setup.php';
+	
+	$system_setup = new setup(system_setup);
+	
+	$office_for_action = $system_setup->get_setup(3); 	
+	
+	$track = array(
+		"document_id"=>$id,
+		"office_id"=>$office_for_action[0],
+		"track_action"=>$track_action,
+		"track_action_add_params"=>json_encode($document_action_add_params),
+		"track_action_status"=>null,
+		"track_user"=>$_SESSION['itrack_user_id'],
+	);
+
+	$con->insertData($track);
+	#
+	
+	$con->table = "documents";	
 	$barcode = $con->get(array("id"=>$id),["id","barcode","document_date","(SELECT document_type FROM document_types WHERE id = ".$data['doc_type'].") doc_type"]);
 
 	uploadFiles($con,$uploads,$barcode[0]['barcode'],$id);	
 
 	$barcode[0]['document_date'] = date("M j, Y h:i:s A",strtotime($barcode[0]['document_date']));
-
-	# document_dt_add_params
-	$con->table = "document_dt_add_params";
-	$document_dt_add_params_data = array(
-		"document_id"=>$id,
-		"params"=>json_encode($document_dt_add_params),
-	);
-	$con->insertData($document_dt_add_params_data);
-	#
 
 	return $response->withJson($barcode[0]);
 

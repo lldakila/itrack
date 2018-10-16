@@ -2,7 +2,7 @@ angular.module('account-module', ['bootstrap-modal']).directive('dropDown', func
 
 	return {
 		restrict: 'A',
-		templateUrl: '../../angular/modules/account/account.html'
+		templateUrl: '../../../angular/modules/account/account.html'
 	};
 	
 }).directive('accountProfile',function($http,$window) {
@@ -13,7 +13,7 @@ angular.module('account-module', ['bootstrap-modal']).directive('dropDown', func
 			
 			$http({
 			  method: 'POST',
-			  url: '../../angular/modules/account/account-profile.php'
+			  url: '../../../angular/modules/account/account-profile.php'
 			}).then(function mySucces(response) {
 
 				scope.profile = response.data;
@@ -21,7 +21,7 @@ angular.module('account-module', ['bootstrap-modal']).directive('dropDown', func
 			},
 			function myError(response) {
 				
-				$window.location.href = '../../login.html';
+				$window.location.href = '../../../login.html';
 				
 			});	
 			
@@ -36,7 +36,7 @@ angular.module('account-module', ['bootstrap-modal']).directive('dropDown', func
 			
 			var onOk = function() {
 				
-				$window.location.href = '../../angular/modules/login/logout.php';
+				$window.location.href = '../../../angular/modules/login/logout.php';
 				
 			};
 			

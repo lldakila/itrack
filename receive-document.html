@@ -231,8 +231,8 @@
 												</div>
 												<div class="form-group" ng-repeat="param in dt_add_params">
 													<label>{{param.description}}</label>
-													<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id"></select>
-													<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value">
+													<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.ok"></select>
+													<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.ok">
 												</div>												
 											</div>
 										</div>
@@ -313,10 +313,11 @@
 										</div>
 										<div class="row">
 											<div class="col-lg-6 offset-lg-6">
-												<!-- <div class="form-group">
-													<label>To</label>
-													<select class="form-control" ng-model="doc." ng-options=""></select>
-												</div> -->
+												<div class="form-group" ng-repeat="param in action_add_params">
+													<label>{{param.description}}</label>
+													<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.ok"></select>
+													<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.ok">
+												</div>	
 											</div>
 										</div>
 										<div class="row">

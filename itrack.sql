@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 15, 2018 at 05:02 PM
+-- Generation Time: Oct 16, 2018 at 05:02 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.3
 
@@ -177,8 +177,16 @@ CREATE TABLE `documents` (
   `doc_type` int(11) DEFAULT NULL,
   `communication` int(11) DEFAULT NULL,
   `doc_action` varchar(20) DEFAULT NULL,
+  `dt_add_params` longtext,
   `remarks` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `documents`
+--
+
+INSERT INTO `documents` (`id`, `user_id`, `doc_name`, `barcode`, `origin`, `other_origin`, `document_date`, `document_transaction_type`, `doc_type`, `communication`, `doc_action`, `dt_add_params`, `remarks`) VALUES
+(1, 1, 'adgadg', 'PA-10-2018-00001', 2, NULL, '2018-10-16 16:28:12', 1, 1, 1, NULL, '[]', NULL);
 
 -- --------------------------------------------------------
 
@@ -353,10 +361,18 @@ CREATE TABLE `tracks` (
   `document_id` int(255) DEFAULT NULL,
   `office_id` int(11) DEFAULT NULL,
   `track_action` int(11) DEFAULT NULL,
+  `track_action_add_params` longtext,
   `track_action_status` varchar(50) DEFAULT NULL,
-  `track_action_user` int(11) DEFAULT NULL,
+  `track_user` int(11) DEFAULT NULL,
   `system_log` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tracks`
+--
+
+INSERT INTO `tracks` (`id`, `document_id`, `office_id`, `track_action`, `track_action_add_params`, `track_action_status`, `track_user`, `system_log`) VALUES
+(1, 1, 2, 1, '[{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"select","value":{"id":8,"description":"Arvin Camacho"},"options":[{"id":0,"description":"-"},{"id":2,"description":"Jennifer Joan Ortega-Manguiat"},{"id":8,"description":"Arvin Camacho"}]}]', NULL, 1, '2018-10-16 16:28:12');
 
 -- --------------------------------------------------------
 
@@ -420,13 +436,13 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `fname`, `mname`, `lname`, `position`, `uname`, `pw`, `employee_id`, `div_id`, `email_address`, `phone_number`, `group_id`, `system_accountability`) VALUES
 (1, 'Sylvester', 'Bulilan', 'Flores', 'Administrative Aide VI', 'sly', 'legend', '82156', 4, 'sly@christian.com.ph', '09179245040', 1, NULL),
-(6, 'Jennifer Joan', NULL, 'Ortega-Manguiat', 'Provincial Administrator', 'pa', '123456', NULL, 2, NULL, NULL, 2, 1),
-(7, 'Mary Ann', 'Yan', 'Orofino', 'Administrative Aide IV', 'ann', '123456', '81018', 2, NULL, NULL, 3, NULL),
-(8, 'Ghenny Rose', NULL, 'Estipular', 'Administrative Aide VI', 'ghenny', '123456', '80005', 2, NULL, NULL, 3, NULL),
-(9, 'Remeleth', NULL, 'Dumaguin', 'Administrative Officer', 'melette', '123456', NULL, 4, NULL, NULL, 4, NULL),
-(10, 'Francisco Emmanuel', 'Ramos', 'Ortega', 'Provincial Governor', 'pacoy', '123456', NULL, 3, NULL, NULL, 5, NULL),
-(11, 'Sharmeen', 'Natarte', 'Guray', 'ADMINISTRATIVE AIDE IV', 'sharmeen', '123456', NULL, 3, NULL, NULL, 4, NULL),
-(12, 'Arvin', 'Cabading', 'Camacho', 'Assistant Provincial Administrator', 'arvin', '123456', '90097', 2, NULL, NULL, 2, NULL);
+(2, 'Jennifer Joan', NULL, 'Ortega-Manguiat', 'Provincial Administrator', 'pa', '123456', NULL, 2, NULL, NULL, 2, 1),
+(3, 'Mary Ann', 'Yan', 'Orofino', 'Administrative Aide IV', 'ann', '123456', '81018', 2, NULL, NULL, 3, NULL),
+(4, 'Ghenny Rose', NULL, 'Estipular', 'Administrative Aide VI', 'ghenny', '123456', '80005', 2, NULL, NULL, 3, NULL),
+(5, 'Remeleth', NULL, 'Dumaguin', 'Administrative Officer', 'melette', '123456', NULL, 4, NULL, NULL, 4, NULL),
+(6, 'Francisco Emmanuel', 'Ramos', 'Ortega', 'Provincial Governor', 'pacoy', '123456', NULL, 3, NULL, NULL, 5, NULL),
+(7, 'Sharmeen', 'Natarte', 'Guray', 'ADMINISTRATIVE AIDE IV', 'sharmeen', '123456', NULL, 3, NULL, NULL, 4, NULL),
+(8, 'Arvin', 'Cabading', 'Camacho', 'Assistant Provincial Administrator', 'arvin', '123456', '90097', 2, NULL, NULL, 2, NULL);
 
 --
 -- Indexes for dumped tables
@@ -578,12 +594,12 @@ ALTER TABLE `divisions`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `document_dt_add_params`
 --
 ALTER TABLE `document_dt_add_params`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `document_types`
 --
@@ -623,7 +639,7 @@ ALTER TABLE `referral_options`
 -- AUTO_INCREMENT for table `tracks`
 --
 ALTER TABLE `tracks`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tracks_options`
 --
