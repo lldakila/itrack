@@ -3,13 +3,19 @@
 define('system_setup', array(
 	array(
 		"id"=>1,
-		"description"=>"Admin Groups",
-		"values"=>array(
-			array("id"=>1,"value"=>2),
-			array("id"=>2,"value"=>3),
-			array("id"=>3,"value"=>7),
-		),
+		"description"=>"Users for document action: initial/signature at receiving document",
+		"values"=>[2,8],
 	),
+	array(
+		"id"=>2,
+		"description"=>"Users for document action: route at receiving document",
+		"values"=>[8],
+	),
+	array(
+		"id"=>3,
+		"description"=>"Office for document action",
+		"values"=>[2],
+	),	
 ));
 
 class setup {
@@ -28,7 +34,7 @@ class setup {
 		
 		foreach ($this->system_setup as $setup) {
 			
-			if ($setup['id'] == $id) $values = $setup;
+			if ($setup['id'] == $id) $values = $setup['values'];
 			
 		};
 		
@@ -36,28 +42,23 @@ class setup {
 		
 	}
 
-	function get_values_as_string($id) {
-		
+	function get_setup_as_string($id) {
+
 		$values = array();
 		$values_string = "";
-		
+
 		foreach ($this->system_setup as $setup) {
-			
+
 			if ($setup['id'] == $id) $values = $setup['values'];
-			
+
 		};
 
-		foreach ($values as $i => $value) {
+		$values_string = implode(",",$values);
 
-			if ($i == (count($values)-1)) $values_string = $values_string.$value['value'];
-			else $values_string = $values_string.$value['value'].",";
-			
-		};
-		
 		return $values_string;
-		
+
 	}
-	
+
 };
 
 ?>

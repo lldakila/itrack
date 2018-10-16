@@ -1,4 +1,4 @@
-angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui','module-access']).factory('dashboard', function($http,$timeout,$compile,$window,bootstrapModal,bui,access) {
+angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui','module-access','barcode-listener']).factory('dashboard', function($http,$timeout,$compile,$window,bootstrapModal,bui,access) {
 	
 	function dashboard() {
 		
@@ -6,7 +6,7 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 		
 		self.load = function(scope) {
 			
-			$http({
+			/* $http({
 				method: 'GET',
 				url: 'handlers/dashboard.php'				
 			}).then(function succes(response) {
@@ -15,7 +15,7 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 				
 			}, function error(response) {
 				
-			});
+			}); */
 			
 		};
 		

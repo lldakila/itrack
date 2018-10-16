@@ -1,6 +1,6 @@
-var app = angular.module('document',['account-module','app-module','ngRoute']);
+var app = angular.module('documentInitial',['account-module','app-module','ngRoute']);
 
-app.controller('documentCtrl',function($scope,app) {
+app.controller('documentInitialCtrl',function($scope,app) {
 	
 	$scope.app = app;
 	

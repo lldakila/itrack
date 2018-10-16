@@ -22,7 +22,7 @@ $container['view'] = function ($container) {
     return new \Slim\Views\PhpRenderer('views/');
 };
 
-$app->get('/view/{id}', function ($request, $response, $args) {
+$app->get('/for/initial/{id}', function ($request, $response, $args) {
 	
 	require_once '../path_url.php';
 	

@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','bootstrap-growl']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,growl) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','bootstrap-growl','barcode-listener']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,growl) {
 	
 	function app() {
 
@@ -52,6 +52,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.communications = [];		
 
 			scope.dt_add_params = [];
+			
+			scope.action_add_params = [];
 			
 			$http({
 				method: 'GET',
@@ -116,11 +118,15 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.for_approval = false;
 			scope.for_routing = false;
 			scope.doc.files = [];
+			scope.doc.document_dt_add_params = [];
+			scope.doc.document_action_add_params = [];
 			// scope.doc.attachments = [];
 			
 			scope.documentFiles = [];
 
 			scope.dt_add_params = [];
+			scope.action_add_params = [];
+						
 			
 		};
 		
@@ -198,8 +204,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					
 					barcode(response.data.barcode);
 
-					// scope.controls.btns.ok = true;
-					// scope.controls.btns.cancel = true;	
+					scope.controls.btns.ok = true;
+					scope.controls.btns.cancel = true;	
 
 					bui.hide();
 
@@ -215,8 +221,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 		};
 		
-		self.dtParams = function(scope,dt) {
-			
+		self.dtParams = function(scope,dt) {			
 			
 			$http({
 				method: 'GET',
@@ -231,7 +236,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 			});
 			
-		};
+		};		
 		
 		function barcode(barcode) {
 
@@ -324,15 +329,31 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 		}; */
 
-		self.actionChange = function(scope,a) {
+		self.actionChange = function(scope,value,a) {
 
 			var actions = ['for_initial','for_signature','for_routing'];
+			var da = {for_initial:1, for_signature:2, for_routing:3};
 
 			angular.forEach(actions, function(item,i) {
 				
 				if (a != item) scope.doc[item] = false;
 				else scope.doc[item] = true;
 				
+			});
+			
+			if (!value) return;
+			
+			$http({
+				method: 'GET',
+				url: 'api/receive-document/action_params/'+da[a],
+			}).then(function mySuccess(response) {
+
+				scope.action_add_params = angular.copy(response.data);
+				scope.doc.document_action_add_params = scope.action_add_params;
+
+			}, function myError(response) {
+
+
 			});
 
 		};
