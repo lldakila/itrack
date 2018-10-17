@@ -7,7 +7,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		self.startup = function(scope) {
 			
 			scope.controls.add = true;
-			scope.controls.edit = false;					
+			scope.controls.edit = false;	
 			
 		};
 
@@ -57,7 +57,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: scope.url+'api/receive-document/communications'
+				url: scope.url.view+'api/receive-document/communications'
 			}).then(function mySuccess(response) {
 				
 				scope.communications = angular.copy(response.data);
@@ -69,7 +69,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			$http({
 				method: 'GET',
-				url: scope.url+'api/receive-document/transactions'
+				url: scope.url.view+'api/receive-document/transactions'
 			}).then(function mySuccess(response) {
 				
 				scope.transactions = angular.copy(response.data);
@@ -81,7 +81,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: scope.url+'api/receive-document/offices'
+				url: scope.url.view+'api/receive-document/offices'
 			}).then(function mySuccess(response) {
 				
 				scope.offices = angular.copy(response.data);
@@ -93,7 +93,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: scope.url+'api/receive-document/doctype'
+				url: scope.url.view+'api/receive-document/doctype'
 			}).then(function mySuccess(response) {
 				
 				scope.document_types = angular.copy(response.data);
@@ -156,7 +156,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				$http({
 				  method: 'POST',
-				  url: scope.url+'api/receive-document/add',
+				  url: scope.url.view+'api/receive-document/add',
 				  data: scope.doc
 				}).then(function mySuccess(response) {
 
@@ -189,7 +189,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: scope.url+'api/receive-document/dt_add_params/'+dt.id
+				url: scope.url.view+'api/receive-document/dt_add_params/'+dt.id
 			}).then(function mySuccess(response) {
 				
 				scope.dt_add_params = angular.copy(response.data);

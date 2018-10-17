@@ -6,7 +6,10 @@ angular.module('app-url', []).factory('url', function() {
 		
 		self.init = function(scope) {
 			
-			scope.url = '../../../';
+			scope.url = {
+				view: '../../',
+				for: '../../../'
+			};
 			
 		};
 		
