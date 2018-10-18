@@ -30,7 +30,7 @@ $app->get('/list', function (Request $request, Response $response, array $args) 
 
 	foreach ($documents as $i => $document) {
 		
-		$documents[$i] = document_info($con,$document);
+		$documents[$i] = document_info_complete($con,$document);
 		
 	};
 	

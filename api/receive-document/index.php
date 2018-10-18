@@ -40,7 +40,7 @@ $app->get('/transactions', function (Request $request, Response $response, array
 	$con = $this->con;
 	$con->table = "transactions";
 	
-	$transactions = $con->all(['id','transaction']);
+	$transactions = $con->all(['id','transaction','days']);
 	
     return $response->withJson($transactions);
 
@@ -54,12 +54,12 @@ $app->get('/offices', function (Request $request, Response $response, array $arg
 
 	$offices = $con->all(['id','office','shortname']);
 
-	$con->table = "users";
+	/* $con->table = "users";
 	foreach ($offices as $i => $office) {
 
 		$offices[$i]['staffs'] = $con->get(["div_id"=>$office['id']],["id","CONCAT(fname, ' ', lname) fullname"]);
 
-	};
+	}; */
 
     return $response->withJson($offices);
 
