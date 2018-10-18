@@ -32,9 +32,6 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.doc = {};
 			scope.doc.id = 0;
 			
-			scope.for_approval = false;
-			scope.for_routing = false;
-			
 			scope.doc.files = [];
 			// scope.doc.attachments = [];
 			
@@ -115,8 +112,6 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			scope.doc = {};
 			scope.doc.id = 0;
-			scope.for_approval = false;
-			scope.for_routing = false;
 			scope.doc.files = [];
 			scope.doc.document_dt_add_params = [];
 			scope.doc.document_action_add_params = [];
@@ -313,7 +308,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			doc.text(456, 763, scope.print.doc.document_date);
 			
 			var blob = doc.output("blob");
-			window.open(URL.createObjectURL(blob));	
+			window.open(URL.createObjectURL(blob));
 
 		// };
 		
