@@ -22,17 +22,33 @@ $container['view'] = function ($container) {
     return new \Slim\Views\PhpRenderer('views/');
 };
 
-$app->get('/for/initial/{id}', function ($request, $response, $args) {
-	
+$app->get('/view/{id}', function ($request, $response, $args) {
+
 	require_once '../path_url.php';
 	
 	# query
 	
 	#
-	
+
     return $this->view->render($response, 'document.html', [
 		'path'=>$base_path,	
 		'url'=>$base_url,
+        'id'=>$args['id']
+    ]);	
+
+})->setName('document');
+
+$app->get('/for/initial/{id}', function ($request, $response, $args) {
+
+	require_once '../path_url.php';
+	
+	# query
+	
+	#
+
+    return $this->view->render($response, 'initial.html', [
+		'path'=>$base_path,	
+		'url'=>"../".$base_url,
         'id'=>$args['id']
     ]);
 	

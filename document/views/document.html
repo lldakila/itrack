@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="<?=$url?>assets/css/files.css">
     <!-- END Custom CSS-->
   </head>
-  <body ng-app="documentInitial" ng-controller="documentInitialCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
+  <body ng-app="document" ng-controller="documentCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
 
     <!-- navbar-fixed-top-->
     <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
@@ -128,6 +128,7 @@
 			<li class=" nav-item"><a href="#"><i class="icon-copy2"></i><span class="menu-title">Documents</span></a>
 				<ul class="menu-content">
 				  <li><a href="<?=$url?>receive-document.html" class="menu-item"><i class="icon-plus-circle"></i> Receive Document</a></li>
+				  <li><a href="<?=$url?>documents.html" class="menu-item">Documents</a></li>				  
 				</ul>
 			</li>
 			<li class=" nav-item"><a href="#"><i class="icon-group"></i><span class="menu-title">Accounts</span></a>
@@ -174,7 +175,7 @@
 						  <ol class="breadcrumb">
 							<li class="breadcrumb-item"><a href="<?=$url?>index.html" class="info">iTrack</a>
 							</li>
-							<li class="breadcrumb-item">Documents
+							<li class="breadcrumb-item"><a href="<?=$url?>documents.html" class="info">Documents</a>
 							</li>
 							<li class="breadcrumb-item active">View Document
 							</li>
@@ -399,7 +400,7 @@
 	<script src="<?=$url?>angular/angular-sanitize.min.js"></script>
 	<script src="<?=$url?>angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
 	
-	<script src="<?=$url?>angular/modules/account/account-view.js"></script>
+	<script src="<?=$url?>angular/modules/account/account-document-view.js"></script>
 	<script src="<?=$url?>angular/modules/bootbox/bootstrap-modal.js"></script>
 	<script src="<?=$url?>angular/modules/growl/growl.js"></script>
 	<script src="<?=$url?>angular/modules/blockui/blockui.js"></script>
@@ -407,14 +408,15 @@
 	<script src="<?=$url?>angular/modules/post/window-open-post.js"></script>
 	
 	<!-- modules -->
-	<script src="<?=$url?>modules/url.js"></script>
 	<script src="<?=$url?>modules/notifications.js"></script>
 	<script src="<?=$url?>modules/module-access.js"></script>
 	<script src="<?=$url?>modules/jspdf.js"></script>
 	<script src="<?=$url?>modules/upload-files.js"></script>
-	<script src="<?=$url?>modules/for-initial.js"></script>
+	
+	<script src="../modules/url.js"></script>	
+	<script src="../modules/view.js"></script>
 	
 	<!-- controller -->
-	<script src="<?=$url?>controllers/for-initial.js"></script>
+	<script src="../controllers/view.js"></script>
   </body>
 </html>

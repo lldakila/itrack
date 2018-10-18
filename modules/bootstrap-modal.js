@@ -7,16 +7,12 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 			message: content,
 			callback: function (result) {
 				if (result) {
-					onOk(scope);
+					onOk();
 				} else {
 					onCancel();
 				}
 			}
 		});
-		
-		dialog.init(function() {
-			$timeout(function() { $compile($('.bootbox-body')[0])(scope); }, 500);
-		});	
 		
 	};
 	

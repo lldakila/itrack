@@ -137,6 +137,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			$window.location.href = "account-add.html#!/view/"+row.id;
 			
 		};
+
 		self.delete = function(scope,row){
 			
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.delete)) return;
