@@ -113,7 +113,7 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 			buttons: {
 				ok: {
 					label: 'Close',
-					className: 'btn-info'
+					className: 'btn-danger'
 				}				
 			},			
 			callback: function (result) {
@@ -125,10 +125,9 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 
 		dialog.init(function() {
 			dialog.find('.bootbox-body').load(content);
-			$('.modal-content').css({"width": "230%","left": "-65%"});			
 			$timeout(function() { $compile($('.bootbox-body')[0])(scope); }, 1000);
 		});
 
-	};	
+	};
 
 });
