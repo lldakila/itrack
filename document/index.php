@@ -48,7 +48,7 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 	if (count($document)) {
 		
 		# first track
-		$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document['0']['id']."  ORDER BY system_log");
+		$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY system_log LIMIT 1");
 		
 		$document[0]['for_initial'] = false;
 		$document[0]['for_signature'] = false;
@@ -76,6 +76,80 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 	
 	return $response->withJson($document);
 
+});
+
+$app->put('/update/{id}', function ($request, $response, $args) {
+	
+	$con = $this->con;
+	$con->table = "documents";
+
+	$data = $request->getParsedBody();
+
+	require_once '../handlers/folder-files.php';
+	require_once '../api/receive-document/classes.php';
+
+	session_start();
+
+	$id = $args['id'];
+	
+	# document_dt_add_params
+	$document_dt_add_params = $data['document_dt_add_params'];
+	unset($data['document_dt_add_params']);
+	#
+
+	# document_action_add_params
+	$document_action_add_params = $data['document_action_add_params'];
+	unset($data['document_action_add_params']);
+	#	
+	
+	$data['user_id'] = $_SESSION['itrack_user_id'];
+	$data['origin'] = $data['origin']['id'];
+	$data['doc_type'] = $data['doc_type']['id'];
+	$data['communication'] = $data['communication']['id'];
+	$data['document_transaction_type'] = $data['document_transaction_type']['id'];	
+	
+	$track_action = 0;
+	
+	if ($data['for_initial']) $track_action = 1;
+	if ($data['for_signature']) $track_action = 2;
+	if ($data['for_routing']) $track_action = 3;
+
+	unset($data['for_initial']);
+	unset($data['for_signature']);
+	unset($data['for_routing']);
+
+	// $uploads = array("files"=>$data['files']);	
+	unset($data['files']);
+	
+	$data['dt_add_params'] = json_encode($document_dt_add_params);
+
+	unset($data['document_date_barcode']);
+	
+	$data['update_log'] = "CURRENT_TIMESTAMP";
+	$con->updateData($data,'id');
+	
+	# first track
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log LIMIT 1");	
+	
+	if (count($tracks)) {
+
+		$con->table = "tracks";	
+	
+		$first_track = $tracks[0];
+		$track = array(
+			"id"=>$first_track['id'],
+			"track_action"=>$track_action,
+			"track_action_add_params"=>json_encode($document_action_add_params),
+			"track_action_status"=>null,
+			"track_user"=>$_SESSION['itrack_user_id'],
+			"update_log"=>"CURRENT_TIMESTAMP"
+		);
+
+		$con->updateData($track,'id');
+
+	};
+	#	
+	
 });
 
 $app->get('/for/initial/{id}', function ($request, $response, $args) {
