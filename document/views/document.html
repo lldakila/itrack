@@ -168,8 +168,7 @@
         <div class="content-body">
 			<div class="row">
 				<div class="col-lg-6">
-					<!-- <button class="btn btn-info" ng-click="app.add(this)" ng-show="controls.add" ng-disabled="!controls.btns.ok"><i class="icon-plus3"></i> Add</button> -->
-					<button class="btn btn-info" ng-click="app.edit(this)" ng-disabled="!controls.btns.ok"><i class="icon-edit2"></i> Edit</button>
+					<button class="btn btn-info" ng-click="app.edit(this)" ng-disabled="controls.btns.edit"><i class="icon-edit2"></i> Edit</button>
 				</div>
 				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-lg-6">
 						<div class="breadcrumb-wrapper col-xs-12">
@@ -220,14 +219,14 @@
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>Originating Office</label>
-													<select class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.save" required></select>
 													<span class="help-block danger" ng-show="formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid">Office is required</span>
 												</div>
 											</div>
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>Document Type</label>
-													<select class="form-control" name="doc_type" ng-class="{'border-danger': formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid}" ng-model="doc.doc_type" ng-options="d.document_type for d in document_types track by d.id" ng-change="app.dtParams(this,doc.doc_type)" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="doc_type" ng-class="{'border-danger': formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid}" ng-model="doc.doc_type" ng-options="d.document_type for d in document_types track by d.id" ng-change="app.dtParams(this,doc.doc_type)" ng-disabled="controls.btns.save" required></select>
 													<span class="help-block danger" ng-show="formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid">Document Type is required</span>
 												</div>
 												<div class="form-group" ng-repeat="param in dt_add_params">
@@ -238,11 +237,11 @@
 											</div>
 										</div>
 										
-										<div class="row" ng-show="doc.origin.office == 'Others'">
+										<div class="row" ng-show="doc.origin.id === 1">
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>If Other Office</label>
-													<input type="text" class="form-control" name="other_origin" ng-class="{'border-danger': formHolder.doc.other_origin.$touched && formHolder.doc.other_origin.$invalid}" ng-model="doc.other_origin" ng-disabled="controls.btns.ok" ng-required="doc.origin.office == 'Others'">
+													<input type="text" class="form-control" name="other_origin" ng-class="{'border-danger': formHolder.doc.other_origin.$touched && formHolder.doc.other_origin.$invalid}" ng-model="doc.other_origin" ng-disabled="controls.btns.save" ng-required="doc.origin.id === 1">
 													<span class="help-block danger" ng-show="formHolder.doc.other_origin.$touched && formHolder.doc.other_origin.$invalid">Office is required</span>
 												</div>
 											</div>
@@ -252,21 +251,21 @@
 											<div class="col-lg-4">
 												<div class="form-group">
 													<label>Transaction</label>
-													<select class="form-control" name="document_transaction_type" ng-class="{'border-danger': formHolder.doc.document_transaction_type.$touched && formHolder.doc.document_transaction_type.$invalid}" ng-model="doc.document_transaction_type" ng-options="t.transaction for t in transactions track by t.id" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="document_transaction_type" ng-class="{'border-danger': formHolder.doc.document_transaction_type.$touched && formHolder.doc.document_transaction_type.$invalid}" ng-model="doc.document_transaction_type" ng-options="t.transaction for t in transactions track by t.id" ng-disabled="controls.btns.save" required></select>
 													<span class="help-block danger" ng-show="formHolder.doc.document_transaction_type.$touched && formHolder.doc.document_transaction_type.$invalid">Transaction is required</span>
 												</div>
 											</div>
 											<div class="col-lg-4">
 												<div class="form-group">
 													<label>Communication</label>
-													<select class="form-control" name="communication" ng-class="{'border-danger': formHolder.doc.communication.$touched && formHolder.doc.communication.$invalid}" ng-model="doc.communication" ng-options="c.communication for c in communications track by c.id" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="communication" ng-class="{'border-danger': formHolder.doc.communication.$touched && formHolder.doc.communication.$invalid}" ng-model="doc.communication" ng-options="c.communication for c in communications track by c.id" ng-disabled="controls.btns.save" required></select>
 													<span class="help-block danger" ng-show="formHolder.doc.communication.$touched && formHolder.doc.communication.$invalid">Communication is required</span>
 												</div>
 											</div>
 											<div class="col-lg-4">
 												<div class="form-group">
 													<label>Subject</label>
-													<input type="text" class="form-control" name="doc_name" ng-class="{'border-danger': formHolder.doc.doc_name.$touched && formHolder.doc.doc_name.$invalid}" ng-model="doc.doc_name" ng-disabled="controls.btns.ok" required>
+													<input type="text" class="form-control" name="doc_name" ng-class="{'border-danger': formHolder.doc.doc_name.$touched && formHolder.doc.doc_name.$invalid}" ng-model="doc.doc_name" ng-disabled="controls.btns.save" required>
 													<span class="help-block danger" ng-show="formHolder.doc.doc_name.$touched && formHolder.doc.doc_name.$invalid">Subject is required</span>
 												</div>
 											</div>
@@ -275,7 +274,7 @@
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>Remarks</label>
-													<textarea rows="10" class="form-control" name="remarks" ng-model="doc.remarks" ng-disabled="controls.btns.ok"></textarea>
+													<textarea rows="5" class="form-control" name="remarks" ng-model="doc.remarks" ng-disabled="controls.btns.save"></textarea>
 												</div>	
 											</div>
 											<div class="col-lg-6">
@@ -286,7 +285,7 @@
 														<label>For Initial</label>
 														<div class="checkbox" style="margin-left: 10px;">
 															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_initial" ng-model="doc.for_initial" ng-checked="doc.for_initial" ng-change="app.actionChange(this,'for_initial')" ng-disabled="controls.btns.ok">
+															  <input type="checkbox" hidden="hidden" name="for_initial" ng-model="doc.for_initial" ng-checked="doc.for_initial" ng-change="app.actionChange(this,doc.for_initial,'for_initial')" ng-disabled="controls.btns.save">
 															  <span class="slider round"></span>
 															</label>
 														</div>
@@ -295,16 +294,16 @@
 														<label>For Signature</label>
 														<div class="checkbox" style="margin-left: 10px;">
 															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_signature" ng-model="doc.for_signature" ng-checked="doc.for_signature" ng-change="app.actionChange(this,'for_signature')" ng-disabled="controls.btns.ok">
+															  <input type="checkbox" hidden="hidden" name="for_signature" ng-model="doc.for_signature" ng-checked="doc.for_signature" ng-change="app.actionChange(this,doc.for_signature,'for_signature')" ng-disabled="controls.btns.save">
 															  <span class="slider round"></span>
 															</label>
 														</div>
 													</div>
 													<div class="col-lg-4">														
-														<label>For Routing</label>
+														<label>Route/Refer</label>
 														<div class="checkbox" style="margin-left: 10px;">
 															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.for_routing" ng-checked="doc.for_routing" ng-change="app.actionChange(this,'for_routing')" ng-disabled="controls.btns.ok">
+															  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.for_routing" ng-checked="doc.for_routing" ng-change="app.actionChange(this,doc.for_routing,'for_routing')" ng-disabled="controls.btns.save">
 															  <span class="slider round"></span>
 															</label>
 														</div>														
@@ -312,6 +311,15 @@
 												</div>
 											</div>
 										</div>
+										<div class="row">
+											<div class="col-lg-6 offset-lg-6">
+												<div class="form-group" ng-repeat="param in action_add_params">
+													<label>{{param.description}}</label>
+													<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.save"></select>
+													<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.save">
+												</div>	
+											</div>
+										</div>										
 										<div class="row">
 											<div class="col-lg-12">
 												<div class="form-group">
@@ -341,8 +349,8 @@
 										<hr>
 										<div class="row">
 											<div class="col-lg-12">
-												<button class="btn btn-secondary float-lg-right" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">Cancel</button>											
-												<button class="btn btn-info float-lg-right" ng-click="app.save(this)" ng-disabled="controls.btns.ok" ng-show="controls.ok" style="margin-right: 10px;">Save</button>
+												<button class="btn btn-secondary float-lg-right" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)">{{controls.lbl.cancel}}</button>											
+												<button class="btn btn-info float-lg-right" ng-click="app.save(this)" ng-disabled="controls.btns.save" style="margin-right: 10px;">Update</button>
 												<div class="clearfix"></div>
 											</div>
 										</div>

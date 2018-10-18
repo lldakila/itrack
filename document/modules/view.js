@@ -6,8 +6,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 		self.startup = function(scope) {
 			
-			scope.controls.add = true;
-			scope.controls.edit = false;			
+			scope.controls.btns.edit = false;			
+			scope.controls.btns.cancel = false;
 			
 		};
 
@@ -22,15 +22,18 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			scope.controls = {
 				btns: {
-					ok: true,
-					cancel: true
+					edit: true,					
+					cancel: true,
+					save: true
 				},
-				add: true,
-				edit: true,
-				ok: true,
-				cancel:true
+				lbl: {
+					cancel: 'Close'
+				},
+				status: {
+					close: true
+				}
 			};
-			
+
 			scope.doc = {};
 			scope.doc.id = 0;
 			
@@ -51,6 +54,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.communications = [];		
 
 			scope.dt_add_params = [];
+			
+			scope.action_add_params = [];			
 			
 			$http({
 				method: 'GET',
@@ -109,14 +114,26 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			loadDocument(scope,id);
 			
 		};
-
+		
+		self.edit = function(scope) {
+			
+			scope.controls.btns.edit = true;
+			scope.controls.btns.cancel = false;
+			scope.controls.btns.save = false;		
+			
+			scope.controls.lbl.cancel = 'Cancel';
+			
+			scope.controls.status.close = false;		
+			
+		};
+		
 		function loadDocument(scope,id) {
 
 			bui.show("Fetching document info please wait...");
 
 			$http({
 			  method: 'GET',
-			  url: scope.url.view+'document/info/'+id,
+			  url: scope.url.view+'document/view/info/'+id,
 			  data: scope.doc
 			}).then(function mySuccess(response) {
 
@@ -126,8 +143,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				barcode(response.data.barcode);
 
-				// scope.controls.btns.ok = true;
-				// scope.controls.btns.cancel = true;	
+				scope.dt_add_params = response.data.document_dt_add_params;
+				scope.action_add_params = response.data.document_action_add_params;
 
 				bui.hide();
 
@@ -141,9 +158,15 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 		self.cancel = function(scope) {
 			
-			scope.controls.btns.ok = true;
-			scope.controls.btns.cancel = true;
+			if (scope.controls.status.close) $window.location.href = "../../documents.html";
 			
+			scope.controls.btns.edit = false;
+			scope.controls.btns.save = true;
+			
+			scope.controls.lbl.cancel = 'Close';
+			
+			scope.controls.status.close = true;	
+
 			validate.cancel(scope,'doc');
 			
 		};
@@ -176,7 +199,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					
 					barcode(response.data.barcode);
 
-					// scope.controls.btns.ok = true;
+					// scope.controls.btns.edit = true;
 					// scope.controls.btns.cancel = true;	
 
 					bui.hide();
