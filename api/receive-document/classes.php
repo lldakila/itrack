@@ -1,6 +1,6 @@
 <?php
 
-function uploadFiles($con,$uploads,$barcode,$id) {
+function uploadFiles($con,$uploads,$barcode,$id,$path=null) {
 	
 	$ft = array(
 		"jpeg"=>".jpg",
@@ -13,6 +13,7 @@ function uploadFiles($con,$uploads,$barcode,$id) {
 		$con->table = "files";
 	
 		$dir = "../../files";
+		if ($path != null) $dir = $path;
 		
 		if (!folder_exist($dir)) mkdir($dir);		
 

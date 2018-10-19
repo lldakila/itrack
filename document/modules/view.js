@@ -131,6 +131,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			bui.show("Fetching document info please wait...");
 
+			scope.documentFiles = [];
+			
 			$http({
 			  method: 'GET',
 			  url: scope.url.view+'document/view/info/'+id,
@@ -146,6 +148,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				scope.dt_add_params = response.data.document_dt_add_params;
 				scope.action_add_params = response.data.document_action_add_params;
 
+				filesThumbnails(scope,response.data.files);
+
 				bui.hide();
 
 			}, function myError(response) {
@@ -156,6 +160,44 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 		};
 
+		function filesThumbnails(scope,files) {
+			
+			var eids = {
+				jpeg: "#dfimg",
+				png: "#dfimg",					
+				pdf: "#dfpdf"
+			};			
+			
+			angular.forEach(files, function(file,i) {			
+
+				var eid = eids[file.type]+i;
+
+				scope.documentFiles.push({type: file.type});
+
+				scope.documentFiles[i]['eid'] = eid;
+
+			});
+			
+			$timeout(function() { previewThumbnails(scope,files); },500);			
+			
+		};
+		
+		function previewThumbnails(scope,files) {
+			
+			angular.forEach(scope.documentFiles, function(df,i) {
+				
+				var preview = document.querySelector(df.eid);				
+				
+				if (df.type == "pdf") {
+					preview.data = files[i].file;					
+				} else {
+					preview.src = files[i].file;
+				};
+				
+			});
+
+		};
+		
 		self.cancel = function(scope) {
 			
 			if (scope.controls.status.close) $window.location.href = "../../documents.html";

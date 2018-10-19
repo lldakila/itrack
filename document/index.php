@@ -40,6 +40,7 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 	$con->table = "documents";	
 
 	require_once '../document-info.php';
+	require_once '../functions.php';
 	
 	$id = $args['id'];
 	
@@ -53,8 +54,9 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 		$document[0]['for_initial'] = false;
 		$document[0]['for_signature'] = false;
 		$document[0]['for_routing'] = false;
-
-		$document[0]['document_dt_add_params'] = json_decode($document[0]['dt_add_params'],false);
+		
+		$document[0]['dt_add_params'] = json_decode($document[0]['dt_add_params'],false);
+		$document[0]['document_dt_add_params'] = $document[0]['dt_add_params'];
 		$document[0]['document_action_add_params'] = [];
 		
 		if (count($tracks)) {
@@ -70,6 +72,12 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 		};
 		
 		$document[0]['document_date_barcode'] = date("M j, Y h:i:s A",strtotime($document[0]['document_date']));
+		
+		$document[0]['files'] = [];
+
+		$files = get_files("../files/",$document[0]['barcode']);
+		$document[0]['files'] = $files;
+
 		$document = document_info_complete($con,$document[0]);
 		
 	};
@@ -118,9 +126,9 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	unset($data['for_signature']);
 	unset($data['for_routing']);
 
-	// $uploads = array("files"=>$data['files']);	
+	$uploads = array("files"=>$data['files']);	
 	unset($data['files']);
-	
+
 	$data['dt_add_params'] = json_encode($document_dt_add_params);
 
 	unset($data['document_date_barcode']);
@@ -148,7 +156,9 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 		$con->updateData($track,'id');
 
 	};
-	#	
+	#
+	
+	uploadFiles($con,$uploads,$data['barcode'],$id,"../files");		
 	
 });
 
