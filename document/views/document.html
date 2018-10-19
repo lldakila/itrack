@@ -327,9 +327,12 @@
 													<div class="images-container">
 														<div class="image-container" ng-repeat="df in documentFiles">
 															<div class="controls">
-																<a href="javascript:;" class="control-btn remove" remove-file-edit="{{$index}}">
-																	<i class="icon-trash4"></i>
+																<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df)">
+																	<i class="icon-search7"></i>
 																</a>
+																<a href="javascript:;" class="control-btn" remove-file-edit="{{$index}}">
+																	<i class="icon-trash4"></i>
+																</a>																
 															</div>
 															<object id="dfpdf{{$index}}" class="object" data="" ng-show="df.type == 'pdf'"></object>
 															<img id="dfimg{{$index}}" class="image" src="" ng-show="df.type == 'jpeg' || df.type == 'png'">															

@@ -8,9 +8,13 @@ function uploadFiles($con,$uploads,$barcode,$id,$path=null) {
 		"png"=>".png"
 	);
 
-	if (count($uploads["files"])) {
+	$con->table = "files";	
 
-		$con->table = "files";
+	# clear files table for document if there are any
+	$con->deleteData(array("document_id"=>$id));
+	#
+
+	if (count($uploads["files"])) {
 	
 		$dir = "../../files";
 		if ($path != null) $dir = $path;
@@ -37,6 +41,19 @@ function uploadFiles($con,$uploads,$barcode,$id,$path=null) {
 
 	};
 
+};
+
+function deleteFiles($con,$files,$path=null) {
+	
+	$dir = "../../files";
+	if ($path != null) $dir = $path;
+	
+	foreach ($files as $file) {
+		
+		if (file_exists($dir."/".$file)) unlink($dir."/".$file);	
+		
+	};
+	
 };
 
 function barcode($con,$origin,$office,$com) {

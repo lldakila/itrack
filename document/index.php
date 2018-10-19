@@ -74,6 +74,7 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 		$document[0]['document_date_barcode'] = date("M j, Y h:i:s A",strtotime($document[0]['document_date']));
 		
 		$document[0]['files'] = [];
+		$document[0]['delete_files'] = [];
 
 		$files = get_files("../files/",$document[0]['barcode']);
 		$document[0]['files'] = $files;
@@ -109,6 +110,11 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	$document_action_add_params = $data['document_action_add_params'];
 	unset($data['document_action_add_params']);
 	#	
+	
+	# files for deletion
+	$delete_files = $data['delete_files'];
+	unset($data['delete_files']);
+	#
 	
 	$data['user_id'] = $_SESSION['itrack_user_id'];
 	$data['origin'] = $data['origin']['id'];
@@ -157,9 +163,10 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 
 	};
 	#
-	
-	uploadFiles($con,$uploads,$data['barcode'],$id,"../files");		
-	
+
+	deleteFiles($con,$delete_files,"../files");
+	uploadFiles($con,$uploads,$data['barcode'],$id,"../files");
+
 });
 
 $app->get('/for/initial/{id}', function ($request, $response, $args) {
