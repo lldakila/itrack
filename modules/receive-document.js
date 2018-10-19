@@ -136,8 +136,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				if ($routeParams.option==undefined) scope.doc = {};				
 			},500); */
 			
-		};
-		
+		};		
 		
 		self.save = function(scope) {
 			

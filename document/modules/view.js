@@ -161,21 +161,51 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			if (scope.controls.status.close) $window.location.href = "../../documents.html";
 			
 			scope.controls.btns.edit = false;
-			scope.controls.btns.save = true;
-			
-			scope.controls.lbl.cancel = 'Close';
-			
+			scope.controls.btns.save = true;			
+			scope.controls.lbl.cancel = 'Close';			
 			scope.controls.status.close = true;	
 
 			validate.cancel(scope,'doc');
 			
 		};
 		
-		
 		self.save = function(scope) {
 			
-			if (validate.form(scope,'doc')) return;			
+			if (validate.form(scope,'doc')) return;
+				
+			var actions = 'false';
 			
+			var controls = scope.formHolder.doc.$$controls;
+			
+			angular.forEach(controls,function(elem,i) {
+
+				if (elem.$$attr.name == 'for_initial') {
+					
+					actions+=(scope.doc.for_initial==undefined)?'||false':(scope.doc.for_initial)?'||true':'||false';
+					
+				};
+
+				if (elem.$$attr.name == 'for_signature') {
+					
+					actions+=(scope.doc.for_signature==undefined)?'||false':(scope.doc.for_signature)?'||true':'||false';
+					
+				};
+
+				if (elem.$$attr.name == 'for_routing') {
+					
+					actions+=(scope.doc.for_routing==undefined)?'||false':(scope.doc.for_routing)?'||true':'||false';
+					
+				};
+									
+			});
+
+			if (!eval(actions)) {
+				
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Pleas select an action');
+				return;
+				
+			};
+
 			var addDocument = function() {	
 
 				/* if (scope.doc.files.length == 0) {
@@ -187,21 +217,16 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				bui.show();
 				
 				$http({
-				  method: 'POST',
-				  url: scope.url.view+'api/receive-document/add',
-				  data: scope.doc
+					method: 'PUT',
+					url: scope.url.view+'document/update/'+scope.doc.id,
+					data: scope.doc
 				}).then(function mySuccess(response) {
 
-					scope.doc.id = response.data.id;
-					scope.doc.barcode = response.data.barcode;
-
-					scope.print.doc = response.data;
-					
-					barcode(response.data.barcode);
-
-					// scope.controls.btns.edit = true;
-					// scope.controls.btns.cancel = true;	
-
+					scope.controls.btns.edit = false;
+					scope.controls.btns.save = true;			
+					scope.controls.lbl.cancel = 'Close';			
+					scope.controls.status.close = true;								
+				
 					bui.hide();
 
 				}, function myError(response) {
@@ -319,7 +344,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		// upload file
 		self.addFile = function(scope) {
 			
-			if (scope.controls.btns.ok) return;
+			if (scope.controls.btns.save) return;
 			
 			$('#upload-files')[0].click();
 			
@@ -332,15 +357,31 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 		}; */
 
-		self.actionChange = function(scope,a) {
+		self.actionChange = function(scope,value,a) {
 
 			var actions = ['for_initial','for_signature','for_routing'];
+			var da = {for_initial:1, for_signature:2, for_routing:3};
 
 			angular.forEach(actions, function(item,i) {
 				
 				if (a != item) scope.doc[item] = false;
 				else scope.doc[item] = true;
 				
+			});
+			
+			if (!value) return;
+			
+			$http({
+				method: 'GET',
+				url: '../../api/receive-document/action_params/'+da[a],
+			}).then(function mySuccess(response) {
+
+				scope.action_add_params = angular.copy(response.data);
+				scope.doc.document_action_add_params = scope.action_add_params;
+
+			}, function myError(response) {
+
+
 			});
 
 		};

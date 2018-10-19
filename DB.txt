@@ -1,0 +1,3 @@
+ALTER TABLE `tracks`  ADD `update_log` DATETIME NULL  AFTER `system_log`;
+
+ALTER TABLE `documents`  ADD `update_log` DATETIME NULL  AFTER `remarks`;
