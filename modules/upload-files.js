@@ -4,7 +4,7 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 
-			scope.documentFiles = [];		
+			scope.documentFiles = [];
 		
 			element.bind('click', function() {
 
@@ -55,6 +55,26 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 	};
 		
 }).directive('removeFile',function($timeout) {
+	
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+		
+			element.bind('click', function() {
+
+				if (scope.controls.btns.ok) return;
+			
+				var index = attrs.removeFile;
+
+				delete scope.documentFiles.splice(index,1);
+				scope.$apply();
+				
+			});
+			
+		}
+	};	
+	
+}).directive('removeFileEdit',function($timeout) {
 	
 	return {
 		restrict: 'A',
