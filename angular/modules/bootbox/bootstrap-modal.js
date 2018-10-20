@@ -105,6 +105,7 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 
 	};
 	
+	this.box3 = function(scope,title,content,onOk,w='230',h='950') {
 	
 		var dialog = bootbox.alert({
 			title: title,
@@ -124,6 +125,8 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 
 		dialog.init(function() {
 			dialog.find('.bootbox-body').load(content);
+			var lp = parseFloat(w)/2-50;
+			$('.modal-content').css({"width": w+"%", "height": h+"px", "left": "-"+lp+"%"});			
 			$timeout(function() { $compile($('.bootbox-body')[0])(scope); }, 1000);
 		});
 
