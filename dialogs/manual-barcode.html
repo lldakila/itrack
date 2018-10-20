@@ -1,0 +1,7 @@
+<form class="form" novalidate autocomplete="off" name="formHolder.barcode">
+	<div class="form-group">
+		<label>Enter barcode:</label>
+		<input type="text" class="form-control" name="barcode" ng-model="barcode" ng-class="{'border-danger': formHolder.barcode.barcode.$touched && formHolder.barcode.barcode.$invalid}" required>
+		<span class="help-block danger" ng-show="formHolder.barcode.barcode.$touched && formHolder.barcode.barcode.$invalid">Barcode is required</span>
+	</div>
+</form>
