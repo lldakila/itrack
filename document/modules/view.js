@@ -115,7 +115,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			loadDocument(scope,id);
 			
 			scope.preview = {};
-			scope.preview.file = "";
+			scope.preview.file = {};
 			
 		};
 		
@@ -208,7 +208,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			var fileData = (file.type=="pdf")?e.data:e.src;
 			
-			bootstrapModal.box3(scope,'Preview File','../dialogs/preview.html',function() {});
+			scope.preview.file.type = file.type;			
+			scope.preview.file.data = fileData;			
+			
+			bootstrapModal.box3(scope,'Preview File','../dialogs/preview.html',function() {},"150");
 
 		};
 		

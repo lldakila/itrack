@@ -105,7 +105,6 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 
 	};
 	
-	this.box3 = function(scope,title,content,onOk) {
 	
 		var dialog = bootbox.alert({
 			title: title,
