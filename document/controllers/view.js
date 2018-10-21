@@ -1,4 +1,4 @@
-var app = angular.module('document',['account-module','app-module','ngRoute']);
+var app = angular.module('document',['account-module','app-module','ngRoute','notifications-module']);
 
 app.controller('documentCtrl',function($scope,app) {
 	
