@@ -174,11 +174,22 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 $app->get('/for/initial/{id}', function ($request, $response, $args) {
 
 	require_once '../path_url.php';
+	require_once '../document-info.php';
 
+	$con = $this->con;
+	$con->table = "documents";
+	
+	$id = $args['id'];
+	
+	$document = [];	
+	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks FROM documents WHERE id = $id");	
+	$document = document_info_complete($con,$document[0]);	
+	
     return $this->view->render($response, 'initial.html', [
 		'path'=>$base_path,	
 		'url'=>"../".$base_url,
-        'id'=>$args['id']
+        'id'=>$args['id'],
+		'document'=>$document		
     ]);
 	
 
