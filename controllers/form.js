@@ -26,42 +26,28 @@ app.controller('formFdCtrl',function($scope) {
 
 		var i;
 
-		for (i=0; i<arrs.length; ++i) {
-			
-			console.log(arrs[i]);
+		for (i=0; i<arrs.length; ++i) {			
 			
 			var str = Object.keys(arrs[i])[0];
 
 			var apn = str.substring(0,str.indexOf("["));
 
-			if (json[apn]==undefined) json[apn] = [];			
+			json[apn] = [];			
 
-			var o = {};	
-			arrs.forEach(function(item,ii) {
-				
-				var key = Object.keys(item)[0];
-				var value = item[key];
-				
-				var re = new RegExp("\\[("+i+")\\]");
-				
-				var key_o = re.exec(key);
-
-				if (key_o!=null) {
-					
-					var input_name = key_o.input;
-					var pn = input_name.substring(input_name.indexOf("][")+2,input_name.length-1);
-
-					if (parseInt(key_o[1]) == i) {
-
-						o[pn] = value;
-						
-						json[apn].push(o);
-						
-					};
-					
-				};
-				
-			});			
+			var property = Object.keys(arrs[i])[0];
+			var value = arrs[i][property];			
+			
+			var row_index = property.substring(property.indexOf("[")+1,property.indexOf("]"));
+			
+			var re = new RegExp("\\[("+row_index+")\\]");
+			var property_row = re.exec(property);
+			
+			var input_name = property_row.input;
+			var pn = input_name.substring(input_name.indexOf("][")+2,input_name.length-1);			
+			
+			json[apn][row_index] = {};
+			console.log(row_index);
+			var o = {};
 			
 		};
 		
