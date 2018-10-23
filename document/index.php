@@ -164,8 +164,10 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	};
 	#
 
-	deleteFiles($con,$delete_files,"../files");
-	uploadFiles($con,$uploads,$data['barcode'],$id,"../files");
+	if (count($delete_files)) {
+		deleteFiles($con,$delete_files,"../files");
+		uploadFiles($con,$uploads,$data['barcode'],$id,"../files");
+	};
 
 });
 
