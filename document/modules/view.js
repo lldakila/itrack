@@ -38,6 +38,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.doc.id = 0;
 			
 			scope.doc.files = [];
+			scope.doc.delete_files = [];
 			// scope.doc.attachments = [];
 			
 			scope.docs = [];
@@ -113,6 +114,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			loadDocument(scope,id);
 			
+			scope.preview = {};
+			scope.preview.file = {};
+			
 		};
 		
 		self.edit = function(scope) {
@@ -172,7 +176,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 				var eid = eids[file.type]+i;
 
-				scope.documentFiles.push({type: file.type});
+				scope.documentFiles.push({type: file.type, name: file.name});
 
 				scope.documentFiles[i]['eid'] = eid;
 
@@ -195,6 +199,19 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				};
 				
 			});
+
+		};
+		
+		self.previewThumbnail = function(scope,file) {
+			
+			var e = document.querySelector(file.eid);			
+			
+			var fileData = (file.type=="pdf")?e.data:e.src;
+			
+			scope.preview.file.type = file.type;			
+			scope.preview.file.data = fileData;			
+			
+			bootstrapModal.box3(scope,'Preview File','../dialogs/preview.html',function() {},"150");
 
 		};
 		
@@ -270,6 +287,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					scope.controls.status.close = true;								
 				
 					bui.hide();
+					
+					loadDocument(scope,scope.doc.id);
 
 				}, function myError(response) {
 					
@@ -279,7 +298,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 			};
 
-			uploadFiles.start(scope, addDocument);
+			uploadFiles.start(scope, addDocument, true);
 			
 		};
 		

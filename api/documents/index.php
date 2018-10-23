@@ -38,6 +38,27 @@ $app->get('/list', function (Request $request, Response $response, array $args) 
 
 });
 
+# barcode id
+$app->get('/barcode/{barcode}', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+	$con->table = "documents";	
+
+	$barcode = $args['barcode'];
+	
+	$status = false;
+	$document_id = null;
+	$document = $con->getData("SELECT id FROM documents WHERE barcode = '$barcode'");
+	
+	if (count($document)) {
+		$status = true;
+		$document_id = $document[0]['id'];
+	}
+	
+    return $response->withJson(array("id"=>$document_id,"status"=>$status));
+
+});
+
 # delete document
 $app->delete('/delete/{id}', function (Request $request, Response $response, array $args) {
 

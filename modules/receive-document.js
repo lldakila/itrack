@@ -211,7 +211,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 			};
 
-			uploadFiles.start(scope, addDocument);
+			uploadFiles.start(scope, addDocument, false);
 			
 		};
 		

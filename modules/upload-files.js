@@ -76,17 +76,31 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 	
 }).directive('removeFileEdit',function($timeout) {
 	
+	Object.size = function(obj) {
+		var size = 0, key;
+		for (key in obj) {
+			if (obj.hasOwnProperty(key)) size++;
+		}
+		return size;
+	};	
+	
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 		
 			element.bind('click', function() {
 
-				if (scope.controls.btns.ok) return;
+				if (scope.controls.btns.save) return;
 			
-				var index = attrs.removeFile;
-
+				var index = attrs.removeFileEdit;
+				file = scope.documentFiles[index];
+				
+				if (Object.size(file.name)>0) {
+					scope.doc.delete_files.push(file.name);
+				};
+								
 				delete scope.documentFiles.splice(index,1);
+				
 				scope.$apply();
 				
 			});
@@ -156,7 +170,7 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 		
 		var self = this;
 		
-		self.start = function(scope,callback) {
+		self.start = function(scope,callback,edit) {
 
 			var types = {
 				"pdf": "data",
@@ -173,8 +187,11 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 			
 				var $file = $(item.eid);
 				var file = $($file[0]).attr(types[item.type]);
+				
+				var name = null;
+				if (edit) name = item.name;
 
-				scope.doc.files.push({file: file, type: item.type});
+				scope.doc.files.push({file: file, type: item.type, name: name});
 
 			});
 

@@ -1,9 +1,9 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,growl) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','barcode-listener-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,growl) {
 	
 	function app() {
 
 		var self = this;
-		
+
 		self.data = function(scope) {
 
 			scope.formHolder = {};
