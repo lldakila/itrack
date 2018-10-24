@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 18, 2018 at 05:08 PM
+-- Generation Time: Oct 24, 2018 at 05:13 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.3
 
@@ -178,16 +178,16 @@ CREATE TABLE `documents` (
   `communication` int(11) DEFAULT NULL,
   `doc_action` varchar(20) DEFAULT NULL,
   `dt_add_params` longtext,
-  `remarks` varchar(50) DEFAULT NULL
+  `remarks` varchar(50) DEFAULT NULL,
+  `update_log` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `documents`
 --
 
-INSERT INTO `documents` (`id`, `user_id`, `doc_name`, `barcode`, `origin`, `other_origin`, `document_date`, `document_transaction_type`, `doc_type`, `communication`, `doc_action`, `dt_add_params`, `remarks`) VALUES
-(1, 1, 'qwerty', 'PA-10-2018-00001', 2, NULL, '2018-10-17 16:26:54', 1, 1, 1, NULL, '[]', NULL),
-(2, 1, 'qwerty', 'OTH-10-2018-00001', 1, 'CSF', '2018-10-17 16:54:03', 1, 1, 1, NULL, '[]', NULL);
+INSERT INTO `documents` (`id`, `user_id`, `doc_name`, `barcode`, `origin`, `other_origin`, `document_date`, `document_transaction_type`, `doc_type`, `communication`, `doc_action`, `dt_add_params`, `remarks`, `update_log`) VALUES
+(1, 1, 'qwerty', 'ICT-10-2018-00001', 4, NULL, '2018-10-23 10:01:42', 1, 1, 1, NULL, '[]', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -253,8 +253,7 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`id`, `document_id`, `file_name`) VALUES
-(1, 1, 'PA-10-2018-00001_0.pdf'),
-(2, 1, 'PA-10-2018-00001_1.jpg');
+(1, 1, 'ICT-10-2018-00001_0.jpg');
 
 -- --------------------------------------------------------
 
@@ -373,16 +372,16 @@ CREATE TABLE `tracks` (
   `track_action_add_params` longtext,
   `track_action_status` varchar(50) DEFAULT NULL,
   `track_user` int(11) DEFAULT NULL,
-  `system_log` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `system_log` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_log` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tracks`
 --
 
-INSERT INTO `tracks` (`id`, `document_id`, `office_id`, `track_action`, `track_action_add_params`, `track_action_status`, `track_user`, `system_log`) VALUES
-(1, 1, 2, 1, '[{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"select","value":{"id":8,"description":"Arvin Camacho"},"options":[{"id":0,"description":"-"},{"id":2,"description":"Jennifer Joan Ortega-Manguiat"},{"id":8,"description":"Arvin Camacho"}]}]', NULL, 1, '2018-10-17 16:26:54'),
-(2, 2, 2, 1, '[{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"select","value":{"id":8,"description":"Arvin Camacho"},"options":[{"id":0,"description":"-"},{"id":2,"description":"Jennifer Joan Ortega-Manguiat"},{"id":8,"description":"Arvin Camacho"}]}]', NULL, 1, '2018-10-17 16:54:03');
+INSERT INTO `tracks` (`id`, `document_id`, `office_id`, `track_action`, `track_action_add_params`, `track_action_status`, `track_user`, `system_log`, `update_log`) VALUES
+(1, 1, 2, 1, '[{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"select","value":{"id":8,"description":"Arvin Camacho"},"options":[{"id":0,"description":"-"},{"id":2,"description":"Jennifer Joan Ortega-Manguiat"},{"id":8,"description":"Arvin Camacho"}]}]', NULL, 1, '2018-10-23 10:01:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -604,7 +603,7 @@ ALTER TABLE `divisions`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `document_dt_add_params`
 --
@@ -624,7 +623,7 @@ ALTER TABLE `document_types_staffs`
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `groups`
 --
@@ -649,7 +648,7 @@ ALTER TABLE `referral_options`
 -- AUTO_INCREMENT for table `tracks`
 --
 ALTER TABLE `tracks`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tracks_options`
 --

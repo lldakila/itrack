@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','bootstrap-growl','barcode-listener']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,growl) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','bootstrap-growl']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,growl) {
 	
 	function app() {
 
@@ -427,6 +427,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		};
 		
 	};
-	
+
 	return new app();
+
 });

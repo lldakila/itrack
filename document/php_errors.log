@@ -1,0 +1,14 @@
+[24-Oct-2018 17:08:15 Asia/Manila] PHP Notice:  Undefined variable: json in C:\Users\sly\Desktop\UwAmp310\www\itrack\functions.php on line 42
+[24-Oct-2018 17:08:15 Asia/Manila] PHP Stack trace:
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   1. {main}() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\index.php:0
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   2. Slim\App->run() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\index.php:219
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   3. Slim\App->process() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php:314
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   4. Slim\App->callMiddlewareStack() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php:406
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   5. Slim\App->__invoke() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\MiddlewareAwareTrait.php:117
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   6. Slim\Route->run() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php:515
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   7. Slim\Route->callMiddlewareStack() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Route.php:334
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   8. Slim\Route->__invoke() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\MiddlewareAwareTrait.php:117
+[24-Oct-2018 17:08:15 Asia/Manila] PHP   9. Slim\Handlers\Strategies\RequestResponse->__invoke() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Route.php:356
+[24-Oct-2018 17:08:15 Asia/Manila] PHP  10. call_user_func:{C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Handlers\Strategies\RequestResponse.php:41}() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Handlers\Strategies\RequestResponse.php:41
+[24-Oct-2018 17:08:15 Asia/Manila] PHP  11. Closure->{closure:C:\Users\sly\Desktop\UwAmp310\www\itrack\document\index.php:197-217}() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Handlers\Strategies\RequestResponse.php:41
+[24-Oct-2018 17:08:15 Asia/Manila] PHP  12. get_track_action_param() C:\Users\sly\Desktop\UwAmp310\www\itrack\document\index.php:211

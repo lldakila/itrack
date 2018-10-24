@@ -37,4 +37,12 @@ function get_files($dir,$barcode) {
 
 };
 
+function get_track_action_param($param) {
+
+	$param_arr = json_decode($param, true);
+
+	return $param_arr[0];
+
+};
+
 ?>
