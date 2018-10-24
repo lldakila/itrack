@@ -138,13 +138,13 @@
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>First Name</label>
-													<input type="text" class="form-control" name="firstname" value="">
+													<input type="text" class="form-control" name="firstname" value="" required>
 												</div>
 											</div>
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>Last Name</label>
-													<input type="text" class="form-control" name="lastname" value="">
+													<input type="text" class="form-control" name="lastname" value="" required>
 												</div>											
 											</div>
 										</div>
@@ -153,29 +153,16 @@
 											<div class="col-lg-6">										
 												<table>
 													<thead>
-														<tr><th>#</th><th>Name</th><th>Contact</th></tr>
+														<tr><th>#</th><th>Name</th><th>Contact</th><th>Remarks</th></tr>
 													</thead>
 													<tbody>
-														<tr><td>1</td><td><input type="text" class="form-control" name="contacts[0][name]" value=""></td><td><input type="text" class="form-control" name="contacts[0][contact_no]" value=""></td></tr>
-														<tr><td>2</td><td><input type="text" class="form-control" name="contacts[1][name]" value=""></td><td><input type="text" class="form-control" name="contacts[1][contact_no]" value=""></td></tr>
+														<tr><td>1</td><td><input type="text" class="form-control" name="contacts[0][name]" value=""></td><td><input type="text" class="form-control" name="contacts[0][contact_no]" value=""></td><td><input type="text" class="form-control" name="contacts[0][remarks]" value=""></td></tr>
+														<tr><td>2</td><td><input type="text" class="form-control" name="contacts[1][name]" value=""></td><td><input type="text" class="form-control" name="contacts[1][contact_no]" value=""></td><td><input type="text" class="form-control" name="contacts[1][remarks]" value=""></td></tr>
+														<tr><td>2</td><td><input type="text" class="form-control" name="contacts[2][name]" value=""></td><td><input type="text" class="form-control" name="contacts[2][contact_no]" value=""></td><td><input type="text" class="form-control" name="contacts[2][remarks]" value=""></td></tr>
 													</tbody>
 												</table>
 											</div>
-										</div>
-										
-										<!-- <div class="row">
-											<div class="col-lg-6">										
-												<table>
-													<thead>
-														<tr><th>#</th><th>Name</th><th>Contact</th></tr>
-													</thead>
-													<tbody>
-														<tr><td>1</td><td><input type="text" class="form-control" name="phonebooks[0][name]" value=""></td><td><input type="text" class="form-control" name="phonebooks[0][contact_no]" value=""></td></tr>
-														<tr><td>2</td><td><input type="text" class="form-control" name="phonebooks[1][name]" value=""></td><td><input type="text" class="form-control" name="phonebooks[1][contact_no]" value=""></td></tr>
-													</tbody>
-												</table>
-											</div>
-										</div> -->										
+										</div>										
 										
 										<div class="row">
 											<div class="col-lg-12">
