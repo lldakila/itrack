@@ -284,7 +284,7 @@
 													<div class="images-container">
 														<div class="image-container" ng-repeat="df in documentFiles">
 															<div class="controls">
-																<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df)">
+																<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df,'../dialogs/preview.html')">
 																	<i class="icon-search7"></i>
 																</a>
 																<a href="javascript:;" class="control-btn" remove-file-edit="{{$index}}">
@@ -377,12 +377,13 @@
 	<script src="<?=$url?>angular/modules/post/window-open-post.js"></script>
 	
 	<!-- modules -->
-	<script src="../modules/notifications.js"></script>
+	<script src="../modules/notifications-view.js"></script>
 	<script src="<?=$url?>modules/module-access.js"></script>
 	<script src="<?=$url?>modules/jspdf.js"></script>
 	<script src="<?=$url?>modules/upload-files.js"></script>
 	
 	<script src="../modules/url.js"></script>	
+	<script src="../modules/files.js"></script>
 	<script src="../modules/view.js"></script>
 	
 	<!-- controller -->

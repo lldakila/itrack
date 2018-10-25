@@ -31,14 +31,14 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 	
 	return {
 		restrict: 'A',
-		templateUrl: '../../html/notifications.html',
+		templateUrl: '../../../html/notifications.html',
 		link: function(scope, element, attrs) {	
-
+		
 			$timeout(function() {
 
 				$http({
 				  method: 'POST',
-				  url: '../../handlers/access.php',
+				  url: '../../../handlers/access.php',
 				  data: {group: scope.profile.group, mod: 'notifications', prop: 1}
 				}).then(function mySucces(response) {
 					

@@ -79,7 +79,7 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 		$files = get_files("../files/",$document[0]['barcode']);
 		$document[0]['files'] = $files;
 
-		$document = document_info_complete($con,$document[0]);
+		$document = document_info($con,$document[0]);
 		
 	};
 	
@@ -175,22 +175,34 @@ $app->get('/for/initial/{id}', function ($request, $response, $args) {
 
 	require_once '../path_url.php';
 	require_once '../document-info.php';
+	require_once 'datetime.php';
+	require_once '../functions.php';	
 
 	$con = $this->con;
 	$con->table = "documents";
 	
 	$id = $args['id'];
 	
-	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks FROM documents WHERE id = $id");	
+	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
 	$document = document_info_complete($con,$document[0]);	
 	
+	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
+	$due_date = due_date($document['document_date'],$document['document_transaction_type']['days']);
+	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
+	
+	# tracks
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log");
+	$first_track = $tracks[0]; # first track
+	
+	$param = get_track_action_param($first_track['track_action_add_params']);	
+	
     return $this->view->render($response, 'initial.html', [
-		'path'=>$base_path,	
+		'path'=>$base_path,
 		'url'=>"../".$base_url,
         'id'=>$args['id'],
-		'document'=>$document		
+		'document'=>$document,
+		'track_param'=>$param,
     ]);
-	
 
 })->setName('document');
 
@@ -213,6 +225,23 @@ $app->get('/track/assess/{id}', function ($request, $response, $args) {
 	$action = array("action"=>$param['action_id'],"staff"=>$param['value']);
 
 	return $response->withJson($action);
+
+});
+
+$app->get('/for/initial/doc/{id}', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "documents";	
+
+	require_once '../functions.php';
+
+	$id = $args['id'];
+
+	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");
+
+	$files = get_files("../files/",$document[0]['barcode']);
+
+	return $response->withJson(array("files"=>$files));
 
 });
 

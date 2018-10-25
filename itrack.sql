@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 24, 2018 at 05:13 PM
+-- Generation Time: Oct 25, 2018 at 06:15 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.3
 
@@ -187,7 +187,7 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`id`, `user_id`, `doc_name`, `barcode`, `origin`, `other_origin`, `document_date`, `document_transaction_type`, `doc_type`, `communication`, `doc_action`, `dt_add_params`, `remarks`, `update_log`) VALUES
-(1, 1, 'qwerty', 'ICT-10-2018-00001', 4, NULL, '2018-10-23 10:01:42', 1, 1, 1, NULL, '[]', NULL, NULL);
+(1, 1, 'Request', 'ICT-10-2018-00001', 4, NULL, '2018-10-25 17:36:52', 1, 1, 1, NULL, '[]', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -247,13 +247,6 @@ CREATE TABLE `files` (
   `document_id` int(11) DEFAULT NULL,
   `file_name` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `files`
---
-
-INSERT INTO `files` (`id`, `document_id`, `file_name`) VALUES
-(1, 1, 'ICT-10-2018-00001_0.jpg');
 
 -- --------------------------------------------------------
 
@@ -381,7 +374,7 @@ CREATE TABLE `tracks` (
 --
 
 INSERT INTO `tracks` (`id`, `document_id`, `office_id`, `track_action`, `track_action_add_params`, `track_action_status`, `track_user`, `system_log`, `update_log`) VALUES
-(1, 1, 2, 1, '[{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"select","value":{"id":8,"description":"Arvin Camacho"},"options":[{"id":0,"description":"-"},{"id":2,"description":"Jennifer Joan Ortega-Manguiat"},{"id":8,"description":"Arvin Camacho"}]}]', NULL, 1, '2018-10-23 10:01:42', NULL);
+(1, 1, 2, 1, '[{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"select","value":{"id":8,"description":"Arvin Camacho"},"options":[{"id":0,"description":"-"},{"id":2,"description":"Jennifer Joan Ortega-Manguiat"},{"id":8,"description":"Arvin Camacho"}]}]', NULL, 1, '2018-10-25 17:36:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -445,7 +438,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `fname`, `mname`, `lname`, `position`, `uname`, `pw`, `employee_id`, `div_id`, `email_address`, `phone_number`, `group_id`, `system_accountability`) VALUES
 (1, 'Sylvester', 'Bulilan', 'Flores', 'Administrative Aide VI', 'sly', 'legend', '82156', 4, 'sly@christian.com.ph', '09179245040', 1, NULL),
-(2, 'Jennifer Joan', NULL, 'Ortega-Manguiat', 'Provincial Administrator', 'pa', '123456', NULL, 2, NULL, NULL, 2, 1),
+(2, 'Jennifer Joan', 'Ortega', 'Manguiat', 'Provincial Administrator', 'pa', '123456', NULL, 2, NULL, NULL, 2, 1),
 (3, 'Mary Ann', 'Yan', 'Orofino', 'Administrative Aide IV', 'ann', '123456', '81018', 2, NULL, NULL, 3, NULL),
 (4, 'Ghenny Rose', NULL, 'Estipular', 'Administrative Aide VI', 'ghenny', '123456', '80005', 2, NULL, NULL, 3, NULL),
 (5, 'Remeleth', NULL, 'Dumaguin', 'Administrative Officer', 'melette', '123456', NULL, 4, NULL, NULL, 4, NULL),
