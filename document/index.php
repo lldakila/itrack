@@ -166,8 +166,9 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 
 	if (count($delete_files)) {
 		deleteFiles($con,$delete_files,"../files");
-		uploadFiles($con,$uploads,$data['barcode'],$id,"../files");
 	};
+	
+	uploadFiles($con,$uploads,$data['barcode'],$id,"../files");	
 
 });
 
@@ -214,6 +215,8 @@ $app->get('/track/assess/{id}', function ($request, $response, $args) {
 	require_once '../document-info.php';
 	require_once '../functions.php';	
 
+	session_start();
+	
 	$id = $args['id'];
 
 	# first track
@@ -222,7 +225,16 @@ $app->get('/track/assess/{id}', function ($request, $response, $args) {
 	
 	$param = get_track_action_param($first_track['track_action_add_params']);
 	
-	$action = array("action"=>$param['action_id'],"staff"=>$param['value']);
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];
+	
+	$param_user_id = $param['value']['id'];
+	$param_office = $param['value']['office']['id'];
+
+	$check = array("staff"=>$session_user_id==$param_user_id,"office"=>$session_office==$param_office);
+	
+	$action = array("action"=>null,"staff"=>null,"ok"=>false);
+	if (($check['office'])&&($check['staff'])) $action = array("action"=>$param['action_id'],"staff"=>$param['value'],"ok"=>true);
 
 	return $response->withJson($action);
 
@@ -234,14 +246,56 @@ $app->get('/for/initial/doc/{id}', function ($request, $response, $args) {
 	$con->table = "documents";	
 
 	require_once '../functions.php';
-
+	
 	$id = $args['id'];
 
 	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");
 
+	# first track
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log LIMIT 1");	
+	$first_track = $tracks[0];	
+	
 	$files = get_files("../files/",$document[0]['barcode']);
 
-	return $response->withJson(array("files"=>$files));
+	return $response->withJson(array("files"=>$files,"first_track"=>$first_track));
+
+});
+
+$app->post('/for/initial/update', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	session_start();	
+
+	$data = $request->getParsedBody();
+
+	$id = $data['id'];
+
+	$track = array(
+		"document_id"=>$id,
+		"office_id"=>$_SESSION['office'],
+		"track_action_staff"=>$_SESSION['itrack_user_id'],		
+		"track_action_status"=>"Initialed",
+		"track_user"=>$_SESSION['itrack_user_id'],
+		"preceding_track"=>$data['first_track']['id'],
+	);
+
+	$track_id = $data['track_id'];
+	
+	if ($data['initial']) {
+
+		$insert_track = $con->insertData($track);
+		$track_id = $con->insertId;
+
+	} else {
+		
+		var_dump($data);
+		$delete_track = $con->deleteData(array("id"=>$track_id));
+
+	};
+	
+	return $response->withJson($track_id);
 
 });
 

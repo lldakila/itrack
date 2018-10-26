@@ -27,6 +27,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.doc = {};
 			scope.doc.id = id;
 			scope.doc.initial = false;
+			scope.doc.track_id = 0;
+			scope.doc.first_track = {};
 			
 			initDoc(scope,id);
 
@@ -48,6 +50,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			  url: scope.url.for+'document/for/initial/doc/'+id,
 			}).then(function mySuccess(response) {
 
+				scope.doc.first_track = response.data.first_track;
+			
 				files.filesThumbnails(scope,response.data.files);
 
 				bui.hide();
@@ -57,6 +61,29 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				bui.hide();
 
 			});			
+			
+		};
+		
+		self.initial = function(scope) {
+			
+			bui.show();
+			
+			$http({
+			  method: 'POST',
+			  url: scope.url.for+'document/for/initial/update',
+			  data: scope.doc
+			}).then(function mySuccess(response) {
+
+				scope.doc.track_id = response.data;			
+				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+
+				bui.hide();
+
+			}, function myError(response) {
+
+				bui.hide();
+
+			});	
 			
 		};
 		

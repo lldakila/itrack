@@ -62,22 +62,30 @@ angular.module('barcode-listener',['bootstrap-modal','form-validator-dialog','bo
 				
 				assess_document(id).then(function success(response) {
 					
-					switch (response.action) {
+					if (response.ok) {
+					
+						switch (response.action) {
 
-						case 1:
+							case 1:
 
-							$window.location.href = 'document/for/initial/'+id;
+								$window.location.href = 'document/for/initial/'+id;
+							
+							break;
+							
+							case 2:
+
+							break;
+							
+							case 3:
+
+							break;
+
+						};
 						
-						break;
+					} else {
 						
-						case 2:
-
-						break;
+						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'You have no pre-defined action for this document.');
 						
-						case 3:
-
-						break;
-
 					};
 					
 				}, function error(response) {

@@ -27,30 +27,24 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				edit: true,
 				ok: true,
 				cancel:true
-			};
+			};								
 			
 			scope.doc = {};
-			scope.doc.id = 0;
-			
+			scope.doc.id = 0;			
 			scope.doc.files = [];
-			// scope.doc.attachments = [];
+			scope.doc.actions = [];						
+			scope.doc.document_dt_add_params = [];			
 			
-			scope.docs = [];
+			scope.dt_add_params = [];			
+			scope.documentFiles = [];			
 			
 			scope.print = {};
 			scope.print.doc = {};
 			
-			scope.offices = [];
-			
-			scope.document_types = [];		
-			
-			scope.transactions = [];	
-			
-			scope.communications = [];		
-
-			scope.dt_add_params = [];
-			
-			scope.action_add_params = [];
+			scope.offices = [];			
+			scope.document_types = [];					
+			scope.transactions = [];				
+			scope.communications = [];	
 			
 			$http({
 				method: 'GET',
@@ -100,6 +94,17 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 			});				
 			
+			$http({
+				method: 'GET',
+				url: 'api/receive-document/actions'
+			}).then(function mySuccess(response) {
+				
+				scope.doc.actions = angular.copy(response.data);
+					
+			}, function myError(response) {
+		
+		
+			});				
 			
 		};
 		
@@ -111,18 +116,26 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.controls.btns.cancel = false;
 			
 			scope.doc = {};
-			scope.doc.id = 0;
+			scope.doc.id = 0;			
 			scope.doc.files = [];
-			scope.doc.document_dt_add_params = [];
-			scope.doc.document_action_add_params = [];
-			// scope.doc.attachments = [];
+			scope.doc.actions = [];						
+			scope.doc.document_dt_add_params = [];					
 			
+			scope.dt_add_params = [];			
 			scope.documentFiles = [];
-
-			scope.dt_add_params = [];
-			scope.action_add_params = [];
-						
 			
+			$http({
+				method: 'GET',
+				url: 'api/receive-document/actions'
+			}).then(function mySuccess(response) {
+				
+				scope.doc.actions = angular.copy(response.data);
+					
+			}, function myError(response) {
+		
+		
+			});				
+
 		};
 		
 		self.cancel = function(scope) {
@@ -142,7 +155,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			if (validate.form(scope,'doc')) return;
 				
-			var actions = 'false';
+			/* var actions = 'false';
 			
 			var controls = scope.formHolder.doc.$$controls;
 			
@@ -173,7 +186,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Pleas select an action');
 				return;
 				
-			};
+			}; */
 
 			var addDocument = function() {	
 
@@ -425,6 +438,19 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			});
 
 		};
+		
+		self.headerActionParam = function(scope,action) {
+
+			scope.doc.actions[action].value = !scope.doc.actions[action].value;
+			
+		};
+		
+		self.checkboxActionParam = function(scope,action) {
+
+			if (scope.doc.actions[action].value) $('#'+action).addClass('in');
+			else $('#'+action).removeClass('in');
+			
+		};		
 		
 	};
 

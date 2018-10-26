@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 25, 2018 at 06:15 PM
+-- Generation Time: Oct 26, 2018 at 05:20 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.3
 
@@ -187,7 +187,7 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`id`, `user_id`, `doc_name`, `barcode`, `origin`, `other_origin`, `document_date`, `document_transaction_type`, `doc_type`, `communication`, `doc_action`, `dt_add_params`, `remarks`, `update_log`) VALUES
-(1, 1, 'Request', 'ICT-10-2018-00001', 4, NULL, '2018-10-25 17:36:52', 1, 1, 1, NULL, '[]', NULL, NULL);
+(1, 4, 'Qwerty', 'ICT-10-2018-00001', 4, NULL, '2018-10-26 17:16:40', 1, 1, 1, NULL, '[]', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -360,11 +360,13 @@ INSERT INTO `referral_options` (`id`, `pre_phrase`, `choice`, `description`) VAL
 CREATE TABLE `tracks` (
   `id` int(255) NOT NULL,
   `document_id` int(255) DEFAULT NULL,
-  `office_id` int(11) DEFAULT NULL,
+  `office_id` int(11) DEFAULT NULL COMMENT 'Office of user currently login',
   `track_action` int(11) DEFAULT NULL,
   `track_action_add_params` longtext,
+  `track_action_staff` int(11) DEFAULT NULL COMMENT 'Staff who performed the action',
   `track_action_status` varchar(50) DEFAULT NULL,
-  `track_user` int(11) DEFAULT NULL,
+  `track_user` int(11) DEFAULT NULL COMMENT 'Id of user currently login',
+  `preceding_track` int(11) DEFAULT NULL,
   `system_log` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_log` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -373,8 +375,9 @@ CREATE TABLE `tracks` (
 -- Dumping data for table `tracks`
 --
 
-INSERT INTO `tracks` (`id`, `document_id`, `office_id`, `track_action`, `track_action_add_params`, `track_action_status`, `track_user`, `system_log`, `update_log`) VALUES
-(1, 1, 2, 1, '[{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"select","value":{"id":8,"description":"Arvin Camacho"},"options":[{"id":0,"description":"-"},{"id":2,"description":"Jennifer Joan Ortega-Manguiat"},{"id":8,"description":"Arvin Camacho"}]}]', NULL, 1, '2018-10-25 17:36:52', NULL);
+INSERT INTO `tracks` (`id`, `document_id`, `office_id`, `track_action`, `track_action_add_params`, `track_action_staff`, `track_action_status`, `track_user`, `preceding_track`, `system_log`, `update_log`) VALUES
+(1, 1, 2, 1, '{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"checkbox","options":[{"id":2,"description":"Jennifer Joan Manguiat","office":{"id":2,"office":"PA"},"value":false},{"id":8,"description":"Arvin Camacho","office":{"id":2,"office":"PA"},"value":true},{"id":9,"description":"Evangeline Mendoza","office":{"id":2,"office":"PA"},"value":true}]}', NULL, NULL, 4, NULL, '2018-10-26 17:16:40', NULL),
+(2, 1, 2, 2, '{"id":1,"action_id":2,"model":"action_user_id","description":"To","type":"checkbox","options":[{"id":2,"description":"Jennifer Joan Manguiat","office":{"id":2,"office":"PA"},"value":true},{"id":6,"description":"Francisco Emmanuel Ortega","office":{"id":3,"office":"Office of the Provincial Governor"},"value":false}]}', NULL, NULL, 4, NULL, '2018-10-26 17:16:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -444,7 +447,8 @@ INSERT INTO `users` (`id`, `fname`, `mname`, `lname`, `position`, `uname`, `pw`,
 (5, 'Remeleth', NULL, 'Dumaguin', 'Administrative Officer', 'melette', '123456', NULL, 4, NULL, NULL, 4, NULL),
 (6, 'Francisco Emmanuel', 'Ramos', 'Ortega', 'Provincial Governor', 'pacoy', '123456', NULL, 3, NULL, NULL, 5, NULL),
 (7, 'Sharmeen', 'Natarte', 'Guray', 'ADMINISTRATIVE AIDE IV', 'sharmeen', '123456', NULL, 3, NULL, NULL, 4, NULL),
-(8, 'Arvin', 'Cabading', 'Camacho', 'Assistant Provincial Administrator', 'arvin', '123456', '90097', 2, NULL, NULL, 2, NULL);
+(8, 'Arvin', 'Cabading', 'Camacho', 'Assistant Provincial Administrator', 'arvin', '123456', '90097', 2, NULL, NULL, 2, NULL),
+(9, 'Evangeline', 'Soriano', 'Mendoza', 'SAO', 'eva', '123456', '76023', 2, NULL, NULL, 3, NULL);
 
 --
 -- Indexes for dumped tables
@@ -549,7 +553,8 @@ ALTER TABLE `referral_options`
 ALTER TABLE `tracks`
   ADD PRIMARY KEY (`id`),
   ADD KEY `document_id` (`document_id`),
-  ADD KEY `office_id` (`office_id`);
+  ADD KEY `office_id` (`office_id`),
+  ADD KEY `track_action_staff` (`track_action_staff`);
 
 --
 -- Indexes for table `tracks_options`
@@ -641,7 +646,7 @@ ALTER TABLE `referral_options`
 -- AUTO_INCREMENT for table `tracks`
 --
 ALTER TABLE `tracks`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tracks_options`
 --
@@ -656,7 +661,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- Constraints for dumped tables
 --
