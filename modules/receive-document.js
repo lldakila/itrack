@@ -155,38 +155,59 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			if (validate.form(scope,'doc')) return;
 				
-			/* var actions = 'false';
+			var actions = 'false';
+			var options = 'true'; 
 			
-			var controls = scope.formHolder.doc.$$controls;
-			
-			angular.forEach(controls,function(elem,i) {
+			var doc_actions = ['for_initial','for_signature','for_routing'];
 
-				if (elem.$$attr.name == 'for_initial') {
+			doc_actions.forEach(function(action,i) {
+				
+				actions+=(scope.doc.actions[action].value)?'||true':'||false';
+				
+				if (scope.doc.actions[action].value) {
 					
-					actions+=(scope.doc.for_initial==undefined)?'||false':(scope.doc.for_initial)?'||true':'||false';
+					options+='&&(';
+					
+					angular.forEach(scope.doc.actions[action].params,function(param,ii) {
+						
+						if (param.type=='checkbox') {
+						
+							angular.forEach(param.options, function(option,iii) {
+								
+								if (iii==0) options+=(option.value)?'true':'false';
+								else options+=(option.value)?'||true':'||false';						
+								
+							});
+						
+						};
+						
+						if (param.type=='select') {
+							
+							options+=(param.value.id>0)?'true':'false';						
+							
+						};
+						
+					});
+					
+					options+=')';
 					
 				};
-
-				if (elem.$$attr.name == 'for_signature') {
-					
-					actions+=(scope.doc.for_signature==undefined)?'||false':(scope.doc.for_signature)?'||true':'||false';
-					
-				};
-
-				if (elem.$$attr.name == 'for_routing') {
-					
-					actions+=(scope.doc.for_routing==undefined)?'||false':(scope.doc.for_routing)?'||true':'||false';
-					
-				};
-									
+				
 			});
-
+			
 			if (!eval(actions)) {
 				
 				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Pleas select an action');
 				return;
 				
-			}; */
+			} else {
+				
+				if (!eval(options)) {
+					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Choice is required in each actions selected');
+					return;
+				};
+				
+			};
 
 			var addDocument = function() {	
 

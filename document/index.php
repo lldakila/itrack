@@ -177,10 +177,12 @@ $app->get('/for/initial/{id}', function ($request, $response, $args) {
 	require_once '../path_url.php';
 	require_once '../document-info.php';
 	require_once 'datetime.php';
-	require_once '../functions.php';	
-
+	require_once '../functions.php';
+	
 	$con = $this->con;
 	$con->table = "documents";
+	
+	session_start();
 	
 	$id = $args['id'];
 	
@@ -195,14 +197,19 @@ $app->get('/for/initial/{id}', function ($request, $response, $args) {
 	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log");
 	$first_track = $tracks[0]; # first track
 	
-	$param = get_track_action_param($first_track['track_action_add_params']);	
+	$param = get_track_action_param($first_track['track_action_add_params']);
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+	
+	$action = get_staff_action($param,$session_user_id,$session_office);	
 	
     return $this->view->render($response, 'initial.html', [
 		'path'=>$base_path,
 		'url'=>"../".$base_url,
         'id'=>$args['id'],
 		'document'=>$document,
-		'track_param'=>$param,
+		'track_param'=>$action,
     ]);
 
 })->setName('document');
@@ -228,13 +235,7 @@ $app->get('/track/assess/{id}', function ($request, $response, $args) {
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];
 
-	$param_user_id = $param['value']['id'];
-	$param_office = $param['value']['office']['id'];
-
 	$action = get_staff_action($param,$session_user_id,$session_office);
-	
-
-	if (($check['office'])&&($check['staff'])) $action = array("action"=>$param['action_id'],"staff"=>$param['value'],"ok"=>true);
 
 	return $response->withJson($action);
 
@@ -289,8 +290,7 @@ $app->post('/for/initial/update', function ($request, $response, $args) {
 		$track_id = $con->insertId;
 
 	} else {
-		
-		var_dump($data);
+
 		$delete_track = $con->deleteData(array("id"=>$track_id));
 
 	};

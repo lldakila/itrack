@@ -47,15 +47,15 @@ function get_track_action_param($param) {
 
 function get_staff_action($param,$user_id,$office) {
 	
-	$check = array("staff"=>$session_user_id==$param_user_id,"office"=>$session_office==$param_office);
-	
 	$action = array("action"=>null,"staff"=>null,"ok"=>false);	
 	
-	foreach ($param as $p) {
-		
-		if (($p['id'] == $user_id) && ($p['office']['id'] == $office)) 
+	foreach ($param['options'] as $option) {
+
+		if (($option['id'] == $user_id) && ($option['office']['id'] == $office)) $action = array("action"=>$param['action_id'],"staff"=>$option,"ok"=>true);
 		
 	};
+	
+	return $action;
 	
 };
 

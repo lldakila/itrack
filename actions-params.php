@@ -105,6 +105,7 @@ $actions_params = array(
 				"model"=>"action_user_id",
 				"description"=>"To",
 				"type"=>"select",
+				"value"=>array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-")),		
 				"options"=>$users_for_route_selects,			
 			),
 		),
