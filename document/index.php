@@ -227,13 +227,13 @@ $app->get('/track/assess/{id}', function ($request, $response, $args) {
 	
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];
-	
+
 	$param_user_id = $param['value']['id'];
 	$param_office = $param['value']['office']['id'];
 
-	$check = array("staff"=>$session_user_id==$param_user_id,"office"=>$session_office==$param_office);
+	$action = get_staff_action($param,$session_user_id,$session_office);
 	
-	$action = array("action"=>null,"staff"=>null,"ok"=>false);
+
 	if (($check['office'])&&($check['staff'])) $action = array("action"=>$param['action_id'],"staff"=>$param['value'],"ok"=>true);
 
 	return $response->withJson($action);

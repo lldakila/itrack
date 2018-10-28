@@ -41,8 +41,22 @@ function get_track_action_param($param) {
 
 	$param_arr = json_decode($param, true);
 
-	return $param_arr[0];
+	return $param_arr;
 
+};
+
+function get_staff_action($param,$user_id,$office) {
+	
+	$check = array("staff"=>$session_user_id==$param_user_id,"office"=>$session_office==$param_office);
+	
+	$action = array("action"=>null,"staff"=>null,"ok"=>false);	
+	
+	foreach ($param as $p) {
+		
+		if (($p['id'] == $user_id) && ($p['office']['id'] == $office)) 
+		
+	};
+	
 };
 
 ?>
