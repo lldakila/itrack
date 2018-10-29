@@ -51,25 +51,8 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 		# first track
 		$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY system_log LIMIT 1");
 		
-		$document[0]['for_initial'] = false;
-		$document[0]['for_signature'] = false;
-		$document[0]['for_routing'] = false;
-		
 		$document[0]['dt_add_params'] = json_decode($document[0]['dt_add_params'],false);
 		$document[0]['document_dt_add_params'] = $document[0]['dt_add_params'];
-		$document[0]['document_action_add_params'] = [];
-		
-		if (count($tracks)) {
-			
-			$first_track = $tracks[0];
-			
-			if ($first_track['track_action']==1) $document[0]['for_initial'] = true;
-			if ($first_track['track_action']==2) $document[0]['for_signature'] = true;
-			if ($first_track['track_action']==3) $document[0]['for_routing'] = true;
-			
-			$document[0]['document_action_add_params'] = json_decode($first_track['track_action_add_params'],false);
-			
-		};
 		
 		$document[0]['document_date_barcode'] = date("M j, Y h:i:s A",strtotime($document[0]['document_date']));
 		
@@ -84,6 +67,48 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 	};
 	
 	return $response->withJson($document);
+
+});
+
+# actions
+$app->get('/view/actions/{id}', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+
+	require_once '../document-actions.php';
+	require_once '../actions-params.php';
+
+	$id = $args['id'];
+
+	$document_actions = document_actions;
+
+	# tracks
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id");
+
+	foreach ($document_actions as $da) {
+
+		$value = false;
+		$params = get_params($actions_params,$da['id']);		
+	
+		foreach ($tracks as $track) {
+			
+			if ($da['id'] == $track['track_action']) {
+				
+				$value = true;
+				$params = array(json_decode($track['track_action_add_params'],false));
+				
+			};
+			
+		};
+	
+		$actions[$da['key']] = array(
+			"params"=>$params,
+			"value"=>$value
+		);
+	
+	};
+
+    return $response->withJson($actions);
 
 });
 
@@ -106,9 +131,9 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	unset($data['document_dt_add_params']);
 	#
 
-	# document_action_add_params
-	$document_action_add_params = $data['document_action_add_params'];
-	unset($data['document_action_add_params']);
+	# actions
+	$actions = $data['actions'];
+	unset($data['actions']);
 	#	
 	
 	# files for deletion
@@ -121,16 +146,6 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	$data['doc_type'] = $data['doc_type']['id'];
 	$data['communication'] = $data['communication']['id'];
 	$data['document_transaction_type'] = $data['document_transaction_type']['id'];	
-	
-	$track_action = 0;
-	
-	if ($data['for_initial']) $track_action = 1;
-	if ($data['for_signature']) $track_action = 2;
-	if ($data['for_routing']) $track_action = 3;
-
-	unset($data['for_initial']);
-	unset($data['for_signature']);
-	unset($data['for_routing']);
 
 	$uploads = array("files"=>$data['files']);	
 	unset($data['files']);
@@ -141,28 +156,81 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	
 	$data['update_log'] = "CURRENT_TIMESTAMP";
 	$con->updateData($data,'id');
-	
-	# first track
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log LIMIT 1");	
-	
-	if (count($tracks)) {
 
-		$con->table = "tracks";	
+	$con->table = "tracks";
+
+	$actions_arr = array("for_initial"=>1,"for_signature"=>2,"for_routing"=>3);
 	
-		$first_track = $tracks[0];
-		$track = array(
-			"id"=>$first_track['id'],
-			"track_action"=>$track_action,
-			"track_action_add_params"=>json_encode($document_action_add_params),
-			"track_action_status"=>null,
-			"track_user"=>$_SESSION['itrack_user_id'],
-			"update_log"=>"CURRENT_TIMESTAMP"
-		);
+	foreach ($actions as $i => $action) {
 
-		$con->updateData($track,'id');
+		$track = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND track_action = ".$actions_arr[$i]);
 
+		if ($action['value']) {
+
+			if (count($track)) {
+				
+				$track = array(
+					"id"=>$track[0]['id'],
+					"track_action_add_params"=>json_encode($action['params'][0]),
+					"track_action_status"=>null,
+					"track_user"=>$_SESSION['itrack_user_id'],
+					"update_log"=>"CURRENT_TIMESTAMP"
+				);
+
+				$con->updateData($track,'id');
+			
+			} else {
+				
+				$track = array(
+					"document_id"=>$id,
+					"office_id"=>$_SESSION['office'],
+					"track_action"=>$actions_arr[$i],
+					"track_action_add_params"=>json_encode($action['params'][0]),
+					"track_action_status"=>null,
+					"track_user"=>$_SESSION['itrack_user_id'],
+				);
+				
+				$con->insertData($track);				
+				
+			};
+		
+		} else {
+			
+			if (count($track)) $con->deleteData(array("id"=>$track[0]['id']));
+			
+		};
+
+		
 	};
-	#
+	
+	/*foreach ($actions as $action) {
+
+		if ($action['value']) {
+
+		$track_action = $action['params'][0]['action_id'];
+
+		if (count($tracks)) {
+
+			$first_track = $tracks[0];
+			$track = array(
+				"id"=>$first_track['id'],
+				"track_action"=>$track_action,
+				"track_action_add_params"=>json_encode($document_action_add_params),
+				"track_action_status"=>null,
+				"track_user"=>$_SESSION['itrack_user_id'],
+				"update_log"=>"CURRENT_TIMESTAMP"
+			);
+
+			$con->updateData($track,'id');
+
+		};
+		#
+
+		} else {
+
+		};
+		
+	}; */
 
 	if (count($delete_files)) {
 		deleteFiles($con,$delete_files,"../files");

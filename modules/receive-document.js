@@ -423,13 +423,6 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			$('#upload-files')[0].click();
 			
 		};
-		
-		// upload attachment
-		/* self.addAttachment = function(scope) {
-			
-			$('#upload-attachments')[0].click();
-			
-		}; */
 
 		self.actionChange = function(scope,value,a) {
 
@@ -461,15 +454,19 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		};
 		
 		self.headerActionParam = function(scope,action) {
-
-			scope.doc.actions[action].value = !scope.doc.actions[action].value;
+		
+			if (!scope.controls.btns.ok) scope.doc.actions[action].value = !scope.doc.actions[action].value;
 			
 		};
 		
 		self.checkboxActionParam = function(scope,action) {
 
-			if (scope.doc.actions[action].value) $('#'+action).addClass('in');
-			else $('#'+action).removeClass('in');
+			if (!scope.controls.btns.ok) {
+				
+				if (scope.doc.actions[action].value) $('#'+action).addClass('in');
+				else $('#'+action).removeClass('in');
+				
+			};
 			
 		};		
 		

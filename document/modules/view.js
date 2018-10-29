@@ -36,27 +36,22 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			scope.doc = {};
 			scope.doc.id = 0;
-			
 			scope.doc.files = [];
+			scope.doc.actions = [];		
+			scope.doc.document_dt_add_params = [];
+		
 			scope.doc.delete_files = [];
-			// scope.doc.attachments = [];
 			
-			scope.docs = [];
+			scope.dt_add_params = [];	
+			scope.documentFiles = [];			
 			
 			scope.print = {};
 			scope.print.doc = {};
 			
 			scope.offices = [];
-			
 			scope.document_types = [];		
-			
 			scope.transactions = [];	
-			
-			scope.communications = [];		
-
-			scope.dt_add_params = [];
-			
-			scope.action_add_params = [];			
+			scope.communications = [];			
 			
 			$http({
 				method: 'GET',
@@ -104,7 +99,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			}, function myError(response) {
 		
 		
-			});				
+			});
 			
 			var href = $window.location.href;
 
@@ -151,9 +146,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				barcode(response.data.barcode);
 
 				scope.dt_add_params = response.data.document_dt_add_params;
-				scope.action_add_params = response.data.document_action_add_params;
 
 				files.filesThumbnails(scope,response.data.files);
+
+				actions(scope,id);
 
 				bui.hide();
 
@@ -163,6 +159,23 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			});
 			
+		};
+		
+		function actions(scope,id) {
+
+			$http({
+				method: 'GET',
+				url: scope.url.view+'document/view/actions/'+id
+			}).then(function mySuccess(response) {
+
+				scope.doc.actions = angular.copy(response.data);
+				checkboxActionParam(scope);
+
+			}, function myError(response) {
+		
+		
+			});
+
 		};
 		
 		self.cancel = function(scope) {
@@ -183,35 +196,56 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			if (validate.form(scope,'doc')) return;
 				
 			var actions = 'false';
+			var options = 'true'; 
 			
-			var controls = scope.formHolder.doc.$$controls;
-			
-			angular.forEach(controls,function(elem,i) {
+			var doc_actions = ['for_initial','for_signature','for_routing'];
 
-				if (elem.$$attr.name == 'for_initial') {
+			doc_actions.forEach(function(action,i) {
+				
+				actions+=(scope.doc.actions[action].value)?'||true':'||false';
+				
+				if (scope.doc.actions[action].value) {
 					
-					actions+=(scope.doc.for_initial==undefined)?'||false':(scope.doc.for_initial)?'||true':'||false';
+					options+='&&(';
+					
+					angular.forEach(scope.doc.actions[action].params,function(param,ii) {
+						
+						if (param.type=='checkbox') {
+						
+							angular.forEach(param.options, function(option,iii) {
+								
+								if (iii==0) options+=(option.value)?'true':'false';
+								else options+=(option.value)?'||true':'||false';						
+								
+							});
+						
+						};
+						
+						if (param.type=='select') {
+							
+							options+=(param.value.id>0)?'true':'false';						
+							
+						};
+						
+					});
+					
+					options+=')';
 					
 				};
-
-				if (elem.$$attr.name == 'for_signature') {
-					
-					actions+=(scope.doc.for_signature==undefined)?'||false':(scope.doc.for_signature)?'||true':'||false';
-					
-				};
-
-				if (elem.$$attr.name == 'for_routing') {
-					
-					actions+=(scope.doc.for_routing==undefined)?'||false':(scope.doc.for_routing)?'||true':'||false';
-					
-				};
-									
+				
 			});
-
+			
 			if (!eval(actions)) {
 				
 				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Pleas select an action');
 				return;
+				
+			} else {
+				
+				if (!eval(options)) {
+					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Choice is required in each actions selected');
+					return;
+				};
 				
 			};
 
@@ -353,13 +387,6 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			$('#upload-files')[0].click();
 			
 		};
-		
-		// upload attachment
-		/* self.addAttachment = function(scope) {
-			
-			$('#upload-attachments')[0].click();
-			
-		}; */
 
 		self.actionChange = function(scope,value,a) {
 
@@ -377,7 +404,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 				method: 'GET',
-				url: '../../api/receive-document/action_params/'+da[a],
+				url: 'api/receive-document/action_params/'+da[a],
 			}).then(function mySuccess(response) {
 
 				scope.action_add_params = angular.copy(response.data);
@@ -388,6 +415,36 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			});
 
+		};
+		
+		self.headerActionParam = function(scope,action) {
+
+			if (!scope.controls.btns.save) scope.doc.actions[action].value = !scope.doc.actions[action].value;
+			
+		};
+		
+		self.checkboxActionParam = function(scope,action) {
+
+			if (!scope.controls.btns.save) {		
+		
+				if (scope.doc.actions[action].value) $('#'+action).addClass('in');
+				else $('#'+action).removeClass('in');
+				
+			};
+			
+		};
+		
+		function checkboxActionParam(scope) {
+			
+			var actions = ['for_initial','for_signature','for_routing'];
+			
+			actions.forEach(function(action,i) {
+
+				if (scope.doc.actions[action].value) $('#'+action).addClass('in');
+				else $('#'+action).removeClass('in');		
+
+			});
+			
 		};
 		
 	};
