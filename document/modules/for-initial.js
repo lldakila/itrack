@@ -28,7 +28,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.doc.id = id;
 			scope.doc.initial = false;
 			scope.doc.track_id = 0;
-			scope.doc.first_track = {};
+			scope.doc.track = {};
 			
 			initDoc(scope,id);
 
@@ -50,7 +50,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			  url: scope.url.for+'document/for/initial/doc/'+id,
 			}).then(function mySuccess(response) {
 
-				scope.doc.first_track = response.data.first_track;
+				scope.doc.track = response.data.track;
+				scope.doc.initial = response.data.initial;
 			
 				files.filesThumbnails(scope,response.data.files);
 

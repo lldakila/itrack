@@ -39,6 +39,7 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 	$con = $this->con;
 	$con->table = "documents";	
 
+	require_once '../handlers/folder-files.php';
 	require_once '../document-info.php';
 	require_once '../functions.php';
 	
@@ -261,16 +262,14 @@ $app->get('/for/initial/{id}', function ($request, $response, $args) {
 	$due_date = due_date($document['document_date'],$document['document_transaction_type']['days']);
 	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
 	
-	# tracks
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log");
-	$first_track = $tracks[0]; # first track
-	
-	$param = get_track_action_param($first_track['track_action_add_params']);
-
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];	
 	
-	$action = get_staff_action($param,$session_user_id,$session_office);	
+	# tracks
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log");
+	$track = get_action_track($tracks,$session_user_id,$session_office);
+
+	$action = get_staff_action($track,$session_user_id,$session_office);	
 	
     return $this->view->render($response, 'initial.html', [
 		'path'=>$base_path,
@@ -294,16 +293,20 @@ $app->get('/track/assess/{id}', function ($request, $response, $args) {
 	
 	$id = $args['id'];
 
-	# first track
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log LIMIT 1");	
-	$first_track = $tracks[0];
-	
-	$param = get_track_action_param($first_track['track_action_add_params']);
-	
 	$session_user_id = $_SESSION['itrack_user_id'];
-	$session_office = $_SESSION['office'];
+	$session_office = $_SESSION['office'];	
+	
+	# tracks
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id");	
+	$track = get_action_track($tracks,$session_user_id,$session_office);
 
-	$action = get_staff_action($param,$session_user_id,$session_office);
+	$action = array("action"=>null,"staff"=>null,"ok"=>false);	
+	
+	if (count($track)) {
+
+		$action = get_staff_action($track,$session_user_id,$session_office);
+	
+	};
 
 	return $response->withJson($action);
 
@@ -314,19 +317,27 @@ $app->get('/for/initial/doc/{id}', function ($request, $response, $args) {
 	$con = $this->con;
 	$con->table = "documents";	
 
+	require_once '../handlers/folder-files.php';
 	require_once '../functions.php';
+	
+	session_start();	
 	
 	$id = $args['id'];
 
-	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");
-
-	# first track
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log LIMIT 1");	
-	$first_track = $tracks[0];	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];		
 	
+	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");	
+	
+	# tracks
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id");	
+	$track = get_action_track($tracks,$session_user_id,$session_office);
+
+	$initial = user_has_action_doc($con,$track,$session_user_id);
+
 	$files = get_files("../files/",$document[0]['barcode']);
 
-	return $response->withJson(array("files"=>$files,"first_track"=>$first_track));
+	return $response->withJson(array("files"=>$files,"track"=>$track,"initial"=>$initial));
 
 });
 
@@ -347,7 +358,7 @@ $app->post('/for/initial/update', function ($request, $response, $args) {
 		"track_action_staff"=>$_SESSION['itrack_user_id'],		
 		"track_action_status"=>"Initialed",
 		"track_user"=>$_SESSION['itrack_user_id'],
-		"preceding_track"=>$data['first_track']['id'],
+		"preceding_track"=>$data['track']['id'],
 	);
 
 	$track_id = $data['track_id'];
