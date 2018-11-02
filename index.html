@@ -1,4 +1,9 @@
-<?php require_once 'authentication.php'; ?>
+<?php
+	
+	require_once 'authentication.php';
+	$page = "index";
+	
+?>
 <!DOCTYPE html>
 <html lang="en" data-textdirection="ltr" class="loading">
   <head>
@@ -34,7 +39,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- END Custom CSS-->
   </head>
-  <body ng-app="dashboard" ng-controller="dashboardCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile listen-barcode>
+  <body ng-app="dashboard" ng-controller="dashboardCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
 
     <!-- navbar-fixed-top-->
     <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
@@ -53,10 +58,7 @@
               <li class="nav-item hidden-sm-down"><a href="#" class="nav-link nav-link-expand"><i class="ficon icon-expand2"></i></a></li>
             </ul>
             <ul class="nav navbar-nav float-xs-right">
-              <li class="dropdown dropdown-notification nav-item">
-			    <a href="#" data-toggle="dropdown" class="nav-link nav-link-label"><i class="ficon icon-bell4"></i><span class="tag tag-pill tag-default tag-danger tag-default tag-up">{{notifications.length}}</span></a>
-                <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right" notifications></ul>
-              </li>
+			  <?php require_once 'notifications.php'; ?>
               <li class="dropdown dropdown-user nav-item"><a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link dropdown-user-link"><span class="avatar avatar-online"><img src="{{profile.picture}}" alt="avatar"><i></i></span><span class="user-name">{{profile.user}}</span></a>
                 <div class="dropdown-menu dropdown-menu-right" drop-down></div>
               </li>
@@ -73,40 +75,12 @@
     <div data-scroll-to-active="true" class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
       <!-- main menu header-->
       <div class="main-menu-header">
-        <input type="text" placeholder="Search" class="menu-search form-control round"/>
+        <!-- <input type="text" placeholder="Search" class="menu-search form-control round"/> -->
       </div>
       <!-- / main menu header-->
       <!-- main menu content-->
       <div class="main-menu-content">
-        <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-			<li class="nav-item" class="active"><a href="index.html"><i class="icon-dashboard"></i><span class="menu-title">Dashboard</span></a></li>
-			<li class="nav-item"><a href="#"><i class="icon-copy2"></i><span class="menu-title">Documents</span></a>
-				<ul class="menu-content">
-				  <li><a href="receive-document.html" class="menu-item">Receive Document</a></li>
-				  <li><a href="documents.html" class="menu-item">Documents</a></li>
-				</ul>
-			</li>
-			<li class="nav-item"><a href="#"><i class="icon-group"></i><span class="menu-title">Accounts</span></a>
-				<ul class="menu-content">
-				  <li><a href="account-add.html" class="menu-item">Add Account</a></li>
-				  <li><a href="account-list.html" class="menu-item">List</a></li>
-				</ul>
-			</li>
-			<li class="nav-item"><a href="#"><i class="icon-sitemap"></i><span class="menu-title">Groups</span></a>
-				<ul class="menu-content">
-				  <li><a href="groups-add.html" class="menu-item">Add Group</a></li>
-				  <li><a href="groups-list.html" class="menu-item">List</a></li>
-				</ul>
-			</li>
-			<li class="nav-item"><a href="#"><i class="icon-gear"></i><span class="menu-title">Maintenance</span></a>
-				<ul class="menu-content">
-				  <li><a href="offices.html" class="menu-item">Offices</a></li>
-				  <li><a href="document-types.html" class="menu-item">Document Types</a></li>
-				  <li><a href="transactions.html" class="menu-item">Transactions</a></li>
-				  <li><a href="options.html" class="menu-item">Options</a></li>
-				</ul>
-			</li>
-		</ul>
+		<?php require_once 'main-menu-navigation.php'; ?>
       </div>
       <!-- /main menu content-->
       <!-- main menu footer-->
@@ -178,7 +152,7 @@
 	<!-- modules -->
 	<script src="modules/notifications.js"></script>
 	<script src="modules/module-access.js"></script>
-	<script src="modules/barcode-listener.js"></script>	
+	<!-- <script src="modules/barcode-listener.js"></script> -->
 	<script src="modules/dashboard.js"></script>
 
 	<!-- controller -->

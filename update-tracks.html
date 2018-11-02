@@ -1,8 +1,8 @@
 <?php
-	
+
 	require_once 'authentication.php';
-	$page = "options";
-	
+	$page = "update-tracks";
+
 ?>
 <!DOCTYPE html>
 <html lang="en" data-textdirection="ltr" class="loading">
@@ -29,7 +29,6 @@
     <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css/app.css">
     <link rel="stylesheet" type="text/css" href="app-assets/css/colors.css">
-	<link rel="stylesheet" type="text/css" href="app-assets/css/switch.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu.css">
@@ -40,7 +39,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- END Custom CSS-->
   </head>
-  <body ng-app="options" ng-controller="optionsCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
+  <body ng-app="updateTracks" ng-controller="updateTracksCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
 
     <!-- navbar-fixed-top-->
     <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
@@ -76,7 +75,7 @@
     <div data-scroll-to-active="true" class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
       <!-- main menu header-->
       <div class="main-menu-header">
-        <!-- <input type="text" placeholder="Search" class="menu-search form-control round"/> -->
+        <input type="text" placeholder="Search" class="menu-search form-control round"/>
       </div>
       <!-- / main menu header-->
       <!-- main menu content-->
@@ -90,7 +89,7 @@
     </div>
     <!-- / main menu-->
 
-    <div class="app-content content container-fluid">
+  <div class="app-content content container-fluid">
       <div class="content-wrapper">
         <div class="content-header row">
         </div>
@@ -98,82 +97,121 @@
         <div class="content-body">
 			<div class="row">
 				<div class="content-header-left col-md-6 col-xs-12 mb-1">
-					<h2 class="content-header-title">Options</h2>
+					<!-- <h2 class="content-header-title">Search Document</h2> -->
 				</div>
 				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-xs-12">
-				<div class="breadcrumb-wrapper col-xs-12">
-				  <ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="index.html" class="info">iTrack</a>
-					</li>
-					<li class="breadcrumb-item">Maintenance
-					</li>
-					<li class="breadcrumb-item active">Options
-					</li>
-				  </ol>
-				</div>
-			  </div>
-			</div>
-			<div class="row">
-				<div class="position-relative has-icon-left col-lg-4">
-					<input type="text" ng-model="search" class="form-control" placeholder="Search. . . " style="height: 35px;">
-					<div class="form-control-position">
-						<i class="icon-search"></i>
+					<div class="breadcrumb-wrapper col-xs-12">
+					  <ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html" class="info">iTrack</a></li>
+						<li class="breadcrumb-item active">Update Tracks</li>
+					  </ol>
 					</div>
 				</div>
-				<div class="col-lg-8">
-					<button class="btn btn-info float-lg-right" ng-click="app.add(this,null)">Add</button>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card" style="margin-top: 15px;">
+						<div class="card-header">
+							<h4 class="card-title" id="basic-layout-form">Filter Documents</h4>
+						</div>
+						<div class="card-body collapse in">
+							<div class="card-block">
+								<!-- <div class="card-text">
+									<p>This is the most basic and default form having form sections. To add form section use <code>.form-section</code> class with any heading tags. This form has the buttons on the bottom left corner which is the default position.</p>
+								</div> -->
+								<form class="form" name="formHolder.filter">
+									<div class="form-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Office</label>
+													<select class="form-control" ng-model="filter.origin" ng-options="office.office for office in criteria.offices track by office.id" name="origin"></select>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Communication</label>
+													<select class="form-control" ng-model="filter.communication" ng-options="communication.communication for communication in criteria.communications track by communication.id" name="communication"></select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Transaction</label>
+													<select class="form-control" ng-model="filter.document_transaction_type" ng-options="transaction.transaction for transaction in criteria.transactions track by transaction.id" name="document_transaction_type"></select>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Document Type</label>
+													<select class="form-control" ng-model="filter.doc_type" ng-options="doc_type.document_type for doc_type in criteria.doc_types track by doc_type.id" name="doc_type"></select>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-actions">
+										<button type="button" class="btn btn-primary float-lg-right float-xs-right" ng-click="app.filter(this)">Go!</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">Results</h4>						
+						</div>
+						<div class="card-body collapse in">
+							<div class="card-block">
+								<div class="row">							
+									<div class="position-relative has-icon-left col-lg-4 offset-lg-8">
+										<input type="text" ng-model="search" class="form-control" placeholder="Barcode or subject">
+										<div class="form-control-position">
+											<i class="icon-search"></i>
+										</div>
+									</div>
+								</div>							
+								<div class="table-hover" style="margin-top: 25px;">
+									<table class="table table-bordered ">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Barcode</th>
+												<th>Subject</th>
+												<th>Date/Time</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="d in filterData = (documents | filter:search) | pagination: currentPage:pageSize">
+												<td>{{$index+1}}</td>
+												<td>{{d.barcode}}</td>
+												<td>{{d.doc_name}}</td>
+												<td>{{d.document_date}}</td>
+												<td>
+													<a class="btn btn-info" href="document/action/{{d.id}}"><i class="icon-search7"></i></a>
+												</td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td colspan="5" style="text-align: right;">
+													<div class="float-right"><ul uib-pagination direction-links="false" boundary-links="true" total-items="filterData.length" ng-model="currentPage" max-size="maxSize"></ul></div>
+												</td>
+											</tr>											
+										</tfoot>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>					
 				</div>
 			</div>
 			<br>
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="card">
-						<div class="card-header">
-							<h4 class="card-title">List</h4>
-							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
-							<div class="heading-elements">
-								<ul class="list-inline mb-0">
-									<li><a data-action="collapse"><i class="icon-minus4"></i></a></li>
-									<li><a data-action="reload" ng-click="app.list(this)"><i class="icon-reload"></i></a></li>
-									<li><a data-action="expand"><i class="icon-expand2"></i></a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="card-body collapse in">
-							<div class="table-hover">
-								<table class="table table-bordered ">
-									<thead>
-										<tr>
-											<th>No</th>
-											<th>Choice</th>
-											<th>Description</th>
-											<th>Actions</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="option in filterData = (options | filter:search) | pagination: currentPage:pageSize">
-											<td>{{option.id}}</td>
-											<td>{{option.choice}}</td>
-											<td>{{option.description}}</td>
-											<td>
-												<button class="btn btn-info" ng-click="app.add(this,option)"><i class="icon-edit2"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,option)"><i class="icon-trash-o"></i></button>
-											</td>
-										</tr>
-									</tbody>
-									<tfoot>
-										<tr>
-											<td colspan="4" style="text-align: right;">
-												<div class="float-right"><ul uib-pagination direction-links="false" boundary-links="true" total-items="filterData.length" ng-model="currentPage" max-size="maxSize"></ul></div>
-											</td>
-										</tr>											
-									</tfoot>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
         </div>
 		<!--/ stats -->
       </div>
@@ -182,7 +220,7 @@
 
 
     <footer class="footer footer-static footer-light navbar-border">
-      <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright &copy; <b><?php echo date("Y"); ?></b> Document Tracking System. All rights reserved. </span></p>
+      <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright  &copy; <b><?php echo date("Y"); ?></b> Document Tracking System. All rights reserved. </span></p>
     </footer>
 
     <!-- BEGIN VENDOR JS-->
@@ -203,32 +241,35 @@
     <script src="app-assets/js/core/app-menu.js" type="text/javascript"></script>
     <script src="app-assets/js/core/app.js" type="text/javascript"></script>
     <!-- END ROBUST JS-->
-	
+
+    <script src="app-assets/js/jquery-barcode-scanner/jquery.scannerdetection.js" type="text/javascript"></script>	
+
 	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css">	
 	<script src="angular/modules/bootbox/bootbox.min.js"></script>
 	<script src="angular/modules/growl/jquery.bootstrap-growl.min.js"></script>
 	<script src="angular/modules/blockui/jquery.blockUI.js"></script>
 	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css">
-	
+
 	<!-- dependencies -->
 	<script src="angular/angular.min.js"></script>
 	<script src="angular/angular-route.min.js"></script>
 	<script src="angular/angular-sanitize.min.js"></script>
-	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
-	
+	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>	
+
 	<script src="angular/modules/account/account.js"></script>
 	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
 	<script src="angular/modules/growl/growl.js"></script>
 	<script src="angular/modules/blockui/blockui.js"></script>
 	<script src="angular/modules/validation/validate.js"></script>
+	<script src="angular/modules/validation/validate-dialog.js"></script>
 	<script src="angular/modules/post/window-open-post.js"></script>
-	
+
 	<!-- modules -->
 	<script src="modules/notifications.js"></script>
 	<script src="modules/module-access.js"></script>
-	<script src="modules/options.js"></script>
+	<script src="modules/update-tracks.js"></script>
 
 	<!-- controller -->
-	<script src="controllers/options.js"></script>
+	<script src="controllers/update-tracks.js"></script>
   </body>
 </html>

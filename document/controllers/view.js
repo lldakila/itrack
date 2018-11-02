@@ -9,7 +9,7 @@ app.controller('documentCtrl',function($scope,app) {
 	$scope.app.startup($scope);	
 	
 	$scope.module = {
-		id: 'receive_document',
+		id: 'view_document',
 		privileges: {
 			show: 1,
 			add: 2,

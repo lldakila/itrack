@@ -27,7 +27,8 @@ $app->get('/view/{id}', function ($request, $response, $args) {
 	require_once '../path_url.php';
 
     return $this->view->render($response, 'document.html', [
-		'path'=>$base_path,	
+		'page'=>'document',
+		'path'=>$base_path,
 		'url'=>$base_url,
         'id'=>$args['id']
     ]);	
@@ -50,7 +51,7 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 	if (count($document)) {
 		
 		# first track
-		$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY system_log LIMIT 1");
+		// $tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY system_log LIMIT 1");
 		
 		$document[0]['dt_add_params'] = json_decode($document[0]['dt_add_params'],false);
 		$document[0]['document_dt_add_params'] = $document[0]['dt_add_params'];
@@ -272,6 +273,7 @@ $app->get('/for/initial/{id}', function ($request, $response, $args) {
 	$action = get_staff_action($track,$session_user_id,$session_office);	
 	
     return $this->view->render($response, 'initial.html', [
+		'page'=>'initial',
 		'path'=>$base_path,
 		'url'=>"../".$base_url,
         'id'=>$args['id'],
@@ -377,6 +379,133 @@ $app->post('/for/initial/update', function ($request, $response, $args) {
 	return $response->withJson($track_id);
 
 });
+
+$app->get('/filters', function($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "documents";
+	
+	$filters = [];
+	
+	$con->table = "offices";
+	$_offices = $con->all(['id','office','shortname']);
+	
+	$offices[] = array("id"=>0,"office"=>"All","shortname"=>"All");
+	foreach ($_offices as $_office) {
+		
+		$offices[] = $_office;
+		
+	};
+	
+	$con->table = "communications";	
+	$_communications = $con->all(['id','communication','shortname']);	
+	
+	$communications[] = array("id"=>0,"communication"=>"All","shortname"=>"All");
+	foreach ($_communications as $_communication) {
+		
+		$communications[] = $_communication;
+		
+	};	
+	
+	$con->table = "transactions";	
+	$_transactions = $con->all(['id','transaction','days']);	
+	
+	$transactions[] = array("id"=>0,"transaction"=>"All","days"=>"All");
+	foreach ($_transactions as $_transaction) {
+		
+		$transactions[] = $_transaction;
+		
+	};		
+	
+	$con->table = "document_types";	
+	$_doc_types = $con->all(['id','document_type']);	
+	
+	$doc_types[] = array("id"=>0,"document_type"=>"All");
+	foreach ($_doc_types as $_doc_type) {
+		
+		$doc_types[] = $_doc_type;
+		
+	};	
+	
+	$filters = array("offices"=>$offices,"communications"=>$communications,"transactions"=>$transactions,"doc_types"=>$doc_types);
+	
+    return $response->withJson($filters);	
+
+});
+
+$app->post('/filter', function($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "documents";
+	
+	require_once '../document-info.php';	
+	
+	$data = $request->getParsedBody();	
+	
+	$criteria = ["origin","communication","document_transaction_type","doc_type"];
+	
+	$filters = "";
+	foreach ($criteria as $i => $criterion) {
+
+		if ($data[$criterion]['id']==0) continue;
+		
+		if ($filters=="") $filters.=" WHERE $criterion = ".$data[$criterion]['id'];
+		else $filters.=" AND $criterion = ".$data[$criterion]['id'];
+
+	};
+
+	$documents = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents$filters");
+	foreach ($documents as $i => $document) {
+		
+		$documents[$i] = document_info($con,$document);
+		$documents[$i]['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));		
+		
+	};
+	
+    return $response->withJson($documents);	
+
+});
+
+$app->get('/action/{id}', function ($request, $response, $args) {
+
+	require_once '../path_url.php';
+	require_once '../document-info.php';
+	require_once 'datetime.php';
+	require_once '../functions.php';
+	
+	$con = $this->con;
+	$con->table = "documents";
+	
+	session_start();
+	
+	$id = $args['id'];
+	
+	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
+	$document = document_info_complete($con,$document[0]);	
+	
+	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
+	$due_date = due_date($document['document_date'],$document['document_transaction_type']['days']);
+	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+	
+	// # tracks
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log");
+	$track = get_action_track($tracks,$session_user_id,$session_office);
+
+	$action = get_staff_action($track,$session_user_id,$session_office);	
+	
+    return $this->view->render($response, 'action.html', [
+		'page'=>'action',
+		'path'=>$base_path,
+		'url'=>$base_url,
+        'id'=>$args['id'],
+		'document'=>$document,
+		'track_param'=>$action,
+    ]);
+
+})->setName('document');
 
 $app->run();
 
