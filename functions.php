@@ -39,7 +39,7 @@ function get_files($dir,$barcode) {
 
 };
 
-function get_action_track($tracks,$user_id,$office) {
+function get_action_track($tracks,$user_id,$office) { # user has action in track
 	
 	$track = array();
 
@@ -89,15 +89,41 @@ function get_staff_action($track,$user_id,$office) {
 
 function user_has_action_doc($con,$track,$user_id) {
 	
-	$user_has_action_doc = false;
+	$user_has_action_doc = array("track_id"=>null,"done"=>false);
 	
-	$param = get_track_action_param($track['track_action_add_params']);		
+	$param = get_track_action_param($track['track_action_add_params']);	
 	
 	$action_track = $con->getData("SELECT * FROM tracks WHERE track_action_staff = ".$user_id." AND preceding_track = ".$track['id']);
 
-	if (count($action_track)) $user_has_action_doc = true;
+	if (count($action_track)) $user_has_action_doc = array("track_id"=>$action_track[0]['id'],"done"=>true);
 	
 	return $user_has_action_doc;
+	
+};
+
+function get_staffs_actions($con,$track) {
+	
+	$staffs = [];
+	
+	$param = get_track_action_param($track['track_action_add_params']);
+	
+	foreach ($param['options'] as $option) {
+
+		if ($option['value']) {
+			
+			$has_action = user_has_action_doc($con,$track,$option['id']);
+			
+			unset($option['value']);
+			$option['done'] = $has_action['done'];
+			$option['action_track_id'] = $has_action['track_id'];
+
+			$staffs[] = $option;
+			
+		};
+		
+	};
+	
+	return $staffs;
 	
 };
 

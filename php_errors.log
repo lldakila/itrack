@@ -1,4 +1,0 @@
-[02-Nov-2018 08:47:55 Asia/Manila] PHP Notice:  Undefined variable: pages in C:\Users\SLY One\Desktop\UwAmp310\www\itrack\main-menu-navigation.php on line 2
-[02-Nov-2018 08:47:55 Asia/Manila] PHP Stack trace:
-[02-Nov-2018 08:47:55 Asia/Manila] PHP   1. {main}() C:\Users\SLY One\Desktop\UwAmp310\www\itrack\index.html:0
-[02-Nov-2018 08:47:55 Asia/Manila] PHP   2. require_once() C:\Users\SLY One\Desktop\UwAmp310\www\itrack\index.html:86

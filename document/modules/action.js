@@ -26,9 +26,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			scope.doc = {};
 			scope.doc.id = id;
-			scope.doc.initial = false;
-			scope.doc.track_id = 0;
-			scope.doc.track = {};
+			scope.doc.actions = [];
+			scope.doc.tracks = [];
 			
 			initDoc(scope,id);
 
@@ -47,12 +46,12 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			$http({
 			  method: 'GET',
-			  url: scope.url.view+'document/for/initial/doc/'+id,
+			  url: scope.url.view+'document/doc/actions/'+id,
 			}).then(function mySuccess(response) {
-
-				scope.doc.track = response.data.track;
-				scope.doc.initial = response.data.initial;
 			
+				scope.doc.actions = response.data.actions;
+				scope.doc.tracks = response.data.tracks;
+				
 				files.filesThumbnails(scope,response.data.files);
 
 				bui.hide();
@@ -65,17 +64,23 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 		};
 		
-		self.initial = function(scope) {
+		self.action = function(scope,action,staff) {
 			
 			bui.show();
 			
 			$http({
 			  method: 'POST',
-			  url: scope.url.view+'document/for/initial/update',
-			  data: scope.doc
+			  url: scope.url.view+'document/doc/actions/update',
+			  data: {id: scope.doc.id, action: action, staff: staff}
 			}).then(function mySuccess(response) {
 
-				scope.doc.track_id = response.data;			
+				var action_i = scope.doc.actions.indexOf(action);
+				var staff_i = scope.doc.actions[action_i].staffs.indexOf(staff);
+				
+				if (scope.doc.actions[action_i].staffs[staff_i].done) {
+					scope.doc.actions[action_i].staffs[staff_i].action_track_id = response.data;
+				};
+				
 				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
 
 				bui.hide();

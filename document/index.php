@@ -479,7 +479,7 @@ $app->get('/action/{id}', function ($request, $response, $args) {
 	session_start();
 	
 	$id = $args['id'];
-	
+
 	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
 	$document = document_info_complete($con,$document[0]);	
 	
@@ -487,25 +487,96 @@ $app->get('/action/{id}', function ($request, $response, $args) {
 	$due_date = due_date($document['document_date'],$document['document_transaction_type']['days']);
 	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
 	
-	$session_user_id = $_SESSION['itrack_user_id'];
-	$session_office = $_SESSION['office'];	
-	
-	// # tracks
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log");
-	$track = get_action_track($tracks,$session_user_id,$session_office);
-
-	$action = get_staff_action($track,$session_user_id,$session_office);	
-	
     return $this->view->render($response, 'action.html', [
 		'page'=>'action',
 		'path'=>$base_path,
 		'url'=>$base_url,
         'id'=>$args['id'],
 		'document'=>$document,
-		'track_param'=>$action,
     ]);
 
 })->setName('document');
+
+$app->get('/doc/actions/{id}', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "documents";	
+
+	require_once '../handlers/folder-files.php';
+	require_once '../functions.php';
+	
+	session_start();	
+	
+	$id = $args['id'];
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];		
+	
+	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");	
+	
+	$files = get_files("../files/",$document[0]['barcode']);	
+	
+	# tracks for actions
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND track_action IS NOT NULL");
+
+	$actions_arr = array(null,"For Initial","For Signature/Approval");
+	
+	$actions = [];
+	foreach ($tracks as $track) {
+
+		$staffs = get_staffs_actions($con,$track);
+	
+		$actions[] = array(
+			"track_id"=>$track['id'],
+			"track_action"=>$track['track_action'],
+			"track_action_description"=>$actions_arr[$track['track_action']],
+			"staffs"=>$staffs
+		);
+
+	};
+
+	return $response->withJson(array("files"=>$files,"tracks"=>$tracks,"actions"=>$actions));
+
+});
+
+$app->post('/doc/actions/update', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	session_start();	
+
+	$data = $request->getParsedBody();
+
+	$id = $data['id'];
+
+	$track_action_status_arr = [null,"Initialed","Approved"];
+	
+	$track = array(
+		"document_id"=>$id,
+		"office_id"=>$_SESSION['office'],
+		"track_action_staff"=>$data['staff']['id'],		
+		"track_action_status"=>$track_action_status_arr[$data['action']['track_action']],
+		"track_user"=>$_SESSION['itrack_user_id'],
+		"preceding_track"=>$data['action']['track_id'],
+	);
+
+	$action_track_id = $data['staff']['action_track_id'];
+
+	if ($data['staff']['done']) {
+
+		$insert_track = $con->insertData($track);
+		$action_track_id = $con->insertId;
+
+	} else {
+
+		$delete_track = $con->deleteData(array("id"=>$action_track_id));
+
+	};
+
+	return $response->withJson($action_track_id);
+
+});
 
 $app->run();
 

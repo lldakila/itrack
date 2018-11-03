@@ -34,7 +34,7 @@ angular.module('barcode-listener-action',['bootstrap-modal','form-validator-dial
 					
 				};
 			
-				bootstrapModal.box(scope,'Manual Barcode','dialogs/manual-barcode.html',onOk,function() {});
+				bootstrapModal.box(scope,'Manual Barcode','/itrack/dialogs/manual-barcode.html',onOk,function() {});
 				
 			};
 			
@@ -42,12 +42,12 @@ angular.module('barcode-listener-action',['bootstrap-modal','form-validator-dial
 				
 				$http({
 					method: 'GET',
-					url: 'api/documents/barcode/'+barcode,
+					url: '/itrack/api/documents/barcode/'+barcode,
 				}).then(function success(response) {
 
 					// check if barcode is valid
 					if (response.data.status) {
-						$window.location = 'document/action/'+response.data.id;
+						$window.location = '/itrack/document/action/'+response.data.id;
 					} else {
 						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Invalid barcode. No document found.');					
 					};
