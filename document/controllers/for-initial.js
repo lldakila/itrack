@@ -12,7 +12,6 @@ app.controller('documentInitialCtrl',function($scope,app) {
 		id: 'for_initial',
 		privileges: {
 			show: 1,
-			add: 2,
 		}
 	};
 	

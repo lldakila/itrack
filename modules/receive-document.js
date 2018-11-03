@@ -110,7 +110,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 		self.add = function(scope) {
 			
-			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add)) return;						
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add)) return;
 			
 			scope.controls.btns.ok = false;
 			scope.controls.btns.cancel = false;

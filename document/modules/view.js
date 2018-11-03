@@ -118,6 +118,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 		self.edit = function(scope) {
 			
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.edit)) return;
+			
 			scope.controls.btns.edit = true;
 			scope.controls.btns.cancel = false;
 			scope.controls.btns.save = false;		

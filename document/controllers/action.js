@@ -9,10 +9,11 @@ app.controller('actionCtrl',function($scope,app) {
 	$scope.app.startup($scope);	
 	
 	$scope.module = {
-		id: 'action',
+		id: 'update_tracks',
 		privileges: {
 			show: 1,
-			add: 2,
+			view: 2,
+			update: 3,
 		}
 	};
 	

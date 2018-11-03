@@ -9,10 +9,12 @@ app.controller('documentCtrl',function($scope,app) {
 	$scope.app.startup($scope);	
 	
 	$scope.module = {
-		id: 'view_document',
+		id: 'documents',
 		privileges: {
 			show: 1,
-			add: 2,
+			view: 2,
+			edit: 3,
+			delete: 4
 		}
 	};
 	

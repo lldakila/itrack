@@ -9,7 +9,9 @@ app.controller('updateTracksCtrl',function($scope,app) {
 	$scope.module = {
 		id: 'update_tracks',
 		privileges: {
-
+			show: 1,
+			view: 2,
+			update: 3,
 		}
 	};
 	

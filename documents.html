@@ -161,7 +161,7 @@
 											<td>{{d.document_transaction_type.transaction}}</td>
 											<td>{{}}</td>
 											<td>
-												<a class="btn btn-info" href="document/view/{{d.id}}"><i class="icon-search7"></i></a>
+												<button class="btn btn-info" ng-click="app.view(this,d)"><i class="icon-search7"></i></button>
 												<button class="btn btn-secondary" ng-click="app.delete(this,d)"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>

@@ -17,45 +17,22 @@ define('system_privileges', array(
 		),
 	),
 	array(
-		"id"=>"incoming",
-		"description"=>"Incoming",
+		"id"=>"update_tracks",
+		"description"=>"Update Tracks",
 		"privileges"=>array(
-			array("id"=>1,"description"=>"Show Incoming Document","value"=>false),
+			array("id"=>1,"description"=>"Show Update Tracks","value"=>false),
+			array("id"=>2,"description"=>"View Document","value"=>false),
+			array("id"=>3,"description"=>"Update Document Tracks","value"=>false),
 		),
 	),
 	array(
-		"id"=>"transact",
-		"description"=>"Transact",
-		"privileges"=>array(
-			array("id"=>1,"description"=>"Show Transact","value"=>false),
-		),
-	),
-	array(
-		"id"=>"outgoing",
-		"description"=>"Outgoing",
-		"privileges"=>array(
-			array("id"=>1,"description"=>"Show Outgoing","value"=>false),
-		),
-	),
-	array(
-		"id"=>"archives",
-		"description"=>"Archives",
-		"privileges"=>array(
-			array("id"=>1,"description"=>"Show Archives","value"=>false),
-		),
-	),	
-	array(
-		"id"=>"document_list",
+		"id"=>"documents",
 		"description"=>"List of Documents",
 		"privileges"=>array(
-			array("id"=>1,"description"=>"Show List of Documents","value"=>false),
-		),
-	),
-	array(
-		"id"=>"tracks",
-		"description"=>"Tracks",
-		"privileges"=>array(
-			array("id"=>1,"description"=>"Show Tracks","value"=>false),
+			array("id"=>1,"description"=>"Show Documents","value"=>false),
+			array("id"=>2,"description"=>"View Document","value"=>false),
+			array("id"=>3,"description"=>"Edit Document","value"=>false),
+			array("id"=>4,"description"=>"Delete Document","value"=>false),
 		),
 	),
 	array(

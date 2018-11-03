@@ -15,7 +15,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			jspdf.init();
 
-			scope.viewmHolder = {};
+			scope.formHolder = {};
 			scope.views = {};
 
 			var href = $window.location.href;
@@ -32,8 +32,26 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			initDoc(scope,id);
 
 			scope.preview = {};
-			scope.preview.file = {};		
+			scope.preview.file = {};
 
+			offices(scope);
+
+		};
+		
+		function offices(scope) {
+			
+			$http({
+				method: 'GET',
+				url: scope.url.view+'document/offices'
+			}).then(function mySuccess(response) {
+				
+				scope.offices = angular.copy(response.data);
+					
+			}, function myError(response) {
+				
+		
+			});			
+			
 		};
 		
 		self.previewThumbnail = files.previewThumbnail;
@@ -66,6 +84,11 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 		self.action = function(scope,action,staff) {
 			
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.update)) {
+				staff.done = !staff.done;
+				return;
+			};
+			
 			bui.show();
 			
 			$http({
@@ -75,13 +98,22 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			}).then(function mySuccess(response) {
 
 				var action_i = scope.doc.actions.indexOf(action);
-				var staff_i = scope.doc.actions[action_i].staffs.indexOf(staff);
+				var staff_i = scope.doc.actions[action_i].staffs.indexOf(staff);			
 				
-				if (scope.doc.actions[action_i].staffs[staff_i].done) {
-					scope.doc.actions[action_i].staffs[staff_i].action_track_id = response.data;
+				if (response.data.status) {				
+					
+					if (scope.doc.actions[action_i].staffs[staff_i].done) {
+						scope.doc.actions[action_i].staffs[staff_i].action_track_id = response.data.action_track_id;
+					};
+					
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
+					
+				} else {
+					
+					scope.doc.actions[action_i].staffs[staff_i].done = !scope.doc.actions[action_i].staffs[staff_i].done;
+					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Sorry, you are not allowed to update document tracks.');					
+					
 				};
-				
-				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
 
 				bui.hide();
 

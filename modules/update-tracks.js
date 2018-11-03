@@ -1,4 +1,4 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','barcode-listener-action']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,growl) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-action']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl) {
 	
 	function app() {
 
@@ -64,6 +64,14 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 				bui.hide();				
 		
 			});			
+			
+		};
+		
+		self.view = function(scope,d) {
+			
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.view)) return;
+			
+			$window.location.href = 'document/action/'+d.id;
 			
 		};
 

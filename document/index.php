@@ -102,12 +102,13 @@ $app->get('/view/actions/{id}', function (Request $request, Response $response, 
 			};
 			
 		};
-	
+
 		$actions[$da['key']] = array(
+			"description"=>$da['description'],
 			"params"=>$params,
 			"value"=>$value
 		);
-	
+
 	};
 
     return $response->withJson($actions);
@@ -433,6 +434,33 @@ $app->get('/filters', function($request, $response, $args) {
 
 });
 
+$app->get('/offices', function($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "users";
+	
+	$filters = [];
+	
+	$con->table = "offices";
+	$_offices = $con->all(['id','office','shortname']);
+	
+	// $offices[] = array("id"=>0,"office"=>"All","shortname"=>"All","staffs"=>[]);
+	$offices = [];
+	foreach ($_offices as $_office) {
+		
+		if ($_office['id'] == 1) continue;
+		
+		$staffs = $con->getData("SELECT id, CONCAT_WS(' ',fname, lname) fullname FROM users WHERE div_id = ".$_office['id']);
+		$_office['staffs'] = $staffs;
+		
+		$offices[] = $_office;
+		
+	};
+	
+    return $response->withJson($offices);	
+
+});
+
 $app->post('/filter', function($request, $response, $args) {
 
 	$con = $this->con;
@@ -544,37 +572,59 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 	$con = $this->con;
 	$con->table = "tracks";
 
+	require_once '../document-actions.php';
+	require_once '../system_setup.php';	
+	
 	session_start();	
 
 	$data = $request->getParsedBody();
 
 	$id = $data['id'];
 
-	$track_action_status_arr = [null,"Initialed","Approved"];
-	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];		
+
+	$transit = array(
+		"id"=>1,
+		"picked_up_by"=>null,
+		"received_by"=>null,
+		"office"=>$session_office
+	);
+
+	$document_actions = document_actions;
+
 	$track = array(
 		"document_id"=>$id,
 		"office_id"=>$_SESSION['office'],
 		"track_action_staff"=>$data['staff']['id'],		
-		"track_action_status"=>$track_action_status_arr[$data['action']['track_action']],
+		"track_action_status"=>document_action_done_status($document_actions,$data['action']['track_action']),
 		"track_user"=>$_SESSION['itrack_user_id'],
+		"transit"=>json_encode($transit),
 		"preceding_track"=>$data['action']['track_id'],
 	);
 
 	$action_track_id = $data['staff']['action_track_id'];
+	
+	$status = ($session_office == $data['staff']['office']['id']);
+	
+	$res = array("action_track_id"=>$action_track_id,"status"=>$status);
+	
+	if ($status) {
+	
+		if ($data['staff']['done']) {
 
-	if ($data['staff']['done']) {
+			$insert_track = $con->insertData($track);
+			$action_track_id = $con->insertId;
 
-		$insert_track = $con->insertData($track);
-		$action_track_id = $con->insertId;
+		} else {
 
-	} else {
+			$delete_track = $con->deleteData(array("id"=>$action_track_id));
 
-		$delete_track = $con->deleteData(array("id"=>$action_track_id));
-
+		};
+		
 	};
 
-	return $response->withJson($action_track_id);
+	return $response->withJson($res);
 
 });
 

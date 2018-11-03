@@ -1,4 +1,4 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','barcode-listener-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,growl) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl) {
 	
 	function app() {
 
@@ -15,7 +15,15 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			scope.documents = [];
 			
 		};
-
+		
+		self.view = function(scope,d) {
+			
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.view)) return;
+			
+			$window.location.href = "document/view/"+d.id;
+			
+		};
+		
 		self.list = function(scope) {
 
 			if (scope.$id > 2) scope = scope.$parent;
@@ -42,6 +50,8 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 		
 		self.delete = function(scope,d) {
 
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.delete)) return;
+		
 			var onOk = function() {
 
 				$http({

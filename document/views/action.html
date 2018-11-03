@@ -165,12 +165,44 @@
 									<div ng-repeat="staff in action.staffs">
 										<div class="checkbox">
 											<label class="switch">
-											  <input type="checkbox" hidden="hidden" name="initial" ng-model="staff.done" ng-checked="staff.done" ng-change="app.action(this,action,staff)">
+											  <input type="checkbox" hidden="hidden" ng-model="staff.done" ng-checked="staff.done" ng-change="app.action(this,action,staff)">
 											  <span class="slider round"></span>
 											</label>
 											<p style="margin-left: 65px; margin-top: -35px!important;">{{staff.description}}</p>
 										</div>							
 									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<div id="headingCollapse" class="card-header">
+							<a href="javascript:;" aria-expanded="true" aria-controls="transit" class="card-title lead">Pick up</a>
+						</div>
+						<div id="transit" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
+							<div class="card-body">
+								<div class="card-block">
+									<form class="form" name="formHolder.transit">
+										<div class="form-body">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Office</label>
+														<select class="form-control" name="office" ng-model="transit.office" ng-options="office.office for office in offices track by office.office" ng-change="staffs = transit.office.staffs"></select>
+													</div>
+												</div>												
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Staff</label>
+														<select class="form-control" name="staff" ng-model="transit.staff" ng-options="staff.fullname for staff in staffs track by staff.id"></select>
+													</div>
+												</div>											
+											</div>
+										</div>
+										<div class="form-actions">
+											<button type="button" class="btn btn-primary float-lg-right float-xs-right" ng-click="app.transit(this)">Update</button>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>

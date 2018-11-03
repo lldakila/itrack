@@ -90,6 +90,7 @@ $app->get('/actions', function (Request $request, Response $response, array $arg
 	foreach ($document_actions as $da) {
 
 		$actions[$da['key']] = array(
+			"description"=>$da['description'],		
 			"params"=>get_params($actions_params,$da['id']),
 			"value"=>false
 		);
@@ -139,6 +140,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$data = $request->getParsedBody();
 
 	require_once '../../handlers/folder-files.php';
+	require_once '../../system_setup.php';
 	require_once 'classes.php';
 
 	session_start();	
@@ -180,12 +182,23 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	# tracks
 	$con->table = "tracks";
 
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);
+	
 	foreach ($actions as $action) {
 		
 		if ($action['value']) {
-			
+
 			$track_action = $action['params'][0]['action_id'];
-		
+
+			# transit
+			$transit = array(
+				"id"=>1,
+				"picked_up_by"=>null,
+				"received_by"=>null,
+				"office"=>$setup->get_setup_as_string(4)
+			);
+
 			$track = array(
 				"document_id"=>$id,
 				"office_id"=>$_SESSION['office'],
@@ -193,6 +206,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 				"track_action_add_params"=>json_encode($action['params'][0]),
 				"track_action_status"=>null,
 				"track_user"=>$_SESSION['itrack_user_id'],
+				"transit"=>json_encode($transit)
 			);
 
 			$con->insertData($track);
