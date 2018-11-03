@@ -1,4 +1,4 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,growl) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','barcode-listener-action']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,growl) {
 	
 	function app() {
 
