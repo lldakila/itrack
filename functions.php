@@ -158,4 +158,80 @@ function get_staff_name($con,$id) {
 	
 };
 
+function get_action_staff_names($param) {
+	
+	$staffs = "";
+	
+	foreach ($param['options'] as $option) {
+		
+		if ($option['value']) {
+
+			if ($staffs=="") $staffs.=$option['description'];
+			else $staffs.=" and ".$option['description'];
+		
+		};
+		
+	};
+	
+	return $staffs;
+
+};
+
+function get_track_track_action($con,$track_id) {
+	
+	$track_action = null;
+	
+	$track = $con->getData("SELECT track_action FROM tracks WHERE id = $track_id");
+	
+	if (count($track)) $track_action = $track[0]['track_action'];
+	
+	return $track_action;
+	
+};
+
+function get_transit_id($transit) {
+	
+	$transit_id = null;
+	
+	$_transit = json_decode($transit, true);
+	$transit_id = $_transit['id'];
+	
+	return $transit_id;
+	
+};
+
+function is_picked_up($transit) {
+	
+	$is_picked_up = false;
+	
+	$_transit = json_decode($transit, true);
+	if ($_transit['picked_up_by']!=null) $is_picked_up = true; 
+	
+	return $is_picked_up;
+	
+};
+
+function is_received($transit) {
+	
+	$is_received = false;
+	
+	$_transit = json_decode($transit, true);
+	if ($_transit['received_by']!=null) $is_received = true; 
+	
+	return $is_received;	
+	
+};
+
+function get_transit_office($con,$transit) {
+	
+	$transit_office = null;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_office = get_office_description($con,$_transit['office']);
+	
+	return $transit_office;
+	
+};
+
 ?>

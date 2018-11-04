@@ -721,9 +721,12 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 	require_once 'datetime.php';
 	require_once '../functions.php';
 	require_once '../system_setup.php';
+	// require_once '../document-transit.php';
 
 	$system_setup = system_setup;
-	$setup = new setup($system_setup);	
+	$setup = new setup($system_setup);
+	
+	// $transit = transit;
 	
 	session_start();
 
@@ -740,23 +743,78 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 	
 	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log DESC");
 	
+	$initial_list = [];
+	$for_initial = [];
+	$for_signature = [];
+	
 	foreach ($tracks as $track) {
 
-		$status = "";
+		$list = [];
 		$icon = "icon-ios-location-outline";
 		
-		# for initial / signature
+		# for initial / signature	
+		if ($track['track_action'] == 1) {
+			$for_initial = array(
+				"status"=>"For initial for ".get_action_staff_names(get_track_action_param($track['track_action_add_params']))
+			);
+		};
+		
+		if ($track['track_action'] == 2) {
+			$for_signature = array(
+				"status"=>"For signature for ".get_action_staff_names(get_track_action_param($track['track_action_add_params']))
+			);			
+		};		
 		
 		# initialed / approved
+		if ($track['preceding_track']!=null) {
+			
+			$ia_icons = array(null,"icon-android-checkmark-circle","icon-checkmark");
+			
+			$list[] = array(
+				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document"
+			);
+			
+			$document['tracks'][] = array(
+				"icon"=>$ia_icons[get_track_track_action($con,$track['preceding_track'])],
+				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+				"list"=>$list,
+			);			
+			
+		};
 		
 		# picked up / received
+		$t_icons = array(null,"icon-android-arrow-dropdown","icon-briefcase","icon-ios-location-outline");		
 		
-		$document['tracks'][] = array(
-			"icon"=>$icon,
-			"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
-			"track_date"=>date("M j, Y",strtotime($track['system_log'])),
-			"status"=>$status,
-		);
+		if (is_picked_up($track['transit'])) {
+			
+			$list[] = array(
+				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document"
+			);
+			
+			$document['tracks'][] = array(
+				"icon"=>$t_icons[get_transit_id($track['transit'])],
+				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+				"list"=>$list,
+			);
+			
+		};
+		
+		if (is_received($track['transit'])) {
+			
+			$list[] = array(
+				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document at ".get_transit_office($con,$track['transit'])
+			);
+			
+			$document['tracks'][] = array(
+				"icon"=>$t_icons[get_transit_id($track['transit'])],
+				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+				"list"=>$list,
+			);
+			
+		};		
 
 	};
 	
@@ -764,14 +822,15 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 
 	$initial_office = $setup->get_setup_as_string(4);
 
-	$status = "Received at ".get_office_description($con,$initial_office)." by ".get_staff_name($con,$document['user_id']);
+	$initial_list[] = array("status"=>"Received at ".get_office_description($con,$initial_office)." by ".get_staff_name($con,$document['user_id']));	
+	if (count($for_initial)) $initial_list[] = $for_initial;
+	if (count($for_signature)) $initial_list[] = $for_signature;	
 
-	$icon = "icon-android-arrow-dropdown";
 	$document['tracks'][] = array(
-		"icon"=>$icon,
+		"icon"=>"icon-android-arrow-dropdown",
 		"track_time"=>date("h:i:s A",strtotime($document['document_date'])),
 		"track_date"=>date("M j, Y",strtotime($document['document_date'])),
-		"status"=>$status,
+		"list"=>$initial_list,
 	);		
 	
 	return $response->withJson($document);

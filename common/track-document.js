@@ -29,7 +29,7 @@ angular.module('track-document',['module-access','block-ui','bootstrap-growl','b
 				
 			};
 			
-			bootstrapModal.box4(scope,'Document Tracks','dialogs/track-document.html',load,function() {},"175");
+			bootstrapModal.box4(scope,'Document Tracks','dialogs/track-document.html',load,function() {},"150");
 			
 		};
 		

@@ -37,7 +37,7 @@
 								<time class="timeline-time" datetime="" style="margin-left: -35px!important;"><span>{{track.track_time}}</span><span>{{track.track_date}}</span></time>
 								<div class="timeline-icon bg-primary"><i class="{{track.icon}}"></i></div>
 								<div class="timeline-label">
-									<h2>{{track.status}}</h2>							
+									<h2 ng-repeat="l in track.list">{{l.status}}</h2>
 								</div>
 							</div>
 						</article>
