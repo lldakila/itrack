@@ -35,6 +35,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.preview.file = {};
 
 			offices(scope);
+			
+			scope.transit = {};
 
 		};
 		
@@ -127,12 +129,35 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 		self.transit = function(scope) {
 
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.transit)) {
+				staff.done = !staff.done;
+				return;
+			};
+		
 			if (validate.form(scope,'transit')) {
 				
 				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please select office and staff.');				
 				return;
 				
 			};
+			
+			bui.show();
+			
+			$http({
+			  method: 'POST',
+			  url: scope.url.view+'document/doc/transit/pickup',
+			  data: {document: scope.doc, transit: scope.transit},
+			}).then(function mySuccess(response) {
+
+				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+
+				bui.hide();
+
+			}, function myError(response) {
+
+				bui.hide();
+
+			});				
 			
 		};
 		

@@ -628,6 +628,49 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 
 });
 
+$app->post('/doc/transit/pickup', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	require_once '../document-transit.php';
+	require_once '../system_setup.php';	
+	
+	session_start();	
+
+	$data = $request->getParsedBody();
+
+	$id = $data['document']['id'];
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+	
+	$pick_up = 2;
+	
+	$track_transit = array(
+		"id"=>$pick_up,
+		"picked_up_by"=>null,
+		"received_by"=>$data['transit']['staff']['id'],
+		"office"=>$data['transit']['office']['id']
+	);
+
+	$transit = transit;
+
+	$track = array(
+		"document_id"=>$id,
+		"office_id"=>$_SESSION['office'],
+		"track_action_staff"=>$data['transit']['staff']['id'],		
+		"track_action_status"=>transit_description($transit,$pick_up),
+		"track_user"=>$_SESSION['itrack_user_id'],
+		"transit"=>json_encode($track_transit),
+	);
+
+	$insert_track = $con->insertData($track);
+
+	// return $response->withJson([]);
+
+});
+
 $app->run();
 
 ?>

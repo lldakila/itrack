@@ -23,6 +23,7 @@ define('system_privileges', array(
 			array("id"=>1,"description"=>"Show Update Tracks","value"=>false),
 			array("id"=>2,"description"=>"View Document","value"=>false),
 			array("id"=>3,"description"=>"Update Document Tracks","value"=>false),
+			array("id"=>4,"description"=>"Transit Document","value"=>false),
 		),
 	),
 	array(

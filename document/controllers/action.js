@@ -14,6 +14,7 @@ app.controller('actionCtrl',function($scope,app) {
 			show: 1,
 			view: 2,
 			update: 3,
+			transit: 4,
 		}
 	};
 	
