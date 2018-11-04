@@ -649,8 +649,8 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 	
 	$track_transit = array(
 		"id"=>$pick_up,
-		"picked_up_by"=>null,
-		"received_by"=>$data['transit']['staff']['id'],
+		"picked_up_by"=>$data['transit']['staff']['id'],
+		"received_by"=>null,
 		"office"=>$data['transit']['office']['id']
 	);
 
@@ -662,6 +662,49 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 		"track_action_staff"=>$data['transit']['staff']['id'],		
 		"track_action_status"=>transit_description($transit,$pick_up),
 		"track_user"=>$_SESSION['itrack_user_id'],
+		"transit"=>json_encode($track_transit),
+	);
+
+	$insert_track = $con->insertData($track);
+
+	// return $response->withJson([]);
+
+});
+
+$app->get('/doc/transit/receive/{id}', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	require_once '../document-transit.php';
+	require_once '../system_setup.php';	
+
+	session_start();	
+
+	$data = $request->getParsedBody();
+
+	$id = $args['id'];
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+	
+	$receive = 3;
+
+	$track_transit = array(
+		"id"=>$receive,
+		"picked_up_by"=>null,
+		"received_by"=>$session_user_id,
+		"office"=>$session_office
+	);
+
+	$transit = transit;
+
+	$track = array(
+		"document_id"=>intval($id),
+		"office_id"=>$session_office,
+		"track_action_staff"=>$session_user_id,		
+		"track_action_status"=>transit_description($transit,$receive),
+		"track_user"=>$session_user_id,
 		"transit"=>json_encode($track_transit),
 	);
 

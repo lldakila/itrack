@@ -1,7 +1,7 @@
 <?php
 
 	require_once 'authentication.php';
-	$page = "update-tracks";
+	$page = "receive";
 
 ?>
 <!DOCTYPE html>
@@ -39,7 +39,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- END Custom CSS-->
   </head>
-  <body ng-app="updateTracks" ng-controller="updateTracksCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile listen-barcode>
+  <body ng-app="receive" ng-controller="receiveCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile listen-barcode>
 
     <!-- navbar-fixed-top-->
     <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
@@ -97,13 +97,13 @@
         <div class="content-body">
 			<div class="row">
 				<div class="content-header-left col-md-6 col-xs-12 mb-1">
-					<h2 class="content-header-title">Update Tracks</h2>
+					<h2 class="content-header-title">Receive Document</h2>
 				</div>
 				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-xs-12">
 					<div class="breadcrumb-wrapper col-xs-12">
 					  <ol class="breadcrumb">
 						<li class="breadcrumb-item"><a href="index.html" class="info">iTrack</a></li>
-						<li class="breadcrumb-item active">Update Tracks</li>
+						<li class="breadcrumb-item active">Receive Document</li>
 					  </ol>
 					</div>
 				</div>
@@ -111,7 +111,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="alert alert-info mb-2" role="alert">
-						Scan barcode, or press Ctrl+Enter to enter barcode, or filter documents and select from results to <strong>update</strong> document
+						Scan barcode, or press Ctrl+Enter to enter barcode, or filter documents and select from results to <strong>receive</strong> document
 					</div>
 				</div>
 			</div>
@@ -119,13 +119,11 @@
 				<div class="col-lg-12">
 					<div class="card" style="margin-top: 15px;">
 						<div class="card-header">
-							<h4 class="card-title" id="basic-layout-form">Filter Documents</h4>
+							<h4 class="card-title" id="basic-layout-form">Filter Documents</h4>						
 						</div>
 						<div class="card-body collapse in">
 							<div class="card-block">
-								<!-- <div class="card-text">
-									<p>This is the most basic and default form having form sections. To add form section use <code>.form-section</code> class with any heading tags. This form has the buttons on the bottom left corner which is the default position.</p>
-								</div> -->
+								<div class="card-text"></div>
 								<form class="form" name="formHolder.filter">
 									<div class="form-body">
 										<div class="row">
@@ -200,7 +198,7 @@
 												<td>{{d.doc_name}}</td>
 												<td>{{d.document_date}}</td>
 												<td>
-													<button class="btn btn-info" ng-click="app.view(this,d)"><i class="icon-search7"></i></button>
+													<button class="btn btn-info" ng-click="app.receive(this,d)"><i class="icon-download5"></i></button>
 												</td>
 											</tr>
 										</tbody>
@@ -274,10 +272,11 @@
 	<!-- modules -->
 	<script src="modules/notifications.js"></script>
 	<script src="modules/module-access.js"></script>
-	<script src="document/modules/barcode-listener-action.js"></script>	
-	<script src="modules/update-tracks.js"></script>
+	<script src="modules/barcode-listener-receive.js"></script>	
+	<script src="common/receive.js"></script>
+	<script src="modules/receive.js"></script>
 
 	<!-- controller -->
-	<script src="controllers/update-tracks.js"></script>
+	<script src="controllers/receive.js"></script>
   </body>
 </html>

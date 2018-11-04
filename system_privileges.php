@@ -10,10 +10,18 @@ define('system_privileges', array(
 	),
 	array(
 		"id"=>"receive_document",
+		"description"=>"Add Document",
+		"privileges"=>array(
+			array("id"=>1,"description"=>"Show Add Document","value"=>false),
+			array("id"=>2,"description"=>"Add Document","value"=>false),
+		),
+	),
+	array(
+		"id"=>"receive",
 		"description"=>"Receive Document",
 		"privileges"=>array(
 			array("id"=>1,"description"=>"Show Receive Document","value"=>false),
-			array("id"=>2,"description"=>"Add Document","value"=>false),
+			array("id"=>2,"description"=>"Receive Document","value"=>false),
 		),
 	),
 	array(

@@ -2,7 +2,8 @@
 	<li class="nav-item<?=($page=="index")?' active':''?>"><a href="index.html"><i class="icon-dashboard"></i><span class="menu-title">Dashboard</span></a></li>
 	<li class="nav-item"><a href="#"><i class="icon-copy2"></i><span class="menu-title">Documents</span></a>
 		<ul class="menu-content">
-		  <li class="<?=($page=="receive-document")?'active':''?>"><a href="receive-document.html" class="menu-item">Receive Document</a></li>
+		  <li class="<?=($page=="receive-document")?'active':''?>"><a href="receive-document.html" class="menu-item">Add Document</a></li>
+		  <li class="<?=($page=="receive")?'active':''?>"><a href="receive.html" class="menu-item">Receive</a></li>
 		  <li class="<?=($page=="update-tracks")?'active':''?>"><a href="update-tracks.html" class="menu-item">Update Tracks</a></li>
 		  <li class="<?=($page=="documents")?'active':''?>"><a href="documents.html" class="menu-item">Documents</a></li>
 		</ul>
