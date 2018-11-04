@@ -5,6 +5,7 @@
 		  <li class="<?=($page=="receive-document")?'active':''?>"><a href="receive-document.html" class="menu-item">Add Document</a></li>
 		  <li class="<?=($page=="receive")?'active':''?>"><a href="receive.html" class="menu-item">Receive</a></li>
 		  <li class="<?=($page=="update-tracks")?'active':''?>"><a href="update-tracks.html" class="menu-item">Update Tracks</a></li>
+		  <li class="<?=($page=="track-document")?'active':''?>"><a href="track-document.html" class="menu-item">Track Document</a></li>
 		  <li class="<?=($page=="documents")?'active':''?>"><a href="documents.html" class="menu-item">Documents</a></li>
 		</ul>
 	</li>

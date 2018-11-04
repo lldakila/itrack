@@ -516,7 +516,7 @@ $app->get('/action/{id}', function ($request, $response, $args) {
 	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
 	
     return $this->view->render($response, 'action.html', [
-		'page'=>'action',
+		'page'=>'update-tracks',
 		'path'=>$base_path,
 		'url'=>$base_url,
         'id'=>$args['id'],
@@ -679,9 +679,7 @@ $app->get('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	require_once '../document-transit.php';
 	require_once '../system_setup.php';	
 
-	session_start();	
-
-	$data = $request->getParsedBody();
+	session_start();
 
 	$id = $args['id'];
 
@@ -711,6 +709,72 @@ $app->get('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$insert_track = $con->insertData($track);
 
 	// return $response->withJson([]);
+
+});
+
+$app->get('/doc/track/{id}', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "documents";
+
+	require_once '../document-info.php';
+	require_once 'datetime.php';
+	require_once '../functions.php';
+	require_once '../system_setup.php';
+
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);	
+	
+	session_start();
+
+	$id = $args['id'];	
+
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
+	$document = document_info_complete($con,$document[0]);	
+
+	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
+	$due_date = due_date($document['document_date'],$document['document_transaction_type']['days']);
+	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));	
+
+	$document['tracks'] = [];
+	
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log DESC");
+	
+	foreach ($tracks as $track) {
+
+		$status = "";
+		$icon = "icon-ios-location-outline";
+		
+		# for initial / signature
+		
+		# initialed / approved
+		
+		# picked up / received
+		
+		$document['tracks'][] = array(
+			"icon"=>$icon,
+			"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+			"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+			"status"=>$status,
+		);
+
+	};
+	
+	# first track
+
+	$initial_office = $setup->get_setup_as_string(4);
+
+	$status = "Received at ".get_office_description($con,$initial_office)." by ".get_staff_name($con,$document['user_id']);
+
+	$icon = "icon-android-arrow-dropdown";
+	$document['tracks'][] = array(
+		"icon"=>$icon,
+		"track_time"=>date("h:i:s A",strtotime($document['document_date'])),
+		"track_date"=>date("M j, Y",strtotime($document['document_date'])),
+		"status"=>$status,
+	);		
+	
+	return $response->withJson($document);
 
 });
 

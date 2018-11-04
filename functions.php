@@ -62,7 +62,6 @@ function get_action_track($tracks,$user_id,$office) { # user has action in track
 
 };
 	
-
 function get_track_action_param($param) { # convert to php array
 
 	$param_arr = json_decode($param, true);
@@ -124,6 +123,38 @@ function get_staffs_actions($con,$track) {
 	};
 	
 	return $staffs;
+	
+};
+
+function get_office_description($con,$id) {
+	
+	$description = null;
+	
+	$office = $con->getData("SELECT office FROM offices WHERE id = $id");
+	
+	if (count($office)) {
+		
+		$description = $office[0]['office'];
+		
+	};
+	
+	return $description;
+	
+};
+
+function get_staff_name($con,$id) {
+	
+	$fullname = null;
+	
+	$staff = $con->getData("SELECT CONCAT(fname, ' ', SUBSTRING(mname,1,1), '. ', lname) fullname FROM users WHERE id = $id");
+	
+	if (count($staff)) {
+		
+		$fullname = $staff[0]['fullname'];
+		
+	};
+	
+	return $fullname;
 	
 };
 

@@ -3,8 +3,9 @@
 	<li class=" nav-item"><a href="#"><i class="icon-copy2"></i><span class="menu-title">Documents</span></a>
 		<ul class="menu-content">
 		  <li><a href="<?=$url?>receive-document.html" class="menu-item"></i>Add Document</a></li>
-		  <li class="<?=($page=="receive")?'active':''?>"><a href="<?=$url?>receive.html" class="menu-item">Receive</a></li>		  
-		  <li class="<?=($page=="action")?'active':''?>"><a href="<?=$url?>update-tracks.html" class="menu-item">Update Tracks</a></li>
+		  <li><a href="<?=$url?>receive.html" class="menu-item">Receive</a></li>		  
+		  <li class="<?=($page=="update-tracks")?'active':''?>"><a href="<?=$url?>update-tracks.html" class="menu-item">Update Tracks</a></li>
+		  <li class="<?=($page=="track-document")?'active':''?>"><a href="<?=$url?>track-document.html" class="menu-item">Track Document</a></li>		  
 		  <li><a href="<?=$url?>documents.html" class="menu-item">Documents</a></li>
 		</ul>
 	</li>

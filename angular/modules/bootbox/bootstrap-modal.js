@@ -131,5 +131,34 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 		});
 
 	};
+	
+	this.box4 = function(scope,title,content,load,onOk,w='230') {
+	
+		var dialog = bootbox.alert({
+			title: title,
+			message: 'Loading...',
+			buttons: {
+				ok: {
+					label: 'Close',
+					className: 'btn-danger'
+				}				
+			},			
+			callback: function (result) {
+				if (result) {
+					return onOk(scope);
+				}
+			}
+		});
+
+		dialog.init(function() {
+			dialog.find('.bootbox-body').load(content,function() {
+				$compile($('.bootbox-body')[0])(scope);
+				load();
+			});
+			var lp = parseFloat(w)/2-50;
+			$('.modal-content').css({"width": w+"%", "left": "-"+lp+"%"});
+		});
+
+	};	
 
 });

@@ -35,6 +35,14 @@ define('system_privileges', array(
 		),
 	),
 	array(
+		"id"=>"track_document",
+		"description"=>"Track Document",
+		"privileges"=>array(
+			array("id"=>1,"description"=>"Show Track Document","value"=>false),
+			array("id"=>2,"description"=>"Track Document","value"=>false),
+		),
+	),	
+	array(
 		"id"=>"documents",
 		"description"=>"List of Documents",
 		"privileges"=>array(
