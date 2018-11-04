@@ -111,7 +111,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				} else {
 					
 					scope.doc.actions[action_i].staffs[staff_i].done = !scope.doc.actions[action_i].staffs[staff_i].done;
-					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Sorry, you are not allowed to update document tracks.');					
+					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Sorry, you are not allowed to update document tracks.');
 					
 				};
 
@@ -122,6 +122,17 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				bui.hide();
 
 			});	
+			
+		};
+		
+		self.transit = function(scope) {
+
+			if (validate.form(scope,'transit')) {
+				
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please select office and staff.');				
+				return;
+				
+			};
 			
 		};
 		
