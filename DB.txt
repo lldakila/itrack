@@ -1,3 +1,1 @@
-ALTER TABLE `tracks`  ADD `update_log` DATETIME NULL  AFTER `system_log`;
-
-ALTER TABLE `documents`  ADD `update_log` DATETIME NULL  AFTER `remarks`;
+ALTER TABLE `tracks`  ADD `transit` LONGTEXT NULL  AFTER `preceding_track`;

@@ -11,7 +11,7 @@ angular.module('module-access', ['bootstrap-growl']).factory('access', function(
 			var access = false
 			
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', 'handlers/access.php', false);
+			xhr.open('POST', '/itrack/handlers/access.php', false);
 			
 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			

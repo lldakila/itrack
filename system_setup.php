@@ -3,16 +3,21 @@
 define('system_setup', array(
 	array(
 		"id"=>1,
-		"description"=>"Users for document action: initial/signature at receiving document",
-		"values"=>[2,8],
+		"description"=>"Users for document action: initial at receiving document",
+		"values"=>[2,8,9],
 	),
 	array(
 		"id"=>2,
+		"description"=>"Users for document action: signature at receiving document",
+		"values"=>[2,6],
+	),	
+	array(
+		"id"=>3,
 		"description"=>"Users for document action: route at receiving document",
 		"values"=>[8],
 	),
 	array(
-		"id"=>3,
+		"id"=>4,
 		"description"=>"Office for document action",
 		"values"=>[2],
 	),	

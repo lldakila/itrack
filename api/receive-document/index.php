@@ -77,6 +77,30 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 
 });
 
+# actions
+$app->get('/actions', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+
+	require_once '../../document-actions.php';
+	require_once '../../actions-params.php';
+
+	$document_actions = document_actions;
+
+	foreach ($document_actions as $da) {
+
+		$actions[$da['key']] = array(
+			"description"=>$da['description'],		
+			"params"=>get_params($actions_params,$da['id']),
+			"value"=>false
+		);
+	
+	};
+
+    return $response->withJson($actions);
+
+});
+
 # document type additional parameters
 $app->get('/dt_add_params/{id}', function (Request $request, Response $response, array $args) {
 
@@ -116,6 +140,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$data = $request->getParsedBody();
 
 	require_once '../../handlers/folder-files.php';
+	require_once '../../system_setup.php';
 	require_once 'classes.php';
 
 	session_start();	
@@ -128,28 +153,18 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	# document_dt_add_params
 	$document_dt_add_params = $data['document_dt_add_params'];
 	unset($data['document_dt_add_params']);
-	#
-
-	# document_action_add_params
-	$document_action_add_params = $data['document_action_add_params'];
-	unset($data['document_action_add_params']);
 	#	
 	
+	# actions
+	$actions = $data['actions'];
+	unset($data['actions']);
+	#
+
 	$data['user_id'] = $_SESSION['itrack_user_id'];
 	$data['origin'] = $data['origin']['id'];
 	$data['doc_type'] = $data['doc_type']['id'];
 	$data['communication'] = $data['communication']['id'];
 	$data['document_transaction_type'] = $data['document_transaction_type']['id'];	
-	
-	$track_action = 0;
-	
-	if ($data['for_initial']) $track_action = 1;
-	if ($data['for_signature']) $track_action = 2;
-	if ($data['for_routing']) $track_action = 3;
-
-	unset($data['for_initial']);
-	unset($data['for_signature']);
-	unset($data['for_routing']);
 	
 	$uploads = array("files"=>$data['files']);	
 	unset($data['files']);
@@ -164,25 +179,41 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 
 	$id = $con->insertId;
 
-	# first track
-	$con->table = "tracks";	
-	
-	require_once '../../system_setup.php';
-	
-	$system_setup = new setup(system_setup);
-	
-	$office_for_action = $system_setup->get_setup(3); 	
-	
-	$track = array(
-		"document_id"=>$id,
-		"office_id"=>$office_for_action[0],
-		"track_action"=>$track_action,
-		"track_action_add_params"=>json_encode($document_action_add_params),
-		"track_action_status"=>null,
-		"track_user"=>$_SESSION['itrack_user_id'],
-	);
+	# tracks
+	$con->table = "tracks";
 
-	$con->insertData($track);
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);
+	
+	foreach ($actions as $action) {
+		
+		if ($action['value']) {
+
+			$track_action = $action['params'][0]['action_id'];
+
+			# transit
+			$transit = array(
+				"id"=>1,
+				"picked_up_by"=>null,
+				"received_by"=>null,
+				"office"=>$setup->get_setup_as_string(4)
+			);
+
+			$track = array(
+				"document_id"=>$id,
+				"office_id"=>$_SESSION['office'],
+				"track_action"=>$track_action,
+				"track_action_add_params"=>json_encode($action['params'][0]),
+				"track_action_status"=>null,
+				"track_user"=>$_SESSION['itrack_user_id'],
+				"transit"=>json_encode($transit)
+			);
+
+			$con->insertData($track);
+			
+		};		
+	
+	};
 	#
 	
 	$con->table = "documents";	

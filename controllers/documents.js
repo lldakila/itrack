@@ -11,7 +11,10 @@ app.controller('documentsCtrl',function($scope,app) {
 	$scope.module = {
 		id: 'documents',
 		privileges: {
-
+			show: 1,
+			view: 2,
+			edit: 3,
+			delete: 4
 		}
 	};
 	

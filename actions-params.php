@@ -21,21 +21,46 @@ require_once 'system_setup.php';
 
 $system_setup = new setup(system_setup);
 
-$users_ids_initial_signature = $system_setup->get_setup_as_string(1); # users for document action: initial/signature
-$users_for_initial_signature = $con->getData("SELECT id, CONCAT_WS(' ',fname, lname) description FROM users WHERE id IN ($users_ids_initial_signature)");
+$users_ids_initial = $system_setup->get_setup_as_string(1); # users for document action: initial
+$users_for_initiale = $con->getData("SELECT id, CONCAT(fname, ' ', SUBSTRING(mname,1,1), '. ', lname) description FROM users WHERE id IN ($users_ids_initial)");
 
-$users_for_initial_signature_selects[] = array("id"=>0,"description"=>"-");
-foreach ($users_for_initial_signature as $value) {
+// $users_for_initial_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"),"value"=>false);
+foreach ($users_for_initiale as $value) {
 	
-	$users_for_initial_signature_selects[] = $value;
+	$office = $con->getData("SELECT users.div_id id, (SELECT office FROM offices WHERE offices.id = users.div_id) office FROM users WHERE users.id = ".$value['id']);
+	
+	$value['office'] = $office[0];
+	$value['value'] = false;	
+	
+	$users_for_initial_selects[] = $value;
 	
 };
 
-$users_ids_route = $system_setup->get_setup_as_string(2); # users for document action: route
-$users_for_route = $con->getData("SELECT id, CONCAT_WS(' ',fname, lname) description FROM users WHERE id IN ($users_ids_route)");
+$users_ids_signature = $system_setup->get_setup_as_string(2); # users for document action: signature
+$users_for_signature = $con->getData("SELECT id, CONCAT(fname, ' ', SUBSTRING(mname,1,1), '. ', lname) description FROM users WHERE id IN ($users_ids_signature)");
 
-$users_for_route_selects[] = array("id"=>0,"description"=>"-");
+// $users_for_signature_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"),"value"=>false);
+foreach ($users_for_signature as $value) {
+	
+	$office = $con->getData("SELECT users.div_id id, (SELECT office FROM offices WHERE offices.id = users.div_id) office FROM users WHERE users.id = ".$value['id']);
+	
+	$value['office'] = $office[0];
+	$value['value'] = false;	
+	
+	$users_for_signature_selects[] = $value;
+	
+};
+
+
+$users_ids_route = $system_setup->get_setup_as_string(3); # users for document action: route
+$users_for_route = $con->getData("SELECT id, CONCAT(fname, ' ', SUBSTRING(mname,1,1), '. ', lname) description FROM users WHERE id IN ($users_ids_route)");
+
+$users_for_route_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"));
 foreach ($users_for_route as $value) {
+	
+	$office = $con->getData("SELECT users.div_id id, (SELECT office FROM offices WHERE offices.id = users.div_id) office FROM users WHERE users.id = ".$value['id']);
+	
+	$value['office'] = $office[0];
 	
 	$users_for_route_selects[] = $value;
 	
@@ -51,9 +76,8 @@ $actions_params = array(
 				"action_id"=>1,
 				"model"=>"action_user_id",
 				"description"=>"To",
-				"type"=>"select",
-				"value"=>array("id"=>0,"description"=>"-"),
-				"options"=>$users_for_initial_signature_selects,			
+				"type"=>"checkbox",
+				"options"=>$users_for_initial_selects,			
 			),
 		),
 	),
@@ -66,9 +90,8 @@ $actions_params = array(
 				"action_id"=>2,				
 				"model"=>"action_user_id",
 				"description"=>"To",
-				"type"=>"select",
-				"value"=>array("id"=>0,"description"=>"-"),
-				"options"=>$users_for_initial_signature_selects,			
+				"type"=>"checkbox",
+				"options"=>$users_for_signature_selects,			
 			),
 		),
 	),
@@ -82,7 +105,7 @@ $actions_params = array(
 				"model"=>"action_user_id",
 				"description"=>"To",
 				"type"=>"select",
-				"value"=>array("id"=>0,"description"=>"-"),
+				"value"=>array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-")),		
 				"options"=>$users_for_route_selects,			
 			),
 		),

@@ -55,10 +55,7 @@
               <li class="nav-item hidden-sm-down"><a href="#" class="nav-link nav-link-expand"><i class="ficon icon-expand2"></i></a></li>
             </ul>
             <ul class="nav navbar-nav float-xs-right">
-              <li class="dropdown dropdown-notification nav-item">
-				<a href="#" data-toggle="dropdown" class="nav-link nav-link-label"><i class="ficon icon-bell4"></i><span class="tag tag-pill tag-default tag-danger tag-default tag-up">5</span></a>
-                <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right" notifications></ul>
-              </li>
+			  <?php require_once 'notifications.php'; ?>
               <li class="dropdown dropdown-user nav-item"><a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link dropdown-user-link"><span class="avatar avatar-online"><img src="<?=$url?>{{profile.picture}}" alt="avatar"><i></i></span><span class="user-name">{{profile.user}}</span></a>
                 <div class="dropdown-menu dropdown-menu-right" drop-down></div>
               </li>
@@ -75,40 +72,12 @@
     <div data-scroll-to-active="true" class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
       <!-- main menu header-->
       <div class="main-menu-header">
-        <input type="text" placeholder="Search" class="menu-search form-control round"/>
+        <!-- <input type="text" placeholder="Search" class="menu-search form-control round"/> -->
       </div>
       <!-- / main menu header-->
       <!-- main menu content-->
       <div class="main-menu-content">
-        <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-			<li class="nav-item"><a href="<?=$url?>index.html"><i class="icon-dashboard"></i><span class="menu-title">Dashboard</span></a></li>
-			<li class=" nav-item"><a href="#"><i class="icon-copy2"></i><span class="menu-title">Documents</span></a>
-				<ul class="menu-content">
-				  <li><a href="<?=$url?>receive-document.html" class="menu-item"></i> Receive Document</a></li>
-				  <li><a href="<?=$url?>documents.html" class="menu-item">Documents</a></li>				  
-				</ul>
-			</li>
-			<li class=" nav-item"><a href="#"><i class="icon-group"></i><span class="menu-title">Accounts</span></a>
-				<ul class="menu-content">
-				  <li><a href="<?=$url?>account-add.html" class="menu-item">Add Account</a></li>
-				  <li><a href="<?=$url?>account-list.html" class="menu-item">List</a></li>
-				</ul>
-			</li>
-			<li class="nav-item"><a href="#"><i class="icon-sitemap"></i><span class="menu-title">Groups</span></a>
-				<ul class="menu-content">
-				  <li><a href="<?=$url?>groups-add.html" class="menu-item">Add Group</a></li>
-				  <li><a href="<?=$url?>groups-list.html" class="menu-item">List</a></li>
-				</ul>
-			</li>
-			<li class="nav-item"><a href="#"><i class="icon-gear"></i><span data-i18n="nav.advance_cards.main" class="menu-title">Maintenance</span></a>
-				<ul class="menu-content">
-				  <li><a href="<?=$url?>offices.html" class="menu-item"></i>Offices</a></li>
-				  <li><a href="<?=$url?>document-types.html" class="menu-item">Document Types</a></li>
-				  <li><a href="<?=$url?>transactions.html" class="menu-item">Transactions</a></li>
-				  <li><a href="<?=$url?>options.html" class="menu-item">Options</a></li>
-				</ul>
-			</li>
-		</ul>
+		<?php require_once 'main-menu-navigation.php'; ?>
       </div>
       <!-- /main menu content-->
       <!-- main menu footer-->
@@ -235,48 +204,99 @@
 												</div>	
 											</div>
 											<div class="col-lg-6">
-												<div class="form-group">
-													<label>Action</label>
-													<hr>
-													<div class="col-lg-4">
-														<label>For Initial</label>
-														<div class="checkbox" style="margin-left: 10px;">
-															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_initial" ng-model="doc.for_initial" ng-checked="doc.for_initial" ng-change="app.actionChange(this,doc.for_initial,'for_initial')" ng-disabled="controls.btns.save">
-															  <span class="slider round"></span>
-															</label>
+												<label>Actions</label>
+												<div id="headingForInitial" class="card-header">
+													<div class="row">
+														<div class="col-lg-3">
+															<a data-toggle="collapse" href="#{{(!controls.btns.save)?'for_initial':''}}" aria-expanded="false" aria-controls="for_initial" class="card-title collapsed" ng-click="app.headerActionParam(this,'for_initial')"><span class="text-muted">{{doc.actions.for_initial.description}}</span></a>
+														</div>
+														<div class="col-lg-8">
+															<div class="checkbox">
+																<label class="switch">
+																  <input type="checkbox" hidden="hidden" name="for_initial" ng-model="doc.actions.for_initial.value" ng-checked="doc.actions.for_initial.value" ng-click="app.checkboxActionParam(this,'for_initial')" ng-disabled="controls.btns.save">
+																  <span class="slider round"></span>
+																</label>
+															</div>
 														</div>
 													</div>
-													<div class="col-lg-4">														
-														<label>For Signature</label>
-														<div class="checkbox" style="margin-left: 10px;">
-															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_signature" ng-model="doc.for_signature" ng-checked="doc.for_signature" ng-change="app.actionChange(this,doc.for_signature,'for_signature')" ng-disabled="controls.btns.save">
-															  <span class="slider round"></span>
-															</label>
+												</div>
+												<div id="for_initial" role="tabpanel" aria-labelledby="headingForInitial" class="card-collapse collapse" aria-expanded="false" style="">
+													<div class="card-body">
+														<div class="card-block">
+															<div class="form-group" ng-repeat="param in doc.actions.for_initial.params">
+																<label>{{param.description}}</label>
+																<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.save"></select>
+																<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.save">
+																<div ng-show="param.type=='checkbox'" style="margin-left: 20px;" class="form-check" ng-repeat="po in param.options">
+																	<input type="checkbox" class="form-check-input" ng-model="po.value" ng-checked="po.value" id="fi{{$index}}" ng-disabled="controls.btns.save">
+																	<label class="form-check-label" for="fi{{$index}}">{{po.description}}</label>
+																</div>															
+															</div>														
 														</div>
 													</div>
-													<div class="col-lg-4">														
-														<label>Route/Refer</label>
-														<div class="checkbox" style="margin-left: 10px;">
-															<label class="switch">
-															  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.for_routing" ng-checked="doc.for_routing" ng-change="app.actionChange(this,doc.for_routing,'for_routing')" ng-disabled="controls.btns.save">
-															  <span class="slider round"></span>
-															</label>
+												</div>
+												<div id="headingForSignature" class="card-header">
+													<div class="row">
+														<div class="col-lg-3">												
+															<a data-toggle="collapse" href="#{{(!controls.btns.save)?'for_signature':''}}" aria-expanded="false" aria-controls="for_signature" class="card-title collapsed" ng-click="app.headerActionParam(this,'for_signature')"><span class="text-muted">{{doc.actions.for_signature.description}}</span></a>
+														</div>
+														<div class="col-lg-8">
+															<div class="checkbox">
+																<label class="switch">
+																  <input type="checkbox" hidden="hidden" name="for_signature" ng-model="doc.actions.for_signature.value" ng-checked="doc.actions.for_signature.value" ng-click="app.checkboxActionParam(this,'for_signature')" ng-disabled="controls.btns.save">
+																  <span class="slider round"></span>
+																</label>
+															</div>
 														</div>														
 													</div>
 												</div>
+												<div id="for_signature" role="tabpanel" aria-labelledby="headingForSignature" class="card-collapse collapse" aria-expanded="false" style="">
+													<div class="card-body">
+														<div class="card-block">
+															<div class="form-group" ng-repeat="param in doc.actions.for_signature.params">
+																<label>{{param.description}}</label>
+																<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.save"></select>
+																<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.save">
+																<div ng-show="param.type=='checkbox'" style="margin-left: 20px;" class="form-check" ng-repeat="po in param.options">
+																	<input type="checkbox" class="form-check-input" ng-model="po.value" ng-checked="po.value" id="fs{{$index}}" ng-disabled="controls.btns.save">
+																	<label class="form-check-label" for="fs{{$index}}">{{po.description}}</label>
+																</div>															
+															</div>
+														</div>
+													</div>
+												</div>
+												<div id="headingForRouting" class="card-header">
+													<div class="row">
+														<div class="col-lg-3">													
+															<a data-toggle="collapse" href="#{{(!controls.btns.save)?'for_routing':''}}" aria-expanded="false" aria-controls="for_routing" class="card-title collapsed" ng-click="app.headerActionParam(this,'for_routing')"><span class="text-muted" style="">{{doc.actions.for_routing.description}}</span></a>
+														</div>
+														<div class="col-lg-8">
+															<div class="checkbox">
+																<label class="switch">
+																  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.actions.for_routing.value" ng-checked="doc.actions.for_routing.value" ng-click="app.checkboxActionParam(this,'for_routing')" ng-disabled="controls.btns.save">
+																  <span class="slider round"></span>
+																</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div id="for_routing" role="tabpanel" aria-labelledby="headingForRouting" class="card-collapse collapse" aria-expanded="false" style="">
+													<div class="card-body">
+														<div class="card-block">
+															<div class="form-group" ng-repeat="param in doc.actions.for_routing.params">
+																<label>{{param.description}}</label>
+																<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.save"></select>
+																<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.save">
+																<div ng-show="param.type=='checkbox'" style="margin-left: 20px;" class="form-check" ng-repeat="po in param.options">
+																	<input type="checkbox" class="form-check-input" ng-model="po.value" ng-checked="po.value" id="fr{{$index}}" ng-disabled="controls.btns.save">
+																	<label class="form-check-label" for="fr{{$index}}">{{po.description}}</label>
+																</div>															
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
-										</div>
-										<div class="row">
-											<div class="col-lg-6 offset-lg-6">
-												<div class="form-group" ng-repeat="param in action_add_params">
-													<label>{{param.description}}</label>
-													<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.save"></select>
-													<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.save">
-												</div>	
-											</div>
-										</div>										
+										</div>									
 										<div class="row">
 											<div class="col-lg-12">
 												<div class="form-group">
@@ -284,7 +304,7 @@
 													<div class="images-container">
 														<div class="image-container" ng-repeat="df in documentFiles">
 															<div class="controls">
-																<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df)">
+																<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df,'../dialogs/preview.html')">
 																	<i class="icon-search7"></i>
 																</a>
 																<a href="javascript:;" class="control-btn" remove-file-edit="{{$index}}">
@@ -377,12 +397,13 @@
 	<script src="<?=$url?>angular/modules/post/window-open-post.js"></script>
 	
 	<!-- modules -->
-	<script src="../modules/notifications.js"></script>
+	<script src="../modules/notifications-view.js"></script>
 	<script src="<?=$url?>modules/module-access.js"></script>
 	<script src="<?=$url?>modules/jspdf.js"></script>
 	<script src="<?=$url?>modules/upload-files.js"></script>
 	
 	<script src="../modules/url.js"></script>	
+	<script src="../modules/files.js"></script>
 	<script src="../modules/view.js"></script>
 	
 	<!-- controller -->
