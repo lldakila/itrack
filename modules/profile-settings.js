@@ -19,6 +19,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 				edit: true,
 			};
 			
+			// info
 			scope.settings.info = {};
 			
 			scope.settings.info.alert = {};
@@ -27,9 +28,33 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 			scope.settings.info.not_unique = false;
 			
+			// security
 			scope.settings.security = {};
 			
+			scope.settings.security.alert = {};
+			
+			scope.settings.security.alert.opw = {};
+			scope.settings.security.alert.opw.show = false;
+			scope.settings.security.alert.opw.message = '';
+			scope.settings.security.alert.opw.required = false;
+			
+			scope.settings.security.alert.pw = {};
+			scope.settings.security.alert.pw.show = false;
+			scope.settings.security.alert.pw.message = '';
+			
+			scope.settings.security.alert.opw.correct = false;			
+			scope.settings.security.alert.pw.correct = false;		
+			scope.settings.security.alert.pw.okMin = false;		
+			
 			self.info.load(scope);
+			
+			watchInfo(scope);
+			
+			watchSecurity(scope);
+
+		};
+		
+		function watchInfo(scope) {
 			
 			$timeout(function() {
 			
@@ -38,8 +63,6 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 					return scope.settings.info.uname;
 					
 				},function(newValue, oldValue) {
-					
-					scope.settings.info.uname = newValue;
 					
 					username_is_unique(scope).then(function(res) {
 						
@@ -68,8 +91,139 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 					
 				});
 
-			}, 1000);
+			}, 1000);			
+			
+		};
+		
+		function watchSecurity(scope) {			
+			
+			$timeout(function() {			
+			
+				scope.$watch(function(scope) {
+					
+					return scope.settings.security.opw;
+					
+				},function(newValue, oldValue) {
 
+					scope.settings.security.alert.opw.show = false;
+					scope.settings.security.alert.opw.message = '';					
+				
+					opwIsCorrect(scope).then(function(res) {
+
+						if (!scope.settings.btns.security.edit) {
+								
+							if (!res) {
+								
+								scope.settings.security.alert.opw.show = true;
+								scope.settings.security.alert.opw.message = 'Old password is incorrect';
+								scope.settings.security.alert.opw.correct = false;								
+								
+							} else {
+								
+								scope.settings.security.alert.opw.correct = true;
+								
+							};						
+							
+						};
+
+					}, function(res) {
+						
+					});
+
+				});
+				
+				scope.$watch(function(scope) {
+					
+					return scope.settings.security.pw;
+					
+				},function(newValue, oldValue) {
+					
+					pwMatch(scope).then(function(res) {
+						
+						if (!scope.settings.btns.security.edit) {
+						
+							if (!res) {
+								
+								scope.settings.security.alert.pw.show = true;
+								scope.settings.security.alert.pw.message = 'New password does not match';
+								scope.settings.security.alert.pw.correct = false;
+								
+							} else {
+								
+								scope.settings.security.alert.pw.show = false;
+								scope.settings.security.alert.pw.message = '';
+								scope.settings.security.alert.pw.correct = true;
+								
+							};
+							
+						};
+						
+					}, function(res) {
+						
+					});
+					
+				});
+
+				scope.$watch(function(scope) {
+					
+					return scope.settings.security.rpw;
+					
+				},function(newValue, oldValue) {
+					
+					pwMatch(scope).then(function(res) {
+						
+						if (!scope.settings.btns.security.edit) {
+						
+							if (!res) {
+								
+								scope.settings.security.alert.pw.show = true;
+								scope.settings.security.alert.pw.message = 'New password does not match';
+								scope.settings.security.alert.pw.correct = false;
+								
+							} else {
+								
+								scope.settings.security.alert.pw.show = false;
+								scope.settings.security.alert.pw.message = '';
+								scope.settings.security.alert.pw.correct = true;
+								
+							};
+							
+						};
+						
+					}, function(res) {
+						
+					});
+
+				});
+
+				scope.$watch(function(scope) {
+					
+					return scope.settings.security.alert.pw.correct;
+					
+				},function(newValue, oldValue) {
+					
+					if (scope.settings.security.alert.pw.correct) {
+						
+						if (belowMinChar(scope.settings.security.pw,6)) {
+
+							scope.settings.security.alert.pw.show = true;
+							scope.settings.security.alert.pw.message = 'Password must be at least 6 characters';
+							scope.settings.security.alert.pw.okMin = false;					
+
+						} else {
+
+							scope.settings.security.alert.pw.show = false;
+							scope.settings.security.alert.pw.message = '';
+							scope.settings.security.alert.pw.okMin = true;					
+
+						};
+						
+					};
+
+				});				
+
+			}, 1000);			
+			
 		};
 		
 		function validate(scope,form) {
@@ -129,6 +283,12 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 		self.info.edit = function(scope) {
 
 			if (!scope.settings.btns.info.edit) {
+				
+				scope.settings.info.alert = {};
+				scope.settings.info.alert.show = false;
+				scope.settings.info.alert.message = '';
+				
+				scope.settings.info.not_unique = false;				
 				
 				self.info.load(scope);
 				
@@ -200,6 +360,26 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 
 			if (!scope.settings.btns.security.edit) {
 				
+				delete scope.settings.security.opw;
+				delete scope.settings.security.pw;
+				delete scope.settings.security.rpw;
+				
+				scope.formHolder.security.opw.$touched = false;
+				scope.formHolder.security.pw.$touched = false;
+				scope.formHolder.security.rpw.$touched = false;
+				
+				scope.settings.security.alert.opw.show = false;
+				scope.settings.security.alert.opw.message = '';
+				scope.settings.security.alert.opw.required = false;
+				
+				scope.settings.security.alert.pw.show = false;
+				scope.settings.security.alert.pw.message = '';
+
+				scope.settings.security.alert.opw.correct = false;			
+				scope.settings.security.alert.pw.correct = false;
+
+				scope.settings.security.alert.pw.okMin = false;				
+				
 			};
 
 			scope.settings.btns.security.edit = !scope.settings.btns.security.edit;
@@ -208,7 +388,73 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 		
 		self.security.update = function(scope) {
 			
+			if (!scope.settings.security.alert.opw.correct) {
+				
+				scope.settings.security.alert.opw.show = true;
+				scope.settings.security.alert.opw.message = 'Old password is incorrect';				
+				
+			} else {
+				
+				scope.settings.security.alert.opw.show = false;
+				scope.settings.security.alert.opw.message = '';				
+				
+			};
 			
+			if (!validate(scope,'security') && scope.settings.security.alert.opw.correct && scope.settings.security.alert.pw.correct && scope.settings.security.alert.pw.okMin) {
+				
+				bui.show();
+				
+				$http({
+					method: 'POST',
+					url: 'api/profile/update/security',
+					data: scope.settings.security
+				}).then(function mySuccess(response) {
+	
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Your password has been updated. Please logout then login again.');						
+					scope.settings.btns.security.edit = true;
+					bui.hide();
+		
+				}, function myError(response) {
+
+					bui.hide();
+
+				});
+				
+			};
+			
+		};
+		
+		function opwIsCorrect(scope) {
+			
+			return $q(function(resolve,reject) {
+				
+				$http({
+					method: 'GET',
+					url: 'api/profile/security',
+				}).then(function mySuccess(response) {
+
+					resolve(response.data.pw===scope.settings.security.opw);
+		
+				}, function myError(response) {
+
+					reject(false);
+
+				});					
+				
+			});
+			
+		};
+		
+		function pwMatch(scope) {
+			
+			return $q(function(resolve,reject) {
+				
+				var match = scope.settings.security.pw == scope.settings.security.rpw;
+				
+				resolve(match);
+				if (!match) resolve(false);
+				
+			});	
 			
 		};
 		

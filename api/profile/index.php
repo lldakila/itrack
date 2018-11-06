@@ -33,6 +33,21 @@ $app->get('/info', function (Request $request, Response $response, array $args) 
 
 });
 
+$app->get('/security', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+	$con->table = "users";
+	
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];	
+	
+	$user = $con->getData("SELECT pw FROM users WHERE id = $session_user_id");	
+
+    return $response->withJson($user[0]);
+
+});
+
 $app->post('/username', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
@@ -65,6 +80,21 @@ $app->post('/update/info', function (Request $request, Response $response, array
 	$data = $request->getParsedBody();
 
 	$con->updateData(array("id"=>$session_user_id,"uname"=>$data['uname']),'id');
+
+});
+
+$app->post('/update/security', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+	$con->table = "users";
+
+	session_start();
+
+	$session_user_id = $_SESSION['itrack_user_id'];		
+	
+	$data = $request->getParsedBody();
+
+	$con->updateData(array("id"=>$session_user_id,"pw"=>$data['pw']),'id');
 
 });
 

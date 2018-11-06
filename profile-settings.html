@@ -152,19 +152,24 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>Old Password</label>
-													<input type="password" class="form-control" name="opw" ng-model="opw" ng-disabled="settings.btns.security.edit" required>
+													<input type="password" class="form-control" ng-class="{'border-danger': settings.security.alert.opw.required || settings.security.alert.opw.show}" name="opw" ng-model="settings.security.opw" ng-disabled="settings.btns.security.edit" required>
+													<span class="help-block danger" ng-show="settings.security.alert.opw.required">Old password is required</span>
+													<span class="help-block danger" ng-show="settings.security.alert.opw.show">{{settings.security.alert.opw.message}}</span>													
 												</div>
 											</div>
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>New Password</label>
-													<input type="password" class="form-control" name="pw" ng-model="pw" ng-disabled="settings.btns.security.edit" required>
+													<input type="password" class="form-control" ng-class="{'border-danger': (formHolder.security.pw.$invalid && formHolder.security.pw.$touched) || settings.security.alert.pw.show}" name="pw" ng-model="settings.security.pw" ng-disabled="settings.btns.security.edit" required>
+													<span class="help-block danger" ng-show="(formHolder.security.pw.$invalid && formHolder.security.pw.$touched)">New password is required</span>													
 												</div>
 											</div>
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>Re-Type New Password</label>
-													<input type="password" class="form-control" name="rpw" ng-model="rpw" ng-disabled="settings.btns.security.edit" required>
+													<input type="password" class="form-control" ng-class="{'border-danger': (formHolder.security.rpw.$invalid && formHolder.security.rpw.$touched) || settings.security.alert.pw.show}" name="rpw" ng-model="settings.security.rpw" ng-disabled="settings.btns.security.edit" required>
+													<span class="help-block danger" ng-show="(formHolder.security.rpw.$invalid && formHolder.security.rpw.$touched)">Re-type new password</span>													
+													<p class="help-block danger" ng-show="settings.security.alert.pw.show">{{settings.security.alert.pw.message}}</p>													
 												</div>
 											</div>
 										</div>
@@ -172,7 +177,7 @@
 								</form>
 								<div class="row">
 									<div class="col-lg-12">
-										<button class="btn btn-info float-md-right float-xs-right" ng-disabled="settings.btns.security.edit">Update</button>
+										<button class="btn btn-info float-md-right float-xs-right" ng-disabled="settings.btns.security.edit" ng-click="app.security.update(this)">Update</button>
 									</div>
 								</div>
 							</div>
