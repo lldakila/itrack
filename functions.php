@@ -146,7 +146,7 @@ function get_staff_name($con,$id) {
 	
 	$fullname = null;
 	
-	$staff = $con->getData("SELECT CONCAT(fname, ' ', SUBSTRING(mname,1,1), '. ', lname) fullname FROM users WHERE id = $id");
+	$staff = $con->getData("SELECT CONCAT(fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) fullname FROM users WHERE id = $id");
 	
 	if (count($staff)) {
 		

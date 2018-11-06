@@ -143,6 +143,15 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.controls.btns.ok = true;
 			scope.controls.btns.cancel = true;
 			
+			scope.doc = {};
+			scope.doc.id = 0;			
+			scope.doc.files = [];
+			scope.doc.actions = [];						
+			scope.doc.document_dt_add_params = [];					
+			
+			scope.dt_add_params = [];			
+			scope.documentFiles = [];			
+			
 			validate.cancel(scope,'doc');
 
 			/* $timeout(function() {
