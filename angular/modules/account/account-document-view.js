@@ -2,7 +2,7 @@ angular.module('account-module', ['bootstrap-modal']).directive('dropDown', func
 
 	return {
 		restrict: 'A',
-		templateUrl: '../../angular/modules/account/account.html'
+		templateUrl: '../../angular/modules/account/account-view.html'
 	};
 	
 }).directive('accountProfile',function($http,$window) {
