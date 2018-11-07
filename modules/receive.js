@@ -55,10 +55,14 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 				
 				bui.hide();
 				
-				scope.documents = response.data;				
+				scope.documents = response.data;
 				scope.filterData = scope.documents;
 				scope.currentPage = 1;
-					
+				
+				$(function() {
+				  $('[data-toggle="tooltip"]').tooltip();
+				});
+				
 			}, function myError(response) {
 				
 				bui.hide();				

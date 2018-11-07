@@ -99,6 +99,9 @@
 				<div class="content-header-left col-md-6 col-xs-12 mb-1">
 					<h2 class="content-header-title">Receive Document</h2>
 				</div>
+								
+									
+								
 				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-xs-12">
 					<div class="breadcrumb-wrapper col-xs-12">
 					  <ol class="breadcrumb">
@@ -179,7 +182,8 @@
 											<i class="icon-search"></i>
 										</div>
 									</div>
-								</div>							
+								</div>		
+								
 								<div class="table-hover" style="margin-top: 25px;">
 									<table class="table table-bordered ">
 										<thead>
@@ -198,7 +202,7 @@
 												<td>{{d.doc_name}}</td>
 												<td>{{d.document_date}}</td>
 												<td>
-													<button class="btn btn-info" ng-click="app.receive(this,d)"><i class="icon-download5"></i></button>
+													<button class="btn btn-info" ng-click="app.receive(this,d)" data-toggle="tooltip" data-placement="top" title="Receive"><i class="icon-download5"></i></button>
 												</td>
 											</tr>
 										</tbody>
