@@ -1,1 +1,1 @@
-ALTER TABLE `tracks`  ADD `transit` LONGTEXT NULL  AFTER `preceding_track`;
+ALTER TABLE `notifications` CHANGE `notification_type` `icon` VARCHAR(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;

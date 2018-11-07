@@ -239,7 +239,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			if (!eval(actions)) {
 				
-				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Pleas select an action');
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please select an action');
 				return;
 				
 			} else {
