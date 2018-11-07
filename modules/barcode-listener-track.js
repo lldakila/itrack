@@ -1,4 +1,4 @@
-angular.module('barcode-listener-track',['bootstrap-modal','form-validator-dialog','bootstrap-growl','track-document']).directive('listenBarcode', function($document,$rootScope,$http,$window,bootstrapModal,validateDialog,growl,$q,track) {
+angular.module('barcode-listener-track',['bootstrap-modal','form-validator-dialog','bootstrap-growl','track-document']).directive('listenBarcode', function($document,$rootScope,$http,$timeout,$window,bootstrapModal,validateDialog,growl,$q,track) {
 
 	return {
 		restrict: 'A',
@@ -34,7 +34,7 @@ angular.module('barcode-listener-track',['bootstrap-modal','form-validator-dialo
 					
 				};
 			
-				bootstrapModal.box(scope,'Enter document barcode to receive','/itrack/dialogs/manual-barcode.html',onOk,function() {});
+				bootstrapModal.box(scope,'Enter document barcode to receive','/dialogs/manual-barcode.html',onOk,function() {});
 				
 			};
 			
@@ -42,12 +42,14 @@ angular.module('barcode-listener-track',['bootstrap-modal','form-validator-dialo
 				
 				$http({
 					method: 'GET',
-					url: '/itrack/api/documents/barcode/'+barcode,
+					url: '/api/documents/barcode/'+barcode,
 				}).then(function success(response) {
 
 					// check if barcode is valid
 					if (response.data.status) {
-						track.document(scope,response.data.id);
+						$timeout(function() {
+							track.document(scope,response.data.id);
+						}, 500);
 					} else {
 						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Invalid barcode. No document found.');					
 					};

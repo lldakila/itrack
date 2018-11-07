@@ -1,0 +1,9 @@
+<VirtualHost itrack.sly:80>
+    DocumentRoot "{DOCUMENTPATH}/itrack/"
+    ServerName itrack.sly
+	<Directory "{DOCUMENTPATH}/itrack/">
+		AllowOverride All
+		Options FollowSymLinks Indexes 
+		{ONLINE_MODE}
+	</Directory>	
+</VirtualHost>

@@ -34,7 +34,7 @@ angular.module('barcode-listener-action',['bootstrap-modal','form-validator-dial
 					
 				};
 			
-				bootstrapModal.box(scope,'Enter document barcode to receive','/itrack/dialogs/manual-barcode.html',onOk,function() {});
+				bootstrapModal.box(scope,'Enter document barcode to receive','/dialogs/manual-barcode.html',onOk,function() {});
 				
 			};
 			
@@ -42,7 +42,7 @@ angular.module('barcode-listener-action',['bootstrap-modal','form-validator-dial
 				
 				$http({
 					method: 'GET',
-					url: '/itrack/api/documents/barcode/'+barcode,
+					url: '/api/documents/barcode/'+barcode,
 				}).then(function success(response) {
 
 					// check if barcode is valid
