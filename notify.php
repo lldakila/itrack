@@ -1,11 +1,25 @@
 <?php
 
-function notify($con,$notifications) {
+function notify($con,$state,$params) {
 
 	$old_table = $con->table;	
 	$con->table = "notifications";
 
-	$notify = $con->insertDataMulti($notifications);
+	$notifications = [];
+	
+	switch ($state) {
+
+		case "added":
+
+		break;
+
+		case "":
+
+		break;
+
+	};
+	
+	if (count($notifications)) $notify = $con->insertDataMulti($notifications);
 
 	$con->table = $old_table;
 

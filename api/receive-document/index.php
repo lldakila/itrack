@@ -142,6 +142,8 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	require_once '../../handlers/folder-files.php';
 	require_once '../../system_setup.php';
 	require_once 'classes.php';
+	require_once '../../functions.php';
+	require_once '../../notify.php';
 
 	session_start();	
 
@@ -179,6 +181,9 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 
 	$id = $con->insertId;
 
+	# notify
+	notify($con,"added",[]);
+
 	# tracks
 	$con->table = "tracks";
 
@@ -187,7 +192,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	
 	foreach ($actions as $action) {
 		
-		if ($action['value']) {
+		if ($action['value']) {						
 
 			$track_action = $action['params'][0]['action_id'];
 
@@ -210,6 +215,8 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 			);
 
 			$con->insertData($track);
+			
+			# notify
 			
 		};		
 	
