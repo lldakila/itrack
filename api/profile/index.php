@@ -57,7 +57,8 @@ $app->post('/username', function (Request $request, Response $response, array $a
 
 	$session_user_id = $_SESSION['itrack_user_id'];	
 
-	$data = $request->getParsedBody();	
+	$data = $request->getParsedBody();
+	if (!isset($data['uname'])) $data['uname'] = "";
 
 	$user = $con->getData("SELECT * FROM users WHERE id != $session_user_id AND uname = '".$data['uname']."'");	
 
