@@ -8,7 +8,7 @@ session_start();
 
 $con = new pdo_db("notifications");
 
-$response = [[],[],[]];
+$response = [];
 
 echo json_encode($response);
 
