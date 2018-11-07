@@ -3,8 +3,8 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 	function notifications(scope) {
 
 		$http({
-		  method: 'POST',
-		  url: 'handlers/notifications.php'		  
+		  method: 'GET',
+		  url: '/api/notifications/fetch'		  
 		}).then(function mySucces(response) {
 
 			scope.notifications = angular.copy(response.data);
