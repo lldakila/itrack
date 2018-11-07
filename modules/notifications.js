@@ -19,7 +19,7 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 		
 		$http({
 		  method: 'POST',
-		  url: 'handlers/dismiss-notification.php',
+		  url: '/handlers/dismiss-notification.php',
 		  data: notification
 		}).then(function mySucces(response) {
 
@@ -31,14 +31,14 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 	
 	return {
 		restrict: 'A',
-		templateUrl: 'html/notifications.html',
+		templateUrl: '/html/notifications.html',
 		link: function(scope, element, attrs) {	
 
 			$timeout(function() {
 
 				$http({
 				  method: 'POST',
-				  url: 'handlers/access.php',
+				  url: '/handlers/access.php',
 				  data: {group: scope.profile.group, mod: 'notifications', prop: 1}
 				}).then(function mySucces(response) {
 					
@@ -47,11 +47,13 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 
 					if (response.data.value) {
 
+						notifications(scope);
+					
 						var notification = $interval(function() {
 							
 							notifications(scope);
 
-						},2000);
+						},1000);
 
 					};		
 
@@ -62,7 +64,7 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 				
 				});			
 		
-			}, 2000);				
+			}, 1000);				
 
 			scope.notificationAction = function(scope,notification) {
 				
