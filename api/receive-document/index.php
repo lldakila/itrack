@@ -145,7 +145,10 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	require_once '../../functions.php';
 	require_once '../../notify.php';
 
-	session_start();	
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);
+
+	session_start();
 
 	# for barcode
 	$com = $data['communication']['shortname'];
@@ -181,14 +184,13 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 
 	$id = $con->insertId;
 
-	# notify
-	notify($con,"added",[]);
+	# notify liaisons
+	$initial_office = $setup->get_setup_as_string(4);
+	$liaisons = $setup->get_setup_as_string(5);
+	notify($con,"added",array("doc_id"=>$id,"header"=>$data['doc_name'],"group"=>$liaisons,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']));
 
 	# tracks
 	$con->table = "tracks";
-
-	$system_setup = system_setup;
-	$setup = new setup($system_setup);
 	
 	foreach ($actions as $action) {
 		
@@ -215,8 +217,6 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 			);
 
 			$con->insertData($track);
-			
-			# notify
 			
 		};		
 	

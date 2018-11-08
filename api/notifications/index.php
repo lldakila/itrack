@@ -23,9 +23,9 @@ $app->get('/fetch', function (Request $request, Response $response, array $args)
 
 	$con = $this->con;
 	$con->table = "notifications";
-	
-	require_once '../../notify.php';
 
+	require_once '../../notify.php';	
+	
 	session_start();
 	
 	$session_user_id = $_SESSION['itrack_user_id'];	
