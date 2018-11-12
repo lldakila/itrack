@@ -713,6 +713,61 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 
 });
 
+$app->post('/doc/transit/release', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	require_once '../document-transit.php';
+	require_once '../system_setup.php';
+	require_once '../functions.php';
+	require_once '../notify.php';	
+	
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);	
+	
+	session_start();	
+
+	$data = $request->getParsedBody();
+
+	$id = $data['document']['id'];
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+
+	$pick_up = 2;
+
+	$track_transit = array(
+		"id"=>$pick_up,
+		"picked_up_by"=>$data['transit']['staff']['id'],
+		"received_by"=>null,
+		"office"=>$data['transit']['office']['id']
+	);
+
+	$transit = transit;
+
+	$transit_description = transit_description($transit,$pick_up);
+	$track = array(
+		"document_id"=>$id,
+		"office_id"=>$_SESSION['office'],
+		"track_action_staff"=>$data['transit']['staff']['id'],		
+		"track_action_status"=>$transit_description,
+		"track_user"=>$_SESSION['itrack_user_id'],
+		"transit"=>json_encode($track_transit),
+	);
+
+	$insert_track = $con->insertData($track);
+
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
+
+	# notify liaisons
+	$liaisons = $setup->get_setup_as_string(5);
+	notify($con,"picked_up",array("doc_id"=>$id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$data['transit']['staff']['id'],"track_action_status"=>$transit_description));	
+	
+	// return $response->withJson([]);
+
+});
+
 $app->get('/doc/transit/receive/{id}', function ($request, $response, $args) {
 
 	$con = $this->con;
