@@ -157,7 +157,7 @@
 											<td>{{option.description}}</td>
 											<td>
 												<button class="btn btn-info" ng-click="app.add(this,option)"><i class="icon-edit2"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,option)"><i class="icon-trash-o"></i></button>
+												<button class="btn btn-secondary" ng-click="app.delete(this,option)" ng-show="profile.pages_access.maintenance.delete.delete_item"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>
 									</tbody>

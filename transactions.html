@@ -157,7 +157,7 @@
 											<td>{{tran.shortname}}</td>
 											<td>
 												<button class="btn btn-info" ng-click="app.add(this,tran)"><i class="icon-edit2"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,tran)"><i class="icon-trash-o"></i></button>
+												<button class="btn btn-secondary" ng-click="app.delete(this,tran)" ng-show="profile.pages_access.maintenance.delete.delete_item"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>
 									</tbody>

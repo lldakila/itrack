@@ -150,7 +150,7 @@
 											<td>{{gr.group_description}}</td>
 											<td>
 												<button class="btn btn-info" ng-click="app.view(this,gr)"><i class="icon-search7"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,gr)"><i class="icon-trash-o"></i></button>
+												<button class="btn btn-secondary" ng-click="app.delete(this,gr)" ng-show="profile.pages_access.groups.delete.delete_group"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>
 									</tbody>

@@ -27,7 +27,6 @@
 		  <li class="<?=($page=="document-types")?'active':''?>"><a href="document-types.html" class="menu-item">Document Types</a></li>
 		  <li class="<?=($page=="transactions")?'active':''?>"><a href="transactions.html" class="menu-item">Transactions</a></li>
 		  <li class="<?=($page=="options")?'active':''?>"><a href="options.html" class="menu-item">Options</a></li>
-		  <li class=""><a href="profile-settings.html" class="menu-item">Profile Settings</a></li>
 		</ul>
 	</li>
 </ul>

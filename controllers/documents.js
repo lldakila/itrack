@@ -14,7 +14,7 @@ app.controller('documentsCtrl',function($scope,app) {
 			show: 1,
 			view: 2,
 			edit: 3,
-			delete: 4
+			delete: "delete_document",
 		}
 	};
 	

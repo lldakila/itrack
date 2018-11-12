@@ -49,7 +49,7 @@ define('system_privileges', array(
 			array("id"=>1,"description"=>"Show Documents","value"=>false),
 			array("id"=>2,"description"=>"View Document","value"=>false),
 			array("id"=>3,"description"=>"Edit Document","value"=>false),
-			array("id"=>4,"description"=>"Delete Document","value"=>false),
+			array("id"=>"delete_document","description"=>"Delete Document","value"=>false),
 		),
 	),
 	array(
@@ -59,7 +59,7 @@ define('system_privileges', array(
 			array("id"=>1,"description"=>"Show User Accounts","value"=>false),
 			array("id"=>2,"description"=>"Add User Account","value"=>false),
 			array("id"=>3,"description"=>"Edit User Account","value"=>false),
-			array("id"=>4,"description"=>"Delete User Account","value"=>false),
+			array("id"=>"delete_account","description"=>"Delete User Account","value"=>false),
 		),
 	),
 	array(
@@ -69,7 +69,7 @@ define('system_privileges', array(
 			array("id"=>1,"description"=>"Show User Groups","value"=>false),
 			array("id"=>2,"description"=>"Add User Groups","value"=>false),
 			array("id"=>3,"description"=>"Edit User Groups","value"=>false),
-			array("id"=>4,"description"=>"Delete User Groups","value"=>false),
+			array("id"=>"delete_group","description"=>"Delete User Groups","value"=>false),
 		),
 	),
 	array(
@@ -78,7 +78,7 @@ define('system_privileges', array(
 		"privileges"=>array(
 			array("id"=>1,"description"=>"Show Maintenance","value"=>false),
 			array("id"=>2,"description"=>"Add/Edit Item","value"=>false),
-			array("id"=>3,"description"=>"Delete Item","value"=>false),
+			array("id"=>"delete_item","description"=>"Delete Item","value"=>false),
 		),
 	),
 	array(
