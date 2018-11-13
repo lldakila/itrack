@@ -205,6 +205,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 				"received_by"=>null,
 				"office"=>$setup->get_setup_as_string(4),
 				"released_to"=>null,
+				"filed"=>false,
 			);
 
 			$track = array(

@@ -233,6 +233,17 @@ function is_released($transit) {
 	
 };
 
+function is_filed($transit) {
+
+	$is_filed = false;
+
+	$_transit = json_decode($transit, true);
+	if ($_transit['filed']) $is_filed = true;
+
+	return $is_filed;	
+
+};
+
 function get_transit_office($con,$transit) {
 	
 	$transit_office = null;

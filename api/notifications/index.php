@@ -30,7 +30,7 @@ $app->get('/fetch', function (Request $request, Response $response, array $args)
 	
 	$session_user_id = $_SESSION['itrack_user_id'];	
 	
-	$notifications = $con->getData("SELECT * FROM notifications WHERE user_id = $session_user_id AND dismiss = 0");	
+	$notifications = $con->getData("SELECT * FROM notifications WHERE user_id = $session_user_id AND dismiss = 0 ORDER BY system_log DESC");	
 	
 	foreach ($notifications as $i => $notification) {
 	

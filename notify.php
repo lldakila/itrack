@@ -127,8 +127,10 @@ function notify($con,$state,$params) {
 
 				# exclude if track_action_staff picked up the document
 				if ($staff['id']==$params['track_action_staff']) continue;
-
-				$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." the document";
+	
+				$status = $params['track_action_status'];
+				if ($params['file']) $status.=" and filed";
+				$message = get_staff_name($con,$params['track_action_staff'])." $status the document";
 
 				$notification = array(
 					"doc_id"=>$params['doc_id'],

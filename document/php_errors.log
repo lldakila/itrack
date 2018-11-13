@@ -1,0 +1,36 @@
+[13-Nov-2018 17:04:07 Asia/Manila] Slim Application Error:
+Type: ParseError
+Message: syntax error, unexpected ';', expecting ']'
+File: C:\Users\sly\Desktop\UwAmp310\www\itrack\notify.php
+Line: 131
+Trace: #0 [internal function]: Closure->{closure}(Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#1 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Handlers\Strategies\RequestResponse.php(41): call_user_func(Object(Closure), Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#2 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Route.php(356): Slim\Handlers\Strategies\RequestResponse->__invoke(Object(Closure), Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#3 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\MiddlewareAwareTrait.php(117): Slim\Route->__invoke(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#4 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Route.php(334): Slim\Route->callMiddlewareStack(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#5 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php(515): Slim\Route->run(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#6 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\MiddlewareAwareTrait.php(117): Slim\App->__invoke(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#7 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php(406): Slim\App->callMiddlewareStack(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#8 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php(314): Slim\App->process(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#9 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\index.php(951): Slim\App->run()
+#10 {main}
+View in rendered output by enabling the "displayErrorDetails" setting.
+
+[13-Nov-2018 17:04:25 Asia/Manila] Slim Application Error:
+Type: ParseError
+Message: syntax error, unexpected ';', expecting ']'
+File: C:\Users\sly\Desktop\UwAmp310\www\itrack\notify.php
+Line: 131
+Trace: #0 [internal function]: Closure->{closure}(Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#1 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Handlers\Strategies\RequestResponse.php(41): call_user_func(Object(Closure), Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#2 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Route.php(356): Slim\Handlers\Strategies\RequestResponse->__invoke(Object(Closure), Object(Slim\Http\Request), Object(Slim\Http\Response), Array)
+#3 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\MiddlewareAwareTrait.php(117): Slim\Route->__invoke(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#4 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\Route.php(334): Slim\Route->callMiddlewareStack(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#5 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php(515): Slim\Route->run(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#6 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\MiddlewareAwareTrait.php(117): Slim\App->__invoke(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#7 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php(406): Slim\App->callMiddlewareStack(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#8 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\vendor\slim\slim\Slim\App.php(314): Slim\App->process(Object(Slim\Http\Request), Object(Slim\Http\Response))
+#9 C:\Users\sly\Desktop\UwAmp310\www\itrack\document\index.php(951): Slim\App->run()
+#10 {main}
+View in rendered output by enabling the "displayErrorDetails" setting.
+

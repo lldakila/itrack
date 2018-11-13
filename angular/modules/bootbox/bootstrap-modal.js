@@ -69,8 +69,10 @@ angular.module('bootstrap-modal',[]).service('bootstrapModal', function($compile
 		});
 		
 		dialog.init(function() {
-			dialog.find('.bootbox-body').load(content);
-			$timeout(function() { $compile($('.bootbox-body')[0])(scope); }, 500);
+			dialog.find('.bootbox-body').load(content, function() {
+				$compile($('.bootbox-body')[0])(scope);
+			});
+			// $timeout(function() { $compile($('.bootbox-body')[0])(scope); }, 500);
 		});
 	
 	};

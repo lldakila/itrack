@@ -572,7 +572,8 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 		"picked_up_by"=>null,
 		"received_by"=>null,
 		"office"=>$session_office,
-		"released_to"=>null,		
+		"released_to"=>null,
+		"filed"=>false,		
 	);
 
 	$document_actions = document_actions;
@@ -659,7 +660,8 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 		"picked_up_by"=>$data['transit']['staff']['id'],
 		"received_by"=>null,
 		"office"=>$data['transit']['office']['id'],
-		"released_to"=>null,		
+		"released_to"=>null,
+		"filed"=>false,		
 	);
 
 	$transit = transit;
@@ -687,7 +689,7 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 
 });
 
-$app->get('/doc/transit/receive/{id}', function ($request, $response, $args) {
+$app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 
 	$con = $this->con;
 	$con->table = "tracks";
@@ -702,6 +704,8 @@ $app->get('/doc/transit/receive/{id}', function ($request, $response, $args) {
 
 	session_start();
 
+	$data = $request->getParsedBody();	
+	
 	$id = intval($args['id']);
 
 	$session_user_id = $_SESSION['itrack_user_id'];
@@ -715,6 +719,7 @@ $app->get('/doc/transit/receive/{id}', function ($request, $response, $args) {
 		"received_by"=>$session_user_id,
 		"office"=>$session_office,
 		"released_to"=>null,
+		"filed"=>$data['file'],		
 	);
 
 	$transit = transit;
@@ -736,7 +741,7 @@ $app->get('/doc/transit/receive/{id}', function ($request, $response, $args) {
 
 	# notify liaisons
 	$liaisons = $setup->get_setup_as_string(5);
-	notify($con,"received",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description));
+	notify($con,"received",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>$data['file']));
 	
 	// return $response->withJson([]);
 
@@ -775,6 +780,7 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 		"received_by"=>null,
 		"office"=>null,
 		"released_to"=>$data['release']['staff']['id'],
+		"filed"=>false,		
 	);
 
 	$transit = transit;
@@ -878,8 +884,10 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 		
 		if (is_picked_up($track['transit'])) {
 			
+			$status = $track['track_action_status'];
+			
 			$list[] = array(
-				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document"
+				"status"=>get_staff_name($con,$track['track_action_staff'])." $status the document"
 			);
 			
 			$document['tracks'][] = array(
@@ -892,20 +900,23 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 		};
 		
 		if (is_received($track['transit'])) {
-			
+
+			$status = $track['track_action_status'];
+			if (is_filed($track['transit'])) $status.=" and filed";			
+
 			$list[] = array(
-				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document at ".get_transit_office($con,$track['transit'])
+				"status"=>get_staff_name($con,$track['track_action_staff'])." $status the document"
 			);
-			
+
 			$document['tracks'][] = array(
 				"icon"=>$t_icons[get_transit_id($track['transit'])],
 				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
 				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
 				"list"=>$list,
 			);
-			
+
 		};
-		
+
 		if (is_released($track['transit'])) {
 			
 			$list[] = array(
