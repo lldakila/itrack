@@ -45,6 +45,7 @@ function notify($con,$state,$params) {
 
 				$notification = array(
 					"doc_id"=>$params['doc_id'],
+					"track_id"=>$params['track_id'],
 					"user_id"=>$staff['id'],
 					"icon"=>"icon-android-checkmark-circle",
 					"icon_bg"=>"icon-bg-circle",
@@ -71,6 +72,7 @@ function notify($con,$state,$params) {
 
 				$notification = array(
 					"doc_id"=>$params['doc_id'],
+					"track_id"=>$params['track_id'],					
 					"user_id"=>$staff['id'],
 					"icon"=>"icon-checkmark",
 					"icon_bg"=>"icon-bg-circle",
@@ -100,6 +102,7 @@ function notify($con,$state,$params) {
 
 				$notification = array(
 					"doc_id"=>$params['doc_id'],
+					"track_id"=>$params['track_id'],					
 					"user_id"=>$staff['id'],
 					"icon"=>"icon-briefcase",
 					"icon_bg"=>"icon-bg-circle",
@@ -129,6 +132,7 @@ function notify($con,$state,$params) {
 
 				$notification = array(
 					"doc_id"=>$params['doc_id'],
+					"track_id"=>$params['track_id'],					
 					"user_id"=>$staff['id'],
 					"icon"=>"icon-ios-location-outline",
 					"icon_bg"=>"icon-bg-circle",
@@ -143,6 +147,36 @@ function notify($con,$state,$params) {
 				
 			};		
 		
+		break;
+		
+		case "released":			
+		
+			$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
+
+			foreach ($staffs as $staff) {
+
+				# exclude if track_action_staff picked up the document
+				if ($staff['id']==$params['track_action_staff']) continue;
+
+				$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." the document to ".get_staff_name($con,$params['release_to']);
+
+				$notification = array(
+					"doc_id"=>$params['doc_id'],
+					"track_id"=>$params['track_id'],					
+					"user_id"=>$staff['id'],
+					"icon"=>"icon-arrow44",
+					"icon_bg"=>"icon-bg-circle",
+					"icon_color"=>"bg-primary",
+					"header"=>$params['header'],
+					"header_color"=>"",
+					"message"=>$message,
+					"url"=>"/track-document.html#!/".$params['doc_id'],
+				);	
+
+				$notifications[] = $notification;
+
+			};		
+
 		break;
 
 	};

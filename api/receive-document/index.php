@@ -203,7 +203,8 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 				"id"=>1,
 				"picked_up_by"=>null,
 				"received_by"=>null,
-				"office"=>$setup->get_setup_as_string(4)
+				"office"=>$setup->get_setup_as_string(4),
+				"released_to"=>null,
 			);
 
 			$track = array(
@@ -217,7 +218,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 			);
 
 			$con->insertData($track);
-			
+
 		};		
 	
 	};
