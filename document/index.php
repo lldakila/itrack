@@ -870,8 +870,13 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document"
 			);
 			
+			$bg = "bg-info";
+			
+			if ($track['preceding_track']==2) $bg = "bg-success";
+			
 			$document['tracks'][] = array(
 				"icon"=>$ia_icons[get_track_track_action($con,$track['preceding_track'])],
+				"bg"=>$bg,
 				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
 				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
 				"list"=>$list,
@@ -892,6 +897,7 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 			
 			$document['tracks'][] = array(
 				"icon"=>$t_icons[get_transit_id($track['transit'])],
+				"bg"=>"bg-danger",
 				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
 				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
 				"list"=>$list,
@@ -910,6 +916,7 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 
 			$document['tracks'][] = array(
 				"icon"=>$t_icons[get_transit_id($track['transit'])],
+				"bg"=>"bg-danger",
 				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
 				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
 				"list"=>$list,
@@ -925,6 +932,7 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 			
 			$document['tracks'][] = array(
 				"icon"=>$t_icons[get_transit_id($track['transit'])],
+				"bg"=>"bg-danger",
 				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
 				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
 				"list"=>$list,
@@ -944,6 +952,7 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 
 	$document['tracks'][] = array(
 		"icon"=>"icon-android-arrow-dropdown",
+		"bg"=>"bg-warning",
 		"track_time"=>date("h:i:s A",strtotime($document['document_date'])),
 		"track_date"=>date("M j, Y",strtotime($document['document_date'])),
 		"list"=>$initial_list,
