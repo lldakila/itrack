@@ -161,8 +161,8 @@
 											<td>{{d.document_transaction_type.transaction}}</td>
 											<td>{{}}</td>
 											<td>
-												<button class="btn btn-info" ng-click="app.view(this,d)" data-toggle="tooltip" data-placement="top" title="View"><i class="icon-search7"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,d)" data-toggle="tooltip" data-placement="top" title="Delete"><i class="icon-trash-o"></i></button>
+												<button class="btn btn-info" ng-click="app.view(this,d)"><i class="icon-search7"></i></button>
+												<button class="btn btn-secondary" ng-click="app.delete(this,d)" ng-show="profile.pages_access.documents.delete.delete_document"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>
 									</tbody>

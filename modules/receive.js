@@ -72,7 +72,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 		};
 		
 		self.receive = function(scope,d) {
-			
+
 			receive.document(scope,d.id);
 			
 		};

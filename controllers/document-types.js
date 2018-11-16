@@ -13,7 +13,7 @@ app.controller('documentTypeCtrl',function($scope,app) {
 		privileges: {
 			show: 1,
 			add: 2,
-			delete: 3,
+			delete: "delete_item",
 		}
 	};	
 

@@ -14,7 +14,7 @@ app.controller('accountCtrl',function($scope,app) {
 			show: 1,
 			add: 2,
 			edit: 3,
-			delete: 4,
+			delete: "delete_account",
 		}
 	};	
 });

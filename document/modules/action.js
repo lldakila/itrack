@@ -36,7 +36,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			offices(scope);
 			
+			scope.staffs = {};
+			
 			scope.transit = {};
+			scope.release = {};
 
 		};
 		
@@ -160,6 +163,40 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			});				
 			
 		};
+		
+		self.release = function(scope) {
+
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.release)) {
+				staff.done = !staff.done;
+				return;
+			};
+		
+			if (validate.form(scope,'release')) {
+				
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please select office and staff.');				
+				return;
+				
+			};
+			
+			bui.show();
+			
+			$http({
+			  method: 'POST',
+			  url: scope.url.view+'document/doc/transit/release',
+			  data: {document: scope.doc, release: scope.release},
+			}).then(function mySuccess(response) {
+
+				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+
+				bui.hide();
+
+			}, function myError(response) {
+
+				bui.hide();
+
+			});				
+			
+		};		
 		
 	};
 	

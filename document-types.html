@@ -155,7 +155,7 @@
 											<td>{{dt.shortname}}</td>
 											<td>
 												<button class="btn btn-info" ng-click="app.add(this,dt)"><i class="icon-search7"></i></button>
-												<button class="btn btn-secondary" ng-click="app.delete(this,dt)"><i class="icon-trash-o"></i></button>
+												<button class="btn btn-secondary" ng-click="app.delete(this,dt)" ng-show="profile.pages_access.maintenance.delete.delete_item"><i class="icon-trash-o"></i></button>
 											</td>
 										</tr>
 									</tbody>

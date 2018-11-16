@@ -1,4 +1,4 @@
-angular.module('receive-document',['module-access','block-ui','bootstrap-growl']).factory('receive', function($window,$timeout,$http,access,bui,growl) {
+angular.module('receive-document',['module-access','block-ui','bootstrap-growl','bootstrap-modal']).factory('receive', function($window,$timeout,$http,access,bui,growl,bootstrapModal) {
 	
 	function receive() {
 		
@@ -6,24 +6,36 @@ angular.module('receive-document',['module-access','block-ui','bootstrap-growl']
 		
 		self.document = function(scope,id) {
 			
-			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.receive)) return;
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.receive)) return;			
 			
-			bui.show();
+			scope.doc = {};
+			scope.doc.file = false;
 			
-			$http({
-			  method: 'GET',
-			  url: 'document/doc/transit/receive/'+id,
-			}).then(function mySuccess(response) {
+			var onOk = function() {
+			
+				bui.show();
+			
+				$http({
+				  method: 'POST',
+				  url: 'document/doc/transit/receive/'+id,
+				  data: scope.doc,
+				}).then(function mySuccess(response) {
 
-				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
 
-				bui.hide();
+					bui.hide();
 
-			}, function myError(response) {
+				}, function myError(response) {
 
-				bui.hide();
+					bui.hide();
 
-			});
+				});
+				
+				return true;
+				
+			};
+			
+			bootstrapModal.box(scope,'Receive document','/dialogs/receive.html',onOk);			
 			
 		};
 		

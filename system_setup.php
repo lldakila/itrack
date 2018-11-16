@@ -20,6 +20,16 @@ define('system_setup', array(
 		"id"=>4,
 		"description"=>"Office for document action",
 		"values"=>[2],
+	),
+	array(
+		"id"=>5,
+		"description"=>"Liaison officers",
+		"values"=>[4],
+	),
+	array(
+		"id"=>6,
+		"description"=>"Exclude from selections/autosuggest",
+		"values"=>[2,6,8],
 	),	
 ));
 

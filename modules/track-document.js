@@ -1,4 +1,10 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-track','track-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,track) {
+angular.module('app-module', ['ngRoute','bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-track','track-document']).config(function($routeProvider) {
+
+    $routeProvider.when('/:id', {
+            templateUrl: 'track-document.html'
+    });
+
+}).factory('app', function($http,$timeout,$compile,$window,$routeParams,$location,bootstrapModal,bui,access,growl,track) {
 	
 	function app() {
 
@@ -15,6 +21,18 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			scope.documents = [];
 			
 			popFilter(scope);
+			
+			scope.$on('$routeChangeSuccess', function() {
+				
+				console.log($routeParams.id);
+				
+				$timeout(function() {
+				
+					track.document(scope,$routeParams.id);
+					
+				}, 500);
+				
+			});
 			
 		};
 		

@@ -222,6 +222,28 @@ function is_received($transit) {
 	
 };
 
+function is_released($transit) {
+	
+	$is_released = false;
+	
+	$_transit = json_decode($transit, true);
+	if ($_transit['id']==4) $is_released = true; 
+	
+	return $is_released;	
+	
+};
+
+function is_filed($transit) {
+
+	$is_filed = false;
+
+	$_transit = json_decode($transit, true);
+	if ($_transit['filed']) $is_filed = true;
+
+	return $is_filed;	
+
+};
+
 function get_transit_office($con,$transit) {
 	
 	$transit_office = null;
@@ -232,6 +254,20 @@ function get_transit_office($con,$transit) {
 	
 	return $transit_office;
 	
+};
+
+function get_transit_staff($con,$transit,$p) {
+
+	$transit_staff = null;
+	
+	$_transit = json_decode($transit, true);
+
+	$id = $_transit[$p];
+
+	$transit_staff = get_staff_name($con,$id);
+	
+	return $transit_staff;
+
 };
 
 ?>
