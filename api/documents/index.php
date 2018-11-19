@@ -24,13 +24,22 @@ $app->get('/list', function (Request $request, Response $response, array $args) 
 	$con = $this->con;
 	$con->table = "documents";
 	
+	require_once '../../functions.php';
 	require_once '../../document-info.php';
+	require_once '../../system_setup.php';	
+	require_once '../../tracks.php';
 	
-	$documents = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type FROM documents");	
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);		
+	
+	$documents = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents");	
 
 	foreach ($documents as $i => $document) {
 		
+		$tracks = tracks($con,$setup,$document['id'],$document);
+		
 		$documents[$i] = document_info_complete($con,$document);
+		$documents[$i]['recent_status'] = $tracks[0]['list'][0]['status'];
 		
 	};
 	
