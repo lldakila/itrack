@@ -4,6 +4,7 @@
 		<ul class="menu-content">
 		  <li ng-show="profile.pages_access.receive_document.value" class="<?=($page=="receive-document")?'active':''?>"><a href="receive-document.html" class="menu-item">Add Document</a></li>
 		  <li ng-show="profile.pages_access.receive.value" class="<?=($page=="receive")?'active':''?>"><a href="receive.html" class="menu-item">Receive</a></li>
+		  <li class="<?=($page=="file")?'active':''?>"><a href="file.html" class="menu-item">File Document</a></li>
 		  <li ng-show="profile.pages_access.update_tracks.value" class="<?=($page=="update-tracks")?'active':''?>"><a href="update-tracks.html" class="menu-item">Update Tracks</a></li>
 		  <li ng-show="profile.pages_access.track_document.value" class="<?=($page=="track-document")?'active':''?>"><a href="track-document.html" class="menu-item">Track Document</a></li>
 		  <li ng-show="profile.pages_access.documents.value" class="<?=($page=="documents")?'active':''?>"><a href="documents.html" class="menu-item">Documents</a></li>

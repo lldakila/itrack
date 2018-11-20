@@ -1,4 +1,4 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-receive','receive-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,receive) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-file','file-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,file) {
 	
 	function app() {
 
@@ -71,9 +71,9 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			
 		};
 		
-		self.receive = function(scope,d) {
+		self.file = function(scope,d) {
 
-			receive.document(scope,d.id);
+			file.document(scope,d.id);
 			
 		};
 

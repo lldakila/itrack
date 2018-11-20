@@ -1,4 +1,4 @@
-angular.module('barcode-listener-receive',['bootstrap-modal','form-validator-dialog','bootstrap-growl','receive-document']).directive('listenBarcode', function($document,$rootScope,$http,$window,bootstrapModal,validateDialog,growl,$q,receive) {
+angular.module('barcode-listener-file',['bootstrap-modal','form-validator-dialog','bootstrap-growl','file-document']).directive('listenBarcode', function($document,$rootScope,$http,$window,bootstrapModal,validateDialog,growl,$q,file) {
 
 	return {
 		restrict: 'A',
@@ -34,7 +34,7 @@ angular.module('barcode-listener-receive',['bootstrap-modal','form-validator-dia
 					
 				};
 			
-				bootstrapModal.box(scope,'Enter document barcode to receive','/dialogs/manual-barcode.html',onOk,function() {});
+				bootstrapModal.box(scope,'Enter document barcode to file','/dialogs/manual-barcode.html',onOk,function() {});
 				
 			};
 			
@@ -47,7 +47,7 @@ angular.module('barcode-listener-receive',['bootstrap-modal','form-validator-dia
 
 					// check if barcode is valid
 					if (response.data.status) {
-						receive.document(scope,response.data.id);
+						file.document(scope,response.data.id);
 					} else {
 						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Invalid barcode. No document found.');					
 					};
