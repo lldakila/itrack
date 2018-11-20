@@ -2,7 +2,17 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 	
 	function notifications(scope) {
 
-		$http({
+		var source = new EventSource("/handlers/notifications.php");
+
+		source.onmessage = function(event) {
+			
+			var notifications = JSON.parse(event.data);
+			scope.notifications = notifications;
+			scope.$apply();
+
+		};
+
+		/* $http({
 		  method: 'GET',
 		  url: '/api/notifications/fetch'
 		}).then(function mySucces(response) {
@@ -11,7 +21,7 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 
 		}, function myError(response) {
 
-		});
+		}); */
 
 	};
 	
@@ -45,15 +55,15 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 					scope.notifications = {};
 					scope.notifications.count = 0;
 
-					if (response.data.value) {
-
+					if (response.data.value) {					
+					
 						notifications(scope);
 					
-						var notification = $interval(function() {
+						/* var notification = $interval(function() {
 							
 							notifications(scope);
 
-						},1000);
+						},1000); */
 
 					};		
 
