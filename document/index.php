@@ -439,6 +439,22 @@ $app->get('/offices', function($request, $response, $args) {
 
 });
 
+$app->get('/office/staffs', function($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "users";
+
+	session_start();
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];		
+
+	$staffs = $con->getData("SELECT id, CONCAT_WS(' ',fname, lname) fullname FROM users WHERE div_id = $session_office");
+
+    return $response->withJson($staffs);	
+
+});
+
 $app->post('/filter', function($request, $response, $args) {
 
 	$con = $this->con;
@@ -529,7 +545,9 @@ $app->get('/doc/actions/{id}', function ($request, $response, $args) {
 	
 	$actions = [];
 	foreach ($tracks as $track) {
-
+		
+		if ($track['track_action']==4) continue;
+		
 		$staffs = get_staffs_actions($con,$track);
 	
 		$actions[] = array(
@@ -581,10 +599,10 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 	$document_action_done_status = document_action_done_status($document_actions,$data['action']['track_action']);
 	$track = array(
 		"document_id"=>$id,
-		"office_id"=>$_SESSION['office'],
+		"office_id"=>$session_office,
 		"track_action_staff"=>$data['staff']['id'],		
 		"track_action_status"=>$document_action_done_status,
-		"track_user"=>$_SESSION['itrack_user_id'],
+		"track_user"=>$session_user_id,
 		"transit"=>json_encode($transit),
 		"preceding_track"=>$data['action']['track_id'],
 	);
@@ -628,6 +646,64 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 	};
 
 	return $response->withJson($res);
+
+});
+
+$app->post('/doc/actions/comment', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	require_once '../document-actions.php';
+	require_once '../system_setup.php';	
+	require_once '../functions.php';
+	require_once '../notify.php';
+
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);	
+	
+	session_start();	
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+
+	$data = $request->getParsedBody();
+
+	$id = $data['document']['id'];
+	
+	$track_transit = array(
+		"id"=>1,
+		"picked_up_by"=>null,
+		"received_by"=>null,
+		"office"=>$session_office,
+		"released_to"=>null,
+		"filed"=>false,		
+	);
+
+	$document_actions = document_actions;	
+	
+	$document_action_done_status = document_action_done_status($document_actions,4);
+	$track = array(
+		"document_id"=>$id,
+		"office_id"=>$session_office,
+		"track_action"=>4,
+		"track_action_staff"=>$data['comment']['staff']['id'],		
+		"track_action_status"=>$document_action_done_status,
+		"track_user"=>$session_user_id,
+		"transit"=>json_encode($track_transit),
+		"comment"=>$data['comment']['text'],
+	);
+
+	$insert_track = $con->insertData($track);
+	$track_id = $con->insertId;
+
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
+
+	# notify liaisons
+	$liaisons = $setup->get_setup_as_string(5);
+	notify($con,"commented",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$data['comment']['staff']['id'],"track_action_status"=>$document_action_done_status));	
+	
+	return $response->withJson([]);
 
 });
 

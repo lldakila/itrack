@@ -28,6 +28,30 @@ function tracks($con,$setup,$id,$document) {
 			);			
 		};		
 		
+		# comment
+		if ($track['track_action'] == 4) {
+			
+			$status = get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document";
+			$status .= '<blockquote class="blockquote">';
+			$status .= '<p class="mb-0">'.$track['comment'].'</p>';
+			$status .= '</blockquote>';
+			
+			$list[] = array(
+				"status"=>$status,
+			);			
+			
+			$bg = "bg-info";
+			
+			$document_tracks[] = array(
+				"icon"=>"icon-pencil22",
+				"bg"=>$bg,
+				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+				"list"=>$list,
+			);
+			
+		};
+		
 		# initialed / approved
 		if ($track['preceding_track']!=null) {
 			
@@ -89,7 +113,23 @@ function tracks($con,$setup,$id,$document) {
 				"list"=>$list,
 			);
 
-		};		
+		};
+
+		if (is_released($track['transit'])) {
+			
+			$list[] = array(
+				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to")
+			);
+			
+			$document_tracks[] = array(
+				"icon"=>$t_icons[get_transit_id($track['transit'])],
+				"bg"=>"bg-danger",
+				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+				"list"=>$list,
+			);
+			
+		};
 		
 		if (is_filed($track['transit'])) {
 
@@ -107,22 +147,6 @@ function tracks($con,$setup,$id,$document) {
 				"list"=>$list,
 			);
 
-		};
-
-		if (is_released($track['transit'])) {
-			
-			$list[] = array(
-				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to")
-			);
-			
-			$document_tracks[] = array(
-				"icon"=>$t_icons[get_transit_id($track['transit'])],
-				"bg"=>"bg-danger",
-				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
-				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
-				"list"=>$list,
-			);
-			
 		};		
 
 	};

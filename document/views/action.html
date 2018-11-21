@@ -177,6 +177,18 @@
 					</div>
 					<div class="card">
 						<div id="headingCollapse" class="card-header">
+							<a href="javascript:;" aria-expanded="true" aria-controls="comment" class="card-title lead">Comment</a>
+						</div>
+						<div id="comment" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
+							<div class="card-body">
+								<div class="card-block">
+									<button type="button" class="btn btn-primary" ng-click="app.comment(this)">Add</button>
+								</div>
+							</div>
+						</div>
+					</div>					
+					<div class="card">
+						<div id="headingCollapse" class="card-header">
 							<a href="javascript:;" aria-expanded="true" aria-controls="transit" class="card-title lead">Pick up</a>
 						</div>
 						<div id="transit" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
@@ -209,9 +221,9 @@
 					</div>
 					<div class="card">
 						<div id="headingCollapse" class="card-header">
-							<a href="javascript:;" aria-expanded="true" aria-controls="transit" class="card-title lead">Release</a>
+							<a href="javascript:;" aria-expanded="true" aria-controls="release" class="card-title lead">Release</a>
 						</div>
-						<div id="transit" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
+						<div id="release" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
 							<div class="card-body">
 								<div class="card-block">
 									<form class="form" name="formHolder.release">

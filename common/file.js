@@ -6,7 +6,7 @@ angular.module('file-document',['module-access','block-ui','bootstrap-growl','bo
 
 		self.document = function(scope,id) {
 
-			// if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.receive)) return;			
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.file)) return;			
 
 			bui.show();
 

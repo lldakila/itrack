@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap']).factory('app', function($http,$timeout,$compile,$window,validate,bootstrapModal) {
+angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap','ngSanitize']).factory('app', function($http,$timeout,$compile,$window,validate,bootstrapModal) {
 	
 	function app() {
 

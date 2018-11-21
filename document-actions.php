@@ -4,6 +4,7 @@ define('document_actions', array(
 	array("id"=>1,"key"=>"for_initial","description"=>"For Initial","done"=>"initialed"),
 	array("id"=>2,"key"=>"for_signature","description"=>"For Signature","done"=>"approved"),
 	array("id"=>3,"key"=>"for_routing","description"=>"Route/Refer","done"=>null),
+	array("id"=>4,"key"=>"comment","description"=>"Comment","done"=>"commented"),
 ));
 
 function document_action_done_status($document_actions,$id) {

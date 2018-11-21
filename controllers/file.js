@@ -10,7 +10,7 @@ app.controller('fileDocumentCtrl',function($scope,app) {
 		id: 'file_document',
 		privileges: {
 			show: 1,
-			receive: 2,
+			file: 2,
 		}
 	};
 	

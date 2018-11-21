@@ -16,6 +16,7 @@ app.controller('actionCtrl',function($scope,app) {
 			update: 3,
 			transit: 4,
 			release: 5,
+			comment: 6,
 		}
 	};
 	

@@ -1,0 +1,16 @@
+<form name="formHolder.comment" autocomplete="off" novalidate>
+	<div class="row">												
+		<div class="col-md-12">
+			<div class="form-group">
+				<label>Staff</label>
+				<select class="form-control" name="staff" ng-class="{'border-danger': formHolder.comment.staff.$touched && formHolder.comment.staff.$invalid}" ng-model="comment.staff" ng-options="staff.fullname for staff in office_staffs track by staff.id" required></select>
+				<span class="help-block danger" ng-show="formHolder.comment.staff.$touched && formHolder.comment.staff.$invalid">Staff is required</span>
+			</div>
+			<div class="form-group">			
+				<label>Comment</label>
+				<textarea class="form-control" rows="10" name="text" ng-class="{'border-danger': formHolder.comment.text.$touched && formHolder.comment.text.$invalid}" ng-model="comment.text" required></textarea>
+				<span class="help-block danger" ng-show="formHolder.comment.text.$touched && formHolder.comment.text.$invalid">Comment is required</span>				
+			</div>
+		</div>											
+	</div>
+</form>

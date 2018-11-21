@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','barcode-listener-action']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','barcode-listener-action','form-validator-dialog']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files,validateDialog) {
 	
 	function app() {
 
@@ -35,9 +35,11 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.preview.file = {};
 
 			offices(scope);
+			staffs(scope);
 			
 			scope.staffs = {};
 			
+			scope.comment = {};
 			scope.transit = {};
 			scope.release = {};
 
@@ -50,12 +52,28 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				url: scope.url.view+'document/offices'
 			}).then(function mySuccess(response) {
 				
-				scope.offices = angular.copy(response.data);
+				scope.offices = response.data;
 					
 			}, function myError(response) {
 				
 		
 			});			
+			
+		};
+		
+		function staffs(scope) {
+			
+			$http({
+				method: 'GET',
+				url: scope.url.view+'document/office/staffs'
+			}).then(function mySuccess(response) {
+				
+				scope.office_staffs = response.data;
+					
+			}, function myError(response) {
+
+			
+			});	
 			
 		};
 		
@@ -133,7 +151,6 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		self.transit = function(scope) {
 
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.transit)) {
-				staff.done = !staff.done;
 				return;
 			};
 		
@@ -167,7 +184,6 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		self.release = function(scope) {
 
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.release)) {
-				staff.done = !staff.done;
 				return;
 			};
 		
@@ -196,7 +212,44 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			});				
 			
-		};		
+		};
+		
+		self.comment = function(scope) {
+
+			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.comment)) {
+				return;
+			};		
+		
+			if (scope.comment.staff != undefined) delete scope.comment.staff;
+			if (scope.comment.text != undefined) delete scope.comment.text;
+		
+			var onOk = function() {
+
+				if (validateDialog.form(scope,'comment')) return false;
+
+				$http({
+				  method: 'POST',
+				  url: scope.url.view+'document/doc/actions/comment',
+				  data: {document: scope.doc, comment: scope.comment},
+				}).then(function mySuccess(response) {
+
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+
+					bui.hide();
+
+				}, function myError(response) {
+
+					bui.hide();
+
+				});					
+				
+				return true;
+
+			};
+
+			bootstrapModal.box(scope,'Document comment','/dialogs/comment.html',onOk,function() {});			
+
+		};
 		
 	};
 	

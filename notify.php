@@ -157,7 +157,7 @@ function notify($con,$state,$params) {
 
 			foreach ($staffs as $staff) {
 
-				# exclude if track_action_staff picked up the document
+				# exclude if track_action_staff released the document
 				if ($staff['id']==$params['track_action_staff']) continue;
 
 				$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." the document to ".get_staff_name($con,$params['release_to']);
@@ -187,7 +187,7 @@ function notify($con,$state,$params) {
 
 			foreach ($staffs as $staff) {
 
-				# exclude if track_action_staff picked up the document
+				# exclude if track_action_staff filed the document
 				if ($staff['id']==$params['track_action_staff']) continue;
 	
 				$status = $params['track_action_status'];
@@ -206,6 +206,33 @@ function notify($con,$state,$params) {
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
 				);	
+				
+				$notifications[] = $notification;
+				
+			};		
+		
+		break;
+
+		case "commented":
+		
+			$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
+
+			foreach ($staffs as $staff) {
+
+				$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." on the document";
+
+				$notification = array(
+					"doc_id"=>$params['doc_id'],
+					"track_id"=>$params['track_id'],					
+					"user_id"=>$staff['id'],
+					"icon"=>"icon-pencil22",
+					"icon_bg"=>"icon-bg-circle",
+					"icon_color"=>"bg-info",
+					"header"=>$params['header'],
+					"header_color"=>"cyan darken-3",
+					"message"=>$message,
+					"url"=>"/track-document.html#!/".$params['doc_id'],
+				);
 				
 				$notifications[] = $notification;
 				
