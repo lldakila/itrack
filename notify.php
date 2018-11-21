@@ -180,6 +180,38 @@ function notify($con,$state,$params) {
 			};		
 
 		break;
+		
+		case "filed":
+		
+			$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
+
+			foreach ($staffs as $staff) {
+
+				# exclude if track_action_staff picked up the document
+				if ($staff['id']==$params['track_action_staff']) continue;
+	
+				$status = $params['track_action_status'];
+				if ($params['file']) $status.=" and filed";
+				$message = get_staff_name($con,$params['track_action_staff'])." $status the document";
+
+				$notification = array(
+					"doc_id"=>$params['doc_id'],
+					"track_id"=>$params['track_id'],					
+					"user_id"=>$staff['id'],
+					"icon"=>"icon-android-folder-open",
+					"icon_bg"=>"icon-bg-circle",
+					"icon_color"=>"bg-danger",
+					"header"=>$params['header'],
+					"header_color"=>"red darken-3",
+					"message"=>$message,
+					"url"=>"/track-document.html#!/".$params['doc_id'],
+				);	
+				
+				$notifications[] = $notification;
+				
+			};		
+		
+		break;		
 
 	};
 	

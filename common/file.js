@@ -1,11 +1,11 @@
 angular.module('file-document',['module-access','block-ui','bootstrap-growl','bootstrap-modal']).factory('file', function($window,$timeout,$http,access,bui,growl,bootstrapModal) {
-	
+
 	function file() {
-		
+
 		var self = this;
-		
+
 		self.document = function(scope,id) {
-			
+
 			// if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.receive)) return;			
 
 			bui.show();

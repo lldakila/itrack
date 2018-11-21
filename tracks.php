@@ -52,7 +52,7 @@ function tracks($con,$setup,$id,$document) {
 		};
 		
 		# picked up / received
-		$t_icons = array(null,"icon-android-arrow-dropdown","icon-briefcase","icon-ios-location-outline","icon-arrow44");		
+		$t_icons = array(null,"icon-android-arrow-dropdown","icon-briefcase","icon-ios-location-outline","icon-arrow44","icon-android-folder-open");		
 		
 		if (is_picked_up($track['transit'])) {
 			
@@ -75,7 +75,25 @@ function tracks($con,$setup,$id,$document) {
 		if (is_received($track['transit'])) {
 
 			$status = $track['track_action_status'];
-			if (is_filed($track['transit'])) $status.=" and filed";			
+			if (is_received_filed($track['transit'])) $status.=" and filed";			
+
+			$list[] = array(
+				"status"=>get_staff_name($con,$track['track_action_staff'])." $status the document"
+			);
+
+			$document_tracks[] = array(
+				"icon"=>$t_icons[get_transit_id($track['transit'])],
+				"bg"=>"bg-danger",
+				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+				"list"=>$list,
+			);
+
+		};		
+		
+		if (is_filed($track['transit'])) {
+
+			$status = $track['track_action_status'];		
 
 			$list[] = array(
 				"status"=>get_staff_name($con,$track['track_action_staff'])." $status the document"

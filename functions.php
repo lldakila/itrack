@@ -233,6 +233,17 @@ function is_released($transit) {
 	
 };
 
+function is_received_filed($transit) {
+
+	$is_received_filed = false;
+
+	$_transit = json_decode($transit, true);
+	if (($_transit['filed']) && ($_transit['received_by']!=null)) $is_received_filed = true;
+
+	return $is_received_filed;	
+
+};
+
 function is_filed($transit) {
 
 	$is_filed = false;
