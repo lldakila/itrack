@@ -30,6 +30,26 @@ define('system_setup', array(
 		"id"=>6,
 		"description"=>"Exclude from selections/autosuggest",
 		"values"=>[2,6,8],
+	),
+	array(
+		"id"=>7,
+		"description"=>"Admin officers",
+		"values"=>[6],
+	),	
+	array(
+		"id"=>8,
+		"description"=>"Admin assistants",
+		"values"=>[8],
+	),
+	array(
+		"id"=>9,
+		"description"=>"Admin aides",
+		"values"=>[9],
+	),
+	array(
+		"id"=>10,
+		"description"=>"Liaisons AOs AAsts AAs",
+		"values"=>[4,6,8,9],
 	),	
 ));
 

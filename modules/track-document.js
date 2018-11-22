@@ -20,11 +20,11 @@ angular.module('app-module', ['ngRoute','bootstrap-modal','ui.bootstrap','notifi
 			scope.filter = {};
 			scope.documents = [];
 			
+			scope.document = {};
+			
 			popFilter(scope);
 			
 			scope.$on('$routeChangeSuccess', function() {
-				
-				console.log($routeParams.id);
 				
 				$timeout(function() {
 				
@@ -88,6 +88,12 @@ angular.module('app-module', ['ngRoute','bootstrap-modal','ui.bootstrap','notifi
 		self.track = function(scope,d) {
 			
 			track.document(scope,d.id);
+			
+		};
+		
+		self.reload = function(scope) {
+			
+			track.reload(scope);
 			
 		};
 

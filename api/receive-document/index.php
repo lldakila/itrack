@@ -188,6 +188,8 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$initial_office = $setup->get_setup_as_string(4);
 	$liaisons = $setup->get_setup_as_string(5);
 	notify($con,"added",array("doc_id"=>$id,"header"=>$data['doc_name'],"group"=>$liaisons,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']));
+	
+	# notify admin assistants
 
 	# tracks
 	$con->table = "tracks";
