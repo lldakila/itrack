@@ -35,10 +35,22 @@ $app->get('/fetch', function (Request $request, Response $response, array $args)
 	foreach ($notifications as $i => $notification) {
 	
 		$notifications[$i]['ago'] = ago($notification['system_log']);
+		$notifications[$i]['datetime'] = date("M j, Y h:i A",strtotime($notification['system_log']));
 		
 	};
 
     return $response->withJson($notifications);
+
+});
+
+$app->get('/hide/{id}', function (Request $request, Response $response, array $args) {
+	
+	$con = $this->con;
+	$con->table = "notifications";
+
+	$id = $args['id'];
+
+	$hide = $con->updateData(array("id"=>$id,"dismiss"=>1,"last_modified"=>"CURRENT_TIMESTAMP"),'id');	
 
 });
 

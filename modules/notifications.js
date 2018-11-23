@@ -80,7 +80,7 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 				
 				dismissNotification(scope,notification);
 				
-			};				
+			};
 
 		}
 	};

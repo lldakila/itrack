@@ -18,13 +18,19 @@ function tracks($con,$setup,$id,$document) {
 		# for initial / signature	
 		if ($track['track_action'] == 1) {
 			$for_initial = array(
-				"status"=>"For initial for ".get_action_staff_names(get_track_action_param($track['track_action_add_params']))
+				"status"=>array(
+					"text"=>"For initial for ".get_action_staff_names(get_track_action_param($track['track_action_add_params'])),
+					"comment"=>null,
+				)
 			);
 		};
 		
 		if ($track['track_action'] == 2) {
 			$for_signature = array(
-				"status"=>"For signature for ".get_action_staff_names(get_track_action_param($track['track_action_add_params']))
+				"status"=>array(
+					"text"=>"For signature for ".get_action_staff_names(get_track_action_param($track['track_action_add_params'])),
+					"comment"=>null,
+				)
 			);			
 		};		
 		
@@ -37,7 +43,10 @@ function tracks($con,$setup,$id,$document) {
 			$status .= '</blockquote>';
 			
 			$list[] = array(
-				"status"=>$status,
+				"status"=>array(
+					"text"=>$status,
+					"comment"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document",
+				)
 			);			
 			
 			$bg = "bg-info";
@@ -58,7 +67,10 @@ function tracks($con,$setup,$id,$document) {
 			$ia_icons = array(null,"icon-android-checkmark-circle","icon-checkmark");
 			
 			$list[] = array(
-				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document"
+				"status"=>array(
+					"text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document",
+					"comment"=>null,
+				)
 			);
 			
 			$bg = "bg-info";
@@ -71,7 +83,7 @@ function tracks($con,$setup,$id,$document) {
 				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
 				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
 				"list"=>$list,
-			);			
+			);
 			
 		};
 		
@@ -83,7 +95,10 @@ function tracks($con,$setup,$id,$document) {
 			$status = $track['track_action_status'];
 			
 			$list[] = array(
-				"status"=>get_staff_name($con,$track['track_action_staff'])." $status the document"
+				"status"=>array(
+					"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+					"comment"=>null,
+				)
 			);
 			
 			$document_tracks[] = array(
@@ -102,7 +117,10 @@ function tracks($con,$setup,$id,$document) {
 			if (is_received_filed($track['transit'])) $status.=" and filed";			
 
 			$list[] = array(
-				"status"=>get_staff_name($con,$track['track_action_staff'])." $status the document"
+				"status"=>array(
+					"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+					"comment"=>null,
+				)
 			);
 
 			$document_tracks[] = array(
@@ -118,7 +136,10 @@ function tracks($con,$setup,$id,$document) {
 		if (is_released($track['transit'])) {
 			
 			$list[] = array(
-				"status"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to")
+				"status"=>array(
+					"text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to"),
+					"comment"=>null,
+				)
 			);
 			
 			$document_tracks[] = array(
@@ -136,7 +157,10 @@ function tracks($con,$setup,$id,$document) {
 			$status = $track['track_action_status'];		
 
 			$list[] = array(
-				"status"=>get_staff_name($con,$track['track_action_staff'])." $status the document"
+				"status"=>array(
+					"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+					"comment"=>null,
+				)
 			);
 
 			$document_tracks[] = array(
@@ -155,7 +179,11 @@ function tracks($con,$setup,$id,$document) {
 
 	$initial_office = $setup->get_setup_as_string(4);
 
-	$initial_list[] = array("status"=>"Received at ".get_office_description($con,$initial_office)." by ".get_staff_name($con,$document['user_id']));	
+	$initial_list[] = array("status"=>array(
+			"text"=>"Received at ".get_office_description($con,$initial_office)." by ".get_staff_name($con,$document['user_id']),
+			"comment"=>null,
+		)
+	);
 	if (count($for_initial)) $initial_list[] = $for_initial;
 	if (count($for_signature)) $initial_list[] = $for_signature;	
 

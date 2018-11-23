@@ -39,7 +39,9 @@ $app->get('/list', function (Request $request, Response $response, array $args) 
 		$tracks = tracks($con,$setup,$document['id'],$document);
 		
 		$documents[$i] = document_info_complete($con,$document);
-		$documents[$i]['recent_status'] = $tracks[0]['list'][0]['status'];
+		
+		$recent_status = ($tracks[0]['list'][0]['status']['comment']==null)?$tracks[0]['list'][0]['status']['text']:$tracks[0]['list'][0]['status']['comment'];
+		$documents[$i]['recent_status'] = $recent_status;
 		
 	};
 	
