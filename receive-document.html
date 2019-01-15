@@ -332,7 +332,7 @@
 										<hr>
 										<div class="row">
 											<div class="col-lg-12">
-												<button class="btn btn-secondary float-lg-right" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">Cancel</button>											
+												<button class="btn btn-secondary float-lg-right" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">{{controls.labels.cancel}}</button>											
 												<button class="btn btn-info float-lg-right" ng-click="app.save(this)" ng-disabled="controls.btns.ok" ng-show="controls.ok" style="margin-right: 10px;">Save</button>
 												<div class="clearfix"></div>
 											</div>
@@ -409,6 +409,6 @@
 	<script src="modules/receive-document.js"></script>
 	
 	<!-- controller -->
-	<script src="controllers/receive-document.js"></script>
+	<script src="controllers/receive-document.js?ver=1.0.0.1"></script>
   </body>
 </html>

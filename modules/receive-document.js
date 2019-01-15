@@ -23,6 +23,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					ok: true,
 					cancel: true
 				},
+				labels: {
+					cancel: 'Cancel',
+				},
 				add: true,
 				edit: true,
 				ok: true,
@@ -242,8 +245,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					barcode(response.data.barcode);
 
 					scope.controls.btns.ok = true;
-					scope.controls.btns.cancel = true;	
-
+					scope.controls.btns.cancel = false;	
+					
+					scope.controls.labels.cancel = 'Close';
+					
 					bui.hide();
 
 				}, function myError(response) {
