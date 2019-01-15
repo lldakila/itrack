@@ -113,7 +113,7 @@
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="card-title" id="basic-layout-form">Documents</h4>
+							<h4 class="card-title" id="basic-layout-form">Document</h4>
 							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 							<div class="heading-elements">
 								<ul class="list-inline mb-0">
@@ -123,6 +123,18 @@
 						</div>
 						<div class="card-body collapse in" aria-expanded="true" style="">
 							<div class="card-block">
+							
+								<ul class="nav nav-tabs">
+									<li class="nav-item">
+										<a class="nav-link active" id="base-info" data-toggle="tab" aria-controls="info" href="#info" aria-expanded="true">Info</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="base-tracks" data-toggle="tab" aria-controls="tracks" href="#tracks" aria-expanded="false">Tracks</a>
+									</li>
+								</ul>
+								<div class="tab-content px-1 pt-1">
+									<div role="tabpanel" class="tab-pane active" id="info" aria-expanded="true" aria-labelledby="base-info">
+
 								<form class="form" novalidate autocomplete="off" name="formHolder.doc">
 									<div class="form-body">
 									
@@ -336,7 +348,14 @@
 										</div>
 										
 									</div>
-								</form>
+								</form>									
+									
+									</div>
+									<div class="tab-pane" id="tracks" aria-labelledby="base-tracks" aria-expanded="false">
+
+									</div>
+								</div>
+								
 							</div>
 						</div>
 					</div>
