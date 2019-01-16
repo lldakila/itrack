@@ -1,4 +1,4 @@
-angular.module('track-document',['module-access','block-ui','bootstrap-growl','bootstrap-modal']).factory('track', function($window,$timeout,$http,access,bui,growl,bootstrapModal) {
+angular.module('track-document',['module-access','block-ui','bootstrap-growl','bootstrap-modal']).factory('track', function($window,$timeout,$http,access,bui,growl,bootstrapModal,$q) {
 	
 	function track() {
 		
@@ -56,6 +56,13 @@ angular.module('track-document',['module-access','block-ui','bootstrap-growl','b
 			
 		};
 		
+
+
+
+
+
+
+
 	};
 	
 	return new track();

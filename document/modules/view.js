@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','track-document']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files,track) {
 	
 	function app() {
 
@@ -52,6 +52,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.document_types = [];		
 			scope.transactions = [];	
 			scope.communications = [];			
+			
+			scope.tracks = [];
 			
 			$http({
 				method: 'GET',
@@ -151,6 +153,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 				files.filesThumbnails(scope,response.data.files);
 
+				loadTracks(scope,id);
+				
 				actions(scope,id);
 
 				bui.hide();
@@ -159,6 +163,30 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 				bui.hide();
 
+			});
+			
+		};
+		
+		function loadTracks(scope,id) {
+			
+			track.get_tracks(scope,id).then(function success(data) {
+				
+				scope.tracks = angular.copy(data);
+				
+			}, function error(data) {
+				
+			});
+			
+		};
+		
+		self.reload = function(scope) {
+			
+			track.get_tracks(scope,scope.doc.id).then(function success(data) {
+				
+				scope.tracks = angular.copy(data);
+				
+			}, function error(data) {
+				
 			});
 			
 		};
