@@ -2,8 +2,8 @@
 	<li ng-show="profile.pages_access.dashboard.value" class="nav-item<?=($page=="index")?' active':''?>"><a href="index.html"><i class="icon-dashboard"></i><span class="menu-title">Dashboard</span></a></li>
 	<li ng-show="profile.pages_access.receive_document.value || profile.pages_access.receive.value || profile.pages_access.update_tracks.value || profile.pages_access.track_document.value || profile.pages_access.documents.value" class="nav-item"><a href="#"><i class="icon-copy2"></i><span class="menu-title">Documents</span></a>
 		<ul class="menu-content">
-		  <li ng-show="profile.pages_access.receive_document.value" class="<?=($page=="receive-document")?'active':''?>"><a href="receive-document.html" class="menu-item">Add Document</a></li>
-		  <li ng-show="profile.pages_access.receive.value" class="<?=($page=="receive")?'active':''?>"><a href="receive.html" class="menu-item">Receive</a></li>
+		  <li ng-show="profile.pages_access.receive_document.value" class="<?=($page=="receive-document")?'active':''?>"><a href="receive-document.html" class="menu-item">Receive Document</a></li>
+		  <li ng-show="profile.pages_access.receive.value" class="<?=($page=="receive")?'active':''?>"><a href="receive.html" class="menu-item">Incoming</a></li>
 		  <li class="<?=($page=="file")?'active':''?>"><a href="file.html" class="menu-item">File Document</a></li>
 		  <li ng-show="profile.pages_access.update_tracks.value" class="<?=($page=="update-tracks")?'active':''?>"><a href="update-tracks.html" class="menu-item">Update Tracks</a></li>
 		  <li ng-show="profile.pages_access.track_document.value" class="<?=($page=="track-document")?'active':''?>"><a href="track-document.html" class="menu-item">Track Document</a></li>
