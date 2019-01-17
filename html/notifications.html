@@ -4,7 +4,7 @@
 		<span class="notification-tag tag tag-default tag-danger float-xs-right m-0" ng-show="notifications.length>0">{{notifications.length}} New</span>
 	</h6>
   </li>
-  <li class="list-group scrollable-container">
+  <li class="list-group scrollable-container" style="overflow-y: scroll;">
 	<a ng-repeat="n in notifications" href="{{n.url}}" class="list-group-item">
 	  <div class="media">
 		<div class="media-left valign-middle"><i class="{{n.icon}} {{n.icon_bg}} {{n.icon_color}}"></i></div>
