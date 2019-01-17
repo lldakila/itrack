@@ -56,6 +56,27 @@ angular.module('track-document',['module-access','block-ui','bootstrap-growl','b
 			
 		};
 		
+		self.get_document_tracks = function(scope,id) {	
+
+			return $q(function(resolve, reject) {
+		
+				$http({
+				  method: 'GET',
+				  url: '/document/doc/track/'+id,
+				}).then(function mySuccess(response) {
+
+					resolve(response.data);
+
+				}, function myError(response) {
+
+					reject({});
+
+				});
+			
+			});
+
+		};		
+		
 		self.get_tracks = function(scope,id) {	
 
 			return $q(function(resolve, reject) {
