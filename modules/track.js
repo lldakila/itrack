@@ -21,9 +21,9 @@ angular.module('app-module', ['form-validator','ui.bootstrap','ngSanitize','boot
 
 					// check if barcode is valid
 					if (response.data.status) {
-						$timeout(function() {
+						// $timeout(function() {
 							app.track_document(scope,response.data.id);
-						}, 500);
+						// }, 500);
 					} else {
 						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Invalid barcode. No document found.');					
 					};
@@ -82,20 +82,17 @@ angular.module('app-module', ['form-validator','ui.bootstrap','ngSanitize','boot
 			
 			$('#tracks').html('Tracking document please wait...');
 			
-			track.get_document_tracks(scope,id).then(function success(data) {
-
-				scope.document = angular.copy(data);			
+			$('#tracks').load('dialogs/track-document.html', function() {
 			
-				$('#tracks').load('dialogs/track-document.html', function() {
+				$compile($('#tracks')[0])(scope);
 				
-					$timeout(function() {
-						$compile($('#tracks')[0])(scope);
-					},100);
+				track.get_document_tracks(scope,id).then(function success(data) {
 
-				});
-			
+					scope.document = angular.copy(data);
+				
+				}, function error(data) {
 
-			}, function error(data) {
+				});				
 
 			});
 			

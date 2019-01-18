@@ -50,10 +50,11 @@ if (isset($_SESSION['id'])) header("location: index.html");
     <div class="col-md-4 offset-md-4 col-xs-10 offset-xs-1  box-shadow-2 p-0">
         <div class="card border-grey border-lighten-3 m-0">
             <div class="card-header no-border">
-                <div class="card-title text-xs-center">
+                <div class="card-title text-xs-center" style="margin-bottom: 15px;">
                     <div class="p-1"><img src="images/logo/pglu.png" alt="branding logo" style="width: 100%;"></div>
                 </div>
-                <h6 class="card-subtitle line-on-side text-muted text-xs-center font-small-3 pt-2"><span>Login with iTrack</span></h6>
+                <a href="/track.html" class="btn btn-danger btn-lg btn-block"><i class="icon-location2"></i> Track Document</a>				
+                <h6 class="card-subtitle line-on-side text-muted text-xs-center font-small-3 pt-2"><span>or Login with iTrack</span></h6>
             </div>
             <div class="card-body collapse in">
                 <div class="card-block">
@@ -81,8 +82,6 @@ if (isset($_SESSION['id'])) header("location: index.html");
                             <div class="col-md-6 col-xs-12 text-xs-center text-md-right"><a href="recover-password.html" class="card-link text-info">Forgot Password?</a></div>
                         </fieldset>
                         <button type="submit" class="btn btn-info btn-lg btn-block"><i class="icon-unlock2"></i> Login</button>
-						<hr>
-                        <a href="/track.html" class="btn btn-primary btn-lg btn-block">Track Document</a>
                     </form>
                 </div>
             </div>
