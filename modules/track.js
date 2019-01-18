@@ -37,7 +37,7 @@ angular.module('app-module', ['form-validator','ui.bootstrap','ngSanitize','boot
 		}
 	};	
 
-}).factory('app', function($compile,$http,$timeout,validate,track) {
+}).factory('app', function($compile,$http,$timeout,validate,track,growl) {
 	
 	function app() {
 
@@ -95,6 +95,12 @@ angular.module('app-module', ['form-validator','ui.bootstrap','ngSanitize','boot
 				});				
 
 			});
+			
+		};
+		
+		self.reload = function(scope) {
+			
+			self.track_document(scope,scope.document.id);
 			
 		};
 		
