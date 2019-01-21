@@ -541,8 +541,8 @@ $app->get('/doc/actions/{id}', function ($request, $response, $args) {
 	# tracks for actions
 	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND track_action IS NOT NULL");
 
-	$actions_arr = array(null,"For Initial","For Signature/Approval");
-	
+	$actions_arr = array(null,"Initialed","Approved");
+
 	$actions = [];
 	foreach ($tracks as $track) {
 		
