@@ -50,6 +50,11 @@ define('system_setup', array(
 		"id"=>10,
 		"description"=>"Liaisons AOs AAsts AAs",
 		"values"=>[4,6,8,9],
+	),
+	array(
+		"id"=>11,
+		"description"=>"PA Staffs",
+		"values"=>[3],
 	),	
 ));
 

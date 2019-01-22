@@ -25,7 +25,7 @@ function document_info($con,$document) {
 	
 	// doc_type, origin, other_origin, communication, document_transaction_type
 	
-	$doc_type = $con->getData("SELECT id, document_type FROM document_types WHERE id = ".$document['doc_type']);	
+	$doc_type = $con->getData("SELECT id, document_type, transaction_id FROM document_types WHERE id = ".$document['doc_type']);	
 	$document['doc_type'] = $doc_type[0];
 	
 	$origin = $con->getData("SELECT id, office, shortname FROM offices WHERE id = ".$document['origin']);

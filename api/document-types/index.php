@@ -23,7 +23,19 @@ $app->get('/list', function (Request $request, Response $response, array $args) 
 
 	$con = $this->con;
 	
-	$doc_types = $con->getData("SELECT * FROM document_types");	
+	$doc_types = $con->getData("SELECT * FROM document_types");
+	
+	foreach ($doc_types as $i => $doc_type) {
+		
+		$transaction_id = $doc_type['transaction_id'];
+		if ($transaction_id != null) {
+
+			$transaction = $con->getData("SELECT id, transaction, days FROM transactions WHERE id = $transaction_id");
+			$doc_types[$i]['transaction_id'] = $transaction[0];
+
+		};		
+		
+	};
 	
     return $response->withJson($doc_types);
 
@@ -43,6 +55,8 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$staff_assign_dels = $data['staff_assign_dels'];
 	unset($data['staff_assign_dels']);	
 
+	$data['transaction_id'] = $data['transaction_id']['id'];
+	
 	unset($data['id']);
 	$con->insertObj($data);
 	$id = $con->insertId;
@@ -82,6 +96,8 @@ $app->put('/update', function (Request $request, Response $response, array $args
 
 	$staff_assign_dels = $data['staff_assign_dels'];
 	unset($data['staff_assign_dels']);
+	
+	$data['transaction_id'] = $data['transaction_id']['id'];	
 	
 	# staff info
 	if (count($staff_assign_dels)) {
@@ -130,7 +146,15 @@ $app->get('/view/{id}', function (Request $request, Response $response, array $a
 
 	$doc_type = $con->get(array("id"=>$args['id']));
 	
-	foreach($doc_type as $key => $dt){
+	$transaction_id = $doc_type[0]['transaction_id'];
+	if ($transaction_id != null) {
+
+		$transaction = $con->getData("SELECT id, transaction, days FROM transactions WHERE id = $transaction_id");
+		$doc_type[0]['transaction_id'] = $transaction[0];
+
+	};
+	
+	foreach ($doc_type as $key => $dt) {
 		
 		$staff_assign = $con->getData("SELECT * FROM document_types_staffs WHERE document_type = ".$dt['id']);
 		
@@ -171,7 +195,7 @@ $app->get('/staffs', function (Request $request, Response $response, array $args
 	$system_setup = system_setup;
 	$setup = new setup($system_setup);
 	
-	$in = $setup->get_values_as_string(1);
+	$in = $setup->get_setup_as_string(11);
 	
 	$staffs = $con->getData("SELECT id, CONCAT(fname, ' ', lname) fullname FROM users WHERE group_id IN ($in)");	
 

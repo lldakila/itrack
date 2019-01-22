@@ -71,7 +71,7 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 	$con = $this->con;
 	$con->table = "document_types";
 	
-	$doc_types = $con->all(['id','document_type']);
+	$doc_types = $con->all(["id","document_type","transaction_id"]);
 	
     return $response->withJson($doc_types);
 
