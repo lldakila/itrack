@@ -623,16 +623,24 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 			$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
 			$all = $setup->get_setup_as_string(10);
 			
+			$admin_recipient = get_admin_recipient($con,$id);			
+			
 			# notify Liaisons AOs AAsts AAs
 			if ($data['action']['track_action']==1) {
 				
 				notify($con,"initialed",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status));
+				
+				# notify admin recipient
+				notify($con,"initialed",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status),false);
 				
 			};
 			
 			if ($data['action']['track_action']==2) {
 
 				notify($con,"approved",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status));
+				
+				# notify admin recipient
+				notify($con,"approved",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status),false);
 			
 			};
 			
@@ -759,7 +767,11 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 
 	# notify Liaisons AOs AAsts AAs
 	$all = $setup->get_setup_as_string(10);
-	notify($con,"picked_up",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['transit']['staff']['id'],"track_action_status"=>$transit_description));	
+	notify($con,"picked_up",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['transit']['staff']['id'],"track_action_status"=>$transit_description));
+	
+	# notify admin recipient
+	$admin_recipient = get_admin_recipient($con,$id);
+	notify($con,"picked_up",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['transit']['staff']['id'],"track_action_status"=>$transit_description),false);
 	
 	// return $response->withJson([]);
 
@@ -818,6 +830,10 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	# notify Liaisons AOs AAsts AAs
 	$all = $setup->get_setup_as_string(10);
 	notify($con,"received",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>$data['file']));
+
+	# notify admin recipient
+	$admin_recipient = get_admin_recipient($con,$id);	
+	notify($con,"received",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>$data['file']),false);
 	
 	// return $response->withJson([]);
 
@@ -879,6 +895,10 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 	# notify Liaisons AOs AAsts AAs
 	$all = $setup->get_setup_as_string(10);
 	notify($con,"released",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['staff']['id']));
+	
+	# notify admin recipient
+	$admin_recipient = get_admin_recipient($con,$id);
+	notify($con,"released",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['staff']['id']),false);
 	
 	// return $response->withJson([]);
 
