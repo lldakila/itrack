@@ -272,6 +272,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				scope.dt_add_params = angular.copy(response.data);
 				scope.doc.document_dt_add_params = scope.dt_add_params;
+				
+				selectTransaction(scope,dt);
 					
 			}, function myError(response) {
 		
@@ -279,6 +281,20 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			});
 			
 		};		
+		
+		function selectTransaction(scope,dt) {
+			
+			if (dt.transaction_id != null) {
+				
+				angular.forEach(scope.transactions, function(transaction,i) {
+					
+					if (dt.transaction_id==transaction.id) scope.doc.document_transaction_type = transaction;
+					
+				});
+				
+			};
+			
+		};
 		
 		function barcode(barcode) {
 
