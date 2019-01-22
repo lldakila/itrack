@@ -456,6 +456,7 @@ function notify($con,$state,$params,$notify_group = true) {
 
 		$notify = $con->insertDataMulti($notifications);
 		
+		// email_notification($emails);
 
 	};
 
