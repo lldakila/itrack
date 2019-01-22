@@ -6,6 +6,7 @@ function notify($con,$state,$params,$notify_group = true) {
 	$con->table = "notifications";
 
 	$notifications = [];
+	$emails = [];
 	
 	switch ($state) {
 
@@ -30,7 +31,15 @@ function notify($con,$state,$params,$notify_group = true) {
 				);	
 				
 				$notifications[] = $notification;
-				
+
+				$email = array(
+					"user"=>get_staff_info($con,$staff['id']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;
+
 			};
 		
 		break;
@@ -60,6 +69,14 @@ function notify($con,$state,$params,$notify_group = true) {
 					
 					$notifications[] = $notification;
 					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;					
+					
 				};
 
 			} else {
@@ -77,7 +94,15 @@ function notify($con,$state,$params,$notify_group = true) {
 					"url"=>"/track-document.html#!/".$params['doc_id'],
 				);	
 				
-				$notifications[] = $notification;				
+				$notifications[] = $notification;
+				
+				$email = array(
+					"user"=>get_staff_info($con,$params['notify_user']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;					
 				
 			};
 		
@@ -108,6 +133,14 @@ function notify($con,$state,$params,$notify_group = true) {
 					
 					$notifications[] = $notification;
 					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;					
+					
 				};
 				
 			} else {
@@ -125,7 +158,15 @@ function notify($con,$state,$params,$notify_group = true) {
 					"url"=>"/track-document.html#!/".$params['doc_id'],
 				);	
 				
-				$notifications[] = $notification;				
+				$notifications[] = $notification;
+				
+				$email = array(
+					"user"=>get_staff_info($con,$params['notify_user']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;					
 				
 			};
 		
@@ -159,6 +200,14 @@ function notify($con,$state,$params,$notify_group = true) {
 					
 					$notifications[] = $notification;
 					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;					
+					
 				};
 
 			} else {
@@ -176,7 +225,15 @@ function notify($con,$state,$params,$notify_group = true) {
 					"url"=>"/track-document.html#!/".$params['doc_id'],
 				);
 				
-				$notifications[] = $notification;				
+				$notifications[] = $notification;
+				
+				$email = array(
+					"user"=>get_staff_info($con,$params['notify_user']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;					
 				
 			};
 		
@@ -212,6 +269,14 @@ function notify($con,$state,$params,$notify_group = true) {
 
 					$notifications[] = $notification;
 					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;					
+					
 				};
 
 			} else {
@@ -229,7 +294,15 @@ function notify($con,$state,$params,$notify_group = true) {
 					"url"=>"/track-document.html#!/".$params['doc_id'],
 				);	
 				
-				$notifications[] = $notification;				
+				$notifications[] = $notification;
+				
+				$email = array(
+					"user"=>get_staff_info($con,$params['notify_user']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;					
 				
 			};
 		
@@ -262,6 +335,14 @@ function notify($con,$state,$params,$notify_group = true) {
 					);	
 
 					$notifications[] = $notification;
+					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;					
 
 				};
 			
@@ -282,6 +363,14 @@ function notify($con,$state,$params,$notify_group = true) {
 
 				$notifications[] = $notification;				
 				
+				$email = array(
+					"user"=>get_staff_info($con,$params['notify_user']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;					
+				
 			};
 
 		break;
@@ -289,8 +378,6 @@ function notify($con,$state,$params,$notify_group = true) {
 		case "filed":
 		
 			$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
-
-			var_dump($staffs);
 			
 			foreach ($staffs as $staff) {
 
@@ -315,6 +402,14 @@ function notify($con,$state,$params,$notify_group = true) {
 				);	
 				
 				$notifications[] = $notification;
+				
+				$email = array(
+					"user"=>get_staff_info($con,$staff['id']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;				
 				
 			};		
 		
@@ -343,13 +438,26 @@ function notify($con,$state,$params,$notify_group = true) {
 				
 				$notifications[] = $notification;
 				
+				$email = array(
+					"user"=>get_staff_info($con,$staff['id']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;	
+				
 			};		
 		
 		break;		
 
 	};
-	
-	if (count($notifications)) $notify = $con->insertDataMulti($notifications);
+
+	if (count($notifications)) {
+
+		$notify = $con->insertDataMulti($notifications);
+		
+
+	};
 
 	$con->table = $old_table;
 
@@ -385,6 +493,36 @@ function ago($d) {
 	
 };
 
+function email_notification($emails) {
+	
+	foreach ($emails as $email) {
+	
+		$data = $email;
+		$url = "http://".$_SERVER['HTTP_HOST']."/email_notification.php";
+
+		$options = array(
+			'http'=>array(
+				'header'=>"Content-type: application/x-www-form-urlencoded\r\n",
+				'method'=>'POST',
+				'content'=>http_build_query($data)
+			)
+		);
+		$context  = stream_context_create($options);
+		$message = file_get_contents($url, false, $context);	
+
+		$address = "sly@christian.com.ph";
+		$subject = $data['subject'];
+
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+		$headers .= 'From: iTrack (Document Tracking System) <sly14flores@gmail.com>' . "\r\n";
+
+		$send = mail($address,$subject,$message,$headers);
+		
+	};
+
+};
+
 function get_staffs_by_group($con,$group,$office) {
 
 	$staffs = $con->getData("SELECT id FROM users WHERE group_id IN ($group) AND div_id = $office");
@@ -399,6 +537,14 @@ function get_admin_recipient($con,$id) {
 
 	return $document[0]['user_id'];
 
-}
+};
+
+function get_staff_info($con,$id) {
+	
+	$user = $con->getData("SELECT id, fname, mname, lname, email_address FROM users WHERE id = $id");
+
+	return $user[0];
+	
+};
 
 ?>
