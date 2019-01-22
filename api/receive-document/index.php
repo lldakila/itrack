@@ -183,13 +183,11 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$con->insertData($data);
 
 	$id = $con->insertId;
-
-	# notify liaisons
-	$initial_office = $setup->get_setup_as_string(4);
-	$liaisons = $setup->get_setup_as_string(5);
-	notify($con,"added",array("doc_id"=>$id,"header"=>$data['doc_name'],"group"=>$liaisons,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']));
 	
-	# notify admin assistants
+	# notify Liaisons AOs AAsts AAs
+	$initial_office = $setup->get_setup_as_string(4);	
+	$all = $setup->get_setup_as_string(10);
+	notify($con,"added",array("doc_id"=>$id,"header"=>$data['doc_name'],"group"=>$all,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']));	
 
 	# tracks
 	$con->table = "tracks";

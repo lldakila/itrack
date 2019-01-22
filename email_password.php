@@ -28,7 +28,7 @@ $url = "https:/itrack.launion.gov.ph/";
 	</main>
 	<footer>
 		<p>Regards,</p>
-		<img src="<?=$url?>images/logo/itrack-logo-large.png" alt="Logo" title="Logo" style="display:block" width="198" height="43" />		
+		<img src="<?=$url?>images/logo/itrack-logo-large.png" alt="Logo" title="Logo" style="width: 198px; height: 43px;">		
 		<p><strong>Administrator</strong></p>
 	</footer>
 </html>

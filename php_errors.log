@@ -1,7 +1,0 @@
-[21-Jan-2019 15:51:07 Asia/Manila] PHP Notice:  Undefined variable: con in C:\Users\sly\Desktop\UwAmp310\www\itrack\email_password.php on line 8
-[21-Jan-2019 15:51:07 Asia/Manila] PHP Stack trace:
-[21-Jan-2019 15:51:07 Asia/Manila] PHP   1. {main}() C:\Users\sly\Desktop\UwAmp310\www\itrack\email_password.php:0
-[21-Jan-2019 15:51:07 Asia/Manila] PHP Fatal error:  Uncaught Error: Call to a member function getData() on unknown in C:\Users\sly\Desktop\UwAmp310\www\itrack\email_password.php:8
-Stack trace:
-#0 {main}
-  thrown in C:\Users\sly\Desktop\UwAmp310\www\itrack\email_password.php on line 8

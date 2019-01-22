@@ -185,6 +185,8 @@ function notify($con,$state,$params) {
 		
 			$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
 
+			var_dump($staffs);
+			
 			foreach ($staffs as $staff) {
 
 				# exclude if track_action_staff filed the document
@@ -280,7 +282,7 @@ function ago($d) {
 
 function get_staffs_by_group($con,$group,$office) {
 
-	$staffs = $con->getData("SELECT id FROM users WHERE group_id = $group AND div_id = $office");
+	$staffs = $con->getData("SELECT id FROM users WHERE group_id IN ($group) AND div_id = $office");
 
 	return $staffs;
 

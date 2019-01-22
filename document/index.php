@@ -621,18 +621,18 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 			$action_track_id = $con->insertId;
 			
 			$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
-			$liaisons = $setup->get_setup_as_string(5);
+			$all = $setup->get_setup_as_string(10);
 			
-			# notify liaisons
+			# notify Liaisons AOs AAsts AAs
 			if ($data['action']['track_action']==1) {
 				
-				notify($con,"initialed",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status));
+				notify($con,"initialed",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status));
 				
 			};
 			
 			if ($data['action']['track_action']==2) {
 
-				notify($con,"approved",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status));
+				notify($con,"approved",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status));
 			
 			};
 			
@@ -699,10 +699,10 @@ $app->post('/doc/actions/comment', function ($request, $response, $args) {
 
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
 
-	# notify liaisons
-	$liaisons = $setup->get_setup_as_string(5);
-	notify($con,"commented",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$data['comment']['staff']['id'],"track_action_status"=>$document_action_done_status));	
-	
+	# notify Liaisons AOs AAsts AAs
+	$all = $setup->get_setup_as_string(10);
+	notify($con,"commented",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['comment']['staff']['id'],"track_action_status"=>$document_action_done_status));
+
 	return $response->withJson([]);
 
 });
@@ -757,9 +757,9 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
 
-	# notify liaisons
-	$liaisons = $setup->get_setup_as_string(5);
-	notify($con,"picked_up",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$data['transit']['staff']['id'],"track_action_status"=>$transit_description));	
+	# notify Liaisons AOs AAsts AAs
+	$all = $setup->get_setup_as_string(10);
+	notify($con,"picked_up",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['transit']['staff']['id'],"track_action_status"=>$transit_description));	
 	
 	// return $response->withJson([]);
 
@@ -773,10 +773,10 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	require_once '../document-transit.php';
 	require_once '../system_setup.php';
 	require_once '../functions.php';
-	require_once '../notify.php';	
-	
+	require_once '../notify.php';
+
 	$system_setup = system_setup;
-	$setup = new setup($system_setup);	
+	$setup = new setup($system_setup);
 
 	session_start();
 
@@ -815,9 +815,9 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
 
-	# notify liaisons
-	$liaisons = $setup->get_setup_as_string(5);
-	notify($con,"received",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>$data['file']));
+	# notify Liaisons AOs AAsts AAs
+	$all = $setup->get_setup_as_string(10);
+	notify($con,"received",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>$data['file']));
 	
 	// return $response->withJson([]);
 
@@ -876,9 +876,9 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
 
-	# notify liaisons
-	$liaisons = $setup->get_setup_as_string(5);
-	notify($con,"released",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['staff']['id']));	
+	# notify Liaisons AOs AAsts AAs
+	$all = $setup->get_setup_as_string(10);
+	notify($con,"released",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['staff']['id']));
 	
 	// return $response->withJson([]);
 
@@ -934,9 +934,9 @@ $app->post('/doc/transit/file/{id}', function ($request, $response, $args) {
 
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
 
-	# notify liaisons
-	$liaisons = $setup->get_setup_as_string(5);
-	notify($con,"filed",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$liaisons,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>true));
+	# notify Liaisons AOs AAsts AAs
+	$all = $setup->get_setup_as_string(10);
+	notify($con,"filed",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>true));
 	
 	// return $response->withJson([]);
 
