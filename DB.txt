@@ -1,1 +1,2 @@
-ALTER TABLE `document_types`  ADD `transaction_id` INT NULL  AFTER `shortname`;
+ALTER TABLE `users` ADD `title` INT NULL AFTER `id`;
+ALTER TABLE `users` CHANGE `title` `title` VARCHAR(50) NULL DEFAULT NULL;

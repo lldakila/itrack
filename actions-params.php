@@ -22,7 +22,7 @@ require_once 'system_setup.php';
 $system_setup = new setup(system_setup);
 
 $users_ids_initial = $system_setup->get_setup_as_string(1); # users for document action: initial
-$users_for_initiale = $con->getData("SELECT id, CONCAT(fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_initial)");
+$users_for_initiale = $con->getData("SELECT id, CONCAT(IF(ISNULL(title),'',CONCAT(title,' ')), fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_initial)");
 
 // $users_for_initial_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"),"value"=>false);
 foreach ($users_for_initiale as $value) {
@@ -37,7 +37,7 @@ foreach ($users_for_initiale as $value) {
 };
 
 $users_ids_signature = $system_setup->get_setup_as_string(2); # users for document action: signature
-$users_for_signature = $con->getData("SELECT id, CONCAT(fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_signature)");
+$users_for_signature = $con->getData("SELECT id, CONCAT(IF(ISNULL(title),'',CONCAT(title,' ')), fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_signature)");
 
 // $users_for_signature_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"),"value"=>false);
 foreach ($users_for_signature as $value) {
@@ -53,7 +53,7 @@ foreach ($users_for_signature as $value) {
 
 
 $users_ids_route = $system_setup->get_setup_as_string(3); # users for document action: route
-$users_for_route = $con->getData("SELECT id, CONCAT(fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_route)");
+$users_for_route = $con->getData("SELECT id, CONCAT(IF(ISNULL(title),'',CONCAT(title,' ')), fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_route)");
 
 $users_for_route_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"));
 foreach ($users_for_route as $value) {

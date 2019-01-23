@@ -159,6 +159,15 @@
 										<div class="row">
 											<div class="col-md-4">
 												<div class="form-group">
+													<label>Title</label>
+													<input type="text" class="form-control" name="title" ng-model="user.title" ng-disabled="controls.btns.ok">
+												</div>
+											</div>										
+										</div>
+										
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
 													<label>First Name</label>
 													<input type="text" class="form-control" name="fname" ng-class="{'border-danger': formHolder.user.fname.$touched && formHolder.user.fname.$invalid}" ng-model="user.fname" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.user.fname.$touched && formHolder.user.fname.$invalid">First Name is required</span>
