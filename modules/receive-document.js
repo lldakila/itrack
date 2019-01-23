@@ -292,6 +292,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					
 				});
 				
+			} else {
+				
+				delete scope.doc.document_transaction_type;
+				
 			};
 			
 		};

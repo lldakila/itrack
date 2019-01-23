@@ -182,7 +182,7 @@
 										<div class="row">
 											<div class="col-lg-4">
 												<div class="form-group">
-													<label>Transaction</label>
+													<label>Transaction <span ng-show="doc.document_transaction_type!=undefined"><strong>({{doc.document_transaction_type.days+' days'}})</strong></span></label>
 													<select class="form-control" name="document_transaction_type" ng-class="{'border-danger': formHolder.doc.document_transaction_type.$touched && formHolder.doc.document_transaction_type.$invalid}" ng-model="doc.document_transaction_type" ng-options="t.transaction for t in transactions track by t.id" ng-disabled="controls.btns.ok" required></select>
 													<span class="help-block danger" ng-show="formHolder.doc.document_transaction_type.$touched && formHolder.doc.document_transaction_type.$invalid">Transaction is required</span>
 												</div>
@@ -406,7 +406,7 @@
 	<script src="modules/module-access.js"></script>
 	<script src="modules/jspdf.js"></script>
 	<script src="modules/upload-files.js"></script>
-	<script src="modules/receive-document.js"></script>
+	<script src="modules/receive-document.js?ver=1.0.0.2"></script>
 	
 	<!-- controller -->
 	<script src="controllers/receive-document.js?ver=1.0.0.1"></script>
