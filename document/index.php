@@ -162,11 +162,15 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 
 	$con->table = "tracks";
 
-	$actions_arr = array("for_initial"=>1,"for_signature"=>2,"for_routing"=>3);
-	
-	foreach ($actions as $i => $action) {
+	$actions_arr = array("for_initial"=>1,"for_signature"=>2,"for_routing"=>3,"comment"=>4);
 
-		$track = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND track_action = ".$actions_arr[$i]);
+	foreach ($actions as $i => $action) {
+		
+		if ($actions_arr[$i] == 4) continue; // skip comment
+		
+		$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action = ".$actions_arr[$i];
+
+		$track = $con->getData($sql);
 
 		if ($action['value']) {
 
@@ -993,6 +997,98 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 	$document['tracks'] = tracks($con,$setup,$id,$document);
 
 	return $response->withJson($document);
+
+});
+
+$app->get('/doc/revisions/{id}', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "revisions";
+
+	// require_once '../handlers/folder-files.php';
+	// require_once '../functions.php';
+	
+	session_start();	
+	
+	$id = $args['id'];
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];		
+
+	$revisions = $con->getData("SELECT * FROM revisions WHERE document_id = $id");
+	
+	foreach ($revisions as $i => $revision) {
+		
+		$revisions[$i]['revision_ok'] = ($revision['revision_ok'])?true:false;		
+		
+	};
+
+	return $response->withJson($revisions);
+
+});
+
+$app->post('/doc/revisions/add/{id}', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "revisions";
+
+	$id = $args['id'];
+	$data = $request->getParsedBody();
+	
+	$data['revision_ok'] = (isset($data['revision_ok']))?($data['revision_ok'])?1:0:0;
+	
+	if ($data['id']) {
+		
+		$data['update_log'] = "CURRENT_TIMESTAMP";
+		$update = $con->updateData($data,'id');
+		
+	} else {
+		
+		$data['document_id'] = $id;
+		
+		unset($data['id']);
+		$insert = $con->insertData($data);
+		
+	};
+
+});
+
+$app->put('/doc/revisions/update', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "revisions";
+
+	$data = $request->getParsedBody();
+
+	$data['revision_ok'] = ($data['revision_ok'])?1:0;
+	
+	$data['update_log'] = "CURRENT_TIMESTAMP";
+	$update = $con->updateData($data,'id');
+
+});
+
+$app->get('/doc/revisions/edit/{id}', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "revisions";
+
+	$id = $args['id'];
+
+	$revision = $con->getData("SELECT id, notes, revision_ok FROM revisions WHERE document_id = $id");
+	
+	return $response->withJson($revision[0]);	
+
+});
+
+# delete revision
+$app->delete('/doc/revisions/delete/{id}', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+	$con->table = "revisions";
+
+	$revision = array("id"=>$args['id']);
+
+	$con->deleteData($revision);
 
 });
 

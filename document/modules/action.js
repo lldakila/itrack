@@ -5,7 +5,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		var self = this;
 
 		self.startup = function(scope) {
-				
+			
+			self.revisions.list(scope);
 			
 		};
 
@@ -22,7 +23,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			var href_arr = href.split("/");
 
-			var id = href_arr[href_arr.length-1];		
+			var id = href_arr[href_arr.length-1];
+			
+			scope.document_id = id;
 
 			scope.doc = {};
 			scope.doc.id = id;
@@ -42,6 +45,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.comment = {};
 			scope.transit = {};
 			scope.release = {};
+			
+			scope.revisions = [];			
 
 		};
 		
@@ -249,6 +254,121 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			bootstrapModal.box(scope,'Document comment','/dialogs/comment.html',onOk,function() {});			
 
+		};
+		
+		self.revisions = {
+			
+			list: function(scope) {
+
+				if (scope.$id>2) scope = scope.$parent;
+				
+				$http({
+				  method: 'GET',
+				  url: scope.url.view+'document/doc/revisions/'+scope.document_id,
+				}).then(function mySuccess(response) {
+					
+					scope.revisions = angular.copy(response.data);
+					
+				}, function myError(response) {
+					
+				});					
+				
+			},
+			
+			revision: function(scope,revision) {
+				
+				scope.revision = {};
+				scope.revision.id = 0;
+				
+				if (revision!=null) {
+					
+					$http({
+					  method: 'GET',
+					  url: scope.url.view+'document/doc/revisions/edit/'+scope.document_id,
+					}).then(function mySuccess(response) {
+
+						scope.revision = angular.copy(response.data);
+
+					}, function myError(response) {
+						
+					});						
+					
+				};
+				
+				var onOk = function() {
+					
+					if (validateDialog.form(scope,'revision')) return false;					
+					
+					self.revisions.save(scope);
+					
+				};
+				
+				bootstrapModal.box(scope,'Document revision','/dialogs/revision.html',onOk,function() {});
+				
+			},
+			
+			save: function(scope) {
+			
+				$http({
+				  method: 'POST',
+				  url: scope.url.view+'document/doc/revisions/add/'+scope.document_id,
+				  data: scope.revision
+				}).then(function mySuccess(response) {
+					
+					if (scope.revision.id>0) growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Revision successfully updated.');
+					else  growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Revision successfully added.');
+						
+					self.revisions.list(scope);
+					
+				}, function myError(response) {
+					
+				});						
+				
+				return true;
+				
+			},
+			
+			update: function(scope,revision) {
+				
+				$http({
+				  method: 'PUT',
+				  url: scope.url.view+'document/doc/revisions/update',
+				  data: revision
+				}).then(function mySuccess(response) {
+					
+
+				}, function myError(response) {
+					
+				});					
+				
+			},
+			
+			delete: function(scope,revision) {
+				
+				var onOk = function() {
+					
+					$http({
+						method: 'DELETE',
+						url: scope.url.view+'document/doc/revisions/delete/'+revision.id,
+					}).then(function mySuccess(response) {
+							
+							growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 55},'Document revision successfully deleted.');
+							self.revisions.list(scope);
+							
+					}, function myError(response) {
+				
+
+				
+					});					
+					
+				};
+				
+				var onCancel = function() {};
+				
+				bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to delete this document type?',onOk,onCancel);
+				
+			}
+			
 		};
 		
 	};

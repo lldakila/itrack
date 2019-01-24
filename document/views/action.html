@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/app.css">
     <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/colors.css">
     <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/switch.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/switch-sm.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/core/menu/menu-types/vertical-menu.css">
@@ -35,6 +36,15 @@
     <link rel="stylesheet" type="text/css" href="<?=$url?>assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="<?=$url?>assets/css/files.css">
     <!-- END Custom CSS-->
+	<style type="text/css">
+	
+		.revision-files {
+		
+			margin-bottom: 5px;
+		
+		}
+	
+	</style>
   </head>
   <body ng-app="action" ng-controller="actionCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns fixed-navbar" account-profile listen-barcode>
 
@@ -160,11 +170,54 @@
 					</section>
 					<section class="card">
 						<div class="card-header">
-							<h4 class="card-title" id="basic-layout-form">Revisions</h4>						
+							<h4 class="card-title" id="basic-layout-form">Revisions</h4>
+							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+							<div class="heading-elements">
+								<ul class="list-inline mb-0">
+									<li><a href="javascript:;" ng-click="app.revisions.revision(this,null)"><i class="icon-plus"></i></a></li>
+								</ul>
+							</div>							
 						</div>	
 						<div class="card-body collapse in" aria-expanded="true">
 							<div class="card-block">
-							
+								<div class="row">
+									<div class="col-lg-6 offset-lg-6">
+										<div class="form-group">
+											<div class="has-icon-left">
+												<input type="text" class="form-control" ng-model="views.search">
+												<div class="form-control-position">
+													<i class="icon-search5"></i>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>						
+								</div>								
+								<table class="table">
+									<thead>
+										<tr><th>#</th><th>Notes</th><th>File(s)</th><th>Status</th><th>Update</th><th>Manage</th></tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="r in revisions | filter:views.search">
+											<td>{{$index+1}}</td>
+											<td>{{r.notes}}</td>
+											<td><p class="revision-files"><a href="javascript:;">{{}}</a></p></td>
+											<td>{{(r.revision_ok)?'Ok':''}}</td>
+											<td>
+												<div class="checkbox">
+													<label class="switch-sm">
+													  <input type="checkbox" hidden="hidden" ng-model="r.revision_ok" ng-checked="r.revision_ok" ng-click="app.revisions.update(this,r)">
+													  <span class="slider-sm round"></span>
+													</label>
+												</div>
+											</td>
+											<td>
+												<a href="javascript:;" style="margin-right: 5px; color: #373a3c!important;" ng-click="app.revisions.revision(this,r)"><i class="icon-edit"></i></a>
+												<a href="javascript:;" style="color: #373a3c!important;" ng-click="app.revisions.delete(this,r)"><i class="icon-remove"></i></a>
+											</td>											
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</section>

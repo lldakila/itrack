@@ -192,7 +192,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	# tracks
 	$con->table = "tracks";
 	
-	foreach ($actions as $action) {
+	foreach ($actions as $action) {				
 		
 		if ($action['value']) {						
 
