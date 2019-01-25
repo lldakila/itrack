@@ -214,7 +214,7 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 		deleteFiles($con,$delete_files,"../files");
 	};
 	
-	uploadFiles($con,$uploads,$data['barcode'],$id,"../files");	
+	uploadFiles($con,$uploads,$data['barcode'],$id,"../files");
 
 });
 
@@ -1019,7 +1019,10 @@ $app->get('/doc/revisions/{id}', function ($request, $response, $args) {
 	
 	foreach ($revisions as $i => $revision) {
 		
-		$revisions[$i]['revision_ok'] = ($revision['revision_ok'])?true:false;		
+		$revisions[$i]['revision_ok'] = ($revision['revision_ok'])?true:false;
+		
+		$revisions[$i]['datetime'] = date("M j, Y h:i A",strtotime($revision['system_log']));
+		$revisions[$i]['datetime_completed'] = ($revision['datetime_completed']!=null)?date("M j, Y h:i A",strtotime($revision['datetime_completed'])):"";
 		
 	};
 
@@ -1060,9 +1063,13 @@ $app->put('/doc/revisions/update', function ($request, $response, $args) {
 
 	$data = $request->getParsedBody();
 
+	unset($data['datetime']);
+	unset($data['system_log']);
+	
 	$data['revision_ok'] = ($data['revision_ok'])?1:0;
 	
 	$data['update_log'] = "CURRENT_TIMESTAMP";
+	$data['datetime_completed'] = ($data['revision_ok']>0)?"CURRENT_TIMESTAMP":null;
 	$update = $con->updateData($data,'id');
 
 });
@@ -1089,6 +1096,21 @@ $app->delete('/doc/revisions/delete/{id}', function (Request $request, Response 
 	$revision = array("id"=>$args['id']);
 
 	$con->deleteData($revision);
+
+});
+
+# upload files
+$app->put('/doc/revisions/upload/files', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "files";
+
+	$data = $request->getParsedBody();
+	
+	require_once '../handlers/folder-files.php';
+	require_once '../api/receive-document/classes.php';
+	
+	uploadFiles($con,array("files"=>$data['files']),$data['barcode'],$data['id'],"../files");	
 
 });
 

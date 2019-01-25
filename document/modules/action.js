@@ -29,8 +29,11 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			scope.doc = {};
 			scope.doc.id = id;
+			scope.doc.barcode = $('#barcode').html();
 			scope.doc.actions = [];
 			scope.doc.tracks = [];
+			
+			scope.documentFiles = [];
 			
 			initDoc(scope,id);
 
@@ -46,7 +49,13 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.transit = {};
 			scope.release = {};
 			
-			scope.revisions = [];			
+			scope.revisions = [];
+
+			scope.controls = { // for remove-file-edit to work
+				btns: {
+					save: false
+				}
+			};
 
 		};
 		
@@ -303,7 +312,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					
 				};
 				
-				bootstrapModal.box(scope,'Document revision','/dialogs/revision.html',onOk,function() {});
+				bootstrapModal.box(scope,'Document revision for '+$('#barcode').html(),'/dialogs/revision.html',onOk,function() {});
 				
 			},
 			
@@ -336,6 +345,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				  data: revision
 				}).then(function mySuccess(response) {
 					
+					self.revisions.list(scope);
 
 				}, function myError(response) {
 					
@@ -371,7 +381,110 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 		};
 		
+		// upload file
+		self.addFile = function(scope) {
+			
+			$('#upload-files')[0].click();
+			
+		};
+		
 	};
 	
 	return new app();
+	
+}).directive('actionUploadFiles',function($timeout,$q,$http) {
+
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+
+			scope.documentFiles = [];
+		
+			element.bind('click', function() {
+
+
+			});
+
+			element.bind('change', function() {
+
+				var files = $('#upload-files')[0].files;
+				var types = {
+					"pdf": "data",
+					"jpeg": "src",
+					"png": "src",
+				};
+				
+				scope.doc.files = [];
+
+				angular.forEach(files, function(file,n) {					
+					
+					var type = file.type.split("/");
+					
+					if ( (type[1] != "jpeg") && (type[1] != "png") && (type[1] != "pdf") ) return; 
+					
+					scope.$apply(function() {
+						scope.documentFiles.push({type: type[1]});
+					});
+				
+					var i = scope.documentFiles.length-1;
+					
+					var eid = "#dfpdf"+i;
+					if (type[1] != 'pdf') eid = "#dfimg"+i;
+					var preview = document.querySelector(eid);
+					var reader  = new FileReader();
+
+					reader.addEventListener("load", function () {
+						if (type[1] == "pdf") preview.data = reader.result;
+						else preview.src = reader.result;
+						scope.documentFiles[i].eid = eid;
+						scope.doc.files.push({file: reader.result, type: type[1], name: null});						
+					}, false);
+					
+					reader.addEventListener("loadend", function () {
+						upload(scope);
+					}, false);					
+					
+					if (file) {
+						reader.readAsDataURL(file);
+					};
+
+				});
+
+				function upload(scope) {
+				
+					$http({
+						method: 'PUT',
+						url: scope.url.view+'document/doc/revisions/upload/files',
+						data: scope.doc
+					}).then(function succes(response) {
+						
+					}, function error(response) {
+
+					});
+
+				};
+
+			});
+			
+		}
+	};
+		
+}).directive('actionRemoveFile',function($timeout) {
+	
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+		
+			element.bind('click', function() {
+			
+				var index = attrs.actionRemoveFile;
+
+				delete scope.documentFiles.splice(index,1);
+				scope.$apply();
+				
+			});
+			
+		}
+	};	
+	
 });

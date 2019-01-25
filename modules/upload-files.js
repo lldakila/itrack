@@ -108,62 +108,6 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 		}
 	};	
 	
-}).directive('addAttachments',function($http) {
-	
-	return {
-		restrict: 'A',
-		link: function(scope, element, attrs) {
-
-			scope.attachmentFiles = [];		
-		
-			element.bind('click', function() {
-
-
-			});
-
-			element.bind('change', function() {
-
-				var files = $('#upload-attachments')[0].files;
-				var types = {
-					"pdf": "data",
-					"jpeg": "src",
-					"png": "src",
-				};				
-
-				angular.forEach(files, function(file,n) {
-
-					var type = file.type.split("/");		
-
-					if ( (type[1] != "jpeg") && (type[1] != "png") && (type[1] != "pdf") ) return; 
-				
-					scope.$apply(function() {
-						scope.attachmentFiles.push({type: type[1]});
-					});
-				
-					var i = scope.attachmentFiles.length-1;
-
-					var eid = "#afpdf"+i;
-					if (type[1] != 'pdf') eid = "#afimg"+i;
-					var preview = document.querySelector(eid);
-					var reader  = new FileReader();
-
-					reader.addEventListener("load", function () {
-						if (type[1] == "pdf") preview.data = reader.result;
-						else preview.src = reader.result;
-						scope.attachmentFiles[i].eid = eid;
-					}, false);
-
-					if (file) {
-						reader.readAsDataURL(file);
-					};
-
-				});
-
-			});
-			
-		}
-	};
-		
 }).factory('uploadFiles',function($q) {
 
 	function uploadFiles() {
@@ -193,16 +137,7 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 
 				scope.doc.files.push({file: file, type: item.type, name: name});
 
-			});
-
-			/* angular.forEach(scope.attachmentFiles, function(item,i) {
-
-				var $file = $(item.eid);
-				var file = $($file[0]).attr(types[item.type]);
-
-				scope.doc.attachments.push({file: file, type: item.type});
-
-			});	 */		
+			});	
 
 			$q.all(scope.doc.files).then(function() {
 				callback();

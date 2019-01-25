@@ -43,6 +43,12 @@
 			margin-bottom: 5px;
 		
 		}
+		
+		.table-revisions {
+		
+			font-size: 12px;
+		
+		}
 	
 	</style>
   </head>
@@ -129,7 +135,7 @@
 							<div class="card-block">
 								<div class="row">
 									<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
-										<p><span class="text-muted">Barcode:</span> <span class="text-bold-700"><?=$document['barcode']?></span></p>
+										<p><span class="text-muted">Barcode:</span> <span class="text-bold-700" id="barcode"><?=$document['barcode']?></span></p>
 										<p><span class="text-muted">Document Type: </span><span class="text-bold-700"><?=$document['doc_type']['document_type']?></span></p>
 										<p><span class="text-muted">Originating Office: </span><span class="text-bold-700"><?=($document['other_origin']==null)?$document['origin']['office']:$document['other_origin']?></span></p>
 										<p><span class="text-muted">Subject: </span><span class="text-bold-700"><?=$document['doc_name']?></span></p>							
@@ -157,10 +163,21 @@
 														<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df,'../dialogs/preview.html')">
 															<i class="icon-search7"></i>
 														</a>																
+														<a href="javascript:;" class="control-btn" action-remove-file="{{$index}}">
+															<i class="icon-trash4"></i>
+														</a>														
 													</div>
 													<object id="dfpdf{{$index}}" class="object" data="" ng-show="df.type == 'pdf'"></object>
 													<img id="dfimg{{$index}}" class="image" src="" ng-show="df.type == 'jpeg' || df.type == 'png'">
-												</div>														
+												</div>
+												<input type="file" style="display: none;" id="upload-files" action-upload-files>
+												<a href="javascript:;" class="add-image" ng-click="app.addFile(this)">
+													<div class="image-container new">
+														<div class="image">
+															<i class="icon-plus4"></i>
+														</div>
+													</div>
+												</a>												
 											</div>
 										</div>
 									</div>
@@ -193,16 +210,17 @@
 										<div class="clearfix"></div>
 									</div>						
 								</div>								
-								<table class="table">
+								<table class="table table-revisions">
 									<thead>
-										<tr><th>#</th><th>Notes</th><th>File(s)</th><th>Status</th><th>Update</th><th>Manage</th></tr>
+										<tr><th>#</th><th>Date Added</th><th>Notes</th><th>Status</th><th>Date Completed</th><th>Update</th><th>Manage</th></tr>
 									</thead>
 									<tbody>
 										<tr ng-repeat="r in revisions | filter:views.search">
 											<td>{{$index+1}}</td>
+											<td>{{r.datetime}}</td>
 											<td>{{r.notes}}</td>
-											<td><p class="revision-files"><a href="javascript:;">{{}}</a></p></td>
 											<td>{{(r.revision_ok)?'Ok':''}}</td>
+											<td>{{r.datetime_completed}}</td>											
 											<td>
 												<div class="checkbox">
 													<label class="switch-sm">
