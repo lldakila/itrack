@@ -39,6 +39,47 @@ function get_files($dir,$barcode) {
 
 };
 
+function get_document_files($con,$dir,$url,$id) {
+
+	$base = str_replace("\\","/",__DIR__);
+	// $dir = str_replace("/","\\",$dir);
+
+	$files = [];
+
+	if (!folder_exist($dir)) mkdir($dir);
+	
+	$dir_files = $con->getData("SELECT * FROM files WHERE document_id = $id");
+
+	foreach ($dir_files as $dir_file) {
+
+		if (file_exists($base.$dir.$dir_file['file_name'])) {
+			// Read image path, convert to base64 encoding
+
+			$dir_file_data = base64_encode(file_get_contents($url.$dir_file['file_name']));
+
+			// Format the image SRC:  data:{mime};base64,{data};
+			$type = mime_content_type($url.$dir_file['file_name']);
+
+			$file = 'data:'.$type.';base64,'.$dir_file_data;
+			
+			$file_type = explode("/",$type);
+
+			$files[] = array(
+				"id"=>$dir_file['id'],
+				"file"=>$file,
+				"type"=>$file_type[1],
+				"name"=>$dir_file['file_name'],
+				"initial_file"=>$dir_file['initial_file']
+			);
+
+		};
+		
+	};
+
+	return $files;
+
+};
+
 function get_action_track($tracks,$user_id,$office) { # user has action in track
 	
 	$track = array();

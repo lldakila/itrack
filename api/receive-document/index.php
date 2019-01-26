@@ -130,7 +130,6 @@ $app->get('/action_params/{id}', function (Request $request, Response $response,
 
 });
 
-
 # add document
 $app->post('/add', function (Request $request, Response $response, array $args) {
 
@@ -228,7 +227,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$con->table = "documents";	
 	$barcode = $con->get(array("id"=>$id),["id","barcode","document_date","(SELECT document_type FROM document_types WHERE id = ".$data['doc_type'].") doc_type"]);
 
-	uploadFiles($con,$uploads,$barcode[0]['barcode'],$id);	
+	uploadFiles($con,$uploads,$barcode[0]['barcode'],$id,"../../files",true);	
 
 	$barcode[0]['document_date'] = date("M j, Y h:i:s A",strtotime($barcode[0]['document_date']));
 

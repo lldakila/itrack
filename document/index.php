@@ -61,7 +61,8 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 		$document[0]['files'] = [];
 		$document[0]['delete_files'] = [];
 
-		$files = get_files("../files/",$document[0]['barcode']);
+		// $files = get_files("../files/",$document[0]['barcode']);
+		$files = get_document_files($con,"/files/","../files/",$document[0]['id']);
 		$document[0]['files'] = $files;
 
 		$document = document_info($con,$document[0]);
@@ -214,7 +215,7 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 		deleteFiles($con,$delete_files,"../files");
 	};
 	
-	uploadFiles($con,$uploads,$data['barcode'],$id,"../files");
+	uploadFiles($con,$uploads,$data['barcode'],$id,"../files",false);
 
 });
 
@@ -540,7 +541,8 @@ $app->get('/doc/actions/{id}', function ($request, $response, $args) {
 	
 	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");	
 	
-	$files = get_files("../files/",$document[0]['barcode']);	
+	// $files = get_files("../files/",$document[0]['barcode']);	
+	$files = get_document_files($con,"/files/","../files/",$document[0]['id']);	
 	
 	# tracks for actions
 	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND track_action IS NOT NULL");

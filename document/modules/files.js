@@ -16,7 +16,7 @@ angular.module('files-module',['bootstrap-modal']).factory('files', function($ti
 
 				var eid = eids[file.type]+i;
 
-				scope.documentFiles.push({type: file.type, name: file.name});
+				scope.documentFiles.push({id: file.id, type: file.type, name: file.name, initial_file: file.initial_file});
 
 				scope.documentFiles[i]['eid'] = eid;
 

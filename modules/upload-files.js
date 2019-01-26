@@ -27,7 +27,7 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 					if ( (type[1] != "jpeg") && (type[1] != "png") && (type[1] != "pdf") ) return; 
 					
 					scope.$apply(function() {
-						scope.documentFiles.push({type: type[1]});
+						scope.documentFiles.push({id: 0, type: type[1]});
 					});
 				
 					var i = scope.documentFiles.length-1;
@@ -126,7 +126,7 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 			var promise = deferred.promise;
 			
 			scope.doc.files = [];
-			
+
 			angular.forEach(scope.documentFiles, function(item,i) {
 			
 				var $file = $(item.eid);
@@ -135,7 +135,8 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 				var name = null;
 				if (edit) name = item.name;
 
-				scope.doc.files.push({file: file, type: item.type, name: name});
+				if (item.id==0) scope.doc.files.push({id: item.id, file: file, type: item.type, name: name});
+				else scope.doc.files.push({id: item.id, file: file, type: item.type, name: name, initial_file: item.initial_file});
 
 			});	
 
