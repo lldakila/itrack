@@ -88,6 +88,7 @@ class privileges {
 		foreach ($system_module_privileges as $key => $smp) {
 			
 			if ($smp['id'] > 1) continue;
+			if (preg_match("/_/",$smp['id'])) continue;			
 			
 			$access = $this->groupPagesAccess($group_module_privileges,$smp);
 
@@ -168,11 +169,7 @@ class privileges {
 		$page_privileges = [];
 		foreach ($this->page_privileges as $p => $pp) {
 
-			if ($p == 0) {
-				$page_privileges = array($pp['id']=>array("value"=>$pp['value'],"delete"=>$pp['delete'],"show"=>$pp['show']));
-			} else {
-				$page_privileges[$pp['id']] = array("value"=>$pp['value'],"delete"=>$pp['delete'],"show"=>$pp['show']);
-			};
+			$page_privileges[$pp['id']] = array("value"=>$pp['value'],"delete"=>$pp['delete'],"show"=>$pp['show']);
 
 		};
 
