@@ -469,7 +469,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		}
 	};
 		
-}).directive('actionRemoveFile',function($timeout) {
+}).directive('actionRemoveFile',function($timeout,$http) {
 	
 	return {
 		restrict: 'A',
@@ -478,7 +478,18 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			element.bind('click', function() {
 			
 				var index = attrs.actionRemoveFile;
+				
+				file = scope.documentFiles[index];
+				
+				$http({
+					method: 'DELETE',
+					url: scope.url.view+'document/doc/revisions/delete/'+file.id+'/'+file.name,
+				}).then(function succes(response) {
+					
+				}, function error(response) {
 
+				});
+				
 				delete scope.documentFiles.splice(index,1);
 				scope.$apply();
 				

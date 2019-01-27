@@ -94,9 +94,9 @@ angular.module('upload-files', []).directive('addFiles',function($timeout) {
 			
 				var index = attrs.removeFileEdit;
 				file = scope.documentFiles[index];
-				
+				console.log(file);
 				if (Object.size(file.name)>0) {
-					scope.doc.delete_files.push(file.name);
+					scope.doc.delete_files.push({id: file.id, file_name: file.name});
 				};
 								
 				delete scope.documentFiles.splice(index,1);

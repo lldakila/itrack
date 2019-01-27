@@ -163,7 +163,7 @@
 														<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df,'../dialogs/preview.html')">
 															<i class="icon-search7"></i>
 														</a>																
-														<a href="javascript:;" class="control-btn" action-remove-file="{{$index}}">
+														<a ng-show="df.initial_file==0" href="javascript:;" class="control-btn" action-remove-file="{{$index}}">
 															<i class="icon-trash4"></i>
 														</a>														
 													</div>

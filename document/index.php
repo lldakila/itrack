@@ -1090,29 +1090,35 @@ $app->get('/doc/revisions/edit/{id}', function ($request, $response, $args) {
 });
 
 # delete revision
-$app->delete('/doc/revisions/delete/{id}', function (Request $request, Response $response, array $args) {
+$app->delete('/doc/revisions/delete/{id}/{name}', function (Request $request, Response $response, array $args) {
+
+	require_once '../handlers/folder-files.php';
+	require_once '../api/receive-document/classes.php';
 
 	$con = $this->con;
 	$con->table = "revisions";
 
-	$revision = array("id"=>$args['id']);
-
-	$con->deleteData($revision);
+	$id = $args['id'];
+	$file_name = $args['name'];
+	
+	deleteFiles($con,[array("id"=>$id,"file_name"=>$file_name)],"../files");
 
 });
 
 # upload files
 $app->put('/doc/revisions/upload/files', function ($request, $response, $args) {
-
+	
+	session_start();
+	
 	$con = $this->con;
 	$con->table = "files";
-
+	
 	$data = $request->getParsedBody();
 	
 	require_once '../handlers/folder-files.php';
 	require_once '../api/receive-document/classes.php';
 	
-	uploadFiles($con,array("files"=>$data['files']),$data['barcode'],$data['id'],"../files");	
+	uploadFiles($con,array("files"=>$data['files']),$data['barcode'],$data['id'],"../files",false);	
 
 });
 
