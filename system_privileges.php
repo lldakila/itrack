@@ -42,6 +42,9 @@ define('system_privileges', array(
 			array("id"=>4,"description"=>"Transit Document","value"=>false),
 			array("id"=>5,"description"=>"Release Document","value"=>false),
 			array("id"=>6,"description"=>"Add Comment","value"=>false),	
+			array("id"=>7,"description"=>"Add Revision","value"=>false),	
+			array("id"=>8,"description"=>"Edit Revision","value"=>false),
+			array("id"=>"delete_revision","description"=>"Delete Revision","value"=>false),
 		),
 	),
 	array(

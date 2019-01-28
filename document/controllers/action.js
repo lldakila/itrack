@@ -17,6 +17,9 @@ app.controller('actionCtrl',function($scope,app) {
 			transit: 4,
 			release: 5,
 			comment: 6,
+			add_revision: 7,
+			edit_revision: 8,
+			delete_revision: "delete_revision",
 		}
 	};
 	

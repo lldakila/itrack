@@ -286,6 +286,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			
 			revision: function(scope,revision) {
 				
+				if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add_revision)) {
+					return;
+				};				
+				
 				scope.revision = {};
 				scope.revision.id = 0;
 				
@@ -305,6 +309,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				};
 				
 				var onOk = function() {
+					
+					if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.edit_revision)) {
+						return false;
+					};					
 					
 					if (validateDialog.form(scope,'revision')) return false;					
 					
