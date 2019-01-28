@@ -4,7 +4,7 @@ function get_files($dir,$barcode) {
 
 	$files = [];
 
-	if (!folder_exist($dir)) mkdir($dir);
+	// if (!folder_exist($dir)) mkdir($dir);
 	
 	$dir_files = scandir($dir);
 
@@ -46,7 +46,7 @@ function get_document_files($con,$dir,$url,$id) {
 
 	$files = [];
 
-	if (!folder_exist($dir)) mkdir($dir);
+	// if (!folder_exist($dir)) mkdir($dir);
 	
 	$dir_files = $con->getData("SELECT * FROM files WHERE document_id = $id");
 

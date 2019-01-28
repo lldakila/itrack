@@ -30,7 +30,7 @@ function uploadFiles($con,$uploads,$barcode,$id,$path,$init) {
 		foreach ($uploads["files"] as $key => $f) {
 
 			if ($f['file'] == "") continue;
-			if ($init) if ($f['initial_file']>0) continue;
+			if (isset($f['initial_file'])) if ($f['initial_file']>0) continue;
 
 			$imgData = str_replace(' ','+',$f['file']);
 			$imgData =  substr($imgData,strpos($imgData,",")+1);
