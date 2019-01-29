@@ -318,7 +318,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					
 					if (scope.revision.id>0) {
 						
-						self.revisions.update(scope,revision);						
+						self.revisions.update(scope,scope.revision);						
 						
 					} else {
 						
@@ -369,6 +369,22 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				});					
 				
 			},
+			
+			update: function(scope,revision) {
+				
+				$http({
+				  method: 'PUT',
+				  url: scope.url.view+'document/doc/revisions/update/status/'+scope.document_id,
+				  data: revision
+				}).then(function mySuccess(response) {
+
+					self.revisions.list(scope);
+
+				}, function myError(response) {
+					
+				});					
+				
+			},			
 			
 			delete: function(scope,revision) {
 
