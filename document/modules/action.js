@@ -362,7 +362,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			},
 			
 			delete: function(scope,revision) {
-				
+
 				var onOk = function() {
 					
 					$http({
@@ -400,7 +400,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 	
 	return new app();
 	
-}).directive('actionUploadFiles',function($timeout,$q,$http) {
+}).directive('actionUploadFiles',function($timeout,$q,$http,files,bui) {
 
 	return {
 		restrict: 'A',
@@ -415,7 +415,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			element.bind('change', function() {
 
-				var files = $('#upload-files')[0].files;
+				var _files = $('#upload-files')[0].files;
 				var types = {
 					"pdf": "data",
 					"jpeg": "src",
@@ -424,7 +424,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				scope.doc.files = [];
 
-				angular.forEach(files, function(file,n) {					
+				angular.forEach(_files, function(file,n) {					
 					
 					var type = file.type.split("/");
 					
@@ -466,10 +466,34 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 						data: scope.doc
 					}).then(function succes(response) {
 						
+						initDoc(scope,scope.document_id);						
+						
 					}, function error(response) {
 
 					});
 
+				};
+				
+				function initDoc(scope,id) {
+					
+					bui.show();
+					scope.documentFiles = [];
+					
+					$http({
+					  method: 'GET',
+					  url: scope.url.view+'document/doc/actions/'+id,
+					}).then(function mySuccess(response) {
+
+						files.filesThumbnails(scope,response.data.files);
+
+						bui.hide();
+
+					}, function myError(response) {
+
+						bui.hide();
+
+					});					
+					
 				};
 
 			});
@@ -491,18 +515,18 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				$http({
 					method: 'DELETE',
-					url: scope.url.view+'document/doc/revisions/delete/'+file.id+'/'+file.name,
+					url: scope.url.view+'document/doc/revisions/delete/files/'+file.id+'/'+file.name,
 				}).then(function succes(response) {
 					
 				}, function error(response) {
 
 				});
-				
+
 				delete scope.documentFiles.splice(index,1);
 				scope.$apply();
 				
 			});
-			
+
 		}
 	};	
 	

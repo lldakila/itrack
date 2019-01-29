@@ -1090,18 +1090,14 @@ $app->get('/doc/revisions/edit/{id}', function ($request, $response, $args) {
 });
 
 # delete revision
-$app->delete('/doc/revisions/delete/{id}/{name}', function (Request $request, Response $response, array $args) {
-
-	require_once '../handlers/folder-files.php';
-	require_once '../api/receive-document/classes.php';
+$app->delete('/doc/revisions/delete/{id}', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
 	$con->table = "revisions";
 
 	$id = $args['id'];
-	$file_name = $args['name'];
 	
-	deleteFiles($con,[array("id"=>$id,"file_name"=>$file_name)],"../files");
+	$con->deleteData(array("id"=>$id));
 
 });
 
@@ -1119,6 +1115,22 @@ $app->put('/doc/revisions/upload/files', function ($request, $response, $args) {
 	require_once '../api/receive-document/classes.php';
 	
 	uploadFiles($con,array("files"=>$data['files']),$data['barcode'],$data['id'],"../files",false);	
+
+});
+
+# delete file
+$app->delete('/doc/revisions/delete/files/{id}/{name}', function (Request $request, Response $response, array $args) {
+
+	require_once '../handlers/folder-files.php';
+	require_once '../api/receive-document/classes.php';
+
+	$con = $this->con;
+	$con->table = "files";
+
+	$id = $args['id'];
+	$file_name = $args['name'];
+	
+	deleteFiles($con,[array("id"=>$id,"file_name"=>$file_name)],"../files");
 
 });
 
