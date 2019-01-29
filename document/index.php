@@ -1034,6 +1034,18 @@ $app->get('/doc/revisions/{id}', function ($request, $response, $args) {
 
 $app->post('/doc/revisions/add/{id}', function ($request, $response, $args) {
 
+	require_once '../system_setup.php';	
+	require_once '../functions.php';
+	require_once '../notify.php';
+
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+	
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);		
+	
 	$con = $this->con;
 	$con->table = "revisions";
 
@@ -1041,6 +1053,8 @@ $app->post('/doc/revisions/add/{id}', function ($request, $response, $args) {
 	$data = $request->getParsedBody();
 	
 	$data['revision_ok'] = (isset($data['revision_ok']))?($data['revision_ok'])?1:0:0;
+	
+	$data['user_id'] = $data['user_id']['id'];
 	
 	if ($data['id']) {
 		
@@ -1052,27 +1066,65 @@ $app->post('/doc/revisions/add/{id}', function ($request, $response, $args) {
 		$data['document_id'] = $id;
 		
 		unset($data['id']);
-		$insert = $con->insertData($data);
+		$insert = $con->insertData($data);		
+		
+		$revision_id = $con->insertId;
+		
+		$all = $setup->get_setup_as_string(10);		
+		$admin_recipient = get_admin_recipient($con,$id);		
+		
+		$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
+		$track_action_status = "added revisions";
+		
+		# notify Liaisons AOs AAsts AAs		
+		notify($con,"add_revision",array("doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status));
+		
+		# notify admin recipient
+		notify($con,"add_revision",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
 		
 	};
 
 });
 
-$app->put('/doc/revisions/update', function ($request, $response, $args) {
+$app->put('/doc/revisions/update/{id}', function ($request, $response, $args) {
 
+	require_once '../system_setup.php';	
+	require_once '../functions.php';
+	require_once '../notify.php';
+
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);	
+	
 	$con = $this->con;
 	$con->table = "revisions";
 
+	$id = $args['id']; // document id
 	$data = $request->getParsedBody();
 
 	unset($data['datetime']);
 	unset($data['system_log']);
 	
 	$data['revision_ok'] = ($data['revision_ok'])?1:0;
+	$data['user_id'] = $data['user_id']['id'];	
 	
 	$data['update_log'] = "CURRENT_TIMESTAMP";
 	$data['datetime_completed'] = ($data['revision_ok']>0)?"CURRENT_TIMESTAMP":null;
 	$update = $con->updateData($data,'id');
+
+	# update notifications
+	$revision_id = $data['id'];
+	exit();
+	$all = $setup->get_setup_as_string(10);		
+	$admin_recipient = get_admin_recipient($con,$id);		
+	
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
+	$track_action_status = "added revisions";
+	
+	# notify Liaisons AOs AAsts AAs		
+	notify($con,"add_revision",array("doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status));
+	
+	# notify admin recipient
+	notify($con,"add_revision",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
 
 });
 
@@ -1083,7 +1135,16 @@ $app->get('/doc/revisions/edit/{id}', function ($request, $response, $args) {
 
 	$id = $args['id'];
 
-	$revision = $con->getData("SELECT id, notes, revision_ok FROM revisions WHERE document_id = $id");
+	$revision = $con->getData("SELECT id, user_id, notes, revision_ok FROM revisions WHERE document_id = $id");
+
+	$user_id = ($revision[0]['user_id']==null)?0:$revision[0]['user_id'];
+	$staff = $con->getData("SELECT id, CONCAT_WS(' ',fname, lname) fullname FROM users WHERE id = ".$user_id);	
+
+	if (count($staff)) {
+		$revision[0]['user_id'] = $staff[0];
+	} else {
+		unset($revision[0]['user_id']);
+	};
 	
 	return $response->withJson($revision[0]);	
 

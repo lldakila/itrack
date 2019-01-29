@@ -316,7 +316,15 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 					
 					if (validateDialog.form(scope,'revision')) return false;					
 					
-					self.revisions.save(scope);
+					if (scope.revision.id>0) {
+						
+						self.revisions.update(scope,revision);						
+						
+					} else {
+						
+						self.revisions.save(scope);						
+						
+					};
 					
 				};
 				
@@ -349,10 +357,11 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				$http({
 				  method: 'PUT',
-				  url: scope.url.view+'document/doc/revisions/update',
+				  url: scope.url.view+'document/doc/revisions/update/'+scope.document_id,
 				  data: revision
 				}).then(function mySuccess(response) {
 					
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Revision successfully updated.');					
 					self.revisions.list(scope);
 
 				}, function myError(response) {

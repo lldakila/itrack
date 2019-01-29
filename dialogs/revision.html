@@ -1,6 +1,11 @@
 <form name="formHolder.revision" autocomplete="off" novalidate>
 	<div class="row">												
 		<div class="col-md-12">
+			<div class="form-group">
+				<label>Staff</label>
+				<select class="form-control" name="user_id" ng-class="{'border-danger': formHolder.revision.user_id.$touched && formHolder.revision.user_id.$invalid}" ng-model="revision.user_id" ng-options="staff.fullname for staff in office_staffs track by staff.id" required></select>
+				<span class="help-block danger" ng-show="formHolder.revision.user_id.$touched && formHolder.revision.user_id.$invalid">Staff is required</span>
+			</div>		
 			<div class="form-group">			
 				<label>Notes</label>
 				<textarea class="form-control" rows="10" name="notes" ng-class="{'border-danger': formHolder.revision.notes.$touched && formHolder.revision.notes.$invalid}" ng-model="revision.notes" required></textarea>
