@@ -163,11 +163,12 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 
 	$con->table = "tracks";
 
-	$actions_arr = array("for_initial"=>1,"for_signature"=>2,"for_routing"=>3,"comment"=>4);
+	$actions_arr = array("for_initial"=>1,"for_signature"=>2,"for_routing"=>3,"comment"=>4,"revise"=>5);
 
 	foreach ($actions as $i => $action) {
 		
 		if ($actions_arr[$i] == 4) continue; // skip comment
+		if ($actions_arr[$i] == 5) continue; // skip revise
 		
 		$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action = ".$actions_arr[$i];
 
