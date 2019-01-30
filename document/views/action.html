@@ -209,33 +209,34 @@
 										</div>
 										<div class="clearfix"></div>
 									</div>						
-								</div>								
-								<table class="table table-responsive table-revisions">
-									<thead>
-										<tr><th>#</th><th>Date Added</th><th>Notes</th><th>Status</th><th>Date Completed</th><th>Update</th><th>Manage</th></tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="r in revisions | filter:views.search">
-											<td>{{$index+1}}</td>
-											<td>{{r.datetime}}</td>
-											<td>{{r.notes}}</td>
-											<td>{{(r.revision_ok)?'Ok':''}}</td>
-											<td>{{r.datetime_completed}}</td>											
-											<td>
-												<div class="checkbox">
-													<label class="switch-sm">
-													  <input type="checkbox" hidden="hidden" ng-model="r.revision_ok" ng-checked="r.revision_ok" ng-click="app.revisions.update(this,r)">
-													  <span class="slider-sm round"></span>
-													</label>
-												</div>
-											</td>
-											<td>
-												<a href="javascript:;" style="margin-right: 5px; color: #373a3c!important;" ng-click="app.revisions.revision(this,r)"><i class="icon-edit"></i></a>
-												<a href="javascript:;" style="color: #373a3c!important;" ng-click="app.revisions.delete(this,r)" ng-show="profile.pages_access.update_tracks.delete.delete_revision"><i class="icon-remove"></i></a>
-											</td>											
-										</tr>
-									</tbody>
-								</table>
+								</div>
+								
+									<table class="table table-responsive table-revisions">
+										<thead>
+											<tr><th>#</th><th>Date Added</th><th>Notes</th><th>Status</th><th>Date Completed</th><th>Update</th><th>Manage</th></tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="r in revisions | filter:views.search">
+												<td>{{$index+1}}</td>
+												<td>{{r.datetime}}</td>
+												<td>{{r.notes}}</td>
+												<td>{{(r.revision_ok)?'Ok':''}}</td>
+												<td>{{r.datetime_completed}}</td>											
+												<td>
+													<div class="checkbox">
+														<label class="switch-sm">
+														  <input type="checkbox" hidden="hidden" ng-model="r.revision_ok" ng-checked="r.revision_ok" ng-click="app.revisions.updateStatus(this,r)">
+														  <span class="slider-sm round"></span>
+														</label>
+													</div>
+												</td>
+												<td>
+													<a href="javascript:;" style="margin-right: 5px; color: #373a3c!important;" ng-click="app.revisions.revision(this,r)"><i class="icon-edit"></i></a>
+													<a href="javascript:;" style="color: #373a3c!important;" ng-click="app.revisions.delete(this,r)" ng-show="profile.pages_access.update_tracks.delete.delete_revision"><i class="icon-remove"></i></a>
+												</td>											
+											</tr>
+										</tbody>
+									</table>
 							</div>
 						</div>
 					</section>

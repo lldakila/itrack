@@ -1074,7 +1074,7 @@ $app->post('/doc/revisions/add/{id}', function ($request, $response, $args) {
 		$admin_recipient = get_admin_recipient($con,$id);		
 		
 		$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
-		$track_action_status = "added revisions";
+		$track_action_status = "added revisions to your document";
 		
 		# notify Liaisons AOs AAsts AAs		
 		notify($con,"add_revision",array("doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status));
@@ -1139,7 +1139,7 @@ $app->put('/doc/revisions/update/{id}', function ($request, $response, $args) {
 	$admin_recipient = get_admin_recipient($con,$id);		
 	
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
-	$track_action_status = "added revisions";
+	$track_action_status = "added revisions to your document";
 	
 	# notify Liaisons AOs AAsts AAs		
 	notify($con,"add_revision",array("doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status));
@@ -1169,23 +1169,24 @@ $app->put('/doc/revisions/update/status/{id}', function ($request, $response, $a
 
 	$update = $con->updateData(array("id"=>$data['id'],"update_log"=>"CURRENT_TIMESTAMP","datetime_completed"=>$data['datetime_completed'],"revision_ok"=>$data['revision_ok']),'id');
 
-	exit();
-	
-	# update notifications
-	$revision_id = $data['id'];
+	if ($data['revision_ok']) {
 
-	$all = $setup->get_setup_as_string(10);		
-	$admin_recipient = get_admin_recipient($con,$id);		
-	
-	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
-	$track_action_status = "added revisions";
-	
-	# notify Liaisons AOs AAsts AAs		
-	notify($con,"add_revision",array("doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status));
-	
-	# notify admin recipient
-	notify($con,"add_revision",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
+		$revision_id = $data['id'];
 
+		$all = $setup->get_setup_as_string(10);		
+		$admin_recipient = get_admin_recipient($con,$id);		
+
+		$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
+		$track_action_status = "Document revisions that were added on ".$data['datetime']." were marked okay";
+
+		# notify Liaisons AOs AAsts AAs
+		notify($con,"revision_ok",array("doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status));
+
+		# notify admin recipient
+		notify($con,"revision_ok",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);	
+
+	};
+	
 });
 
 # delete revision

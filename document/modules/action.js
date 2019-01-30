@@ -370,7 +370,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 			},
 			
-			update: function(scope,revision) {
+			updateStatus: function(scope,revision) {
 				
 				$http({
 				  method: 'PUT',

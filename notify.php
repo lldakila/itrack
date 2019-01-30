@@ -513,6 +513,70 @@ function notify($con,$state,$params,$notify_group = true) {
 			};		
 		
 		break;
+		
+		case "revision_ok":
+		
+			$message = $params['track_action_status'];
+		
+			if ($notify_group) {
+		
+				$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
+
+				foreach ($staffs as $staff) {
+
+					$notification = array(
+						"doc_id"=>$params['doc_id'],
+						"revision_id"=>$params['revision_id'],
+						"user_id"=>$staff['id'],
+						"icon"=>"icon-checkbox-checked",
+						"icon_bg"=>"icon-bg-circle",
+						"icon_color"=>"bg-info",
+						"header"=>$params['header'],
+						"header_color"=>"cyan darken-3",
+						"message"=>$message,
+						"url"=>"/track-document.html#!/".$params['doc_id'],
+					);	
+					
+					$notifications[] = $notification;
+					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;					
+					
+				};
+
+			} else {
+				
+				$notification = array(
+					"doc_id"=>$params['doc_id'],
+					"revision_id"=>$params['revision_id'],
+					"user_id"=>$params['notify_user'],
+					"icon"=>"icon-checkbox-checked",
+					"icon_bg"=>"icon-bg-circle",
+					"icon_color"=>"bg-info",
+					"header"=>$params['header'],
+					"header_color"=>"cyan darken-3",
+					"message"=>$message,
+					"url"=>"/track-document.html#!/".$params['doc_id'],
+				);	
+				
+				$notifications[] = $notification;
+				
+				$email = array(
+					"user"=>get_staff_info($con,$params['notify_user']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;					
+				
+			};		
+		
+		break;		
 
 	};
 
