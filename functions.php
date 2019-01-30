@@ -322,4 +322,12 @@ function get_transit_staff($con,$transit,$p) {
 
 };
 
+function add_track($con,$data) {
+	
+	$table = $con->table;
+	
+	$con->table = $table;
+	
+};
+
 ?>
