@@ -323,18 +323,14 @@ function get_transit_staff($con,$transit,$p) {
 };
 
 function add_track($con,$data) {
-	
-// document_id
-// office_id
-// track_action
-// track_action_staff
-// track_user	
-	
+
 	$table = $con->table;
 	$con->table = "tracks";
-	
+
+	$insert_track = $con->insertData($data);
+
 	$con->table = $table;
-	
+
 };
 
 ?>

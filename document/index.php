@@ -169,6 +169,7 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 		
 		if ($actions_arr[$i] == 4) continue; // skip comment
 		if ($actions_arr[$i] == 5) continue; // skip revise
+		if ($actions_arr[$i] == 6) continue; // skip revised
 		
 		$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action = ".$actions_arr[$i];
 
@@ -1083,6 +1084,28 @@ $app->post('/doc/revisions/add/{id}', function ($request, $response, $args) {
 		# notify admin recipient
 		notify($con,"add_revision",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
 		
+		$track_transit = array(
+			"id"=>1,
+			"picked_up_by"=>null,
+			"received_by"=>null,
+			"office"=>$session_office,
+			"released_to"=>null,
+			"filed"=>false,		
+		);		
+		
+		# update tracks
+		$data = array(
+			"document_id"=>$id,
+			"office_id"=>$session_office,
+			"track_action"=>5,
+			"track_action_staff"=>$data['user_id'],
+			"track_action_status"=>"added revisions",
+			"track_user"=>$session_user_id,
+			"transit"=>json_encode($track_transit),
+			"revision_id"=>$revision_id,
+		);
+		add_track($con,$data);
+		
 	};
 
 });
@@ -1115,6 +1138,11 @@ $app->put('/doc/revisions/update/{id}', function ($request, $response, $args) {
 	require_once '../functions.php';
 	require_once '../notify.php';
 
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];		
+	
 	$system_setup = system_setup;
 	$setup = new setup($system_setup);	
 	
@@ -1148,6 +1176,28 @@ $app->put('/doc/revisions/update/{id}', function ($request, $response, $args) {
 	# notify admin recipient
 	notify($con,"add_revision",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
 
+	$track_transit = array(
+		"id"=>1,
+		"picked_up_by"=>null,
+		"received_by"=>null,
+		"office"=>$session_office,
+		"released_to"=>null,
+		"filed"=>false,		
+	);		
+	
+	# update tracks
+	$data = array(
+		"document_id"=>$id,
+		"office_id"=>$session_office,
+		"track_action"=>5,
+		"track_action_staff"=>$data['user_id'],
+		"track_action_status"=>"added revisions",
+		"track_user"=>$session_user_id,
+		"transit"=>json_encode($track_transit),
+		"revision_id"=>$revision_id,
+	);
+	add_track($con,$data);	
+	
 });
 
 $app->put('/doc/revisions/update/status/{id}', function ($request, $response, $args) {
@@ -1156,6 +1206,11 @@ $app->put('/doc/revisions/update/status/{id}', function ($request, $response, $a
 	require_once '../functions.php';
 	require_once '../notify.php';
 
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];		
+	
 	$system_setup = system_setup;
 	$setup = new setup($system_setup);	
 	
@@ -1184,7 +1239,29 @@ $app->put('/doc/revisions/update/status/{id}', function ($request, $response, $a
 		notify($con,"revision_ok",array("doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status));
 
 		# notify admin recipient
-		notify($con,"revision_ok",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);	
+		notify($con,"revision_ok",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
+		
+		$track_transit = array(
+			"id"=>1,
+			"picked_up_by"=>null,
+			"received_by"=>null,
+			"office"=>$session_office,
+			"released_to"=>null,
+			"filed"=>false,		
+		);		
+		
+		# update tracks
+		$data = array(
+			"document_id"=>$id,
+			"office_id"=>$session_office,
+			"track_action"=>6,
+			"track_action_staff"=>$data['user_id'],
+			"track_action_status"=>"revisions ok",
+			"track_user"=>$session_user_id,
+			"transit"=>json_encode($track_transit),
+			"revision_id"=>$revision_id,
+		);
+		add_track($con,$data);		
 
 	};
 	
