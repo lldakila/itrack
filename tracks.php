@@ -62,6 +62,66 @@ function tracks($con,$setup,$id,$document) {
 			
 		};
 		
+		# revise
+		if ($track['track_action'] == 5) {
+
+			$revision = $con->getData("SELECT * FROM revisions WHERE id = ".$track['revision_id']);
+			$notes = $revision[0]['notes'];
+		
+			$status = get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document";
+			$status .= '<blockquote class="blockquote">';
+			$status .= '<p class="mb-0 ws">'.$notes.'</p>';
+			$status .= '</blockquote>';
+			
+			$list[] = array(
+				"status"=>array(
+					"text"=>$status,
+					"comment"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document",
+				)
+			);			
+			
+			$bg = "bg-info";
+			
+			$document_tracks[] = array(
+				"id"=>$track['track_action'],
+				"icon"=>"icon-pencil22",
+				"bg"=>$bg,
+				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+				"list"=>$list,
+			);		
+
+		};
+		
+		# revised / revision ok
+		if ($track['track_action'] == 6) {
+
+			$revision = $con->getData("SELECT * FROM revisions WHERE id = ".$track['revision_id']);
+			$revision_date = date("F j, Y h:i A",strtotime($revision[0]['system_log']));
+			$revision_ok_date = date("F j, Y h:i A",strtotime($revision[0]['datetime_completed']));
+		
+			$status = "Revisions added on $revision_date are marked ok";
+			
+			$list[] = array(
+				"status"=>array(
+					"text"=>$status,
+					"comment"=>null
+				)
+			);			
+			
+			$bg = "bg-info";
+			
+			$document_tracks[] = array(
+				"id"=>$track['track_action'],
+				"icon"=>"icon-checkbox-checked",
+				"bg"=>$bg,
+				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+				"list"=>$list,
+			);		
+
+		};		
+		
 		# initialed / approved
 		if ($track['preceding_track']!=null) {
 			
