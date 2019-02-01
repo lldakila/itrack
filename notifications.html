@@ -109,7 +109,22 @@
 			</div>		
 			<div class="row">
 				<div class="col-lg-6">
-					<span ng-repeat="n in data.notifications" class="list-group-item">
+					<form class="form-inline" name="formHolder.notifications" novalidate>
+					  <div class="form-group mb-2">
+						<label>Date</label>
+						<input type="date" class="form-control" name="date" ng-class="{'border-danger': formHolder.notifications.date.$touched && formHolder.notifications.date.$invalid}" ng-model="filter.date" required>
+					  </div>
+					  <button type="submit" class="btn btn-primary mb-2" ng-click="allNotifications.filter(this)">Go!</button>					  
+					  <div class="form-group mx-sm-3 mb-2">
+						<label>Search</label>
+						<input type="text" class="form-control" ng-model="filter.search">
+					  </div>
+					</form>					
+				</div>
+			</div>
+			<div class="row">				
+				<div class="col-lg-6">
+					<span ng-repeat="n in data.notifications" class="list-group-item" style="margin-bottom: 10px;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="allNotifications.hide(this,n.id)">
 							<span aria-hidden="true">×</span>
 						</button>

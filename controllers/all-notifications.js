@@ -4,6 +4,10 @@ app.controller('allNotificationsCtrl',function($scope,allNotifications) {
 	
 	$scope.views = {};
 	
+	$scope.formHolder = {};
+	
+	$scope.filter = {};
+	
 	$scope.module = {
 		id: 'all_notifications',
 		privileges: {

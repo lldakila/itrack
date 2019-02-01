@@ -19,18 +19,23 @@ $container['con'] = function ($container) {
 };
 
 # list accounts
-$app->get('/fetch', function (Request $request, Response $response, array $args) {
+$app->post('/fetch', function (Request $request, Response $response, array $args) {
 
 	$con = $this->con;
 	$con->table = "notifications";
 
 	require_once '../../notify.php';	
 	
-	session_start();
+	session_start();	
 	
 	$session_user_id = $_SESSION['itrack_user_id'];	
 	
-	$notifications = $con->getData("SELECT * FROM notifications WHERE user_id = $session_user_id AND dismiss = 0 ORDER BY system_log DESC");	
+	$data = $request->getParsedBody();
+	
+	$and = "";
+	if (isset($data['date'])) $and = "AND system_log LIKE '".date("Y-m-d",strtotime($data['date']))."%'";
+	
+	$notifications = $con->getData("SELECT * FROM notifications WHERE user_id = $session_user_id AND dismiss = 0 $and ORDER BY system_log DESC");
 	
 	foreach ($notifications as $i => $notification) {
 	
