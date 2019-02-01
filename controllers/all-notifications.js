@@ -17,7 +17,7 @@ app.controller('allNotificationsCtrl',function($scope,allNotifications) {
 
 	$scope.allNotifications = allNotifications;
 	
-	$scope.allNotifications.load($scope);
+	$scope.allNotifications.load($scope,false);
 	
 });
 

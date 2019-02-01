@@ -4,8 +4,22 @@ angular.module('all-notifications-module', ['ui.bootstrap','bootstrap-modal','bl
 		
 		var self = this;
 		
-		self.load = function(scope) {			
+		Object.size = function(obj) {
+			var size = 0, key;
+			for (key in obj) {
+				if (obj.hasOwnProperty(key)) size++;
+			}
+			return size;
+		};		
 		
+		self.load = function(scope,all) {			
+
+			if (all) delete scope.filter.date;
+
+			scope.currentPage = 1;
+			scope.pageSize = 10;
+			scope.maxSize = 5;			
+			
 			scope.data = {};
 			scope.data.notifications = [];
 		
@@ -15,7 +29,8 @@ angular.module('all-notifications-module', ['ui.bootstrap','bootstrap-modal','bl
 			  data: scope.filter
 			}).then(function mySucces(response) {
 
-				scope.data.notifications = angular.copy(response.data);
+				scope.data.notifications = angular.copy(response.data);				
+				scope.filterData = scope.data.notifications;	
 
 			}, function myError(response) {
 
