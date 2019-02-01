@@ -109,6 +109,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 			var id = href_arr[href_arr.length-1];
 			
+			scope.document_id = id;
+			
 			loadDocument(scope,id);
 			
 			scope.preview = {};
@@ -168,6 +170,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		};
 		
 		function loadTracks(scope,id) {
+			
+			if (scope.$id>2) scope = scope.$parent;
 			
 			track.get_tracks(scope,id).then(function success(data) {
 				
@@ -474,6 +478,35 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				else $('#'+action).removeClass('in');		
 
 			});
+			
+		};
+		
+		self.tracks = {
+			
+			delete: function(scope,track) {
+				
+				var onOk = function() {
+					
+					$http({
+						method: 'DELETE',
+						url: scope.url.view+'document/doc/tracks/delete/'+track.track_id,
+					}).then(function mySuccess(response) {
+						
+						loadTracks(scope,scope.document_id);
+
+					}, function myError(response) {
+				
+					});					
+					
+				};
+				
+				var onCancel = function() {
+					
+				};
+				
+				bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to delete this track?',onOk,onCancel);
+				
+			}
 			
 		};
 		

@@ -1312,6 +1312,18 @@ $app->delete('/doc/revisions/delete/files/{id}/{name}', function (Request $reque
 
 });
 
+# delete file
+$app->delete('/doc/tracks/delete/{id}', function (Request $request, Response $response, array $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	$id = $args['id'];
+
+	$con->deleteData(array("id"=>$id));
+
+});
+
 $app->run();
 
 ?>

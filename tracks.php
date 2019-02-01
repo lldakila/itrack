@@ -52,6 +52,7 @@ function tracks($con,$setup,$id,$document) {
 			$bg = "bg-info";
 			
 			$document_tracks[] = array(
+				"track_id"=>$track['id'],
 				"id"=>$track['track_action'],
 				"icon"=>"icon-pencil22",
 				"bg"=>$bg,
@@ -83,6 +84,7 @@ function tracks($con,$setup,$id,$document) {
 			$bg = "bg-info";
 			
 			$document_tracks[] = array(
+				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],
 				"icon"=>"icon-pencil22",
 				"bg"=>$bg,
@@ -112,6 +114,7 @@ function tracks($con,$setup,$id,$document) {
 			$bg = "bg-info";
 			
 			$document_tracks[] = array(
+				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],
 				"icon"=>"icon-checkbox-checked",
 				"bg"=>$bg,
@@ -139,6 +142,7 @@ function tracks($con,$setup,$id,$document) {
 			if ($track['preceding_track']==2) $bg = "bg-success";
 			
 			$document_tracks[] = array(
+				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],			
 				"icon"=>$ia_icons[get_track_track_action($con,$track['preceding_track'])],
 				"bg"=>$bg,
@@ -164,6 +168,7 @@ function tracks($con,$setup,$id,$document) {
 			);
 			
 			$document_tracks[] = array(
+				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],			
 				"icon"=>$t_icons[get_transit_id($track['transit'])],
 				"bg"=>"bg-danger",
@@ -187,6 +192,7 @@ function tracks($con,$setup,$id,$document) {
 			);
 
 			$document_tracks[] = array(
+				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],			
 				"icon"=>$t_icons[get_transit_id($track['transit'])],
 				"bg"=>"bg-danger",
@@ -207,6 +213,7 @@ function tracks($con,$setup,$id,$document) {
 			);
 			
 			$document_tracks[] = array(
+				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],			
 				"icon"=>$t_icons[get_transit_id($track['transit'])],
 				"bg"=>"bg-danger",
@@ -229,6 +236,7 @@ function tracks($con,$setup,$id,$document) {
 			);
 
 			$document_tracks[] = array(
+				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],			
 				"icon"=>$t_icons[get_transit_id($track['transit'])],
 				"bg"=>"bg-danger",
@@ -254,6 +262,7 @@ function tracks($con,$setup,$id,$document) {
 	if (count($for_signature)) $initial_list[] = $for_signature;	
 
 	$document_tracks[] = array(
+		"track_id"=>0,
 		"id"=>0,
 		"icon"=>"icon-android-arrow-dropdown",
 		"bg"=>"bg-warning",
