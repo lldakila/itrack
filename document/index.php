@@ -554,7 +554,9 @@ $app->get('/doc/actions/{id}', function ($request, $response, $args) {
 	$actions = [];
 	foreach ($tracks as $track) {
 		
-		if ($track['track_action']==4) continue;
+		if ($track['track_action']==4) continue; # skip comment
+		if ($track['track_action']==5) continue; # skip revise
+		if ($track['track_action']==6) continue; # skip revised
 		
 		$staffs = get_staffs_actions($con,$track);
 	

@@ -126,6 +126,13 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				return;
 			};
 			
+			/*
+			** verify
+			*/
+			console.log(action);
+			growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'.');
+			return;
+			
 			bui.show();
 			
 			$http({
