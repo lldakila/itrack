@@ -129,43 +129,60 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			/*
 			** verify
 			*/
-			console.log(action);
-			growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'.');
-			return;
-			
-			bui.show();
-			
+
 			$http({
 			  method: 'POST',
-			  url: scope.url.view+'document/doc/actions/update',
-			  data: {id: scope.doc.id, action: action, staff: staff}
+			  url: scope.url.view+'document/doc/actions/revisions/verify',
+			  data: {id: scope.doc.id, action: action}
 			}).then(function mySuccess(response) {
-
-				var action_i = scope.doc.actions.indexOf(action);
-				var staff_i = scope.doc.actions[action_i].staffs.indexOf(staff);			
 				
-				if (response.data.status) {				
-					
-					if (scope.doc.actions[action_i].staffs[staff_i].done) {
-						scope.doc.actions[action_i].staffs[staff_i].action_track_id = response.data.action_track_id;
-					};
-					
-					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
-					
-				} else {
-					
-					scope.doc.actions[action_i].staffs[staff_i].done = !scope.doc.actions[action_i].staffs[staff_i].done;
-					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Sorry, you are not allowed to update document tracks.');
-					
-				};
-
-				bui.hide();
-
+				
+				
 			}, function myError(response) {
+				
+			});
+			
+			// console.log(scope.revisions);
+			// growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'.');
+			// return;
+			
+			function updateAction() {
+			
+				bui.show();
+				
+				$http({
+				  method: 'POST',
+				  url: scope.url.view+'document/doc/actions/update',
+				  data: {id: scope.doc.id, action: action, staff: staff}
+				}).then(function mySuccess(response) {
 
-				bui.hide();
+					var action_i = scope.doc.actions.indexOf(action);
+					var staff_i = scope.doc.actions[action_i].staffs.indexOf(staff);			
+					
+					if (response.data.status) {				
+						
+						if (scope.doc.actions[action_i].staffs[staff_i].done) {
+							scope.doc.actions[action_i].staffs[staff_i].action_track_id = response.data.action_track_id;
+						};
+						
+						growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
+						
+					} else {
+						
+						scope.doc.actions[action_i].staffs[staff_i].done = !scope.doc.actions[action_i].staffs[staff_i].done;
+						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Sorry, you are not allowed to update document tracks.');
+						
+					};
 
-			});	
+					bui.hide();
+
+				}, function myError(response) {
+
+					bui.hide();
+
+				});
+				
+			};
 			
 		};
 		

@@ -667,6 +667,29 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 
 });
 
+$app->post('/doc/actions/revisions/verify', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	$data = $request->getParsedBody();
+
+	$id = $data['id'];
+	$track_id = $data['action']['track_id'];
+
+	# action tracks
+	
+	
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND preceding_track = $track_id";	
+	$tracks = $con->getData($sql);
+	
+	$sql = "SELECT * FROM revisions WHERE document_id = $id";
+	$revisions = $con->getData($sql);
+
+	
+
+});
+
 $app->post('/doc/actions/comment', function ($request, $response, $args) {
 
 	$con = $this->con;
