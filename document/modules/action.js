@@ -122,7 +122,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		self.action = function(scope,action,staff) {
 			
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.update)) {
-				staff.done = !staff.done;
+				if (staff.done) staff.done = !staff.done;
 				return;
 			};
 			
@@ -136,15 +136,21 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			  data: {id: scope.doc.id, action: action}
 			}).then(function mySuccess(response) {
 				
+				if (response.data.status) {
+
+					updateAction();
 				
+				} else {
+
+					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},response.data.notify);
+					if (staff.done) staff.done = !staff.done;					
+				
+				};
 				
 			}, function myError(response) {
 				
 			});
-			
-			// console.log(scope.revisions);
-			// growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'.');
-			// return;
+
 			
 			function updateAction() {
 			

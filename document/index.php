@@ -669,25 +669,133 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 
 $app->post('/doc/actions/revisions/verify', function ($request, $response, $args) {
 
+	function initialed($con,$id,$track_id) {
+
+		$initialed = false;
+		
+		$sql = "SELECT * FROM tracks WHERE document_id = $id AND preceding_track = $track_id";
+		$tracks = $con->getData($sql);
+		
+		foreach ($tracks as $track) {
+			
+			if ($track['track_action_status']=="initialed") $initialed = true;
+			
+		};
+		
+		return $initialed;
+		
+	};
+	
+	function approved($tracks) {
+		
+		$approved = false;
+		
+		foreach ($tracks as $track) {
+			
+			if ($track['track_action_status']=="approved") $approved = true;
+			
+		};
+		
+		return $approved;
+		
+	};
+	
+	function for_initial_track_id($tracks) {
+		
+		$track_id = null;
+		
+		foreach ($tracks as $track) {
+			
+			if ($track['track_action'] == 1) $track_id = $track['id'];
+			
+		};
+		
+		return $track_id;
+		
+	};
+
+	function for_approval_track_id($tracks) {
+		
+		$track_id = null;
+		
+		foreach ($tracks as $track) {
+			
+			if ($track['track_action'] == 2) $track_id = $track['id'];
+			
+		};
+		
+		return $track_id;
+		
+	};	
+	
 	$con = $this->con;
 	$con->table = "tracks";
 
 	$data = $request->getParsedBody();
 
 	$id = $data['id'];
-	$track_id = $data['action']['track_id'];
+	$track_action = $data['action']['track_action'];
 
 	# action tracks
-	
-	
-	$sql = "SELECT * FROM tracks WHERE document_id = $id AND preceding_track = $track_id";	
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action IN (1,2)"; # for initial/approve
+	$action_tracks = $con->getData($sql);
+
+	$sql = "SELECT * FROM tracks WHERE document_id = $id";
 	$tracks = $con->getData($sql);
-	
+
 	$sql = "SELECT * FROM revisions WHERE document_id = $id";
 	$revisions = $con->getData($sql);
 
-	
+	$all_ok = ["true"];
+	$notify = null;
+	$status = false;
+	switch ($track_action) {
+		
+		case 1: # for initial
+			
+			foreach ($revisions as $revision) {
+				
+				$all_ok[] = ($revision['revision_ok'])?"true":"false";
+				
+			};
 
+			$is_all_ok = implode("&&",$all_ok);			
+			$status = eval("return $is_all_ok;");
+			if (!$status) $notify = "This document cannot be flagged as initialed if there are revisions that were not updated.  Please make sure all revisions are updated.";
+
+		break;
+		
+		case 2: # for approval
+			
+			if (!initialed($con,$id,for_initial_track_id($tracks))) {
+
+				$notify = "This document cannot be flagged as approved, it must be flagged as initialed first.";
+				
+			} else {
+				
+				foreach ($revisions as $revision) {
+					
+					$all_ok[] = ($revision['revision_ok'])?"true":"false";
+					
+				};
+
+				$is_all_ok = implode("&&",$all_ok);			
+				$status = eval("return $is_all_ok;");
+				if (!$status) $notify = "This document cannot be flagged as approved if there are revisions that were not updated.  Please make sure all revisions are updated.";
+				
+			};
+			
+		break;
+		
+	};	
+	
+	$verification = array(
+		"notify"=>$notify,
+		"status"=>$status
+	);
+
+	return $response->withJson($verification);	
+	
 });
 
 $app->post('/doc/actions/comment', function ($request, $response, $args) {
