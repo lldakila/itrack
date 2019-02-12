@@ -46,18 +46,21 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 	
 	$id = $args['id'];
 	
-	$document = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");
 	
 	if (count($document)) {
 		
-		# first track
-		// $tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY system_log LIMIT 1");
-		
+		$staff = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$document[0]['user_id']);
+		$document[0]['receiver'] = $staff[0]['fullname'];
+		unset($document[0]['user_id']);
+
 		$document[0]['dt_add_params'] = json_decode($document[0]['dt_add_params'],false);
 		$document[0]['document_dt_add_params'] = $document[0]['dt_add_params'];
-		
+
 		$document[0]['document_date_barcode'] = date("M j, Y h:i:s A",strtotime($document[0]['document_date']));
-		
+		$document[0]['date'] = date("M j, Y",strtotime($document[0]['document_date']));
+		$document[0]['time'] = date("h:i:s A",strtotime($document[0]['document_date']));
+
 		$document[0]['files'] = [];
 		$document[0]['delete_files'] = [];
 
@@ -157,13 +160,16 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	$data['dt_add_params'] = json_encode($document_dt_add_params);
 
 	unset($data['document_date_barcode']);
+	unset($data['receiver']);
+	unset($data['date']);
+	unset($data['time']);
 	
 	$data['update_log'] = "CURRENT_TIMESTAMP";
 	$con->updateData($data,'id');
 
 	$con->table = "tracks";
 
-	$actions_arr = array("for_initial"=>1,"for_signature"=>2,"for_routing"=>3,"comment"=>4,"revise"=>5);
+	$actions_arr = array("for_initial"=>1,"for_signature"=>2,"for_routing"=>3,"comment"=>4,"revise"=>5,"revised"=>6);
 
 	foreach ($actions as $i => $action) {
 		

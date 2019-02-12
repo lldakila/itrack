@@ -139,6 +139,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$data = $request->getParsedBody();
 
 	require_once '../../handlers/folder-files.php';
+	require_once '../../document-info.php';	
 	require_once '../../system_setup.php';
 	require_once 'classes.php';
 	require_once '../../functions.php';
@@ -224,14 +225,24 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	};
 	#
 	
-	$con->table = "documents";	
-	$barcode = $con->get(array("id"=>$id),["id","barcode","document_date","(SELECT document_type FROM document_types WHERE id = ".$data['doc_type'].") doc_type"]);
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents WHERE id = $id");
+	if (count($document)) {
+		
+		$staff = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$document[0]['user_id']);
+		$document[0]['receiver'] = $staff[0]['fullname'];
+		unset($document[0]['user_id']);
+		
+		$document[0]['document_date_barcode'] = date("M j, Y h:i:s A",strtotime($document[0]['document_date']));
+		$document[0]['date'] = date("M j, Y",strtotime($document[0]['document_date']));
+		$document[0]['time'] = date("h:i:s A",strtotime($document[0]['document_date']));
 
-	uploadFiles($con,$uploads,$barcode[0]['barcode'],$id,"../../files",true);	
+		$document = document_info($con,$document[0]);
+		
+	};
+	
+	uploadFiles($con,$uploads,$data['barcode'],$id,"../../files",true);
 
-	$barcode[0]['document_date'] = date("M j, Y h:i:s A",strtotime($barcode[0]['document_date']));
-
-	return $response->withJson($barcode[0]);
+	return $response->withJson($document);
 
 });
 
