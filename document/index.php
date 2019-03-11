@@ -69,9 +69,9 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 		$document[0]['files'] = $files;
 
 		$document = document_info($con,$document[0]);
-		
+
 	};
-	
+
 	return $response->withJson($document);
 
 });
@@ -675,17 +675,37 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 
 $app->post('/doc/actions/revisions/verify', function ($request, $response, $args) {
 
+	function document_actions($con,$id) {
+
+		$sql = "SELECT track_action_add_params FROM tracks WHERE document_id = $id";
+		$actions = $con->getData($sql);
+
+		$document_actions = array("for_initial"=>false,"for_approval"=>false);
+		
+		foreach ($actions as $action) {
+			
+			$action_arr = json_decode($action['track_action_add_params'], true);
+			
+			if ($action_arr['action_id'] == 1) $document_actions['for_initial'] = true;
+			if ($action_arr['action_id'] == 2) $document_actions['for_approval'] = true;
+
+		};
+
+		return $document_actions;
+
+	};
+
 	function initialed($con,$id,$track_id) {
 
 		$initialed = false;
-		
+
 		$sql = "SELECT * FROM tracks WHERE document_id = $id AND preceding_track = $track_id";
 		$tracks = $con->getData($sql);
-		
+
 		foreach ($tracks as $track) {
-			
+
 			if ($track['track_action_status']=="initialed") $initialed = true;
-			
+
 		};
 		
 		return $initialed;
@@ -708,7 +728,7 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 	
 	function for_initial_track_id($tracks) {
 		
-		$track_id = null;
+		$track_id = 0;
 		
 		foreach ($tracks as $track) {
 			
@@ -722,7 +742,7 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 
 	function for_approval_track_id($tracks) {
 		
-		$track_id = null;
+		$track_id = 0;
 		
 		foreach ($tracks as $track) {
 			
@@ -767,13 +787,14 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 
 			$is_all_ok = implode("&&",$all_ok);			
 			$status = eval("return $is_all_ok;");
+			if (count($revisions)==0) $status = true;			
 			if (!$status) $notify = "This document cannot be flagged as initialed if there are revisions that were not updated.  Please make sure all revisions are updated.";
 
 		break;
 		
 		case 2: # for approval
 			
-			if (!initialed($con,$id,for_initial_track_id($tracks))) {
+			if ( (document_actions($con,$id)['for_initial']) && (!initialed($con,$id,for_initial_track_id($tracks))) ) {
 
 				$notify = "This document cannot be flagged as approved, it must be flagged as initialed first.";
 				
@@ -787,6 +808,7 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 
 				$is_all_ok = implode("&&",$all_ok);			
 				$status = eval("return $is_all_ok;");
+				if (count($revisions)==0) $status = true;
 				if (!$status) $notify = "This document cannot be flagged as approved if there are revisions that were not updated.  Please make sure all revisions are updated.";
 				
 			};
