@@ -1,2 +1,2 @@
-ALTER TABLE `tracks`  ADD `revision_id` INT NULL  AFTER `comment`,  ADD   INDEX  (`revision_id`);
-ALTER TABLE `tracks` ADD  FOREIGN KEY (`revision_id`) REFERENCES `revisions`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `notifications`  ADD `track_action_staff` INT NULL  AFTER `dismiss`;
+ALTER TABLE `notifications` CHANGE `track_action_staff` `notify_staff_if_seen` INT(11) NULL DEFAULT NULL;
