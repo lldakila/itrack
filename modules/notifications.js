@@ -1,4 +1,4 @@
-angular.module('notifications-module', ['ngSanitize']).directive('notifications', function($interval,$timeout,$http) {		
+angular.module('notifications-module', ['ngSanitize']).directive('notifications', function($interval,$timeout,$http,$window) {		
 	
 	function notifications(scope) {
 
@@ -11,7 +11,7 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 			scope.$apply();
 
 		};
-
+		
 		/* $http({
 		  method: 'GET',
 		  url: '/api/notifications/fetch'
@@ -25,19 +25,36 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 
 	};
 	
-	function dismissNotification(scope,notification) {
-		
+	function hideNotification(scope,notification) {
+
 		$http({
-		  method: 'POST',
-		  url: '/handlers/dismiss-notification.php',
-		  data: notification
+		  method: 'GET',
+		  url: '/api/notifications/hide/'+notification.id,
 		}).then(function mySucces(response) {
 
+			$window.location.href = notification.url;		
+		
 		}, function myError(response) {
 			
 		});
 
 	};
+	
+	function hideNotifySeen(scope,notification) {
+		
+		$http({
+		  method: 'POST',
+		  url: '/api/notifications/hide/seen/'+notification.id,
+		  data: notification
+		}).then(function mySucces(response) {
+
+			// $window.location.href = notification.url;		
+		
+		}, function myError(response) {
+			
+		});
+
+	};	
 	
 	return {
 		restrict: 'A',
@@ -77,8 +94,9 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 			}, 1000);				
 
 			scope.notificationAction = function(scope,notification) {
-				
-				dismissNotification(scope,notification);
+
+				if (notification.inform_seen == "") hideNotification(scope,notification);
+				else hideNotifySeen(scope,notification);
 				
 			};
 

@@ -60,7 +60,7 @@ if (isset($_SESSION['id'])) header("location: index.html");
                 <div class="card-block">
                     <form ng-submit="login(this)" class="form-horizontal form-simple" autocomplete="off" novalidate>
                         <fieldset class="form-group position-relative has-icon-left mb-0">
-                            <input type="text" class="form-control form-control-lg input-lg" name="uname" ng-model="account.uname" placeholder="Your Username">
+                            <input type="text" class="form-control form-control-lg input-lg" name="uname" ng-model="account.uname" placeholder="Your Username" autofocus>
                             <div class="form-control-position">
                                 <i class="icon-head"></i>
                             </div>

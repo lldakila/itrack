@@ -56,6 +56,11 @@ define('system_setup', array(
 		"description"=>"PA Staffs",
 		"values"=>[3],
 	),	
+	array(
+		"id"=>12,
+		"description"=>"OPG Office",
+		"values"=>3,
+	)	
 ));
 
 class setup {

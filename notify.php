@@ -28,7 +28,6 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"yellow darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>$params['recipient']
 				);	
 				
 				$notifications[] = $notification;
@@ -49,6 +48,21 @@ function notify($con,$state,$params,$notify_group = true) {
 
 			$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." the document";		
 		
+			$pa_staffs = get_group_staffs($con,$params['pa_staffs']);
+			$inform_seen = $pa_staffs;
+			
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+			};
+			
+			$opg_office = $params['setup']->get_setup(12);
+			if ($_SESSION['office'] == $opg_office) {
+				
+				$opg_staffs = get_staffs_by_group($con,$params['group'],$opg_office);
+				$inform_seen = array_merge($pa_staffs,$opg_staffs);
+				
+			};
+
 			if ($notify_group) {
 		
 				$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
@@ -66,7 +80,7 @@ function notify($con,$state,$params,$notify_group = true) {
 						"header_color"=>"cyan darken-3",
 						"message"=>$message,
 						"url"=>"/track-document.html#!/".$params['doc_id'],
-						"notify_staff_if_seen"=>0
+						"inform_seen"=>$inform_seen,
 					);	
 					
 					$notifications[] = $notification;
@@ -94,7 +108,7 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"cyan darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>0
+					"inform_seen"=>$inform_seen,					
 				);	
 				
 				$notifications[] = $notification;
@@ -115,6 +129,29 @@ function notify($con,$state,$params,$notify_group = true) {
 
 			$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." the document";			
 			
+			$pa_staffs = get_group_staffs($con,$params['pa_staffs']);
+			$inform_seen = $pa_staffs;
+			
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+			};
+			
+			$opg_office = $params['setup']->get_setup(12);
+			if ($_SESSION['office'] == $opg_office) {
+				
+				$inform_seen = json_decode($inform_seen,true);
+				
+				$opg_staffs = get_staffs_by_group($con,$params['group'],$opg_office);
+				foreach ($opg_staffs as $opg_staff) {
+					
+					$inform_seen[] = $opg_staff['id'];
+					
+				};
+				
+				$inform_seen = json_encode($inform_seen);
+				
+			};
+
 			if ($notify_group) {
 			
 				$staffs = get_staffs_by_group($con,$params['group'],$params['office']);			
@@ -132,7 +169,7 @@ function notify($con,$state,$params,$notify_group = true) {
 						"header_color"=>"green darken-3",
 						"message"=>$message,
 						"url"=>"/track-document.html#!/".$params['doc_id'],
-						"notify_staff_if_seen"=>0
+						"inform_seen"=>$inform_seen,						
 					);	
 					
 					$notifications[] = $notification;
@@ -160,7 +197,7 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"green darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>0
+					"inform_seen"=>$inform_seen,					
 				);	
 				
 				$notifications[] = $notification;
@@ -201,7 +238,6 @@ function notify($con,$state,$params,$notify_group = true) {
 						"header_color"=>"red darken-3",
 						"message"=>$message,
 						"url"=>"/track-document.html#!/".$params['doc_id'],
-						"notify_staff_if_seen"=>0
 					);
 					
 					$notifications[] = $notification;
@@ -229,7 +265,6 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"red darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>0
 				);
 				
 				$notifications[] = $notification;
@@ -272,7 +307,6 @@ function notify($con,$state,$params,$notify_group = true) {
 						"header_color"=>"red darken-3",
 						"message"=>$message,
 						"url"=>"/track-document.html#!/".$params['doc_id'],
-						"notify_staff_if_seen"=>0
 					);
 
 					$notifications[] = $notification;
@@ -300,7 +334,6 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"red darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>0
 				);	
 				
 				$notifications[] = $notification;
@@ -341,7 +374,6 @@ function notify($con,$state,$params,$notify_group = true) {
 						"header_color"=>"red darken-3",
 						"message"=>$message,
 						"url"=>"/track-document.html#!/".$params['doc_id'],
-						"notify_staff_if_seen"=>0						
 					);	
 
 					$notifications[] = $notification;
@@ -369,7 +401,6 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"red darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>0					
 				);	
 
 				$notifications[] = $notification;				
@@ -445,7 +476,6 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"cyan darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>0					
 				);
 				
 				$notifications[] = $notification;
@@ -483,7 +513,6 @@ function notify($con,$state,$params,$notify_group = true) {
 						"header_color"=>"cyan darken-3",
 						"message"=>$message,
 						"url"=>"/track-document.html#!/".$params['doc_id'],
-						"notify_staff_if_seen"=>0						
 					);	
 					
 					$notifications[] = $notification;
@@ -511,7 +540,6 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"cyan darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>0					
 				);	
 				
 				$notifications[] = $notification;
@@ -549,7 +577,6 @@ function notify($con,$state,$params,$notify_group = true) {
 						"header_color"=>"cyan darken-3",
 						"message"=>$message,
 						"url"=>"/track-document.html#!/".$params['doc_id'],
-						"notify_staff_if_seen"=>0						
 					);	
 					
 					$notifications[] = $notification;
@@ -577,7 +604,6 @@ function notify($con,$state,$params,$notify_group = true) {
 					"header_color"=>"cyan darken-3",
 					"message"=>$message,
 					"url"=>"/track-document.html#!/".$params['doc_id'],
-					"notify_staff_if_seen"=>0					
 				);	
 				
 				$notifications[] = $notification;
@@ -592,7 +618,7 @@ function notify($con,$state,$params,$notify_group = true) {
 				
 			};		
 		
-		break;		
+		break;
 
 	};
 
@@ -673,6 +699,22 @@ function get_staffs_by_group($con,$group,$office) {
 	$staffs = $con->getData("SELECT id FROM users WHERE group_id IN ($group) AND div_id = $office");
 
 	return $staffs;
+
+};
+
+function get_group_staffs($con,$group) {
+
+	$staffs_arr = [];
+
+	$staffs = $con->getData("SELECT id FROM users WHERE group_id IN ($group)");
+
+	foreach ($staffs as $staff) {
+
+		$staffs_arr[] = $staff['id'];
+
+	};
+
+	return json_encode($staffs_arr);
 
 };
 

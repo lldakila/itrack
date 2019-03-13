@@ -639,24 +639,27 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 			$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
 			$all = $setup->get_setup_as_string(10);
 			
+			# PA staffs
+			$pa_staffs = $setup->get_setup_as_string(11);
+			
 			$admin_recipient = get_admin_recipient($con,$id);			
 			
 			# notify Liaisons AOs AAsts AAs
 			if ($data['action']['track_action']==1) {
 				
-				notify($con,"initialed",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status));
+				notify($con,"initialed",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup));
 				
 				# notify admin recipient
-				notify($con,"initialed",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status),false);
+				notify($con,"initialed",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
 				
 			};
 			
 			if ($data['action']['track_action']==2) {
 
-				notify($con,"approved",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status));
+				notify($con,"approved",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup));
 				
 				# notify admin recipient
-				notify($con,"approved",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status),false);
+				notify($con,"approved",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
 			
 			};
 			

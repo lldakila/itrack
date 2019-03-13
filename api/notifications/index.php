@@ -59,6 +59,48 @@ $app->get('/hide/{id}', function (Request $request, Response $response, array $a
 
 });
 
+$app->post('/hide/seen/{id}', function (Request $request, Response $response, array $args) {
+	
+	$con = $this->con;
+	$con->table = "notifications";
+
+	require_once '../../functions.php';
+	
+	session_start();
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];		
+	
+	$id = $args['id'];
+	$data = $request->getParsedBody();
+	
+	$hide = $con->updateData(array("id"=>$id,"dismiss"=>1,"last_modified"=>"CURRENT_TIMESTAMP"),'id');
+	
+	$staffs = json_decode($data['inform_seen'],true);
+	
+	$seener = get_staff_name($con,$session_user_id);
+
+	foreach ($staffs as $staff) {
+
+		$notification = array(
+			"doc_id"=>$data['doc_id'],
+			"revision_id"=>$data['revision_id'],
+			"user_id"=>$staff,
+			"icon"=>"icon-android-folder-open",
+			"icon_bg"=>"icon-bg-circle",
+			"icon_color"=>"bg-info",
+			"header"=>$data['header'],
+			"header_color"=>"cyan darken-3",
+			"message"=>"Notification <strong>\"".$data['message']."\"</strong> was seen by $seener",
+			"url"=>$data['url'],
+		);
+
+		$notify = $con->insertData($notification);
+
+	};	
+
+});
+
 $app->run();
 
 ?>

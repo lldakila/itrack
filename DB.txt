@@ -1,2 +1,1 @@
-ALTER TABLE `notifications`  ADD `track_action_staff` INT NULL  AFTER `dismiss`;
-ALTER TABLE `notifications` CHANGE `track_action_staff` `notify_staff_if_seen` INT(11) NULL DEFAULT NULL;
+ALTER TABLE `notifications`  ADD `inform_seen` TEXT NULL  AFTER `dismiss`;
