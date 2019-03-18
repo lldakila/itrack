@@ -33,7 +33,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			};								
 			
 			scope.doc = {};
-			scope.doc.id = 0;			
+			scope.doc.id = 0;
+			scope.doc.is_rush = false;			
 			scope.doc.files = [];
 			scope.doc.actions = [];						
 			scope.doc.document_dt_add_params = [];			
@@ -120,7 +121,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.controls.btns.cancel = false;
 			
 			scope.doc = {};
-			scope.doc.id = 0;			
+			scope.doc.id = 0;
+			scope.doc.is_rush = false;
 			scope.doc.files = [];
 			scope.doc.actions = [];						
 			scope.doc.document_dt_add_params = [];					
@@ -152,7 +154,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.controls.btns.cancel = true;
 			
 			scope.doc = {};
-			scope.doc.id = 0;			
+			scope.doc.id = 0;
+			scope.doc.is_rush = false;			
 			scope.doc.files = [];
 			scope.doc.actions = [];						
 			scope.doc.document_dt_add_params = [];					

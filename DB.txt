@@ -1,1 +1,2 @@
 ALTER TABLE `notifications`  ADD `inform_seen` TEXT NULL  AFTER `dismiss`;
+ALTER TABLE `documents`  ADD `is_rush` TINYINT NOT NULL DEFAULT '0'  AFTER `remarks`;

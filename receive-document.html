@@ -133,7 +133,21 @@
 									<div class="form-body">
 									
 										<div class="row">
-											<div class="col-lg-6"></div>
+											<div class="col-lg-6">
+												<label>Rush?</label>
+												<div class="input-group">
+													<label class="display-inline-block custom-control custom-radio">
+														<input type="radio" name="is_rush" ng-model="doc.is_rush" ng-value="false" class="custom-control-input" ng-disabled="controls.btns.ok">
+														<span class="custom-control-indicator"></span>
+														<span class="custom-control-description ml-0">No</span>
+													</label>												
+													<label class="display-inline-block custom-control custom-radio ml-1">
+														<input type="radio" name="is_rush" ng-model="doc.is_rush" ng-value="true" class="custom-control-input" ng-disabled="controls.btns.ok">
+														<span class="custom-control-indicator"></span>
+														<span class="custom-control-description ml-0">Yes</span>
+													</label>
+												</div>												
+											</div>
 											<div class="col-lg-6">
 												<canvas id="barcode" style="display: none;"></canvas>
 												<div class="form-group">

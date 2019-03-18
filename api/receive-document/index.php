@@ -171,6 +171,8 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$data['communication'] = $data['communication']['id'];
 	$data['document_transaction_type'] = $data['document_transaction_type']['id'];	
 	
+	$data['is_rush'] = ($data['is_rush'])?1:0;
+	
 	$uploads = array("files"=>$data['files']);	
 	unset($data['files']);
 

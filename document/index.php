@@ -46,7 +46,7 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 	
 	$id = $args['id'];
 	
-	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params FROM documents WHERE id = $id");
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date, dt_add_params, is_rush FROM documents WHERE id = $id");
 	
 	if (count($document)) {
 		
@@ -61,6 +61,8 @@ $app->get('/view/info/{id}', function ($request, $response, $args) {
 		$document[0]['date'] = date("M j, Y",strtotime($document[0]['document_date']));
 		$document[0]['time'] = date("h:i:s A",strtotime($document[0]['document_date']));
 
+		$document[0]['is_rush'] = ($document[0]['is_rush'])?true:false;
+		
 		$document[0]['files'] = [];
 		$document[0]['delete_files'] = [];
 
@@ -152,7 +154,9 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	$data['origin'] = $data['origin']['id'];
 	$data['doc_type'] = $data['doc_type']['id'];
 	$data['communication'] = $data['communication']['id'];
-	$data['document_transaction_type'] = $data['document_transaction_type']['id'];	
+	$data['document_transaction_type'] = $data['document_transaction_type']['id'];
+	
+	$data['is_rush'] = ($data['is_rush'])?1:0;
 
 	$uploads = array("files"=>$data['files']);	
 	unset($data['files']);
