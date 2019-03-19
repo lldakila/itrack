@@ -1159,7 +1159,7 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 
 	$id = $args['id'];	
 
-	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date, is_rush FROM documents WHERE id = $id");
 	$document = document_info_complete($con,$document[0]);	
 
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));

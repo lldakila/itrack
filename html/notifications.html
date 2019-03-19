@@ -9,7 +9,7 @@
 	  <div class="media">
 		<div class="media-left valign-middle"><i class="{{n.icon}} {{n.icon_bg}} {{n.icon_color}}"></i></div>
 		<div class="media-body">
-		  <h6 class="media-heading {{n.header_color}}">{{n.header}}</h6>
+		  <h6 class="media-heading {{n.header_color}}">{{n.header}}&nbsp;&nbsp;<span ng-show="n.is_rush" class="tag tag-pill tag-danger">RUSH</span></h6>
 		  <p class="notification-text font-small-3 text-muted" ng-bind-html="n.message" style="line-height: 20px;"></p>
 		  <small><time datetime="2015-06-11T18:29:20+08:00" class="media-meta text-muted">{{n.ago}}</time></small>
 		</div>

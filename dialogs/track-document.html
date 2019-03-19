@@ -1,9 +1,12 @@
 <div class="row">
 	<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
-		<p><span class="text-muted">Barcode:</span> <span class="text-bold-700">{{document.barcode}}</span></p>
+		<p><span class="text-muted">Barcode:</span> <span class="text-bold-700">{{document.barcode}}&nbsp;&nbsp;<span ng-show="document.is_rush" class="tag tag-pill tag-danger">RUSH</span></span></p>
 		<p><span class="text-muted">Document Type: </span><span class="text-bold-700">{{document.doc_type.document_type}}</span></p>
 		<p><span class="text-muted">Originating Office: </span><span class="text-bold-700">{{(document.other_origin==null)?document.origin.office:document.other_origin}}</span></p>
-		<p><span class="text-muted">Subject: </span><span class="text-bold-700">{{document.doc_name}}</span></p>							
+		<p>
+			<span class="text-muted">Subject: </span>
+			<span class="text-bold-700">{{document.doc_name}}</span>
+		</p>
 	</div>
 	<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
 		<p><span class="text-muted">Communication: </span><span class="text-bold-700">{{document.communication.communication}}</span></p>
