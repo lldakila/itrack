@@ -1,9 +1,0 @@
-[01-Feb-2019 16:33:43 Asia/Manila] PHP Notice:  Undefined index: itrack_user_id in C:\Users\sly\Desktop\UwAmp310\www\itrack\handlers\notifications.php on line 10
-[01-Feb-2019 16:33:43 Asia/Manila] PHP Stack trace:
-[01-Feb-2019 16:33:43 Asia/Manila] PHP   1. {main}() C:\Users\sly\Desktop\UwAmp310\www\itrack\handlers\notifications.php:0
-[01-Feb-2019 16:33:43 Asia/Manila] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AND dismiss = 0 ORDER BY system_log DESC' at line 1 in C:\Users\sly\Desktop\UwAmp310\www\itrack\db.php:42
-Stack trace:
-#0 C:\Users\sly\Desktop\UwAmp310\www\itrack\db.php(42): PDO->query('SELECT * FROM n...')
-#1 C:\Users\sly\Desktop\UwAmp310\www\itrack\handlers\notifications.php(12): pdo_db->getData('SELECT * FROM n...')
-#2 {main}
-  thrown in C:\Users\sly\Desktop\UwAmp310\www\itrack\db.php on line 42
