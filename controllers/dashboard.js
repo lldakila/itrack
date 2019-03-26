@@ -11,6 +11,7 @@ app.controller('dashboardCtrl',function($scope,dashboard) {
 		}
 	};
 
-	dashboard.load($scope);
+	$scope.dashboard = dashboard;
+	$scope.dashboard.load($scope);
 	
 });

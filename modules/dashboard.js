@@ -6,16 +6,16 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 		
 		self.load = function(scope) {
 			
-			/* $http({
-				method: 'GET',
-				url: 'handlers/dashboard.php'				
-			}).then(function succes(response) {
-				
-				scope.documents = response.data;
-				
-			}, function error(response) {
-				
-			}); */
+			scope.formHolder = {};
+			
+			scope.filter = {};
+			scope.filter.period = {};
+			scope.periods = [
+				{period: "date", text: "Daily"},
+				{period: "week", text: "Weekly"},
+				{period: "month", text: "Monthly"},
+				{period: "year", text: "Annually"},
+			];
 			
 		};
 		

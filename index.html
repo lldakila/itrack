@@ -92,7 +92,71 @@
     <div class="app-content content container-fluid">
       <div class="content-wrapper">
         <div class="content-header row">
-        </div>
+		
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title" id="basic-layout-form">Filter Statistics</h4>
+					<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+					<div class="heading-elements">
+						<ul class="list-inline mb-0">
+							<li><a data-action="collapse"><i class="icon-plus4"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="card-body collapse out">
+					<div class="card-block">
+						<form class="form" name="formHolder.filter">
+							<div class="form-body">
+								<div class="row">
+									<div class="col-md-3">
+										<div class="form-group">
+											<label>Period:</label>
+											<select class="form-control" ng-model="filter.period" ng-options="period.text for period in periods track by period.period"></select>
+										</div>
+									</div>
+									<div class="col-md-3" ng-show="filter.period.period == 'date'">
+										<div class="form-group">
+											<label>Date:</label>
+											<input type="date" class="form-control">
+										</div>
+									</div>									
+									<div class="col-md-3" ng-show="filter.period.period == 'week'">
+										<div class="form-group">
+											<label>From:</label>
+											<input type="date" class="form-control">
+										</div>
+									</div>									
+									<div class="col-md-3" ng-show="filter.period.period == 'week'">
+										<div class="form-group">
+											<label>To:</label>
+											<input type="date" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-3" ng-show="filter.period.period == 'month'">
+										<div class="form-group">
+											<label>Month:</label>
+											<select type="text" class="form-control"></select>
+										</div>
+									</div>
+									<div class="col-md-3" ng-show="filter.period.period == 'year'">
+										<div class="form-group">
+											<label>Year:</label>
+											<input type="text" class="form-control">
+										</div>
+									</div>									
+								</div>
+							</div>
+							<div class="form-actions" style="text-align: right;">
+								<button type="submit" class="btn btn-primary" ng-click="dashboard.filter">
+									<i class="icon-search"></i> Go
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>		
+		
+		</div>
         <div class="content-body"><!-- stats -->
 		<div class="row">
 		</div>
