@@ -167,6 +167,23 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.print.doc = {};			
 			scope.print.doc.id = 0;			
 			
+			$http({
+				method: 'GET',
+				url: 'api/receive-document/actions'
+			}).then(function mySuccess(response) {
+				
+				scope.doc.actions = angular.copy(response.data);
+					
+			}, function myError(response) {
+		
+		
+			});				
+			
+			var actions = ['for_initial','for_signature','for_routing'];
+			angular.forEach(actions, function(action,i) {
+				$('#'+action).removeClass('in');
+			});
+			
 			validate.cancel(scope,'doc');
 
 			/* $timeout(function() {
