@@ -604,6 +604,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 			};
 
+			doc.setFontSize(11);
+			doc.setTextColor(75,75,75);			
+			doc.text(40, 115, "itrack.launion.gov.ph");			
+			
 			doc.setFontSize(10);
 			doc.setTextColor(75,75,75);	
 			doc.text(25, 169, "RECEIPT");
@@ -630,6 +634,22 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			doc.setTextColor(25,25,25);	
 			doc.text(525, 199, date);
 			doc.text(525, 229, time);
+			
+			/*
+			**	Instructions on tracking document
+			*/			
+			doc.setTextColor(80,80,80);
+			doc.text(25, 300, "How to track document");
+			doc.text(25, 315, "1. Visit:");
+			doc.setTextColor(25,25,25);
+			doc.text(60, 315, "itrack.launion.gov.ph");
+			doc.setTextColor(80,80,80);
+			doc.text(25, 330, "2. Click 'Track Document'");
+			doc.text(25, 345, "3. Using a barcode scanner scan the barcode on this receipt");
+			doc.text(35, 360, "or enter barcode and click 'Track'");
+			/*
+			**
+			*/
 			
 			doc.line(0,396,612,396); // divider
 			var half = 396;
@@ -690,6 +710,10 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 			};
 
+			doc.setFontSize(11);
+			doc.setTextColor(75,75,75);		
+			doc.text(40, 115+half, "itrack.launion.gov.ph");				
+			
 			doc.setFontSize(10);
 			doc.setTextColor(75,75,75);	
 			doc.text(25, 169+half, "RECEIPT");
@@ -716,6 +740,22 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			doc.setTextColor(25,25,25);	
 			doc.text(525, 199+half, date);
 			doc.text(525, 229+half, time);	
+			
+			/*
+			**	Instructions on tracking document
+			*/			
+			doc.setTextColor(80,80,80);
+			doc.text(25, 300+half, "How to track document");
+			doc.text(25, 315+half, "1. Visit:");
+			doc.setTextColor(25,25,25);
+			doc.text(60, 315+half, "itrack.launion.gov.ph");
+			doc.setTextColor(80,80,80);
+			doc.text(25, 330+half, "2. Click 'Track Document'");
+			doc.text(25, 345+half, "3. Using a barcode scanner scan the barcode on this receipt");
+			doc.text(35, 360+half, "or enter barcode and click 'Track'");
+			/*
+			**
+			*/			
 			
 			var blob = doc.output("blob");
 			window.open(URL.createObjectURL(blob));		
