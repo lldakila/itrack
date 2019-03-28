@@ -43,41 +43,45 @@ $app->post('/email', function (Request $request, Response $response, array $args
 	$user = $con->getData("SELECT id, email_address FROM users WHERE uname = '".$data['username']."'");
 	
 	$id = $user[0]['id'];
-	$email = $user[0]['email_address'];	
-	
-	$data = array("id"=>$id);
-	$url = "http://".$_SERVER['HTTP_HOST']."/email_password.php";
+	$email = $user[0]['email_address'];
 
-	$options = array(
-		'http'=>array(
-			'header'=>"Content-type: application/x-www-form-urlencoded\r\n",
-			'method'=>'POST',
-			'content'=>http_build_query($data)
-		)
-	);
-	$context  = stream_context_create($options);
-	$message = file_get_contents($url, false, $context);	
+	$user = $con->getData("SELECT fname, lname, pw FROM users WHERE id = $id");
 	
-	$address = "sly@christian.com.ph";
+$message = <<<EOD
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<title>Document Tracking System</title>
+  </head>
+  <body>
+	<header>
+		<p>Dear {$user[0]['fname']} {$user[0]['lname']},</p>
+	</header>
+	<main style="margin-bottom: 50px;">
+		<p>You password is <span style="font-style: italic; font-weight: bold;">{$user[0]['pw']}</span></p>
+	</main>
+	<footer>
+		<p>Regards,</p>
+		<img src="https://itrack.launion.gov.ph/images/logo/itrack.png" alt="Logo" title="Logo" style="width: 198px; height: 43px;" width="198" height="48">
+		<p><strong>Administrator</strong></p>
+	</footer>
+</html>
+EOD;
+	
+	// $address = "sly@christian.com.ph";
+	$address = $email;
 	$subject = "Password Recovery";
 
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	$headers .= 'From: iTrack (Document Tracking System) <sly14flores@gmail.com>' . "\r\n";
 
-	$send = mail($address,$subject,$message,$headers);
+	require_once '../../phpmailer/email.php';
 	
-	if (!$send) {
-		
-		$respond = array("status"=>false);
-		
-	} else {
-		
-		$respond = array("status"=>true);
-		
-	};
+	$send = sendEmail($address,$subject,$message);
 	
-	return $response->withJson($respond);
+	return $response->withJson($send);
 
 });
 
