@@ -6,11 +6,10 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 		
 		self.load = function(scope) {
 			
+			var d = new Date();				
+			
 			scope.formHolder = {};
 			
-			scope.filter = {};
-			scope.filter.period = {};
-			scope.filter.period.week = {};
 			scope.months = [
 				{month: "01", text: "January"},
 				{month: "02", text: "February"},
@@ -30,34 +29,62 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 				{period: "week", text: "Weekly"},
 				{period: "month", text: "Monthly"},
 				{period: "year", text: "Annually"},
-			];
+			];			
+			
+			scope.filter = {};
+			scope.filter.period = {};
+			scope.filter.period.selected = {period: "date", text: "Daily"};
+			scope.filter.period.week = {};
+
+			var date = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
+			
+			scope.filter.period.date = new Date(date);			
+			scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();
 			
 		};
 		
 		self.periodChange = function(scope) {
 
-			var d = new Date();	
+			var d = new Date();
+			var df = new Date();
+			var dt = new Date();
 		
 			switch (scope.filter.period.selected.period) {
 				
 				case 'date':
 				
-					var date = d.getMonth()+'/'+d.getDate()+'/'+d.getFullYear();
-					scope.filter.period.date = new Date(date);					
+					var date = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
+					scope.filter.period.date = new Date(date);
+					
+					scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();					
 				
 				break;
 				
 				case 'week':
 				
-					var date = d.getMonth()+'/'+d.getDate()+'/'+d.getFullYear();
-					scope.filter.period.week.from = new Date(date);					
-					scope.filter.period.week.to = new Date(date);					
+					var date = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
+					scope.filter.period.week.from = new Date(date);			
+					scope.filter.period.week.to = new Date(date);
+
+					while (df.getDay()>=1) {
+					
+						scope.filter.period.week.from = df;
+						df.setDate(df.getDate()-1);
+						
+					};
+					
+					while (dt.getDay()<5) {
+					
+						scope.filter.period.week.to = dt;
+						dt.setDate(dt.getDate()+1);
+						
+					};					
 				
 				break;				
 				
 				case 'month':
 					
-					scope.filter.period.month = scope.months[d.getMonth()-1];
+					scope.filter.period.month = scope.months[d.getMonth()];
 					scope.filter.period.year = d.getFullYear();
 				
 				break;				
