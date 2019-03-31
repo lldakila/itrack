@@ -65,12 +65,21 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 					var date = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
 					scope.filter.period.week.from = new Date(date);			
 					scope.filter.period.week.to = new Date(date);
-
-					while (df.getDay()>=1) {
 					
-						scope.filter.period.week.from = df;
-						df.setDate(df.getDate()-1);
+					if (df.getDay()==0) {
 						
+						df.setDate(df.getDate()+1);
+						scope.filter.period.week.from = df;
+						
+					} else {
+
+						while (df.getDay()>=1) {
+						
+							scope.filter.period.week.from = df;
+							df.setDate(df.getDate()-1);
+							
+						};
+					
 					};
 					
 					while (dt.getDay()<5) {
