@@ -41,6 +41,69 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 			scope.filter.period.date = new Date(date);			
 			scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();
 			
+			// var data = []
+			var series = Math.floor(Math.random() * 6) + 3;
+
+			/* for (var i = 0; i < series; i++) {
+				data[i] = {
+					label: "Series" + (i + 1),
+					data: Math.floor(Math.random() * 100) + 1
+				}
+			}; */
+
+			var data = [
+				{label: 'Received', color: '#ff5722', data: 75},
+				{label: 'Pick Up', color: '#4cff22', data: 25},
+			];
+			
+			$.plot('#placeholder', data, {
+				series: {
+					pie: { 
+						show: true,
+						radius: 1,
+						label: {
+							show: true,
+							radius: 3/4,
+							formatter: labelFormatter,
+							background: { 
+								opacity: 0.5,
+								color: '#000'
+							}
+						}
+					}
+				},
+				legend: {
+					show: false
+				}
+			});
+
+			/* setCode([
+				"$.plot('#placeholder', data, {",
+				"    series: {",
+				"        pie: {",
+				"            show: true,",
+				"            radius: 3/4,",
+				"            label: {",
+				"                show: true,",
+				"                radius: 3/4,",
+				"                formatter: labelFormatter,",
+				"                background: {",
+				"                    opacity: 0.5,",
+				"                    color: '#000'",
+				"                }",
+				"            }",
+				"        }",
+				"    },",
+				"    legend: {",
+				"        show: false",
+				"    }",
+				"});"
+			]); */
+
+			function labelFormatter(label, series) {
+				return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+			};			
+			
 		};
 		
 		self.periodChange = function(scope) {
@@ -89,20 +152,20 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 						
 					};					
 				
-				break;				
+				break;		
 				
 				case 'month':
 					
 					scope.filter.period.month = scope.months[d.getMonth()];
 					scope.filter.period.year = d.getFullYear();
 				
-				break;				
+				break;		
 				
 				case 'year':
 
 					scope.filter.period.year = d.getFullYear();				
 				
-				break;				
+				break;			
 				
 			};		
 			
@@ -110,7 +173,8 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 		
 		self.filter = function(scope) {
 			
-			$http({
+			/* $http({
+				
 				method: 'POST',				
 				url: 'api/dashboard',
 				data: scope.filter.period
@@ -118,7 +182,7 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 				
 			}, function error(response) {
 				
-			});
+			}); */
 			
 		};
 		
