@@ -9,7 +9,7 @@ define('system_setup', array(
 	array(
 		"id"=>2,
 		"description"=>"Users for document action: signature at receiving document",
-		"values"=>[2,6],
+		"values"=>[2,6,9],
 	),	
 	array(
 		"id"=>3,
@@ -60,6 +60,11 @@ define('system_setup', array(
 		"id"=>12,
 		"description"=>"OPG Office",
 		"values"=>3,
+	),
+	array(
+		"id"=>13,
+		"description"=>"OPA Office",
+		"values"=>2,
 	)	
 ));
 

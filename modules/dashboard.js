@@ -38,72 +38,11 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 
 			var date = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
 			
-			scope.filter.period.date = new Date(date);			
+			scope.filter.period.date = new Date(date);
 			scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();
 			
-			// var data = []
-			var series = Math.floor(Math.random() * 6) + 3;
+			self.filter(scope);				
 
-			/* for (var i = 0; i < series; i++) {
-				data[i] = {
-					label: "Series" + (i + 1),
-					data: Math.floor(Math.random() * 100) + 1
-				}
-			}; */
-
-			var data = [
-				{label: 'Received', color: '#ff5722', data: 75},
-				{label: 'Pick Up', color: '#4cff22', data: 25},
-			];
-			
-			$.plot('#placeholder', data, {
-				series: {
-					pie: { 
-						show: true,
-						radius: 1,
-						label: {
-							show: true,
-							radius: 3/4,
-							formatter: labelFormatter,
-							background: { 
-								opacity: 0.5,
-								color: '#000'
-							}
-						}
-					}
-				},
-				legend: {
-					show: false
-				}
-			});
-
-			/* setCode([
-				"$.plot('#placeholder', data, {",
-				"    series: {",
-				"        pie: {",
-				"            show: true,",
-				"            radius: 3/4,",
-				"            label: {",
-				"                show: true,",
-				"                radius: 3/4,",
-				"                formatter: labelFormatter,",
-				"                background: {",
-				"                    opacity: 0.5,",
-				"                    color: '#000'",
-				"                }",
-				"            }",
-				"        }",
-				"    },",
-				"    legend: {",
-				"        show: false",
-				"    }",
-				"});"
-			]); */
-
-			function labelFormatter(label, series) {
-				return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
-			};			
-			
 		};
 		
 		self.periodChange = function(scope) {
@@ -119,7 +58,7 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 					var date = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
 					scope.filter.period.date = new Date(date);
 					
-					scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();					
+					scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();
 				
 				break;
 				
@@ -150,7 +89,9 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 						scope.filter.period.week.to = dt;
 						dt.setDate(dt.getDate()+1);
 						
-					};					
+					};
+					
+					scope.views.coverage = scope.months[df.getMonth()].text+' '+df.getDate()+', '+df.getFullYear() + ' to ' + scope.months[dt.getMonth()].text+' '+dt.getDate()+', '+dt.getFullYear();
 				
 				break;		
 				
@@ -158,31 +99,71 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 					
 					scope.filter.period.month = scope.months[d.getMonth()];
 					scope.filter.period.year = d.getFullYear();
+					
+					scope.views.coverage = scope.months[d.getMonth()].text + ', ' + d.getFullYear();
 				
-				break;		
+				break;
 				
 				case 'year':
 
-					scope.filter.period.year = d.getFullYear();				
+					scope.filter.period.year = d.getFullYear();
+
+					scope.views.coverage = d.getFullYear();
 				
-				break;			
+				break;
 				
-			};		
+			};
 			
 		};
 		
-		self.filter = function(scope) {
+		self.filter = function(scope) {							
 			
-			/* $http({
-				
+			$http({
 				method: 'POST',				
-				url: 'api/dashboard',
+				url: 'api/dashboard/data',
 				data: scope.filter.period
 			}).then(function success(response) {
 				
+				scope.dashboard.data = response.data;
+				// incoming(scope);
+				
 			}, function error(response) {
 				
-			}); */
+			});
+			
+		};
+		
+		function incoming(scope) {
+			
+			var data = [
+				{label: 'Received', color: '#4aadff', data: scope.dashboard.data.incoming_documents.received},
+				{label: 'Pick Up', color: '#4a4aff', data: scope.dashboard.data.incoming_documents.pick_up},
+			];		
+
+			$.plot('#documents-incoming', data, {
+				series: {
+					pie: {
+						show: true,
+						radius: 1,
+						label: {
+							show: true,
+							radius: 3/4,
+							formatter: labelFormatter,
+							background: {
+								opacity: 0.5,
+								color: '#000'
+							}
+						}
+					}
+				},
+				legend: {
+					show: false
+				}
+			});
+
+			function labelFormatter(label, series) {
+				return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + series.percent + "</div>";
+			};			
 			
 		};
 		

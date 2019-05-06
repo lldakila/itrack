@@ -13,5 +13,6 @@ app.controller('dashboardCtrl',function($scope,dashboard) {
 
 	$scope.dashboard = dashboard;
 	$scope.dashboard.load($scope);
+	$scope.dashboard.data = {};
 	
 });
