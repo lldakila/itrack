@@ -3,7 +3,7 @@
 	<li class="nav-item" ng-show="profile.pages_access.receive_document.value || profile.pages_access.receive.value || profile.pages_access.update_tracks.value || profile.pages_access.track_document.value || profile.pages_access.documents.value"><a href="#"><i class="icon-copy2"></i><span class="menu-title">Documents</span></a>
 		<ul class="menu-content">
 		  <li ng-show="profile.pages_access.receive_document.value"><a href="<?=$url?>receive-document.html" class="menu-item"></i>Add Document</a></li>
-		  <li ng-show="profile.pages_access.receive.value"><a href="<?=$url?>receive.html" class="menu-item">Receive</a></li>		  
+		  <li ng-show="profile.pages_access.receive.value"><a href="<?=$url?>receive.html" class="menu-item">Incoming</a></li>		  
 		  <li><a href="<?=$url?>file.html" class="menu-item">File Document</a></li>		  
 		  <li class="<?=($page=="update-tracks")?'active':''?>" ng-show="profile.pages_access.update_tracks.value"><a href="<?=$url?>update-tracks.html" class="menu-item">Update Tracks</a></li>
 		  <li class="<?=($page=="track-document")?'active':''?>" ng-show="profile.pages_access.track_document.value"><a href="<?=$url?>track-document.html" class="menu-item">Track Document</a></li>		  
