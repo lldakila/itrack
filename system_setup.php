@@ -55,7 +55,7 @@ define('system_setup', array(
 		"id"=>11,
 		"description"=>"PA Staffs",
 		"values"=>[3],
-	),	
+	),
 	array(
 		"id"=>12,
 		"description"=>"OPG Office",

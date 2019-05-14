@@ -333,4 +333,23 @@ function add_track($con,$data) {
 
 };
 
+function is_office_admin($office) {
+	
+	$setup = new setup(system_setup);
+	
+	return $office == $setup->get_setup(13);
+	
+	
+};
+
+function is_office_opg($office) {
+
+	
+	$setup = new setup(system_setup);
+	
+	return $office == $setup->get_setup(12);	
+
+	
+};
+
 ?>

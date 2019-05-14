@@ -172,169 +172,213 @@
 			<hr>				
 			</div>			
 
-			<h4>Office of the Provincial Administrator</h4>
-			<div class="row">
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="deep-orange">{{dashboard.data.opa.new_documents}}</h3>
-										<span>Received Documents</span>
-									</div>
-									<div class="media-right media-middle">
-										<i class="icon-paper deep-orange font-large-2 float-xs-right"></i>
+			<div ng-show="dashboard.data.opa.show">
+				<h4 style="margin-bottom: 25px;">Office of the Provincial Administrator</h4>
+				<div class="row">
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="deep-orange">{{dashboard.data.opa.new_documents}}</h3>
+											<span>Received Documents</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-paper deep-orange font-large-2 float-xs-right"></i>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="cyan">{{dashboard.data.opa.for_initial}}</h3>
-										<span>For Initial</span>
-									</div>
-									<div class="media-right media-middle">
-										<i class="icon-android-checkbox-outline cyan font-large-2 float-xs-right"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>														
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="teal">{{dashboard.data.opa.initialed_documents}}</h3>
-										<span>Initialed</span>
-									</div>
-									<div class="media-right media-middle">
-										<i class="icon-android-checkbox-outline teal font-large-2 float-xs-right"></i>
+				<div class="row">
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="cyan">{{dashboard.data.opa.for_initial}}</h3>
+											<span>For Initial</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-android-checkbox-outline cyan font-large-2 float-xs-right"></i>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>													
-				</div>							
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="cyan">{{dashboard.data.opa.for_approval}}</h3>
-										<span>For Signature</span>
+					</div>														
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="teal">{{dashboard.data.opa.initialed_documents}}</h3>
+											<span>Initialed</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-android-checkbox-outline teal font-large-2 float-xs-right"></i>
+										</div>
 									</div>
-									<div class="media-right media-middle">
-										<i class="icon-thumbsup cyan font-large-2 float-xs-right"></i>
+								</div>
+							</div>
+						</div>													
+					</div>							
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="cyan">{{dashboard.data.opa.for_approval}}</h3>
+											<span>For Signature</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-thumbsup cyan font-large-2 float-xs-right"></i>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>														
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="teal">{{dashboard.data.opa.approved_documents}}</h3>
-										<span>Approved</span>
-									</div>
-									<div class="media-right media-middle">
-										<i class="icon-thumbsup teal font-large-2 float-xs-right"></i>
+					</div>														
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="teal">{{dashboard.data.opa.approved_documents}}</h3>
+											<span>Approved</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-thumbsup teal font-large-2 float-xs-right"></i>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>				
+					</div>				
+				</div>
 			</div>
 			
 
-			<h4 class="card-title">Office of the Provincial Governor</h4>
-			<div class="row">
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="cyan">{{dashboard.data.opg.for_initial}}</h3>
-										<span>For Initial</span>
-									</div>
-									<div class="media-right media-middle">
-										<i class="icon-android-checkbox-outline cyan font-large-2 float-xs-right"></i>
+			<div ng-show="dashboard.data.opg.show">
+				<h4 style="margin-bottom: 25px;">Office of the Provincial Governor</h4>
+				<div class="row">
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="cyan">{{dashboard.data.opg.for_initial}}</h3>
+											<span>For Initial</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-android-checkbox-outline cyan font-large-2 float-xs-right"></i>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>														
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="teal">{{dashboard.data.opg.initialed_documents}}</h3>
+											<span>Initialed</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-android-checkbox-outline teal font-large-2 float-xs-right"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>													
+					</div>							
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="cyan">{{dashboard.data.opg.for_approval}}</h3>
+											<span>For Signature</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-thumbsup cyan font-large-2 float-xs-right"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>														
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="teal">{{dashboard.data.opg.approved_documents}}</h3>
+											<span>Approved</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-thumbsup teal font-large-2 float-xs-right"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>				
+				</div>
+			</div>
+			
+			<div ng-show="dashboard.data.office.show">
+				<h4 style="margin-bottom: 25px;">{{dashboard.data.office.description}}</h4>
+				<div class="row">
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="deep-orange">{{dashboard.data.office.outgoing}}</h3>
+											<span>Outgoing</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-upload5 deep-orange font-large-2 float-xs-right"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>						
 					</div>
-				</div>														
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="teal">{{dashboard.data.opg.initialed_documents}}</h3>
-										<span>Initialed</span>
-									</div>
-									<div class="media-right media-middle">
-										<i class="icon-android-checkbox-outline teal font-large-2 float-xs-right"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>													
-				</div>							
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="cyan">{{dashboard.data.opg.for_approval}}</h3>
-										<span>For Signature</span>
-									</div>
-									<div class="media-right media-middle">
-										<i class="icon-thumbsup cyan font-large-2 float-xs-right"></i>
+					<div class="col-xl-3 col-lg-6 col-xs-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="card-block">
+									<div class="media">
+										<div class="media-body text-xs-left">
+											<h3 class="deep-orange">{{dashboard.data.office.incoming}}</h3>
+											<span>Incoming</span>
+										</div>
+										<div class="media-right media-middle">
+											<i class="icon-download5 deep-orange font-large-2 float-xs-right"></i>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>														
-				<div class="col-xl-3 col-lg-6 col-xs-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="card-block">
-								<div class="media">
-									<div class="media-body text-xs-left">
-										<h3 class="teal">{{dashboard.data.opg.approved_documents}}</h3>
-										<span>Approved</span>
-									</div>
-									<div class="media-right media-middle">
-										<i class="icon-thumbsup teal font-large-2 float-xs-right"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>				
-			</div>					
+						</div>						
+					</div>					
+				</div>
+			</div>
 
 			</div>
 			

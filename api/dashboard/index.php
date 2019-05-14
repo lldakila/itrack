@@ -35,6 +35,7 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 	
 	$dashboard = array(
 		"opa"=>array(
+			"show"=>false,
 			"new_documents"=>0,
 			"for_initial"=>0,
 			"initialed_documents"=>0,
@@ -42,12 +43,36 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 			"approved_documents"=>0
 		),
 		"opg"=>array(
+			"show"=>false,
 			"for_initial"=>0,
 			"initialed_documents"=>0,
 			"for_approval"=>0,
 			"approved_documents"=>0	
+		),
+		"office"=>array(
+			"show"=>false,
+			"description"=>"ICTU",
+			"incoming"=>0,
+			"outgoing"=>0
 		)
 	);
+
+	require_once '../../system_setup.php';
+	require_once '../../functions.php';
+
+	$dashboard['opa']['show'] = is_office_admin($office);	
+	$dashboard['opg']['show'] = is_office_opg($office);
+	
+	$other_office = !is_office_admin($office) && !is_office_opg($office);
+	
+	if ($other_office) {
+		
+		$dashboard['office']['show'] = true;
+		
+		$office_description = $con->getData("SELECT office FROM offices WHERE id = $office");
+		if (count($office_description)) $dashboard['office']['description'] = $office_description[0]['office'];
+		
+	};
 	
 	$filters = array(
 		"documents"=>array(
