@@ -30,8 +30,6 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 	$con->table = "documents";
 
 	$filter = $request->getParsedBody();
-
-	$selected = $filter['selected']['period'];
 	
 	$dashboard = array(
 		"opa"=>array(
@@ -74,54 +72,14 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 		
 	};
 	
-	$filters = array(
-		"documents"=>array(
-			"date"=>"",
-			"week"=>"",
-			"month"=>"",
-			"year"=>""
-		),
-		"tracks"=>array(
-			"date"=>"",
-			"week"=>"",
-			"month"=>"",
-			"year"=>""
-		),		
-	);
+	require_once 'classes.php';
+	$dashboard_counters = new dashboard_counters($con,$filter,$office);
+	var_dump($dashboard_counters->approved());
 	
-	switch ($selected) {
-
-		case 'date':
-
-			$filters['documents'][$selected] = "document_date LIKE '".date("Y-m-d",strtotime($filter['date']))."%'";
-			$filters['tracks'][$selected] = "system_log LIKE '".date("Y-m-d",strtotime($filter['date']))."%'";
-
-		break;
-
-		case 'week':
-
-			$filters['documents'][$selected] = "document_date BETWEEN '".date("Y-m-d",strtotime($filter['week']['from']))."' AND '".date("Y-m-d",strtotime($filter['week']['to']))."'";
-			$filters['tracks'][$selected] = "system_log BETWEEN '".date("Y-m-d",strtotime($filter['week']['from']))."' AND '".date("Y-m-d",strtotime($filter['week']['to']))."'";
-
-		break;
-
-		case 'month':
-		
-			$filters['documents'][$selected] = "document_date LIKE '".$filter['year']."-".$filter['month']['month']."-%'";
-			$filters['tracks'][$selected] = "system_log LIKE '".$filter['year']."-".$filter['month']['month']."-%'";
-		
-		break;
-		
-		case 'year':
-		
-			$filters['documents'][$selected] = "document_date LIKE '".$filter['year']."-%'";
-			$filters['tracks'][$selected] = "system_log LIKE '".$filter['year']."-%'";
-		
-		break;
-		
-	};	
+	exit();
 	
-	$sql = "SELECT count(*) new_documents FROM documents WHERE ".$filters['documents'][$selected];
+	
+/* 	$sql = "SELECT count(*) new_documents FROM documents WHERE ".$filters['documents'][$selected];
 	$new_documents = $con->getData($sql);
 	
 	#
@@ -135,9 +93,8 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 	#
 	if (count($initialed_documents)) {
 		// $dashboard['new_documents'] = $new_documents[0]['new_documents'];
-	};	
+	};	*/
 	
-    // return $response->withJson($sql);
     // return $response->withJson($filter);
     return $response->withJson($dashboard);
 	
