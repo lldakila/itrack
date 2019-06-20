@@ -220,10 +220,34 @@ class dashboard_counters {
 	
 	function incoming() {
 		
+		$office = $this->office;
+		
+		$incoming = 0;
+		
+		/* foreach ($this->documents as $document) {
+			
+			if ($document['origin'] == $office) $incoming++;
+			
+		} */
+		
+		return $incoming;
+		
 	}
 	
 	function outgoing() {
 		
+		$office = $this->office;
+		
+		$outgoing = 0;
+
+		foreach ($this->documents as $document) {
+			
+			if ($document['origin'] == $office) $outgoing++;
+			
+		}
+
+		return $outgoing;
+
 	}
 	
 	function transit($track) {

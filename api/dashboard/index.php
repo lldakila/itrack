@@ -49,7 +49,7 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 		),
 		"office"=>array(
 			"show"=>false,
-			"description"=>"ICTU",
+			"description"=>"",
 			"incoming"=>0,
 			"outgoing"=>0
 		)
@@ -58,25 +58,34 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 	require_once '../../system_setup.php';
 	require_once '../../functions.php';
 
-	$dashboard['opa']['show'] = is_office_admin($office);	
-	$dashboard['opg']['show'] = is_office_opg($office);
-	
-	$other_office = !is_office_admin($office) && !is_office_opg($office);
-	
-	if ($other_office) {
-		
-		$dashboard['office']['show'] = true;
-		
-		$office_description = $con->getData("SELECT office FROM offices WHERE id = $office");
-		if (count($office_description)) $dashboard['office']['description'] = $office_description[0]['office'];
-		
-	};
+	$opa_office = is_office_admin($office);
+	$opg_office = is_office_opg($office);	
+	$other_office = !$opa_office && !$opg_office;
 	
 	require_once 'classes.php';
 	$dashboard_counters = new dashboard_counters($con,$filter,$office);
-	var_dump($dashboard_counters->approved());
 	
-	exit();
+	if ($opa_office) {
+		
+		$dashboard['opa']['show'] = true;
+		
+	} elseif ($opg_office) {
+		
+		$dashboard['opg']['show'] = true;
+		
+	} else { # other_office
+		
+		$dashboard['office']['show'] = true;
+		$office_description = $con->getData("SELECT office FROM offices WHERE id = $office");
+		if (count($office_description)) $dashboard['office']['description'] = $office_description[0]['office'];
+		$dashboard['office']['incoming'] = $dashboard_counters->incoming();
+		$dashboard['office']['outgoing'] = $dashboard_counters->outgoing();
+		
+	}
+	
+	// var_dump($dashboard_counters->approved());
+	
+	// exit();
 	
 	
 /* 	$sql = "SELECT count(*) new_documents FROM documents WHERE ".$filters['documents'][$selected];
