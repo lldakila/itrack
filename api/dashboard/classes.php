@@ -224,11 +224,11 @@ class dashboard_counters {
 		
 		$incoming = 0;
 		
-		/* foreach ($this->documents as $document) {
+		foreach ($this->documents as $document) {
 			
-			if ($document['origin'] == $office) $incoming++;
+			// if ($document['origin'] == $office) $incoming++;
 			
-		} */
+		}
 		
 		return $incoming;
 		
