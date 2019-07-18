@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 29, 2019 at 05:25 PM
+-- Generation Time: Jul 18, 2019 at 04:46 PM
 -- Server version: 5.7.11
 -- PHP Version: 7.0.3
 
@@ -188,7 +188,7 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`id`, `user_id`, `doc_name`, `barcode`, `origin`, `other_origin`, `document_date`, `document_transaction_type`, `doc_type`, `communication`, `doc_action`, `dt_add_params`, `remarks`, `is_rush`, `update_log`) VALUES
-(1, 1, 'agsadgd', 'ICT-03-2019-00001', 4, NULL, '2019-03-28 16:41:52', 1, 1, 1, NULL, '[]', NULL, 0, NULL);
+(1, 4, 'Subject', 'ICT-06-2019-00001', 4, NULL, '2019-06-20 15:52:03', 1, 1, 1, NULL, '[]', NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -312,8 +312,8 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `doc_id`, `track_id`, `revision_id`, `user_id`, `office_id`, `icon`, `icon_bg`, `icon_color`, `header`, `header_color`, `message`, `url`, `dismiss`, `inform_seen`, `system_log`, `last_modified`) VALUES
-(1, 1, NULL, NULL, 5, NULL, 'icon-android-arrow-dropdown', 'icon-bg-circle', 'bg-warning', 'agsadgd', 'yellow darken-3', 'Received at PA by Sylvester B. Flores', '/track-document.html#!/1', 0, NULL, '2019-03-28 16:41:52', NULL),
-(2, 1, NULL, NULL, 10, NULL, 'icon-android-arrow-dropdown', 'icon-bg-circle', 'bg-warning', 'agsadgd', 'yellow darken-3', 'Received at PA by Sylvester B. Flores', '/track-document.html#!/1', 0, NULL, '2019-03-28 16:41:52', NULL);
+(1, 1, NULL, NULL, 5, NULL, 'icon-android-arrow-dropdown', 'icon-bg-circle', 'bg-warning', 'Subject', 'yellow darken-3', 'Received at PA by Ghenny Rose Estipular', '/track-document.html#!/1', 0, NULL, '2019-06-20 15:52:03', NULL),
+(2, 1, NULL, NULL, 10, NULL, 'icon-android-arrow-dropdown', 'icon-bg-circle', 'bg-warning', 'Subject', 'yellow darken-3', 'Received at PA by Ghenny Rose Estipular', '/track-document.html#!/1', 0, NULL, '2019-06-20 15:52:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -418,7 +418,8 @@ CREATE TABLE `tracks` (
 --
 
 INSERT INTO `tracks` (`id`, `document_id`, `office_id`, `track_action`, `track_action_add_params`, `track_action_staff`, `track_action_status`, `track_user`, `preceding_track`, `transit`, `comment`, `revision_id`, `system_log`, `update_log`) VALUES
-(1, 1, 4, 2, '{"id":1,"action_id":2,"model":"action_user_id","description":"To","type":"checkbox","options":[{"id":2,"description":"Ma\'am Jennifer Joan O. Manguiat","office":{"id":2,"office":"PA"},"value":true},{"id":6,"description":"Governor Francisco Emmanuel R. Ortega","office":{"id":3,"office":"Office of the Provincial Governor"},"value":false}]}', NULL, NULL, 1, NULL, '{"id":1,"picked_up_by":null,"received_by":null,"office":"2","released_to":null,"filed":false}', NULL, NULL, '2019-03-28 16:41:53', NULL);
+(1, 1, 2, 1, '{"id":1,"action_id":1,"model":"action_user_id","description":"To","type":"checkbox","options":[{"id":2,"description":"Ma\'am Jennifer Joan O. Manguiat","office":{"id":2,"office":"PA"},"value":true},{"id":8,"description":"Arvin C. Camacho","office":{"id":2,"office":"PA"},"value":false},{"id":9,"description":"Evangeline S. Mendoza","office":{"id":2,"office":"PA"},"value":false}]}', NULL, NULL, 4, NULL, '{"id":1,"picked_up_by":null,"received_by":null,"office":"2","released_to":null,"filed":false}', NULL, NULL, '2019-06-20 15:52:04', NULL),
+(2, 1, 2, 2, '{"id":1,"action_id":2,"model":"action_user_id","description":"To","type":"checkbox","options":[{"id":2,"description":"Ma\'am Jennifer Joan O. Manguiat","office":{"id":2,"office":"PA"},"value":false},{"id":6,"description":"Governor Francisco Emmanuel R. Ortega","office":{"id":3,"office":"Office of the Provincial Governor"},"value":true},{"id":9,"description":"Evangeline S. Mendoza","office":{"id":2,"office":"PA"},"value":false}]}', NULL, NULL, 4, NULL, '{"id":1,"picked_up_by":null,"received_by":null,"office":"2","released_to":null,"filed":false}', NULL, NULL, '2019-06-20 15:52:04', NULL);
 
 -- --------------------------------------------------------
 
@@ -705,7 +706,7 @@ ALTER TABLE `revisions`
 -- AUTO_INCREMENT for table `tracks`
 --
 ALTER TABLE `tracks`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tracks_options`
 --
