@@ -69,6 +69,7 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 		
 		$dashboard['opa']['show'] = true;
 		
+		
 	} elseif ($opg_office) {
 		
 		$dashboard['opg']['show'] = true;
@@ -78,33 +79,11 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 		$dashboard['office']['show'] = true;
 		$office_description = $con->getData("SELECT office FROM offices WHERE id = $office");
 		if (count($office_description)) $dashboard['office']['description'] = $office_description[0]['office'];
-		$dashboard['office']['incoming'] = $dashboard_counters->incoming();
 		$dashboard['office']['outgoing'] = $dashboard_counters->outgoing();
+		// $dashboard['office']['incoming'] = $dashboard_counters->incoming();
 		
 	}
-	
-	// var_dump($dashboard_counters->approved());
-	
-	// exit();
-	
-	
-/* 	$sql = "SELECT count(*) new_documents FROM documents WHERE ".$filters['documents'][$selected];
-	$new_documents = $con->getData($sql);
-	
-	#
-	if (count($new_documents)) {
-		$dashboard['opa']['new_documents'] = $new_documents[0]['new_documents'];
-	};
 
-	$sql = "SELECT * FROM tracks WHERE ".$filters['tracks'][$selected];
-	$initialed_documents = $con->getData($sql);
-	
-	#
-	if (count($initialed_documents)) {
-		// $dashboard['new_documents'] = $new_documents[0]['new_documents'];
-	};	*/
-	
-    // return $response->withJson($filter);
     return $response->withJson($dashboard);
 	
 });

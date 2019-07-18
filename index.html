@@ -118,35 +118,35 @@
 									<div class="col-md-3" ng-show="filter.period.selected.period == 'date'">
 										<div class="form-group">
 											<label>Date:</label>
-											<input type="date" class="form-control" ng-class="{'border-danger': formHolder.filter.date.$touched && formHolder.filter.date.$invalid}" name="date" ng-model="filter.period.date" ng-required="filter.period.selected.period == 'date'">
+											<input type="date" class="form-control" ng-class="{'border-danger': formHolder.filter.date.$touched && formHolder.filter.date.$invalid}" name="date" ng-model="filter.period.date" ng-required="filter.period.selected.period == 'date'" ng-change="dashboard.updateCoverage(this)">
 											<span class="help-block danger" ng-show="formHolder.filter.date.$touched && formHolder.filter.date.$invalid">Please select date</span>											
 										</div>
 									</div>									
 									<div class="col-md-3" ng-show="filter.period.selected.period == 'week'">
 										<div class="form-group">
 											<label>From:</label>
-											<input type="date" class="form-control" ng-class="{'border-danger': formHolder.filter.from.$touched && formHolder.filter.from.$invalid}" name="from" ng-model="filter.period.week.from" ng-required="filter.period.selected.period == 'week'">
+											<input type="date" class="form-control" ng-class="{'border-danger': formHolder.filter.from.$touched && formHolder.filter.from.$invalid}" name="from" ng-model="filter.period.week.from" ng-required="filter.period.selected.period == 'week'" ng-change="dashboard.updateCoverage(this)">
 											<span class="help-block danger" ng-show="formHolder.filter.from.$touched && formHolder.filter.from.$invalid">Please select from date</span>											
 										</div>
 									</div>									
 									<div class="col-md-3" ng-show="filter.period.selected.period == 'week'">
 										<div class="form-group">
 											<label>To:</label>
-											<input type="date" class="form-control" ng-class="{'border-danger': formHolder.filter.to.$touched && formHolder.filter.to.$invalid}" name="to" ng-model="filter.period.week.to" ng-required="filter.period.selected.period == 'week'">
+											<input type="date" class="form-control" ng-class="{'border-danger': formHolder.filter.to.$touched && formHolder.filter.to.$invalid}" name="to" ng-model="filter.period.week.to" ng-required="filter.period.selected.period == 'week'" ng-change="dashboard.updateCoverage(this)">
 											<span class="help-block danger" ng-show="formHolder.filter.to.$touched && formHolder.filter.to.$invalid">Please select to date</span>											
 										</div>
 									</div>
 									<div class="col-md-3" ng-show="filter.period.selected.period == 'month'">
 										<div class="form-group">
 											<label>Month:</label>
-											<select type="text" class="form-control" ng-class="{'border-danger': formHolder.filter.month.$touched && formHolder.filter.month.$invalid}" name="month" ng-model="filter.period.month" ng-options="month.text for month in months track by month.month" ng-required="filter.period.selected.period == 'month'"></select>
+											<select type="text" class="form-control" ng-class="{'border-danger': formHolder.filter.month.$touched && formHolder.filter.month.$invalid}" name="month" ng-model="filter.period.month" ng-options="month.text for month in months track by month.month" ng-required="filter.period.selected.period == 'month'" ng-change="dashboard.updateCoverage(this)"></select>
 											<span class="help-block danger" ng-show="formHolder.filter.month.$touched && formHolder.filter.month.$invalid">Please select month</span>															
 										</div>
 									</div>
 									<div class="col-md-3" ng-show="filter.period.selected.period == 'month' || filter.period.selected.period == 'year'">
 										<div class="form-group">
 											<label>Year:</label>
-											<input type="text" class="form-control" ng-class="{'border-danger': formHolder.filter.year.$touched && formHolder.filter.year.$invalid}" name="year" ng-model="filter.period.year" ng-required="filter.period.selected.period == 'month' || filter.period.selected.period == 'year'">
+											<input type="text" class="form-control" ng-class="{'border-danger': formHolder.filter.year.$touched && formHolder.filter.year.$invalid}" name="year" ng-model="filter.period.year" ng-required="filter.period.selected.period == 'month' || filter.period.selected.period == 'year'" ng-change="dashboard.updateCoverage(this)">
 											<span class="help-block danger" ng-show="formHolder.filter.year.$touched && formHolder.filter.year.$invalid">Please enter year</span>											
 										</div>
 									</div>									
@@ -360,7 +360,7 @@
 							</div>
 						</div>						
 					</div>
-					<div class="col-xl-3 col-lg-6 col-xs-12">
+					<!--<div class="col-xl-3 col-lg-6 col-xs-12">
 						<div class="card">
 							<div class="card-body">
 								<div class="card-block">
@@ -376,7 +376,7 @@
 								</div>
 							</div>
 						</div>						
-					</div>					
+					</div>-->					
 				</div>
 			</div>
 

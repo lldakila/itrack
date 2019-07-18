@@ -41,7 +41,7 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 			scope.filter.period.date = new Date(date);
 			scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();
 			
-			self.filter(scope);				
+			self.filter(scope);		
 
 		};
 		
@@ -58,7 +58,7 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 					var date = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
 					scope.filter.period.date = new Date(date);
 					
-					scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();
+					scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();					
 				
 				break;
 				
@@ -116,7 +116,43 @@ angular.module('dashboard-module', ['ui.bootstrap','bootstrap-modal','block-ui',
 			
 		};
 		
-		self.filter = function(scope) {							
+		self.updateCoverage = function(scope) {		
+			
+			switch (scope.filter.period.selected.period) {
+				
+				case 'date':
+				
+					var d = scope.filter.period.date;
+					scope.views.coverage = scope.months[d.getMonth()].text+' '+d.getDate()+', '+d.getFullYear();
+				
+				break;
+				
+				case 'week':
+
+					var df = scope.filter.period.week.from;			
+					var dt = scope.filter.period.week.to;
+					
+					scope.views.coverage = scope.months[df.getMonth()].text+' '+df.getDate()+', '+df.getFullYear() + ' to ' + scope.months[dt.getMonth()].text+' '+dt.getDate()+', '+dt.getFullYear();
+				
+				break;		
+				
+				case 'month':
+					
+					scope.views.coverage = scope.filter.period.month.text + ', ' + scope.filter.period.year;
+				
+				break;
+				
+				case 'year':
+
+					scope.views.coverage = scope.filter.period.year;
+				
+				break;
+				
+			};			
+			
+		};
+		
+		self.filter = function(scope) {
 			
 			$http({
 				method: 'POST',				
