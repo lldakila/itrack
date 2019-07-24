@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','bootstrap-growl']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,growl) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','bootstrap-growl','prints-module']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,growl,prints) {
 	
 	function app() {
 
@@ -599,13 +599,17 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 		self.receipt = function(scope) {
 
-			printReceipt(scope);
+			if (scope.print.doc.id == 0) return;
+
+			prints.receipt(scope,scope.print.doc);
+			
+			// printReceipt(scope);
 			
 		};
 		
 		function printReceipt(scope) {
 
-			if (scope.print.doc.id == 0) return;		
+			if (scope.print.doc.id == 0) return;	
 			
 			var document = scope.print.doc;
 			
