@@ -165,7 +165,8 @@
 											<div class="col-lg-6">
 												<div class="form-group">
 													<label>Originating Office</label>
-													<select class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select>
+													<!-- <select class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select> -->
+													<input type="text" class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" uib-typeahead="o.office for o in offices | filter:{office:$viewValue}" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid">Office is required</span>
 												</div>
 											</div>
@@ -406,7 +407,8 @@
 	<script src="angular/angular.min.js"></script>
 	<script src="angular/angular-route.min.js"></script>
 	<script src="angular/angular-sanitize.min.js"></script>
-	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>
+	<!-- <script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script> -->
+	<script src="angular/ui-bootstrap-tpls-3.0.6.min.js"></script>
 	
 	<script src="angular/modules/account/account.js"></script>
 	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
