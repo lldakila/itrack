@@ -80,13 +80,15 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 # actions
 $app->get('/actions', function (Request $request, Response $response, array $args) {
 
+	session_start();
+
 	$con = $this->con;
 
 	require_once '../../document-actions.php';
 	require_once '../../actions-params.php';
 
 	$document_actions = document_actions;
-
+	
 	foreach ($document_actions as $da) {
 
 		$actions[$da['key']] = array(

@@ -292,6 +292,13 @@ angular.module('app-module', ['ui.bootstrap','form-validator','bootstrap-modal',
 			
 		};
 		
+		self.originSelected = function(scope, item, model, label, event) {
+			
+			scope.doc.origin = item;
+			console.log(item);
+			
+		};
+		
 		self.dtParams = function(scope,dt) {			
 			
 			$http({

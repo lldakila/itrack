@@ -166,7 +166,7 @@
 												<div class="form-group">
 													<label>Originating Office</label>
 													<!-- <select class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select> -->
-													<input type="text" class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" uib-typeahead="o.office for o in offices | filter:{office:$viewValue}" ng-disabled="controls.btns.ok" required>
+													<input type="text" class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" uib-typeahead="o.shortname for o in offices | filter:{office:$viewValue}" typeahead-on-select="app.originSelected(this, $item, $model, $label, $event)" ng-disabled="controls.btns.ok" required>
 													<span class="help-block danger" ng-show="formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid">Office is required</span>
 												</div>
 											</div>
@@ -286,7 +286,7 @@
 														</div>
 													</div>
 												</div>
-												<div id="headingForRouting" class="card-header">
+												<!-- <div id="headingForRouting" class="card-header">
 													<div class="row">
 														<div class="col-lg-3">													
 															<a data-toggle="collapse" href="#{{(!controls.btns.ok)?'for_routing':''}}" aria-expanded="false" aria-controls="for_routing" class="card-title collapsed" ng-click="app.headerActionParam(this,'for_routing')"><span class="text-muted" style="">{{doc.actions.for_routing.description}}</span></a>
@@ -315,7 +315,7 @@
 															</div>
 														</div>
 													</div>
-												</div>
+												</div> -->
 											</div>
 										</div>
 										<div class="row">

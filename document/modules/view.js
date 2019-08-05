@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','track-document','load-js','prints-module']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files,track,loadjs,prints) {
+angular.module('app-module', ['ui.bootstrap','form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','track-document','load-js','prints-module']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files,track,loadjs,prints) {
 	
 	function app() {
 
@@ -168,6 +168,12 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			});
 			
 		};
+		
+		self.originSelected = function(scope, item, model, label, event) {
+			
+			scope.doc.origin = item;
+			
+		};		
 		
 		function loadTracks(scope,id) {
 			

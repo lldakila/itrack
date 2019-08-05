@@ -3,13 +3,35 @@
 define('system_setup', array(
 	array(
 		"id"=>1,
-		"description"=>"Users for document action: initial at receiving document",
-		"values"=>[2,8,9],
+		"description"=>"Initial",
+		"values"=>array(
+			2=>array( # OPA
+				"id"=>1,
+				"description"=>"Users for document action: initial",
+				"values"=>[2,8,9],
+			),
+			3=>array( # OPG
+				"id"=>1,
+				"description"=>"Users for document action: initial",
+				"values"=>[2,8,9],		
+			)
+		)
 	),
 	array(
 		"id"=>2,
-		"description"=>"Users for document action: signature at receiving document",
-		"values"=>[2,6,9],
+		"description"=>"Signature",
+		"values"=>array(
+			2=>array( # OPA
+				"id"=>2,
+				"description"=>"Users for document action: signature",
+				"values"=>[2,6,9],
+			),
+			3=>array( # OPG
+				"id"=>2,
+				"description"=>"Users for document action: signature",
+				"values"=>[2,6,9],		
+			)
+		)
 	),	
 	array(
 		"id"=>3,
