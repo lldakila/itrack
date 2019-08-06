@@ -286,7 +286,7 @@
 														</div>
 													</div>
 												</div>
-												<!-- <div id="headingForRouting" class="card-header">
+												<div ng-show="for_routing.params.length>0" id="headingForRouting" class="card-header">
 													<div class="row">
 														<div class="col-lg-3">													
 															<a data-toggle="collapse" href="#{{(!controls.btns.ok)?'for_routing':''}}" aria-expanded="false" aria-controls="for_routing" class="card-title collapsed" ng-click="app.headerActionParam(this,'for_routing')"><span class="text-muted" style="">{{doc.actions.for_routing.description}}</span></a>
@@ -301,7 +301,7 @@
 														</div>
 													</div>
 												</div>
-												<div id="for_routing" role="tabpanel" aria-labelledby="headingForRouting" class="card-collapse collapse" aria-expanded="false" style="">
+												<div ng-show="for_routing.params.length>0" id="for_routing" role="tabpanel" aria-labelledby="headingForRouting" class="card-collapse collapse" aria-expanded="false" style="">
 													<div class="card-body">
 														<div class="card-block">
 															<div class="form-group" ng-repeat="param in doc.actions.for_routing.params">
@@ -315,7 +315,7 @@
 															</div>
 														</div>
 													</div>
-												</div> -->
+												</div>
 											</div>
 										</div>
 										<div class="row">
