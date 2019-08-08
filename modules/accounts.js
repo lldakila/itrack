@@ -138,7 +138,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			
 		};
 
-		self.delete = function(scope,row){
+		self.delete = function(scope,row) {
 			
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.delete)) return;
 			
