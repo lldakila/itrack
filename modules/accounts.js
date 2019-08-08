@@ -94,7 +94,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 		
 		
 		
-			});			
+			});
+			
 			$http({
 				method: 'GET',
 				url: 'handlers/groups.php'
@@ -191,7 +192,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			  url: 'api/accounts/view/'+id,
 			}).then(function mySuccess(response) {
 				
-				scope.user = angular.copy(response.data);			
+				scope.user = angular.copy(response.data);
+				privileges(scope);
 				
 			}, function myError(response) {
 				
@@ -263,6 +265,23 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			});				
 			
 		};
+		
+		function privileges(scope) {			
+			
+			$http({
+			  method: 'GET',
+			  url: 'api/groups/privileges/special/'+scope.user.id,
+			}).then(function mySuccess(response) {
+
+				scope.privileges = response.data;
+				
+			}, function myError(response) {
+				
+				//
+				
+			});				
+			
+		};		
 
 	};
 

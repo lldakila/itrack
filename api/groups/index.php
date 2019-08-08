@@ -134,6 +134,37 @@ $app->get('/privileges/{id}', function (Request $request, Response $response, ar
 
 });
 
+$app->get('/privileges/special/{id}', function(Request $request, Response $response, array $args) {
+	
+	$con = $this->con;
+	$con->table = "users";
+
+	require_once '../../system_privileges.php';
+	require_once '../../classes.php';	
+	
+	$group_privileges = $con->get(array("id"=>$args['id']),["privileges"]);
+
+	if (count($group_privileges)) {
+		if ($group_privileges[0]['privileges']!=NULL) {
+
+			$privileges_obj = new privileges(system_privileges,$group_privileges[0]['privileges']);
+			$privileges = $privileges_obj->getPrivileges();
+
+		} else {
+			
+			$privileges = system_privileges;		
+			
+		}
+	} else {
+
+		$privileges = system_privileges;	
+
+	}
+
+    return $response->withJson($privileges);	
+	
+});
+
 $app->run();
 
 ?>
