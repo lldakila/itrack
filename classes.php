@@ -4,14 +4,16 @@ class privileges {
 
 	var $system_privileges;
 	var $group_privileges;
+	var $user_privileges;
 	var $page_privileges;
 
-	function __construct($system_privileges,$group_privileges) {
+	function __construct($system_privileges,$group_privileges,$user_privileges) {
 
 		$arrayHex = new ArrayHex();
 	
 		$this->system_privileges = $system_privileges;
 		$this->group_privileges = json_decode($arrayHex->toArray($group_privileges),true);
+		$this->user_privileges = json_decode($arrayHex->toArray($user_privileges),true);
 
 		foreach ($this->system_privileges as $key => $system_module) {
 			

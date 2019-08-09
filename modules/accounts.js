@@ -107,7 +107,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 		
 		
 		
-			});			
+			});
+
+			privileges(scope);
 
 		};
 		
@@ -116,7 +118,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add)) return;
 			
 			scope.controls.btns.ok = false;
-			scope.controls.btns.cancel = false;
+			scope.controls.btns.cancel = false;						
 			
 		};
 		
@@ -220,7 +222,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			$http({
 			  method: method,
 			  url: url,
-			  data: scope.user
+			  data: {user: scope.user, privileges: scope.privileges}
 			}).then(function mySuccess(response) {
 				
 				if (scope.user.id == 0) {
