@@ -30,7 +30,7 @@ $pages_access = [];
 if (count($group_privileges)) {
 	if ($group_privileges[0]['privileges']!=NULL) {
 
-		$privileges_obj = new privileges(system_privileges,$group_privileges[0]['privileges'],$user_privileges);
+		$privileges_obj = new privileges(system_privileges,$group_privileges[0]['privileges'],$user_privileges[0]['privileges']);
 		$pages_access = $privileges_obj->getPagesPrivileges();
 
 	};

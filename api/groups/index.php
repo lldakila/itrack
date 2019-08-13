@@ -116,7 +116,7 @@ $app->get('/privileges/{id}', function (Request $request, Response $response, ar
 	if (count($group_privileges)) {
 		if ($group_privileges[0]['privileges']!=NULL) {
 
-			$privileges_obj = new privileges(system_privileges,$group_privileges[0]['privileges']);
+			$privileges_obj = new privileges(system_privileges,$group_privileges[0]['privileges'],null);
 			$privileges = $privileges_obj->getPrivileges();
 
 		} else {
