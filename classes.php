@@ -14,7 +14,8 @@ class privileges {
 		$this->system_privileges = $system_privileges;
 		$this->group_privileges = json_decode($arrayHex->toArray($group_privileges),true);
 		$this->user_privileges = json_decode($arrayHex->toArray($user_privileges),true);
-
+		
+		# sync system privileges with group privileges
 		foreach ($this->system_privileges as $key => $system_module) {
 			
 			if ($this->hasModule($system_module)) {
@@ -41,7 +42,7 @@ class privileges {
 
 	}
 	
-	private function getModule($system_module) {
+	private function getModule($system_module) { # get group module
 		
 		$getModule = $system_module['privileges'];
 		
@@ -52,6 +53,20 @@ class privileges {
 		};
 		
 		return $getModule;		
+		
+	}
+	
+	private function getUserModule($system_module) {
+		
+		$getUserModule = $system_module['privileges'];
+		
+		foreach ($this->user_privileges as $key => $user_module) {
+			
+			if ($user_module['id'] == $system_module['id']) $getUserModule = $user_module['privileges'];
+			
+		};
+		
+		return $getUserModule;			
 		
 	}
 
@@ -83,7 +98,7 @@ class privileges {
 
 	}
 	
-	private function getPagesAccess($system_module_privileges,$group_module_privileges) {
+	private function getPagesAccess($system_module_privileges,$group_module_privileges,$group_user_privileges) {
 		
 		$access = false;
 		
@@ -92,7 +107,7 @@ class privileges {
 			if ($smp['id'] > 1) continue;
 			if (preg_match("/_/",$smp['id'])) continue;			
 			
-			$access = $this->groupPagesAccess($group_module_privileges,$smp);
+			$access = $this->groupPagesAccess($group_module_privileges,$group_user_privileges,$smp);
 
 		};
 		
@@ -100,7 +115,7 @@ class privileges {
 		
 	}
 	
-	private function getDeleteAccess($system_module_privileges,$group_module_privileges) {
+	private function getDeleteAccess($system_module_privileges,$group_module_privileges,$group_user_privileges) {
 		
 		$delete = [];
 		
@@ -108,7 +123,7 @@ class privileges {
 			
 			if (!preg_match("/delete/",$smp['id'])) continue;
 			
-			$delete[$smp['id']] = $this->groupPagesAccess($group_module_privileges,$smp);
+			$delete[$smp['id']] = $this->groupPagesAccess($group_module_privileges,$group_user_privileges,$smp);
 
 		};
 		
@@ -116,7 +131,7 @@ class privileges {
 		
 	}	
 	
-	private function getShowAccess($system_module_privileges,$group_module_privileges) {
+	private function getShowAccess($system_module_privileges,$group_module_privileges,$group_user_privileges) {
 
 		$show = [];
 
@@ -124,7 +139,7 @@ class privileges {
 
 			if (!preg_match("/show/",$smp['id'])) continue;
 
-			$show[$smp['id']] = $this->groupPagesAccess($group_module_privileges,$smp);
+			$show[$smp['id']] = $this->groupPagesAccess($group_module_privileges,$group_user_privileges,$smp);
 
 		};
 		
@@ -132,13 +147,13 @@ class privileges {
 
 	}	
 	
-	private function groupPagesAccess($group_privileges,$page_access) {
+	private function groupPagesAccess($group_privileges,$user_privileges,$page_access) {
 		
 		$access = false;
 		
 		foreach ($group_privileges as $key => $gp) {
 			
-			if ($gp['id'] == $page_access['id']) $access = $gp['value']; 
+			if (($gp['id'] == $page_access['id']) && ($user_privileges[$key]['id'] == $page_access['id'])) $access = $gp['value'] || $user_privileges[$key]['value'];
 			
 		};
 		
@@ -158,9 +173,9 @@ class privileges {
 
 		foreach ($this->system_privileges as $key => $system_module) {
 			
-			$system_module['value'] = $this->getPagesAccess($system_module['privileges'],$this->getModule($system_module));
-			$system_module['delete'] = $this->getDeleteAccess($system_module['privileges'],$this->getModule($system_module));		
-			$system_module['show'] = $this->getShowAccess($system_module['privileges'],$this->getModule($system_module));
+			$system_module['value'] = $this->getPagesAccess($system_module['privileges'],$this->getModule($system_module),$this->getUserModule($system_module));
+			$system_module['delete'] = $this->getDeleteAccess($system_module['privileges'],$this->getModule($system_module),$this->getUserModule($system_module));		
+			$system_module['show'] = $this->getShowAccess($system_module['privileges'],$this->getModule($system_module),$this->getUserModule($system_module));
 			
 			unset($system_module['privileges']);
 			
@@ -181,6 +196,8 @@ class privileges {
 	
 	public function hasAccess($mod,$prop) {
 		
+		$group = false;
+		$user = false;
 		$access = false;
 		
 		foreach ($this->system_privileges as $sp) {
@@ -189,13 +206,31 @@ class privileges {
 
 				foreach ($sp['privileges'] as $p) {
 
-					if ($p['id'] == $prop) $access = $p['value'];
+					// if ($p['id'] == $prop) $access = $p['value'];
+					if ($p['id'] == $prop) $group = $p['value'];
 
 				};
 
 			};
 
 		};
+		
+		foreach ($this->user_privileges as $up) {
+			
+			if ($up['id'] == $mod) {
+
+				foreach ($up['privileges'] as $p) {
+
+					// if ($p['id'] == $prop) $access = $p['value'];
+					if ($p['id'] == $prop) $user = $p['value'];
+
+				};
+
+			};			
+			
+		}
+		
+		$access = $group || $user;
 		
 		return $access;
 	
