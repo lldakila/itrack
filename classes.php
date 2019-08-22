@@ -13,7 +13,7 @@ class privileges {
 	
 		$this->system_privileges = $system_privileges;
 		$this->group_privileges = json_decode($arrayHex->toArray($group_privileges),true);
-		$this->user_privileges = json_decode($arrayHex->toArray($user_privileges),true);
+		$this->user_privileges = ($user_privileges==null)?[]:json_decode($arrayHex->toArray($user_privileges),true);		
 		
 		# sync system privileges with group privileges
 		foreach ($this->system_privileges as $key => $system_module) {
@@ -59,7 +59,7 @@ class privileges {
 	private function getUserModule($system_module) {
 		
 		$getUserModule = $system_module['privileges'];
-		
+
 		foreach ($this->user_privileges as $key => $user_module) {
 			
 			if ($user_module['id'] == $system_module['id']) $getUserModule = $user_module['privileges'];

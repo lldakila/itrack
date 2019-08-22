@@ -13,7 +13,7 @@ define('system_setup', array(
 			3=>array( # OPG
 				"id"=>1,
 				"description"=>"Users for document action: initial",
-				"values"=>[2,8,9],		
+				"values"=>[6],		
 			)
 		)
 	),
@@ -24,12 +24,12 @@ define('system_setup', array(
 			2=>array( # OPA
 				"id"=>2,
 				"description"=>"Users for document action: signature",
-				"values"=>[2,6,9],
+				"values"=>[2,8,9],
 			),
 			3=>array( # OPG
 				"id"=>2,
 				"description"=>"Users for document action: signature",
-				"values"=>[2,6,9],		
+				"values"=>[6],		
 			)
 		)
 	),	

@@ -21,6 +21,8 @@ require_once 'system_setup.php';
 
 $system_setup = new setup(system_setup);
 
+if (!isset($_SESSION)) session_start();
+
 $users_for_initial_selects = [];
 $users_ids_initial = $system_setup->get_setup(1); # users for document action: initial
 $initial_users = (isset($users_ids_initial[$_SESSION['office']]))?implode(",",$users_ids_initial[$_SESSION['office']]['values']):"0";
