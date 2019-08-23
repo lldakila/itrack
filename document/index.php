@@ -975,6 +975,11 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];	
 	
+	// add release track
+	
+	
+	//
+	
 	$receive = 3;
 
 	$track_transit = array(
@@ -998,7 +1003,8 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 		"transit"=>json_encode($track_transit),
 	);
 
-	$insert_track = $con->insertData($track);
+	$insert_track = $con->insertData($track);	
+	
 	$track_id = $con->insertId;
 
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
@@ -1030,9 +1036,6 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 	
 	session_start();
 
-	$session_user_id = $_SESSION['itrack_user_id'];
-	$session_office = $_SESSION['office'];	
-
 	$data = $request->getParsedBody();
 
 	$id = $data['document']['id'];
@@ -1046,8 +1049,9 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 		"id"=>$release,
 		"picked_up_by"=>null,
 		"received_by"=>null,
-		"office"=>null,
-		"released_to"=>$data['release']['staff']['id'],
+		"office"=>$data['release']['office']['id'],
+		// "released_to"=>$data['release']['staff']['id'],
+		"released_to"=>null,
 		"filed"=>false,		
 	);
 

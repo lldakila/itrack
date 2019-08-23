@@ -207,7 +207,8 @@ function tracks($con,$setup,$id,$document) {
 			
 			$list[] = array(
 				"status"=>array(
-					"text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to"),
+					// "text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to"),
+					"text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to the ".get_transit_office($con,$track['transit']),
 					"comment"=>null,
 				)
 			);
