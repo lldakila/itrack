@@ -8,7 +8,7 @@ function tracks($con,$setup,$id,$document) {
 	$for_initial = [];
 	$for_signature = [];	
 
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY system_log DESC");
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC");
 	
 	foreach ($tracks as $track) {
 

@@ -352,7 +352,8 @@ function notify($con,$state,$params,$notify_group = true) {
 		
 		case "released":			
 		
-			$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." the document to ".get_staff_name($con,$params['release_to']);		
+			if ($params['track_action_staff']>0) $message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." the document to ".get_office_description($con,$params['release_to']);		
+			else $message = "The document was ".$params['track_action_status']." to ".get_office_description($con,$params['release_to']);		
 
 			if ($notify_group) {
 			
