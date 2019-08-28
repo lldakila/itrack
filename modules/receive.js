@@ -67,13 +67,35 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 				
 				bui.hide();				
 		
-			});			
+			});		
 			
 		};
 		
 		self.receive = function(scope,d) {
 
 			receive.document(scope,d.id);
+			
+		};
+		
+		self.open = function(scope,d) {
+			
+			var onOk = function() {
+							
+				
+			};
+			
+			$http({
+				method: 'GET',
+				url: 'document/doc/actions/'+d.id,
+			}).then(function mySuccess(response) {
+				
+				
+
+			}, function myError(response) {								
+		
+			});		
+			
+			bootstrapModal.box(scope,'Document Actions','/dialogs/actions.html',onOk);
 			
 		};
 
