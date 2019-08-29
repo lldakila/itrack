@@ -207,6 +207,16 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 			
 			} else {
 				
+				# transit
+				$transit = array(
+					"id"=>1,
+					"picked_up_by"=>null,
+					"received_by"=>null,
+					"office"=>$session_office,
+					"released_to"=>null,
+					"filed"=>false,
+				);				
+				
 				$track = array(
 					"document_id"=>$id,
 					"office_id"=>$_SESSION['office'],
@@ -214,8 +224,9 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 					"track_action_add_params"=>json_encode($action['params'][0]),
 					"track_action_status"=>null,
 					"track_user"=>$_SESSION['itrack_user_id'],
+					"transit"=>json_encode($transit)
 				);
-				
+
 				$con->insertData($track);				
 				
 			};
@@ -1616,7 +1627,7 @@ $app->post('/doc/office/action', function (Request $request, Response $response,
 					"id"=>$track[0]['id'],
 					"track_action_add_params"=>json_encode($action['params'][0]),
 					"track_action_status"=>null,
-					"track_user"=>$_SESSION['itrack_user_id'],
+					"track_user"=>$session_user_id,
 					"update_log"=>"CURRENT_TIMESTAMP"
 				);
 
@@ -1624,32 +1635,6 @@ $app->post('/doc/office/action', function (Request $request, Response $response,
 			
 			} else {
 				
-				$track = array(
-					"document_id"=>$id,
-					"office_id"=>$_SESSION['office'],
-					"track_action"=>$actions_arr[$i],
-					"track_action_add_params"=>json_encode($action['params'][0]),
-					"track_action_status"=>null,
-					"track_user"=>$_SESSION['itrack_user_id'],
-				);
-				
-				$con->insertData($track);				
-				
-			};
-		
-		} else {
-			
-			if (count($track)) $con->deleteData(array("id"=>$track[0]['id']));
-			
-		};		
-		
-		#
-		if (count($track)) {
-		
-			if ($action['value']) {
-
-				$track_action = $action['params'][0]['action_id'];
-
 				# transit
 				$transit = array(
 					"id"=>1,
@@ -1659,23 +1644,26 @@ $app->post('/doc/office/action', function (Request $request, Response $response,
 					"released_to"=>null,
 					"filed"=>false,
 				);
-
+				
 				$track = array(
 					"document_id"=>$data['id'],
 					"office_id"=>$session_office,
-					"track_action"=>$track_action,
+					"track_action"=>$actions_arr[$i],
 					"track_action_add_params"=>json_encode($action['params'][0]),
 					"track_action_status"=>null,
 					"track_user"=>$session_user_id,
 					"transit"=>json_encode($transit)
-				);						
-
-				$con->insertData($track);
-
+				);				
+				
+				$con->insertData($track);				
+				
 			};
+		
+		} else {
 			
-		}
-		#
+			if (count($track)) $con->deleteData(array("id"=>$track[0]['id']));
+			
+		};
 	
 	};
 
