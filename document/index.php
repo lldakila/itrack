@@ -574,7 +574,7 @@ $app->get('/doc/actions/{id}', function ($request, $response, $args) {
 	$files = get_document_files($con,"/files/","../files/",$document[0]['id']);	
 	
 	# tracks for actions
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND track_action IS NOT NULL");
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action IS NOT NULL");
 
 	$actions_arr = array(null,"Initialed","Approved");
 
@@ -1053,7 +1053,7 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$release_track = array(
 		"document_id"=>$id,
 		"office_id"=>$session_office,
-		"track_action_staff"=>$session_user_id,
+		"track_action_staff"=>0,
 		"track_action_status"=>$release_transit_description,
 		"track_user"=>$session_user_id,
 		"transit"=>json_encode($release_track_transit),
