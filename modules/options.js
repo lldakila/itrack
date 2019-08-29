@@ -126,7 +126,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 				if (validate(scope,'option')) {
 					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 55},'Some fields are required.');
 					return false;
-					};
+				};
 				
 				var url = 'api/options/add';
 				var method = 'POST';

@@ -86,12 +86,15 @@ $app->get('/view/actions/{id}', function (Request $request, Response $response, 
 	require_once '../document-actions.php';
 	require_once '../actions-params.php';
 
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+
 	$id = $args['id'];
 
 	$document_actions = document_actions;
 
 	# tracks
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id");
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office");
 
 	foreach ($document_actions as $da) {
 
@@ -132,6 +135,9 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 	require_once '../api/receive-document/classes.php';
 
 	session_start();
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
 
 	$id = $args['id'];
 	
@@ -181,7 +187,7 @@ $app->put('/update/{id}', function ($request, $response, $args) {
 		if ($actions_arr[$i] == 5) continue; // skip revise
 		if ($actions_arr[$i] == 6) continue; // skip revised
 		
-		$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action = ".$actions_arr[$i];
+		$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action = ".$actions_arr[$i];
 
 		$track = $con->getData($sql);
 
@@ -1569,6 +1575,109 @@ $app->delete('/doc/tracks/delete/{id}', function (Request $request, Response $re
 	$id = $args['id'];
 
 	$con->deleteData(array("id"=>$id));
+
+});
+
+$app->post('/doc/office/action', function (Request $request, Response $response, array $args) {
+
+	require_once '../system_setup.php';
+	require_once '../functions.php';
+	require_once '../notify.php';
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	$data = $request->getParsedBody();		
+	
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];
+
+	$actions = $data['actions'];
+
+	$actions_arr = array("for_initial"=>1,"for_signature"=>2,"for_routing"=>3,"comment"=>4,"revise"=>5,"revised"=>6);
+
+	foreach ($actions as $i => $action) {
+		
+		if ($actions_arr[$i] == 4) continue; // skip comment
+		if ($actions_arr[$i] == 5) continue; // skip revise
+		if ($actions_arr[$i] == 6) continue; // skip revised		
+		
+		$sql = "SELECT * FROM tracks WHERE document_id = ".$data['id']." AND office_id = $session_office AND track_action = ".$actions_arr[$i];
+		
+		$track = $con->getData($sql);	
+		
+		if ($action['value']) {
+
+			if (count($track)) {
+				
+				$track = array(
+					"id"=>$track[0]['id'],
+					"track_action_add_params"=>json_encode($action['params'][0]),
+					"track_action_status"=>null,
+					"track_user"=>$_SESSION['itrack_user_id'],
+					"update_log"=>"CURRENT_TIMESTAMP"
+				);
+
+				$con->updateData($track,'id');
+			
+			} else {
+				
+				$track = array(
+					"document_id"=>$id,
+					"office_id"=>$_SESSION['office'],
+					"track_action"=>$actions_arr[$i],
+					"track_action_add_params"=>json_encode($action['params'][0]),
+					"track_action_status"=>null,
+					"track_user"=>$_SESSION['itrack_user_id'],
+				);
+				
+				$con->insertData($track);				
+				
+			};
+		
+		} else {
+			
+			if (count($track)) $con->deleteData(array("id"=>$track[0]['id']));
+			
+		};		
+		
+		#
+		if (count($track)) {
+		
+			if ($action['value']) {
+
+				$track_action = $action['params'][0]['action_id'];
+
+				# transit
+				$transit = array(
+					"id"=>1,
+					"picked_up_by"=>null,
+					"received_by"=>null,
+					"office"=>$session_office,
+					"released_to"=>null,
+					"filed"=>false,
+				);
+
+				$track = array(
+					"document_id"=>$data['id'],
+					"office_id"=>$session_office,
+					"track_action"=>$track_action,
+					"track_action_add_params"=>json_encode($action['params'][0]),
+					"track_action_status"=>null,
+					"track_user"=>$session_user_id,
+					"transit"=>json_encode($transit)
+				);						
+
+				$con->insertData($track);
+
+			};
+			
+		}
+		#
+	
+	};
 
 });
 

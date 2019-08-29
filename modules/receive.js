@@ -77,27 +77,150 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			
 		};
 		
-		self.open = function(scope,d) {
+		self.open = function(scope,d) {			
 			
-			var onOk = function() {
-							
-				
-			};
+			scope.doc = {};
+			scope.doc.id = d.id;
+			scope.doc.actions = [];
+			
+			scope.views.alert = {};
+			scope.views.alert.actions = {};
+			scope.views.alert.actions.show = false;
+			scope.views.alert.actions.message = "";
 			
 			$http({
 				method: 'GET',
-				url: 'document/doc/actions/'+d.id,
+				url: 'document/view/actions/'+d.id
 			}).then(function mySuccess(response) {
 				
-				
+				scope.doc.actions = angular.copy(response.data);
+				checkboxActionParam(scope);
 
-			}, function myError(response) {								
+			}, function myError(response) {
 		
-			});		
+		
+			});
+			
+			/* $http({
+				method: 'GET',
+				url: 'api/receive-document/actions'
+			}).then(function mySuccess(response) {
+				
+				scope.doc.actions = angular.copy(response.data);
+
+			}, function myError(response) {
+		
+		
+			});	 */
+			
+			var onOk = function() {
+				
+				scope.views.alert.actions.show = false;
+				scope.views.alert.actions.message = "";			
+				
+				var actions = 'false';
+				var options = 'true';
+
+				var doc_actions = ['for_initial','for_signature','for_routing'];
+
+				doc_actions.forEach(function(action,i) {
+					
+					actions+=(scope.doc.actions[action].value)?'||true':'||false';
+					
+					if (scope.doc.actions[action].value) {
+						
+						options+='&&(';
+						
+						angular.forEach(scope.doc.actions[action].params,function(param,ii) {
+							
+							if (param.type=='checkbox') {
+							
+								angular.forEach(param.options, function(option,iii) {
+									
+									if (iii==0) options+=(option.value)?'true':'false';
+									else options+=(option.value)?'||true':'||false';						
+									
+								});
+							
+							};
+							
+							if (param.type=='select') {
+								
+								options+=(param.value.id>0)?'true':'false';						
+								
+							};
+							
+						});
+						
+						options+=')';
+						
+					};
+					
+				});
+				
+				if (!eval(actions)) {
+					
+					scope.views.alert.actions.show = true;
+					scope.views.alert.actions.message = "Pleas select an action";
+					return false;
+					
+				} else {
+					
+					if (!eval(options)) {
+
+						scope.views.alert.actions.show = true;
+						scope.views.alert.actions.message = "Choice is required in each actions selected";
+						return false;
+						
+					};
+					
+				};
+
+				$http({
+					method: 'POST',
+					url: 'document/doc/office/action',
+					data: scope.doc
+				}).then(function mySuccess(response) {
+					
+					
+
+				}, function myError(response) {								
+				
+				});
+				
+				return true;
+				
+			};
 			
 			bootstrapModal.box(scope,'Document Actions','/dialogs/actions.html',onOk);
 			
 		};
+		
+		self.headerActionParam = function(scope,action) {		
+		
+			scope.doc.actions[action].value = !scope.doc.actions[action].value;
+			
+		};		
+
+		self.checkboxActionParam = function(scope,action) {
+				
+			if (scope.doc.actions[action].value) $('#'+action).addClass('in');
+			else $('#'+action).removeClass('in');
+			
+		};
+		
+		function checkboxActionParam(scope) {
+			
+			var actions = ['for_initial','for_signature','for_routing'];
+			
+			actions.forEach(function(action,i) {
+
+				if (scope.doc.actions[action].value) $('#'+action).addClass('in');
+				else $('#'+action).removeClass('in');		
+
+			});
+			
+		};		
 
 	};
 
