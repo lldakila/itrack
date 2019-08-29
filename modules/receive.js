@@ -115,6 +115,8 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			
 			var onOk = function() {
 				
+				bui.show();
+				
 				scope.views.alert.actions.show = false;
 				scope.views.alert.actions.message = "";			
 				
@@ -162,6 +164,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 					
 					scope.views.alert.actions.show = true;
 					scope.views.alert.actions.message = "Pleas select an action";
+					bui.hide();
 					return false;
 					
 				} else {
@@ -170,6 +173,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 
 						scope.views.alert.actions.show = true;
 						scope.views.alert.actions.message = "Choice is required in each actions selected";
+						bui.hide();
 						return false;
 						
 					};
@@ -182,10 +186,11 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 					data: scope.doc
 				}).then(function mySuccess(response) {
 					
-					
+					bui.hide();
 
 				}, function myError(response) {								
 				
+					bui.hide();
 				});
 				
 				return true;
