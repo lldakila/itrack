@@ -2,37 +2,63 @@
 
 function tracks($con,$setup,$id,$document) {
 
+	$initial_office = $setup->get_setup_as_string(4);
+
 	$document_tracks =[];
 
 	$initial_list = [];
 	$for_initial = [];
 	$for_signature = [];	
 
+	$received_next_office = [];
+
 	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC");
 	
-	foreach ($tracks as $track) {
+	foreach ($tracks as $i => $track) {
+
+		$transit_office = get_transit_office_id($con,$track['transit']);		
 
 		$list = [];
 		$icon = "icon-ios-location-outline";
-		
+						
 		# for initial / signature	
-		if ($track['track_action'] == 1) {
-			$for_initial = array(
-				"status"=>array(
-					"text"=>"For initial for ".get_action_staff_names(get_track_action_param($track['track_action_add_params'])),
-					"comment"=>null,
-				)
-			);
+		if ($track['track_action'] == 1) {			
+			if ($transit_office==$initial_office) { # OPA
+				$for_initial = array(
+					"status"=>array(
+						"text"=>"For initial for ".get_action_staff_names(get_track_action_param($track['track_action_add_params'])),
+						"comment"=>null,
+					)
+				);
+			} else {
+				$received_next_office[] = array(
+					"status"=>array(
+						"text"=>"For initial for ".get_action_staff_names(get_track_action_param($track['track_action_add_params'])),
+						"comment"=>null,
+					)				
+				);
+			}
 		};
 		
-		if ($track['track_action'] == 2) {
-			$for_signature = array(
-				"status"=>array(
-					"text"=>"For signature for ".get_action_staff_names(get_track_action_param($track['track_action_add_params'])),
-					"comment"=>null,
-				)
-			);			
-		};		
+		if ($track['track_action'] == 2) {			
+			if ($transit_office==$initial_office) { # OPA
+				$for_signature = array(
+					"status"=>array(
+						"text"=>"For signature for ".get_action_staff_names(get_track_action_param($track['track_action_add_params'])),
+						"comment"=>null,
+					)
+				);
+			} else {
+				$received_next_office[] = array(
+					"status"=>array(
+						"text"=>"For signature for ".get_action_staff_names(get_track_action_param($track['track_action_add_params'])),
+						"comment"=>null,
+					)
+				);				
+			}
+		};
+		
+		
 		
 		# comment
 		if ($track['track_action'] == 4) {
@@ -126,7 +152,7 @@ function tracks($con,$setup,$id,$document) {
 		};		
 		
 		# initialed / approved
-		if ($track['preceding_track']!=null) {
+		if (($track['track_action_status']=="initialed") || ($track['track_action_status']=="approved")) {
 			
 			$ia_icons = array(null,"icon-android-checkmark-circle","icon-checkmark");
 			
@@ -138,13 +164,13 @@ function tracks($con,$setup,$id,$document) {
 			);
 			
 			$bg = "bg-info";
-			
-			if ($track['preceding_track']==2) $bg = "bg-success";
+			$track_action = get_track_track_action($con,$track['preceding_track']);
+			if ($track_action==2) $bg = "bg-success";
 			
 			$document_tracks[] = array(
 				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],			
-				"icon"=>$ia_icons[get_track_track_action($con,$track['preceding_track'])],
+				"icon"=>$ia_icons[$track_action],
 				"bg"=>$bg,
 				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
 				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
@@ -156,105 +182,118 @@ function tracks($con,$setup,$id,$document) {
 		# picked up / received
 		$t_icons = array(null,"icon-android-arrow-dropdown","icon-briefcase","icon-ios-location-outline","icon-arrow44","icon-android-folder-open");		
 		
-		if (is_picked_up($track['transit'])) {
-			
-			$status = $track['track_action_status'];
-			
-			$list[] = array(
-				"status"=>array(
-					"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
-					"comment"=>null,
-				)
-			);
-			
-			$document_tracks[] = array(
-				"track_id"=>$track['id'],			
-				"id"=>$track['track_action'],			
-				"icon"=>$t_icons[get_transit_id($track['transit'])],
-				"bg"=>"bg-danger",
-				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
-				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
-				"list"=>$list,
-			);
-			
-		};
+		if ($track['track_action_status']!=null) {
 		
-		if (is_received($track['transit'])) {
+			if ($track['track_action_status']=="picked up") { # pick up
+				
+				$status = $track['track_action_status'];
+				
+				$list[] = array(
+					"status"=>array(
+						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+						"comment"=>null,
+					)
+				);
+				
+				$document_tracks[] = array(
+					"track_id"=>$track['id'],			
+					"id"=>$track['track_action'],			
+					"icon"=>$t_icons[get_transit_id($track['transit'])],
+					"bg"=>"bg-danger",
+					"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+					"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+					"list"=>$list,
+				);
+				
+			};
+			
+			if ($track['track_action_status']=="received") { # received
 
-			$status = $track['track_action_status'];
-			if (is_received_filed($track['transit'])) $status.=" and filed";			
+				$status = $track['track_action_status'];
+				if ($track['track_action_status']=="filed") $status.=" and filed";			
 
-			$list[] = array(
-				"status"=>array(
-					"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
-					"comment"=>null,
-				)
-			);
+				/* $list[] = array(
+					"status"=>array(
+						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+						"comment"=>null,
+					)
+				); */
 
-			$document_tracks[] = array(
-				"track_id"=>$track['id'],			
-				"id"=>$track['track_action'],			
-				"icon"=>$t_icons[get_transit_id($track['transit'])],
-				"bg"=>"bg-danger",
-				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
-				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
-				"list"=>$list,
-			);
+				$received_next_office[] = array(
+					"status"=>array(
+						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+						"comment"=>null,
+					)
+				);
+				
+				$received_next_office = array_reverse($received_next_office);
+				
+				$document_tracks[] = array(
+					"track_id"=>$track['id'],			
+					"id"=>$track['track_action'],			
+					"icon"=>$t_icons[get_transit_id($track['transit'])],
+					"bg"=>"bg-danger",
+					"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+					"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+					"list"=>$received_next_office,
+				);
+				
+				$received_next_office = [];
 
+			};
+
+			if ($track['track_action_status']=="released") { # released
+				
+				$list[] = array(
+					"status"=>array(
+						// "text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to"),
+						"text"=>"The document was ".$track['track_action_status']." to the ".get_transit_office($con,$track['transit']),
+						"comment"=>null,
+					)
+				);
+				
+				$document_tracks[] = array(
+					"track_id"=>$track['id'],			
+					"id"=>$track['track_action'],			
+					"icon"=>$t_icons[get_transit_id($track['transit'])],
+					"bg"=>"bg-danger",
+					"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+					"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+					"list"=>$list,
+				);
+				
+			};
+			
+			if ($track['track_action_status']=="filed") { # filed
+
+				$status = $track['track_action_status'];		
+
+				$list[] = array(
+					"status"=>array(
+						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+						"comment"=>null,
+					)
+				);
+
+				$document_tracks[] = array(
+					"track_id"=>$track['id'],			
+					"id"=>$track['track_action'],			
+					"icon"=>$t_icons[get_transit_id($track['transit'])],
+					"bg"=>"bg-danger",
+					"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
+					"track_date"=>date("M j, Y",strtotime($track['system_log'])),
+					"list"=>$list,
+				);
+
+			};
+			
 		};
-
-		if (is_released($track['transit'])) {
-			
-			$list[] = array(
-				"status"=>array(
-					// "text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to"),
-					"text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to the ".get_transit_office($con,$track['transit']),
-					"comment"=>null,
-				)
-			);
-			
-			$document_tracks[] = array(
-				"track_id"=>$track['id'],			
-				"id"=>$track['track_action'],			
-				"icon"=>$t_icons[get_transit_id($track['transit'])],
-				"bg"=>"bg-danger",
-				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
-				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
-				"list"=>$list,
-			);
-			
-		};
-		
-		if (is_filed($track['transit'])) {
-
-			$status = $track['track_action_status'];		
-
-			$list[] = array(
-				"status"=>array(
-					"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
-					"comment"=>null,
-				)
-			);
-
-			$document_tracks[] = array(
-				"track_id"=>$track['id'],			
-				"id"=>$track['track_action'],			
-				"icon"=>$t_icons[get_transit_id($track['transit'])],
-				"bg"=>"bg-danger",
-				"track_time"=>date("h:i:s A",strtotime($track['system_log'])),
-				"track_date"=>date("M j, Y",strtotime($track['system_log'])),
-				"list"=>$list,
-			);
-
-		};		
 
 	};
 	
 	# first track
-
-	$initial_office = $setup->get_setup_as_string(4);
-
-	$initial_list[] = array("status"=>array(
+	$initial_list[] = array(
+		"status"=>array(
 			"text"=>"Received at ".get_office_description($con,$initial_office)." by ".get_staff_name($con,$document['user_id']),
 			"comment"=>null,
 		)

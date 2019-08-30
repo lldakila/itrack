@@ -308,6 +308,18 @@ function get_transit_office($con,$transit) {
 	
 };
 
+function get_transit_office_id($con,$transit) {
+	
+	$transit_office_id = 0;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_office_id = $_transit['office'];
+	
+	return $transit_office_id;
+	
+};
+
 function get_transit_staff($con,$transit,$p) {
 
 	$transit_staff = null;

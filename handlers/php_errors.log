@@ -1,9 +1,0 @@
-[13-Aug-2019 15:30:36 Asia/Manila] PHP Notice:  Undefined index: group in D:\DESKTOP\UwAmp310\www\itrack\handlers\access.php on line 13
-[13-Aug-2019 15:30:36 Asia/Manila] PHP Stack trace:
-[13-Aug-2019 15:30:36 Asia/Manila] PHP   1. {main}() D:\DESKTOP\UwAmp310\www\itrack\handlers\access.php:0
-[13-Aug-2019 15:30:43 Asia/Manila] PHP Notice:  Undefined index: group in D:\DESKTOP\UwAmp310\www\itrack\handlers\access.php on line 13
-[13-Aug-2019 15:30:43 Asia/Manila] PHP Stack trace:
-[13-Aug-2019 15:30:43 Asia/Manila] PHP   1. {main}() D:\DESKTOP\UwAmp310\www\itrack\handlers\access.php:0
-[13-Aug-2019 16:09:35 Asia/Manila] PHP Notice:  Undefined index: group in D:\DESKTOP\UwAmp310\www\itrack\handlers\access.php on line 13
-[13-Aug-2019 16:09:35 Asia/Manila] PHP Stack trace:
-[13-Aug-2019 16:09:35 Asia/Manila] PHP   1. {main}() D:\DESKTOP\UwAmp310\www\itrack\handlers\access.php:0

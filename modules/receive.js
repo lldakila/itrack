@@ -184,8 +184,8 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 					method: 'POST',
 					url: 'document/doc/office/action',
 					data: scope.doc
-				}).then(function mySuccess(response) {
-					
+				}).then(function mySuccess(response) {							
+			
 					bui.hide();
 
 				}, function myError(response) {								

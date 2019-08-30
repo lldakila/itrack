@@ -21,7 +21,15 @@ angular.module('receive-document',['module-access','block-ui','bootstrap-growl',
 				  data: scope.doc,
 				}).then(function mySuccess(response) {
 
-					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+					if (response.data==1) {
+
+						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document has already been received in your office');
+					
+					} else {
+
+						growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+					
+					}
 
 					bui.hide();
 

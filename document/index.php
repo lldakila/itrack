@@ -699,9 +699,11 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 
 $app->post('/doc/actions/revisions/verify', function ($request, $response, $args) {
 
-	function document_actions($con,$id) {
+	require_once '../functions.php';
 
-		$sql = "SELECT track_action_add_params FROM tracks WHERE document_id = $id";
+	function document_actions($con,$id,$session_office) {
+
+		$sql = "SELECT track_action_add_params FROM tracks WHERE document_id = $id AND office_id = $session_office";
 		$actions = $con->getData($sql);
 
 		$document_actions = array("for_initial"=>false,"for_approval"=>false);
@@ -736,13 +738,13 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 		
 	};
 	
-	function approved($tracks) {
+	function approved($tracks,$session_id) {
 		
 		$approved = false;
 		
 		foreach ($tracks as $track) {
 			
-			if ($track['track_action_status']=="approved") $approved = true;
+			if (($track['track_action_status']=="approved") && ($track['office_id']==$session_id)) $approved = true;
 			
 		};
 		
@@ -750,13 +752,13 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 		
 	};
 	
-	function for_initial_track_id($tracks) {
+	function for_initial_track_id($tracks,$session_id) {
 		
 		$track_id = 0;
 		
 		foreach ($tracks as $track) {
 			
-			if ($track['track_action'] == 1) $track_id = $track['id'];
+			if (($track['track_action'] == 1) && ($track['office_id']==$session_id)) $track_id = $track['id'];
 			
 		};
 		
@@ -764,13 +766,13 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 		
 	};
 
-	function for_approval_track_id($tracks) {
+	function for_approval_track_id($tracks,$session_id) {
 		
 		$track_id = 0;
 		
 		foreach ($tracks as $track) {
 			
-			if ($track['track_action'] == 2) $track_id = $track['id'];
+			if (($track['track_action'] == 2) && ($track['office_id']==$session_id)) $track_id = $track['id'];
 			
 		};
 		
@@ -786,9 +788,14 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 	$id = $data['id'];
 	$track_action = $data['action']['track_action'];
 
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];
+
 	# action tracks
-	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action IN (1,2)"; # for initial/approve
-	$action_tracks = $con->getData($sql);
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action = $track_action AND office_id = $session_office"; # for initial/approve
+	$action_track = $con->getData($sql);
 
 	$sql = "SELECT * FROM tracks WHERE document_id = $id";
 	$tracks = $con->getData($sql);
@@ -802,6 +809,18 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 	switch ($track_action) {
 		
 		case 1: # for initial
+			
+			# check the office
+			if (get_transit_office_id($con,$action_track[0]['transit'])!=$session_office) {
+				
+				$verification = array(
+					"notify"=>"You cannot update this action, it belongs to a different office",
+					"status"=>false
+				);
+
+				return $response->withJson($verification);				
+				
+			};
 			
 			foreach ($revisions as $revision) {
 				
@@ -818,7 +837,19 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 		
 		case 2: # for approval
 			
-			if ( (document_actions($con,$id)['for_initial']) && (!initialed($con,$id,for_initial_track_id($tracks))) ) {
+			# check the office
+			if (get_transit_office_id($con,$action_track[0]['transit'])!=$session_office) {
+				
+				$verification = array(
+					"notify"=>"You cannot update this action, it belongs to a different office",
+					"status"=>false
+				);
+
+				return $response->withJson($verification);				
+				
+			};			
+			
+			if ( (document_actions($con,$id,$session_office)['for_initial']) && (!initialed($con,$id,for_initial_track_id($tracks,$session_id))) ) {
 
 				$notify = "This document cannot be flagged as approved, it must be flagged as initialed first.";
 				
@@ -1033,6 +1064,13 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];	
 	
+	// check if document is already received
+	
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action_status = 'received'";
+	$is_received = $con->getData($sql);
+		
+	if (count($is_received)) return $response->write(1);
+	
 	$transit = transit;	
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");		
 	
@@ -1108,9 +1146,28 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$admin_recipient = get_admin_recipient($con,$id);	
 	notify($con,"received",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$receive_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$receive_transit_description,"filed"=>$data['file']),false);
 	
-	//
-	
+	//	
 	// return $response->withJson([]);
+	return $response->write(0);	
+
+});
+
+$app->get('/doc/transit/is_receive/{id}', function ($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "tracks";
+
+	session_start();
+
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+
+	$id = intval($args['id']);
+
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action_status = 'received'";
+	$received = $con->getData($sql);
+
+	return $response->write(count($received));
 
 });
 
