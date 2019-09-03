@@ -6,6 +6,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 
 		self.startup = function(scope) {
 			
+			scope.files = {};
+			
 			self.revisions.list(scope);
 			
 		};
@@ -319,7 +321,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add_revision)) {
 					return;
 				};				
-				
+
 				scope.revision = {};
 				scope.revision.id = 0;
 				
@@ -340,7 +342,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				var onOk = function() {
 					
-					if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.edit_revision)) {
+					/* if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.edit_revision)) {
 						return false;
 					};					
 					
@@ -354,11 +356,11 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 						
 						self.revisions.save(scope);						
 						
-					};
+					}; */
 					
 				};
 				
-				bootstrapModal.box(scope,'Document revision for '+$('#barcode').html(),'/dialogs/revision.html',onOk,function() {});
+				bootstrapModal.box4(scope,'Document revision for '+$('#barcode').html(),'/dialogs/revision.html',function (){},onOk,'100');
 				
 			},
 			
@@ -440,6 +442,22 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 				bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to delete this document type?',onOk,onCancel);
 				
+			},
+			
+			upload: function() {
+
+			   // $scope.proPic = null;
+			   var file = $scope.views.proPic;
+			   
+			   if (file == undefined) return;
+			   console.log(file);
+			   
+			   var pp = file['name'];
+			   var en = pp.substring(pp.indexOf("."),pp.length);
+
+			   var uploadUrl = "controllers/employees.php?r=upload_profile_picture&empid="+$scope.personalInfo.empid+"&en="+en;
+			   fileUpload.uploadFileToUrl(file, uploadUrl, $scope);
+			
 			}
 			
 		};
