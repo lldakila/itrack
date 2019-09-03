@@ -73,10 +73,13 @@ $app->get('/barcode/{barcode}', function (Request $request, Response $response, 
 # delete document
 $app->delete('/delete/{id}', function (Request $request, Response $response, array $args) {
 
+	require_once '../folder-files.php';
+
 	$con = $this->con;
 	$con->table = "documents";
 	
-	$document = array("id"=>$args['id']);
+	$id = $args['id'];
+	$document = array("id"=>$id);
 
 	$files = $con->getData("SELECT file_name FROM files WHERE document_id = ".$args['id']);	
 	
@@ -85,7 +88,23 @@ $app->delete('/delete/{id}', function (Request $request, Response $response, arr
 		
 		if (file_exists($files_dir.$file['file_name'])) unlink($files_dir.$file['file_name']);
 		
-	};	
+	};
+	
+	# delete revisions files
+	$revisions_dir = "../../revisions/$id";	
+	$revisions = scandir($revisions_dir);
+	
+	foreach ($revisions as $revision) {
+		
+		if ($revision==".") continue;
+		if ($revision=="..") continue;
+		
+		if (file_exists($revisions_dir."/$revision")) unlink($revisions_dir."/$revision");
+		
+	};
+	
+	# delete folder-files
+	if (folder_exist($revisions_dir)) rmdir($revisions_dir);
 	
 	$con->deleteData($document);
 

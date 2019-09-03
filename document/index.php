@@ -1176,7 +1176,7 @@ $app->get('/doc/transit/is_receive/{id}', function ($request, $response, $args) 
 
 	if ($session_office == $initial_office) {
 		
-		$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action IS NOT NULL";
+		$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action IN (1,2)";
 		$received = $con->getData($sql);		
 		
 	};
@@ -1611,7 +1611,17 @@ $app->delete('/doc/revisions/delete/{id}', function (Request $request, Response 
 
 	$id = $args['id'];
 	
-	$con->deleteData(array("id"=>$id));
+	$sql = "SELECT * FROM revisions WHERE id = $id";
+	$revision = $con->getData($sql);
+	
+	$uploaded_file = $revision[0]['uploaded_file'];
+	$dir = "../revisions/$id/";
+	
+	$file = $dir.$uploaded_file;
+	
+	if (file_exists($file)) unlink($file);
+	
+	$con->deleteData(array("id"=>$id));		
 
 });
 
@@ -1737,6 +1747,79 @@ $app->post('/doc/office/action', function (Request $request, Response $response,
 		};
 	
 	};
+
+});
+
+$app->post('/doc/revisions/upload/{id}/{ext}', function (Request $request, Response $response, array $args) {
+	
+	$id = $args['id'];
+	$filename = $args['ext'];
+	
+	require_once '../system_setup.php';	
+	require_once '../functions.php';
+	require_once '../notify.php';
+	require_once 'folder-files.php';
+
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];	
+	
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);		
+	
+	$con = $this->con;
+	$con->table = "revisions";
+
+	$data = $request->getParsedBody();	
+
+	$data['document_id'] = $id;
+	$data['user_id'] = $session_user_id;
+	$data['uploaded_file'] = $filename;
+	
+	$insert = $con->insertData($data);		
+	
+	$revision_id = $con->insertId;
+	
+	# upload file
+	$dir = "../revisions/";
+	$folder = "$dir/$id";
+	if (!folder_exist($folder)) mkdir($folder);
+	move_uploaded_file($_FILES['file']['tmp_name'],$folder."/$filename");	
+	
+	$all = $setup->get_setup_as_string(10);		
+	$admin_recipient = get_admin_recipient($con,$id);		
+	
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");
+	$track_action_status = "added revisions to your document";
+	
+	# notify Liaisons AOs AAsts AAs		
+	notify($con,"add_revision",array("doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status));
+	
+	# notify admin recipient
+	notify($con,"add_revision",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
+	
+	$track_transit = array(
+		"id"=>1,
+		"picked_up_by"=>null,
+		"received_by"=>null,
+		"office"=>$session_office,
+		"released_to"=>null,
+		"filed"=>false,		
+	);
+	
+	# update tracks
+	$track = array(
+		"document_id"=>$id,
+		"office_id"=>$session_office,
+		"track_action"=>5,
+		"track_action_staff"=>$data['user_id'],
+		"track_action_status"=>"added revisions",
+		"track_user"=>$session_user_id,
+		"transit"=>json_encode($track_transit),
+		"revision_id"=>$revision_id,
+	);
+	add_track($con,$track);
 
 });
 

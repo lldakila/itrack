@@ -1,1 +1,1 @@
-ALTER TABLE `users`  ADD `privileges` LONGTEXT NULL  AFTER `system_accountability`;
+ALTER TABLE `revisions`  ADD `uploaded_file` VARCHAR(1000) NULL  AFTER `revision_ok`;

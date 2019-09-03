@@ -214,13 +214,13 @@
 								
 									<table class="table table-responsive table-revisions">
 										<thead>
-											<tr><th>#</th><th>Date Added</th><th>Notes</th><th>Status</th><th>Date Completed</th><th>Revise</th><th>Manage</th></tr>
+											<tr><th>#</th><th>Date Added</th><th>Notes</th><th>Status</th><th>Date Completed</th><th>Revise</th><th>Remove</th></tr>
 										</thead>
 										<tbody>
 											<tr ng-repeat="r in revisions | filter:views.search">
 												<td>{{$index+1}}</td>
 												<td>{{r.datetime}}</td>
-												<td>{{r.notes}}</td>
+												<td><a href="javascript:;" ng-click="app.revisions.preview_uploaded_file(this,r)">{{r.uploaded_file}}</a></td>
 												<td>{{(r.revision_ok)?'Ok':''}}</td>
 												<td>{{r.datetime_completed}}</td>											
 												<td>
@@ -232,7 +232,7 @@
 													</div>
 												</td>
 												<td>
-													<a href="javascript:;" style="margin-right: 5px; color: #373a3c!important;" ng-click="app.revisions.revision(this,r)"><i class="icon-edit"></i></a>
+													<!-- <a href="javascript:;" style="margin-right: 5px; color: #373a3c!important;" ng-click="app.revisions.revision(this,r)"><i class="icon-edit"></i></a> -->
 													<a href="javascript:;" style="color: #373a3c!important;" ng-click="app.revisions.delete(this,r)" ng-show="profile.pages_access.update_tracks.delete.delete_revision"><i class="icon-remove"></i></a>
 												</td>											
 											</tr>
@@ -414,6 +414,7 @@
 	<script src="../modules/url.js"></script>
 	<script src="../modules/files.js"></script>
 	<script src="../modules/barcode-listener-action.js"></script>
+	<script src="../../common/file-uploader.js"></script>
 	<script src="../modules/action.js"></script>
 	
 	<!-- controller -->

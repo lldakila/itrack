@@ -1,4 +1,4 @@
-angular.module('file-uploader',[]).app.directive('fileModel', function ($parse) {
+angular.module('file-uploader',[]).directive('fileModel', function ($parse) {
 	return {
 	   restrict: 'A',
 	   link: function(scope, element, attrs) {
@@ -16,9 +16,7 @@ angular.module('file-uploader',[]).app.directive('fileModel', function ($parse) 
 		  // });
 	   }
 	};
-});
-
-app.service('fileUpload', function ($http) {
+}).service('fileUpload', function ($http) {
 	this.uploadFileToUrl = function(file, uploadUrl, scope) {
 		
 	   var fd = new FormData();
@@ -35,14 +33,13 @@ app.service('fileUpload', function ($http) {
 	   
 		// upload progress
 		function uploadProgress(evt) {
-			scope.views.showProPicUploadProgress = true;
+			scope.progress.show = true;
 			scope.$apply(function(){
-				scope.views.progress = 0;			
+				scope.progress.status = 0;			
 				if (evt.lengthComputable) {
-					scope.views.progress = Math.round(evt.loaded * 100 / evt.total);
+					scope.progress.status = Math.round(evt.loaded * 100 / evt.total);
 				} else {
-					scope.views.progress = 'unable to compute';
-					scope.views.profilePicture = "img/avatar.png";					
+					scope.progress.status = 'unable to compute';		
 				}
 			});
 		}
@@ -51,12 +48,12 @@ app.service('fileUpload', function ($http) {
 			/* This event is raised when the server send back a response */
 			scope.$apply(function() {
 
-				scope.views.profilePicture = 'pictures/'+scope.personalInfo.empid+'.jpg';
-				scope.views.showProPicUploadProgress = false;
+				// scope.progress.show = false;
+				scope.app.revisions.list(scope);
 
-			});			
+			});		
 
-			$('#proPic').val(null);
+			// $('#file_revision').val(null);
 		}
 
 	}

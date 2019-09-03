@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','barcode-listener-action','form-validator-dialog']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files,validateDialog) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','barcode-listener-action','form-validator-dialog','file-uploader']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files,validateDialog,fileUpload) {
 	
 	function app() {
 
@@ -7,6 +7,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		self.startup = function(scope) {
 			
 			scope.files = {};
+			scope.progress = {};
+			scope.progress.show = false;
+			scope.progress.status = 0;
 			
 			self.revisions.list(scope);
 			
@@ -325,6 +328,13 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				scope.revision = {};
 				scope.revision.id = 0;
 				
+				scope.files = {};
+				scope.progress = {};
+				scope.progress.show = false;
+				scope.progress.status = 0;				
+				
+				scope.files.revision = null;				
+				
 				if (revision!=null) {
 					
 					$http({
@@ -356,7 +366,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 						
 						self.revisions.save(scope);						
 						
-					}; */
+					}; */					
+					
+					return true;
 					
 				};
 				
@@ -444,20 +456,47 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 			},
 			
-			upload: function() {
-
-			   // $scope.proPic = null;
-			   var file = $scope.views.proPic;
+			upload: function(scope) {
+				
+			   var file = scope.files.revision;
 			   
 			   if (file == undefined) return;
-			   console.log(file);
 			   
-			   var pp = file['name'];
-			   var en = pp.substring(pp.indexOf("."),pp.length);
+			   var rf = file['name'];
+			   var en = rf.substring(rf.indexOf("."),rf.length);
 
-			   var uploadUrl = "controllers/employees.php?r=upload_profile_picture&empid="+$scope.personalInfo.empid+"&en="+en;
-			   fileUpload.uploadFileToUrl(file, uploadUrl, $scope);
+				if ((en==".jpg") || (en==".png") || (en==".pdf")) {
+
+					var uploadUrl = "/document/doc/revisions/upload/"+scope.document_id+"/"+rf;
+					fileUpload.uploadFileToUrl(file, uploadUrl, scope);
+					
+				}
 			
+			},
+			
+			preview_uploaded_file: function(scope,r) {
+				
+				scope.previews = {};
+				scope.previews.revision = {};
+				scope.previews.revision.type = "";				
+				
+				bootstrapModal.box3(scope,'Preview File','/document/dialogs/revision-preview.html',function() {},"150");				
+				
+				var arr_fn = r['uploaded_file'].split(".");
+				scope.previews.revision.type = arr_fn[1];				
+				
+				$timeout(function() {
+					
+					var t = document.querySelector((scope.previews.revision.type=="pdf")?"#uploaded-revision-pdf-preview":"#uploaded-revision-img-preview");													
+
+					if (scope.previews.revision.type=="pdf") {
+						t.data = "/revisions/"+r.document_id+"/"+r['uploaded_file'];
+					} else {
+						t.src = "/revisions/"+r.document_id+"/"+r['uploaded_file'];
+					};
+
+				},1000);
+				
 			}
 			
 		};
