@@ -171,6 +171,8 @@ function get_office_description($con,$id) {
 	
 	$description = null;
 	
+	if ($id == null) return $description = "";
+	
 	$office = $con->getData("SELECT office FROM offices WHERE id = $id");
 	
 	if (count($office)) {

@@ -1154,6 +1154,13 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 
 $app->get('/doc/transit/is_receive/{id}', function ($request, $response, $args) {
 
+	require_once '../system_setup.php';
+
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);	
+
+	$initial_office = $setup->get_setup_as_string(4);	
+
 	$con = $this->con;
 	$con->table = "tracks";
 
@@ -1166,6 +1173,13 @@ $app->get('/doc/transit/is_receive/{id}', function ($request, $response, $args) 
 
 	$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action_status = 'received'";
 	$received = $con->getData($sql);
+
+	if ($session_office == $initial_office) {
+		
+		$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action IS NOT NULL";
+		$received = $con->getData($sql);		
+		
+	};
 
 	return $response->write(count($received));
 

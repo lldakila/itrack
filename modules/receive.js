@@ -219,7 +219,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 				url: 'document/doc/transit/is_receive/'+doc.id,
 			}).then(function mySuccess(response) {							
 		
-				if (response.data==1) {
+				if (response.data>0) {
 					
 					resolve(true);
 					

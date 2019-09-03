@@ -13,7 +13,7 @@ function tracks($con,$setup,$id,$document) {
 	$received_next_office = [];
 
 	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC");
-	
+
 	foreach ($tracks as $i => $track) {
 
 		$transit_office = get_transit_office_id($con,$track['transit']);		
@@ -39,7 +39,7 @@ function tracks($con,$setup,$id,$document) {
 				);
 			}
 		};
-		
+
 		if ($track['track_action'] == 2) {			
 			if ($transit_office==$initial_office) { # OPA
 				$for_signature = array(
@@ -56,9 +56,7 @@ function tracks($con,$setup,$id,$document) {
 					)
 				);				
 			}
-		};
-		
-		
+		};				
 		
 		# comment
 		if ($track['track_action'] == 4) {
@@ -221,7 +219,7 @@ function tracks($con,$setup,$id,$document) {
 
 				$received_next_office[] = array(
 					"status"=>array(
-						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document at ".get_office_description($con,$track['office_id']),
 						"comment"=>null,
 					)
 				);
@@ -243,7 +241,7 @@ function tracks($con,$setup,$id,$document) {
 			};
 
 			if ($track['track_action_status']=="released") { # released
-				
+
 				$list[] = array(
 					"status"=>array(
 						// "text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to"),
@@ -290,7 +288,7 @@ function tracks($con,$setup,$id,$document) {
 		};
 
 	};
-	
+
 	# first track
 	$initial_list[] = array(
 		"status"=>array(
