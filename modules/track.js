@@ -40,8 +40,8 @@ angular.module('app-module', ['form-validator','ui.bootstrap','ngSanitize','boot
 }).factory('app', function($compile,$http,$timeout,validate,track,growl) {
 	
 	function app() {
-
-		var self = this;
+		
+		var self = this;	
 		
 		self.data = function(scope) {
 
@@ -51,7 +51,7 @@ angular.module('app-module', ['form-validator','ui.bootstrap','ngSanitize','boot
 			
 			scope.doc = {};
 			scope.document = {};
-
+			
 		};
 
 		self.track = function(scope) {

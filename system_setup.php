@@ -13,7 +13,7 @@ define('system_setup', array(
 			3=>array( # OPG
 				"id"=>1,
 				"description"=>"Users for document action: initial",
-				"values"=>[6],		
+				"values"=>[50,51],		
 			)
 		)
 	),

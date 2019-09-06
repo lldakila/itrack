@@ -91,13 +91,14 @@ function tracks($con,$setup,$id,$document) {
 		if ($track['track_action'] == 5) {
 
 			$revision = $con->getData("SELECT * FROM revisions WHERE id = ".$track['revision_id']);
-			$notes = $revision[0]['notes'];
-		
+			$uploaded_file = $revision[0]['uploaded_file'];			
+			
 			$status = get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document";
 			$status .= '<blockquote class="blockquote">';
-			$status .= '<p class="mb-0 ws">'.$notes.'</p>';
+			// $status .= '<p class="mb-0 ws">'.$uploaded_file.'</p>';
+			$status .= '<a href="/document/doc/revisions/preview/'.$id.'/'.$uploaded_file.'" target="_blank">'.$uploaded_file.'</a>';
 			$status .= '</blockquote>';
-			
+
 			$list[] = array(
 				"status"=>array(
 					"text"=>$status,

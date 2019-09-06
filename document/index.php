@@ -738,7 +738,7 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 		
 	};
 	
-	function approved($tracks,$session_id) {
+	function approved($tracks,$session_office) {
 		
 		$approved = false;
 		
@@ -752,13 +752,13 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 		
 	};
 	
-	function for_initial_track_id($tracks,$session_id) {
+	function for_initial_track_id($tracks,$session_office) {
 		
 		$track_id = 0;
 		
 		foreach ($tracks as $track) {
 			
-			if (($track['track_action'] == 1) && ($track['office_id']==$session_id)) $track_id = $track['id'];
+			if (($track['track_action'] == 1) && ($track['office_id']==$session_office)) $track_id = $track['id'];
 			
 		};
 		
@@ -766,13 +766,13 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 		
 	};
 
-	function for_approval_track_id($tracks,$session_id) {
+	function for_approval_track_id($tracks,$session_office) {
 		
 		$track_id = 0;
 		
 		foreach ($tracks as $track) {
 			
-			if (($track['track_action'] == 2) && ($track['office_id']==$session_id)) $track_id = $track['id'];
+			if (($track['track_action'] == 2) && ($track['office_id']==$session_office)) $track_id = $track['id'];
 			
 		};
 		
@@ -849,8 +849,8 @@ $app->post('/doc/actions/revisions/verify', function ($request, $response, $args
 				
 			};			
 			
-			if ( (document_actions($con,$id,$session_office)['for_initial']) && (!initialed($con,$id,for_initial_track_id($tracks,$session_id))) ) {
-
+			if ( (document_actions($con,$id,$session_office)['for_initial']) && (!initialed($con,$id,for_initial_track_id($tracks,$session_office))) ) {
+				
 				$notify = "This document cannot be flagged as approved, it must be flagged as initialed first.";
 				
 			} else {
@@ -966,7 +966,7 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 
 	// add release track
 	
-	$release = 4;
+/* 	$release = 4;
 
 	$release_track_transit = array(
 		"id"=>$release,
@@ -997,7 +997,7 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 	
 	# notify admin recipient
 	$admin_recipient = get_admin_recipient($con,$id);
-	notify($con,"released",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$release_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$release_transit_description,"track_office"=>$session_office,"release_to"=>$data['transit']['office']['id']),false);
+	notify($con,"released",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$release_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$release_transit_description,"track_office"=>$session_office,"release_to"=>$data['transit']['office']['id']),false); */
 	
 	//
 
@@ -1076,7 +1076,7 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	
 	// add release track
 	
-	$release = 4;
+/* 	$release = 4;
 
 	$release_track_transit = array(
 		"id"=>$release,
@@ -1107,7 +1107,7 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	
 	# notify admin recipient
 	$admin_recipient = get_admin_recipient($con,$id);
-	notify($con,"released",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$release_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>0,"track_action_status"=>$release_transit_description,"track_office"=>$session_office,"release_to"=>$session_office),false);	
+	notify($con,"released",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$release_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>0,"track_action_status"=>$release_transit_description,"track_office"=>$session_office,"release_to"=>$session_office),false);	 */
 	
 	//
 	
@@ -1821,6 +1821,50 @@ $app->post('/doc/revisions/upload/{id}/{ext}', function (Request $request, Respo
 	);
 	add_track($con,$track);
 
+});
+
+$app->get('/doc/revisions/preview/{id}/{file}', function (Request $request, Response $response, array $args) {
+	
+	$base = str_replace("\\","/",__DIR__);			
+	
+	$id = $args['id'];
+	$uploaded_file = $args['file'];
+
+	$revision_dir = "/../revisions/$id/";					
+	$revision_file = $base.$revision_dir.$uploaded_file;
+	
+	$file = explode(".",$uploaded_file);
+	$ext = $file[count($file)-1];
+	
+	if (file_exists($revision_file)) {
+		
+		$type = mime_content_type($revision_file);
+		$revision_file_data_uri = 'data:'.$type.';base64,'.base64_encode(file_get_contents($revision_file));
+		
+		switch ($ext) {
+			
+			case "jpg":
+			
+				echo "<img src='".$revision_file_data_uri."'>";
+			
+			break;
+			
+			case "png":
+
+				echo "<img src='".$revision_file_data_uri."'>";
+			
+			break;
+			
+			case "pdf":
+			
+				echo "<object width='100%' height='100%' data='".$revision_file_data_uri."'></object>";
+			
+			break;
+			
+		};
+		
+	}
+	
 });
 
 $app->run();

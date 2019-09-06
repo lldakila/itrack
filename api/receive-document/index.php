@@ -110,9 +110,10 @@ $app->get('/dt_add_params/{id}', function (Request $request, Response $response,
 	
 	require_once '../../dt-additional-params.php';
 	
-	$dt_add_params = get_params(dt_add_params,$id);
+	// $dt_add_params = get_params(dt_add_params,$id);
 	
-    return $response->withJson($dt_add_params);
+    // return $response->withJson($dt_add_params);
+    return $response->withJson([]);
 
 });
 

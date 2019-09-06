@@ -96,10 +96,14 @@ angular.module('track-document',['module-access','block-ui','bootstrap-growl','b
 			
 			});
 
-		};	
+		};
 
 	};
 	
 	return new track();
+	
+}).filter('unsafe', function($sce) {
+
+	return $sce.trustAsHtml;
 	
 });
