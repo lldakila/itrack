@@ -141,6 +141,14 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			** verify
 			*/
 
+			if ((scope.disabled.transit.pickup) || (scope.disabled.transit.release)) {
+				
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},"Cannot update document track. Document was already picked up or released.");
+				staff.done = !staff.done;				
+				return;
+				
+			};
+
 			$http({
 			  method: 'POST',
 			  url: scope.url.view+'document/doc/actions/revisions/verify',
