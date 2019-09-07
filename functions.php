@@ -182,7 +182,25 @@ function get_office_description($con,$id) {
 	};
 	
 	return $description;
+
+};
+
+function get_office_shortname($con,$id) {
 	
+	$shortname = null;
+	
+	if ($id == null) return $description = "";
+	
+	$office = $con->getData("SELECT shortname FROM offices WHERE id = $id");
+	
+	if (count($office)) {
+		
+		$shortname = $office[0]['shortname'];
+		
+	};
+	
+	return $shortname;
+
 };
 
 function get_staff_name($con,$id) {
@@ -310,6 +328,18 @@ function get_transit_office($con,$transit) {
 	
 };
 
+function get_transit_office_shortname($con,$transit) {
+	
+	$transit_office_shortname = null;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_office_shortname = get_office_shortname($con,$_transit['office']);
+	
+	return $transit_office_shortname;
+	
+};
+
 function get_transit_office_id($con,$transit) {
 	
 	$transit_office_id = 0;
@@ -363,6 +393,44 @@ function is_office_opg($office) {
 	
 	return $office == $setup->get_setup(12);	
 
+	
+};
+
+function document_current_location($con,$id) {
+	
+	$current_location = "";
+	
+	$sql = "SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC LIMIT 1";
+	
+	$tracks = $con->getData($sql);
+	
+	if (count($tracks)) {
+	
+		$recent_track = $tracks[0];
+		$current_location = get_transit_office_shortname($con,$recent_track['transit']);
+		
+	};
+	
+	return $current_location;
+	
+};
+
+function document_current_location_office_id($con,$id) {
+	
+	$current_location_office_id = 0;
+	
+	$sql = "SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC LIMIT 1";
+	
+	$tracks = $con->getData($sql);
+	
+	if (count($tracks)) {
+	
+		$recent_track = $tracks[0];
+		$current_location_office_id = get_transit_office_id($con,$recent_track['transit']);
+		
+	};
+	
+	return $current_location_office_id;
 	
 };
 

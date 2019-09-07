@@ -77,12 +77,32 @@ function less_weekends_tracks($origin,$date) {
 
 };
 
-function due_date($origin,$days) {
+function due_date($con,$id,$setup) {
+
+	$document = $con->getData("SELECT * FROM documents WHERE id = $id");
+
+	$origin = $document[0]['document_date'];
+	
+	$originating_office = $document[0]['origin'];
+	$initial_office = $setup->get_setup_as_string(4);
+	$current_office_id = document_current_location_office_id($con,$document[0]['id']);
+	
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY id DESC LIMIT 1");
+	$recent_track = $tracks[0];
+	$system_log = $recent_track['system_log'];
+	
+	$transaction = $con->getData("SELECT days FROM transactions WHERE id = ".$document[0]['document_transaction_type']);
+	
+	$days = $transaction[0]['days'];
 
 	$all_days = date("Y-m-d H:i:s",strtotime("+$days Days",strtotime($origin)));
 
 	$weekends = 0;
+	
 	$start = $origin;
+	
+	
+	
 	while (strtotime($start) <= strtotime($all_days)) {
 
 		if ( (date("D",strtotime($start)) == "Sat") || (date("D",strtotime($start)) == "Sun") ) $weekends++;

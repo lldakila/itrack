@@ -266,7 +266,7 @@ $app->get('/for/initial/{id}', function ($request, $response, $args) {
 	$document = document_info_complete($con,$document[0]);	
 	
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
-	$due_date = due_date($document['document_date'],$document['document_transaction_type']['days']);
+	$due_date = due_date($con,$id,null);
 	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
 	
 	$session_user_id = $_SESSION['itrack_user_id'];
@@ -527,7 +527,11 @@ $app->get('/action/{id}', function ($request, $response, $args) {
 	require_once '../path_url.php';
 	require_once '../document-info.php';
 	require_once 'datetime.php';
-	require_once '../functions.php';
+	require_once '../functions.php';	
+	require_once '../system_setup.php';	
+
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);	
 	
 	$con = $this->con;
 	$con->table = "documents";
@@ -540,8 +544,9 @@ $app->get('/action/{id}', function ($request, $response, $args) {
 	$document = document_info_complete($con,$document[0]);	
 	
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
-	$due_date = due_date($document['document_date'],$document['document_transaction_type']['days']);
+	$due_date = due_date($con,$id,$setup);
 	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
+	$document['current_location'] = document_current_location($con,$id);	
 	
     return $this->view->render($response, 'action.html', [
 		'page'=>'update-tracks',
@@ -1402,8 +1407,9 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 	$document = document_info_complete($con,$document[0]);	
 
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
-	$due_date = due_date($document['document_date'],$document['document_transaction_type']['days']);
+	$due_date = due_date($con,$id,$setup);
 	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
+	$document['current_location'] = document_current_location($con,$id);
 
 	$document['tracks'] = tracks($con,$setup,$id,$document);
 

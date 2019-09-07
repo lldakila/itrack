@@ -44,9 +44,7 @@ function notify($con,$state,$params,$notify_group = true) {
 
 				};
 				
-			} else {
-				
-				var_dump("notified");
+			} else {				
 				
 				$message = "Received at ".get_office_description($con,$params['initial_office'])." by ".get_staff_name($con,$params['recipient']);
 
