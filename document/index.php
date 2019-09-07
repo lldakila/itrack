@@ -1867,6 +1867,44 @@ $app->get('/doc/revisions/preview/{id}/{file}', function (Request $request, Resp
 	
 });
 
+$app->get('/check/pickup_release/{id}', function ($request, $response, $args) {
+
+	$id = $args['id'];
+	
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];
+
+	$con = $this->con;
+	
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status IN ('picked up','released') AND office_id = $session_office";
+	$picked_up_released = $con->getData($sql);
+	
+	$transit = array("pickup"=>false,"release"=>false);
+	
+	foreach ($picked_up_released as $pur) {
+		
+		if ($pur['track_action_status']=="picked up") {
+			
+			$transit['pickup'] = false;
+			$transit['release'] = true;
+			
+		};
+		
+		if ($pur['track_action_status']=="released") {
+			
+			$transit['pickup'] = true;
+			$transit['release'] = false;
+			
+		};		
+		
+	};
+	
+	return $response->withJson($transit);	
+
+});
+
 $app->run();
 
 ?>

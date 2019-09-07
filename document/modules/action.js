@@ -11,6 +11,11 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.progress.show = false;
 			scope.progress.status = 0;
 			
+			scope.disabled = {};
+			scope.disabled.transit = {};
+			scope.disabled.transit.pickup = false;
+			scope.disabled.transit.release = false;
+			
 			self.revisions.list(scope);
 			
 		};
@@ -41,6 +46,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.documentFiles = [];
 			
 			initDoc(scope,id);
+			check_pickup_release(scope,id);
 
 			scope.preview = {};
 			scope.preview.file = {};
@@ -218,7 +224,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			  data: {document: scope.doc, transit: scope.transit},
 			}).then(function mySuccess(response) {
 
-				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
+				check_pickup_release(scope,scope.doc.id);
 
 				bui.hide();
 
@@ -251,7 +258,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			  data: {document: scope.doc, release: scope.release},
 			}).then(function mySuccess(response) {
 
-				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
+				check_pickup_release(scope,scope.doc.id);			
 
 				bui.hide();
 
@@ -511,6 +519,21 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		self.close = function(scope) {
 			
 			$window.location.href = "/update-tracks.html";
+			
+		};
+		
+		function check_pickup_release(scope,id) {
+			
+			$http({
+				method: 'GET',
+				url: '/document/check/pickup_release/'+id,
+			}).then(function succes(response) {
+				
+				scope.disabled.transit = response.data;
+				
+			}, function error(response) {
+				
+			});
 			
 		};
 		
