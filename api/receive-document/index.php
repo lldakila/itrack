@@ -189,10 +189,20 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 
 	$id = $con->insertId;
 	
-	# notify Liaisons AOs AAsts AAs
+	# notify Liaisons AOs AAsts AAs in originating office
 	$initial_office = $setup->get_setup_as_string(4);	
 	$all = $setup->get_setup_as_string(10);
 	notify($con,"added",array("doc_id"=>$id,"header"=>$data['doc_name'],"group"=>$all,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']));	
+
+	# notify admin staffs
+	$admin_staffs = $setup->get_setup_as_string(11);
+	$notify_pa_staffs = get_staffs_by_group_only($con,$admin_staffs);
+
+	foreach ($notify_pa_staffs as $nps) {
+	
+		notify($con,"added",array("notify_user"=>$nps['id'],"doc_id"=>$id,"header"=>$data['doc_name'],"group"=>0,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']),false);
+	
+	};
 
 	# tracks
 	$con->table = "tracks";

@@ -12,15 +12,47 @@ function notify($con,$state,$params,$notify_group = true) {
 
 		case "added":
 			
-			$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
+			if ($notify_group) {
+			
+				$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
 
-			foreach ($staffs as $staff) {
+				foreach ($staffs as $staff) {
+					
+					$message = "Received at ".get_office_description($con,$params['initial_office'])." by ".get_staff_name($con,$params['recipient']);
+
+					$notification = array(
+						"doc_id"=>$params['doc_id'],
+						"user_id"=>$staff['id'],
+						"icon"=>"icon-android-arrow-dropdown",
+						"icon_bg"=>"icon-bg-circle",
+						"icon_color"=>"bg-warning",
+						"header"=>$params['header'],
+						"header_color"=>"yellow darken-3",
+						"message"=>$message,
+						"url"=>"/track-document.html#!/".$params['doc_id'],
+					);	
+					
+					$notifications[] = $notification;
+
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;
+
+				};
+				
+			} else {
+				
+				var_dump("notified");
 				
 				$message = "Received at ".get_office_description($con,$params['initial_office'])." by ".get_staff_name($con,$params['recipient']);
 
 				$notification = array(
 					"doc_id"=>$params['doc_id'],
-					"user_id"=>$staff['id'],
+					"user_id"=>$params['notify_user'],
 					"icon"=>"icon-android-arrow-dropdown",
 					"icon_bg"=>"icon-bg-circle",
 					"icon_color"=>"bg-warning",
@@ -33,13 +65,13 @@ function notify($con,$state,$params,$notify_group = true) {
 				$notifications[] = $notification;
 
 				$email = array(
-					"user"=>get_staff_info($con,$staff['id']),
+					"user"=>get_staff_info($con,$params['notify_user']),
 					"subject"=>$params['header'],
 					"message"=>$message
 				);
 
-				$emails[] = $email;
-
+				$emails[] = $email;				
+				
 			};
 		
 		break;
@@ -419,14 +451,47 @@ function notify($con,$state,$params,$notify_group = true) {
 		break;
 		
 		case "filed":
-		
-			$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
-			
-			foreach ($staffs as $staff) {
 
-				# exclude if track_action_staff filed the document
-				if ($staff['id']==$params['track_action_staff']) continue;
-	
+			if ($notify_group) {
+		
+				$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
+				
+				foreach ($staffs as $staff) {
+
+					# exclude if track_action_staff filed the document
+					if ($staff['id']==$params['track_action_staff']) continue;
+		
+					$status = $params['track_action_status'];
+					if ($params['file']) $status.=" and filed";
+					$message = get_staff_name($con,$params['track_action_staff'])." $status the document";
+
+					$notification = array(
+						"doc_id"=>$params['doc_id'],
+						"track_id"=>$params['track_id'],					
+						"user_id"=>$staff['id'],
+						"icon"=>"icon-android-folder-open",
+						"icon_bg"=>"icon-bg-circle",
+						"icon_color"=>"bg-danger",
+						"header"=>$params['header'],
+						"header_color"=>"red darken-3",
+						"message"=>$message,
+						"url"=>"/track-document.html#!/".$params['doc_id'],					
+					);	
+					
+					$notifications[] = $notification;
+					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;				
+					
+				};
+				
+			} else {
+
 				$status = $params['track_action_status'];
 				if ($params['file']) $status.=" and filed";
 				$message = get_staff_name($con,$params['track_action_staff'])." $status the document";
@@ -434,7 +499,7 @@ function notify($con,$state,$params,$notify_group = true) {
 				$notification = array(
 					"doc_id"=>$params['doc_id'],
 					"track_id"=>$params['track_id'],					
-					"user_id"=>$staff['id'],
+					"user_id"=>$params['notify_user'],
 					"icon"=>"icon-android-folder-open",
 					"icon_bg"=>"icon-bg-circle",
 					"icon_color"=>"bg-danger",
@@ -447,29 +512,60 @@ function notify($con,$state,$params,$notify_group = true) {
 				$notifications[] = $notification;
 				
 				$email = array(
-					"user"=>get_staff_info($con,$staff['id']),
+					"user"=>get_staff_info($con,$params['notify_user']),
 					"subject"=>$params['header'],
 					"message"=>$message
 				);
 
 				$emails[] = $email;				
-				
-			};		
+			
+			}
 		
 		break;
 
 		case "commented":
+
+			if ($notify_group) {
 		
-			$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
+				$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
 
-			foreach ($staffs as $staff) {
+				foreach ($staffs as $staff) {
 
+					$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." on the document";
+
+					$notification = array(
+						"doc_id"=>$params['doc_id'],
+						"track_id"=>$params['track_id'],					
+						"user_id"=>$staff['id'],
+						"icon"=>"icon-pencil22",
+						"icon_bg"=>"icon-bg-circle",
+						"icon_color"=>"bg-info",
+						"header"=>$params['header'],
+						"header_color"=>"cyan darken-3",
+						"message"=>$message,
+						"url"=>"/track-document.html#!/".$params['doc_id'],
+					);
+					
+					$notifications[] = $notification;
+					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;	
+					
+				};
+				
+			} else {
+				
 				$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." on the document";
 
 				$notification = array(
 					"doc_id"=>$params['doc_id'],
 					"track_id"=>$params['track_id'],					
-					"user_id"=>$staff['id'],
+					"user_id"=>$params['notify_user'],
 					"icon"=>"icon-pencil22",
 					"icon_bg"=>"icon-bg-circle",
 					"icon_color"=>"bg-info",
@@ -482,14 +578,14 @@ function notify($con,$state,$params,$notify_group = true) {
 				$notifications[] = $notification;
 				
 				$email = array(
-					"user"=>get_staff_info($con,$staff['id']),
+					"user"=>get_staff_info($con,$params['notify_user']),
 					"subject"=>$params['header'],
 					"message"=>$message
 				);
 
-				$emails[] = $email;	
+				$emails[] = $email;					
 				
-			};		
+			};
 		
 		break;
 		
@@ -698,6 +794,14 @@ function email_notification($emails) {
 function get_staffs_by_group($con,$group,$office) {
 
 	$staffs = $con->getData("SELECT id FROM users WHERE group_id IN ($group) AND div_id = $office");
+
+	return $staffs;
+
+};
+
+function get_staffs_by_group_only($con,$group) {
+
+	$staffs = $con->getData("SELECT id FROM users WHERE group_id IN ($group)");
 
 	return $staffs;
 

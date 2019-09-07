@@ -665,13 +665,23 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 			
 			$admin_recipient = get_admin_recipient($con,$id);			
 			
-			# notify Liaisons AOs AAsts AAs
+			# notify Liaisons AOs AAsts AAs in originating office
 			if ($data['action']['track_action']==1) {
 				
 				notify($con,"initialed",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup));
 				
 				# notify admin recipient
 				notify($con,"initialed",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
+				
+				# notify PA staffs
+				$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
+				foreach ($notify_pa_staffs as $nps) {
+					
+					if ($nps['id']==$session_office) continue;					
+					if ($nps['id']==$admin_recipient) continue;					
+					notify($con,"initialed",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>null,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
+					
+				};
 				
 			};
 			
@@ -681,6 +691,16 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 				
 				# notify admin recipient
 				notify($con,"approved",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
+			
+				# notify PA staffs
+				$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
+				foreach ($notify_pa_staffs as $nps) {
+
+					if ($nps['id']==$session_office) continue;					
+					if ($nps['id']==$admin_recipient) continue;		
+					notify($con,"approved",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>null,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
+
+				};
 			
 			};
 			
@@ -931,9 +951,18 @@ $app->post('/doc/actions/comment', function ($request, $response, $args) {
 
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");	
 
-	# notify Liaisons AOs AAsts AAs
+	# notify Liaisons AOs AAsts AAs in originating office
 	$all = $setup->get_setup_as_string(10);
 	notify($con,"commented",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['comment']['staff']['id'],"track_action_status"=>$document_action_done_status));
+
+	# notify PA Staffs
+	$pa_staffs = $setup->get_setup_as_string(11);
+	$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
+	foreach ($notify_pa_staffs as $nps) {
+		
+		notify($con,"commented",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$data['comment']['staff']['id'],"track_action_status"=>$document_action_done_status),false);
+		
+	};
 
 	return $response->withJson([]);
 
@@ -1035,6 +1064,17 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 	# notify admin recipient
 	$admin_recipient = get_admin_recipient($con,$id);
 	notify($con,"picked_up",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$pick_up_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['transit']['staff']['id'],"track_action_status"=>$pick_up_transit_description),false);
+	
+	# notify PA staffs
+	$pa_staffs = $setup->get_setup_as_string(11);
+	$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
+	foreach ($notify_pa_staffs as $nps) {
+		
+		if ($nps['id']==$session_office) continue;					
+		if ($nps['id']==$admin_recipient) continue;					
+		notify($con,"picked_up",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$pick_up_track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$data['transit']['staff']['id'],"track_action_status"=>$pick_up_transit_description),false);
+		
+	};
 
 	//
 	
@@ -1146,6 +1186,17 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$admin_recipient = get_admin_recipient($con,$id);	
 	notify($con,"received",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$receive_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$receive_transit_description,"filed"=>$data['file']),false);
 	
+	# notify PA staffs
+	$pa_staffs = $setup->get_setup_as_string(11);
+	$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
+	foreach ($notify_pa_staffs as $nps) {
+		
+		if ($nps['id']==$session_office) continue;					
+		if ($nps['id']==$admin_recipient) continue;					
+		notify($con,"received",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$receive_track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$receive_transit_description,"filed"=>$data['file']),false);
+		
+	};	
+	
 	//	
 	// return $response->withJson([]);
 	return $response->write(0);	
@@ -1244,6 +1295,17 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 	$admin_recipient = get_admin_recipient($con,$id);
 	notify($con,"released",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['office']['id']),false);
 	
+	# notify PA staffs
+	$pa_staffs = $setup->get_setup_as_string(11);
+	$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
+	foreach ($notify_pa_staffs as $nps) {
+		
+		if ($nps['id']==$session_office) continue;					
+		if ($nps['id']==$admin_recipient) continue;					
+		notify($con,"released",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['office']['id']),false);
+		
+	};	
+	
 	// return $response->withJson([]);
 
 });
@@ -1300,8 +1362,17 @@ $app->post('/doc/transit/file/{id}', function ($request, $response, $args) {
 
 	# notify Liaisons AOs AAsts AAs
 	$all = $setup->get_setup_as_string(10);
-	notify($con,"filed",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>true));
+	notify($con,"filed",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>true));	
 	
+	# notify PA staffs
+	$pa_staffs = $setup->get_setup_as_string(11);
+	$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
+	foreach ($notify_pa_staffs as $nps) {
+
+		notify($con,"filed",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"filed"=>true),false);
+
+	};
+
 	// return $response->withJson([]);
 
 });
@@ -1751,7 +1822,7 @@ $app->post('/doc/office/action', function (Request $request, Response $response,
 });
 
 $app->post('/doc/revisions/upload/{id}/{ext}', function (Request $request, Response $response, array $args) {
-	
+
 	$id = $args['id'];
 	$filename = $args['ext'];
 	
@@ -1780,7 +1851,7 @@ $app->post('/doc/revisions/upload/{id}/{ext}', function (Request $request, Respo
 	$insert = $con->insertData($data);		
 	
 	$revision_id = $con->insertId;
-	
+
 	# upload file
 	$dir = "../revisions/";
 	$folder = "$dir/$id";
@@ -1798,6 +1869,17 @@ $app->post('/doc/revisions/upload/{id}/{ext}', function (Request $request, Respo
 	
 	# notify admin recipient
 	notify($con,"add_revision",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
+	
+	# notify PA staffs
+	$pa_staffs = $setup->get_setup_as_string(11);
+	$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
+	foreach ($notify_pa_staffs as $nps) {
+		
+		if ($nps['id']==$session_office) continue;					
+		if ($nps['id']==$admin_recipient) continue;					
+		notify($con,"add_revision",array("notify_user"=>$nps['id'],"doc_id"=>$id,"revision_id"=>$revision_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$data['user_id'],"track_action_status"=>$track_action_status),false);
+		
+	};
 	
 	$track_transit = array(
 		"id"=>1,
