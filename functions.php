@@ -366,6 +366,30 @@ function get_transit_staff($con,$transit,$p) {
 
 };
 
+function is_picked_up_by_other($transit) {
+	
+	$picked_up_by_other = false;
+	
+	$_transit = json_decode($transit, true);
+	
+	if (isset($_transit['picked_up_by_other'])) $picked_up_by_other = true;
+	
+	return $picked_up_by_other;
+	
+};
+
+function get_transit_picked_up_other($transit) {
+	
+	$picked_up_by_other = "";
+	
+	$_transit = json_decode($transit, true);
+	
+	$picked_up_by_other = $_transit['picked_up_by_other'];
+	
+	return $picked_up_by_other;
+	
+};
+
 function add_track($con,$data) {
 
 	$table = $con->table;

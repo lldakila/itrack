@@ -1041,6 +1041,7 @@ $app->post('/doc/transit/pickup', function ($request, $response, $args) {
 	
 	$pick_up_track_transit = array(
 		"id"=>$pick_up,
+		"picked_up_by_other"=>(isset($data['transit']['other']))?$data['transit']['other']:null,
 		"picked_up_by"=>$data['transit']['staff']['id'],
 		"received_by"=>null,
 		"office"=>$data['transit']['office']['id'],

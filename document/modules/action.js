@@ -78,6 +78,11 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			}).then(function mySuccess(response) {
 				
 				scope.offices = response.data;
+				angular.forEach(scope.offices, function(office,i) {
+					
+					office.staffs.push({id:0,fullname:"Other"});
+					
+				});
 					
 			}, function myError(response) {
 				
@@ -219,7 +224,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 		
 			if (validate.form(scope,'transit')) {
 				
-				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please select office and staff.');				
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please select office and staff. Enter name of staff if other is selected.');				
 				return;
 				
 			};

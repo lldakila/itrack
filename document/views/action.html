@@ -297,7 +297,13 @@
 														<label>Staff</label>
 														<select class="form-control" name="staff" ng-model="transit.staff" ng-options="staff.fullname for staff in staffs.transit track by staff.id" required ng-disabled="disabled.transit.pickup"></select>
 													</div>
-												</div>											
+												</div>
+												<div class="col-md-12" ng-show="transit.staff.id==0">
+													<div class="form-group">
+														<label>Name</label>
+														<input type="text" class="form-control" ng-model="transit.other" ng-required="transit.staff.id==0" ng-disabled="disabled.transit.pickup">
+													</div>
+												</div>
 											</div>
 										</div>
 										<div class="form-actions">

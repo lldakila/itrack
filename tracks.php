@@ -187,9 +187,16 @@ function tracks($con,$setup,$id,$document) {
 				
 				$status = $track['track_action_status'];
 				
+				$text = get_staff_name($con,$track['track_action_staff'])." $status the document";
+				if (is_picked_up_by_other($track['transit'])) {
+					
+					$text = get_transit_picked_up_other($track['transit'])." $status the document";
+					
+				};
+				
 				$list[] = array(
 					"status"=>array(
-						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document",
+						"text"=>$text,
 						"comment"=>null,
 					)
 				);
