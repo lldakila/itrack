@@ -85,23 +85,40 @@ function due_date($con,$id,$setup) {
 	
 	$originating_office = $document[0]['origin'];
 	$initial_office = $setup->get_setup_as_string(4);
-	$current_office_id = document_current_location_office_id($con,$document[0]['id']);
 	
+	$received = false;
 	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY id DESC LIMIT 1");
-	$recent_track = $tracks[0];
-	$system_log = $recent_track['system_log'];
-	
+
+	# get last system_log from last office where it was received
+	foreach ($tracks as $track) {
+		
+		if ($track['track_action_status']=="received") {
+
+			$system_log = $track['system_log'];
+			$office_id = get_transit_office_id($con,$track['transit']);
+			$received = true;
+
+		};
+
+	};
+
 	$transaction = $con->getData("SELECT days FROM transactions WHERE id = ".$document[0]['document_transaction_type']);
 	
 	$days = $transaction[0]['days'];
 
-	$all_days = date("Y-m-d H:i:s",strtotime("+$days Days",strtotime($origin)));
-
 	$weekends = 0;
 	
 	$start = $origin;
+	$track_dt = $origin;
 	
+	if ($received) {
+		
+		$start = $system_log;
+		$track_dt = $system_log;
+		
+	};
 	
+	$all_days = date("Y-m-d H:i:s",strtotime("+$days Days",strtotime($start)));	
 	
 	while (strtotime($start) <= strtotime($all_days)) {
 
@@ -110,10 +127,9 @@ function due_date($con,$id,$setup) {
 		$start = date("Y-m-d",strtotime("+1 Day",strtotime($start)));
 
 	};
-	#
 
 	$weekdays_only = $days+$weekends;
-	$due_date = date("Y-m-d H:i:s",strtotime("+$weekdays_only Day",strtotime($origin)));
+	$due_date = date("Y-m-d H:i:s",strtotime("+$weekdays_only Day",strtotime($track_dt)));
 	
 	return $due_date;
 	

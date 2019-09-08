@@ -415,23 +415,4 @@ function document_current_location($con,$id) {
 	
 };
 
-function document_current_location_office_id($con,$id) {
-	
-	$current_location_office_id = 0;
-	
-	$sql = "SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC LIMIT 1";
-	
-	$tracks = $con->getData($sql);
-	
-	if (count($tracks)) {
-	
-		$recent_track = $tracks[0];
-		$current_location_office_id = get_transit_office_id($con,$recent_track['transit']);
-		
-	};
-	
-	return $current_location_office_id;
-	
-};
-
 ?>
