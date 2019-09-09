@@ -87,18 +87,36 @@ function due_date($con,$id,$setup) {
 	$initial_office = $setup->get_setup_as_string(4);
 	
 	$received = false;
-	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY id DESC LIMIT 1");
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY id DESC");
 
 	# get last system_log from last office where it was received
 	foreach ($tracks as $track) {
+		
+		# if filed no due date
+		if ($track['track_action_status']=="filed") {
+			
+			return "filed";
+			exit();
+			
+		};
 		
 		if ($track['track_action_status']=="received") {
 
 			$system_log = $track['system_log'];
 			$office_id = get_transit_office_id($con,$track['transit']);
 			$received = true;
+			break;
 
 		};
+		
+		if ($track['track_action_status']=="picked up") {
+
+			$system_log = $track['system_log'];
+			$office_id = get_transit_office_id($con,$track['transit']);
+			$received = true;
+			break;
+
+		};		
 
 	};
 

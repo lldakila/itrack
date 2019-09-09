@@ -267,8 +267,8 @@ $app->get('/for/initial/{id}', function ($request, $response, $args) {
 	
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
 	$due_date = due_date($con,$id,null);
-	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
-	
+	$document['due_date'] = ($due_date=="file")?$due_date:date("M j, Y h:i A",strtotime($due_date));
+
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];	
 	
@@ -545,7 +545,7 @@ $app->get('/action/{id}', function ($request, $response, $args) {
 	
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
 	$due_date = due_date($con,$id,$setup);
-	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
+	$document['due_date'] = ($due_date=="filed")?$due_date:date("M j, Y h:i A",strtotime($due_date));
 	$document['current_location'] = document_current_location($con,$id);	
 	
     return $this->view->render($response, 'action.html', [
@@ -668,15 +668,15 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 			# PA staffs
 			$pa_staffs = $setup->get_setup_as_string(11);
 			
-			$admin_recipient = get_admin_recipient($con,$id);			
-			
+			$admin_recipient = get_admin_recipient($con,$id);
+
 			# notify Liaisons AOs AAsts AAs in originating office
 			if ($data['action']['track_action']==1) {
 				
 				notify($con,"initialed",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup));
 				
 				# notify admin recipient
-				notify($con,"initialed",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
+				notify($con,"initialed",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
 				
 				# notify PA staffs
 				$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
@@ -684,7 +684,7 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 					
 					if ($nps['id']==$session_office) continue;					
 					if ($nps['id']==$admin_recipient) continue;					
-					notify($con,"initialed",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>null,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
+					notify($con,"initialed",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
 					
 				};
 				
@@ -695,7 +695,7 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 				notify($con,"approved",array("doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup));
 				
 				# notify admin recipient
-				notify($con,"approved",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>$admin_recipient,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
+				notify($con,"approved",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
 			
 				# notify PA staffs
 				$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
@@ -703,7 +703,7 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 
 					if ($nps['id']==$session_office) continue;					
 					if ($nps['id']==$admin_recipient) continue;		
-					notify($con,"approved",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>null,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
+					notify($con,"approved",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$action_track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$data['staff']['id'],"track_action_status"=>$document_action_done_status,"pa_staffs"=>$pa_staffs,"setup"=>$setup),false);
 
 				};
 			
@@ -1111,11 +1111,19 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$session_office = $_SESSION['office'];	
 	
 	// check if document is already received
-	
 	$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action_status = 'received'";
 	$is_received = $con->getData($sql);
 		
 	if (count($is_received)) return $response->write(1);
+	
+	// check if document is picked up
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'picked up'";
+	$is_picked_up = $con->getData($sql);
+	
+	if (count($is_picked_up)) {
+		// check if picked up by office
+		if (get_transit_office_id($con,$is_picked_up[0]['transit'])==$session_office) return $response->write(2);
+	}
 	
 	$transit = transit;	
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");		
@@ -1212,6 +1220,7 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 $app->get('/doc/transit/is_receive/{id}', function ($request, $response, $args) {
 
 	require_once '../system_setup.php';
+	require_once '../functions.php';
 
 	$system_setup = system_setup;
 	$setup = new setup($system_setup);	
@@ -1229,16 +1238,28 @@ $app->get('/doc/transit/is_receive/{id}', function ($request, $response, $args) 
 	$id = intval($args['id']);
 
 	$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action_status = 'received'";
-	$received = $con->getData($sql);
+	$received = $con->getData($sql);	
+	$already_received = count($received);
+
+	// mark received if document is picked up
+	// check if document is picked up
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'picked up'";
+	$is_picked_up = $con->getData($sql);
+	
+	if (count($is_picked_up)) {
+		// check if picked up by office
+		if (get_transit_office_id($con,$is_picked_up[0]['transit'])==$session_office) $already_received = 1;
+	}
 
 	if ($session_office == $initial_office) {
 		
 		$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action IN (1,2)";
-		$received = $con->getData($sql);		
+		$received = $con->getData($sql);
+		$already_received = count($received);		
 		
 	};
 
-	return $response->write(count($received));
+	return $response->write($already_received);
 
 });
 
@@ -1270,7 +1291,9 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 		"id"=>$release,
 		"picked_up_by"=>null,
 		"received_by"=>null,
-		"office"=>$data['release']['office']['id'],
+		// "office"=>$data['release']['office']['id'],
+		"office"=>$session_office,
+		"release_to_office"=>$data['release']['office']['id'],
 		// "released_to"=>$data['release']['staff']['id'],
 		"released_to"=>null,
 		"filed"=>false,		
@@ -1409,7 +1432,7 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
 	$due_date = due_date($con,$id,$setup);
-	$document['due_date'] = date("M j, Y h:i A",strtotime($due_date));
+	$document['due_date'] = ($due_date=="filed")?$due_date:date("M j, Y h:i A",strtotime($due_date));
 	$document['current_location'] = document_current_location($con,$id);
 
 	$document['tracks'] = tracks($con,$setup,$id,$document);

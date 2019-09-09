@@ -13,7 +13,7 @@
 		<p><span class="text-muted">Transaction: </span><span class="text-bold-700"> {{document.document_transaction_type.transaction}} ({{document.document_transaction_type.days}} working days)</span></p>
 		<p><span class="text-muted">Date:</span> <span class="text-bold-700">{{document.document_date}}</span></p>
 		<p><span class="text-muted">Current Location:</span> <span class="text-bold-700">{{document.current_location}}</span></p>							
-		<p><span class="text-muted">Due Date:</span> <span class="text-bold-700">{{document.due_date}}</span></p>							
+		<p ng-show="document.due_date!='filed'"><span class="text-muted">Due Date:</span> <span class="text-bold-700">{{document.due_date}}</span></p>							
 	</div>
 </div>
 <div class="row">

@@ -25,6 +25,10 @@ angular.module('receive-document',['module-access','block-ui','bootstrap-growl',
 
 						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document has already been received in your office');
 					
+					} else if (response.data==2) {
+						
+						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document was picked up. You can file the document or define actions for it.');						
+						
 					} else {
 
 						growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				

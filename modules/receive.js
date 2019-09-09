@@ -191,8 +191,9 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 						method: 'POST',
 						url: 'document/doc/office/action',
 						data: scope.doc
-					}).then(function mySuccess(response) {							
+					}).then(function mySuccess(response) {					
 				
+						growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Action(s) for document updated.');
 						bui.hide();
 
 					}, function myError(response) {								

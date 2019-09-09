@@ -328,6 +328,18 @@ function get_transit_office($con,$transit) {
 	
 };
 
+function get_transit_release_to_office($con,$transit) {
+	
+	$transit_office = null;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_office = get_office_description($con,$_transit['release_to_office']);
+	
+	return $transit_office;
+	
+};
+
 function get_transit_office_shortname($con,$transit) {
 	
 	$transit_office_shortname = null;
