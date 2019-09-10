@@ -1662,6 +1662,14 @@ $app->put('/doc/revisions/update/status/{id}', function ($request, $response, $a
 
 	$update = $con->updateData(array("id"=>$data['id'],"update_log"=>"CURRENT_TIMESTAMP","datetime_completed"=>$data['datetime_completed'],"revision_ok"=>$data['revision_ok']),'id');
 
+	if (!$data['revision_ok']) {
+		
+		$con->table = "tracks";		
+		$con->query("DELETE FROM tracks WHERE revision_id = $id AND track_action_status = 'revisions ok'");
+		$con->table = "revisions";		
+		
+	};
+
 	if ($data['revision_ok']) {
 
 		$revision_id = $data['id'];

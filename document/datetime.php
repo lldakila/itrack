@@ -98,6 +98,23 @@ function due_date($con,$id,$setup) {
 			return "filed";
 			exit();
 			
+		};		
+		
+		# if revision ok
+		$revised = false;
+		if ($track['track_action']==6) {
+			
+			$revised = true;
+			break;
+			
+		};
+		
+		# if for revision
+		if ($track['track_action']==5) {
+			
+			return "For revision";
+			exit();
+			
 		};
 		
 		if ($track['track_action_status']=="received") {
@@ -128,6 +145,18 @@ function due_date($con,$id,$setup) {
 	
 	$start = $origin;
 	$track_dt = $origin;
+	
+	if ($revised) {
+		
+		# get revision
+		$revision = $con->getData("SELECT datetime_completed FROM revisions WHERE id = ".$track['revision_id']);
+
+		if (count($revision)) {
+			$start = $revision[0]['datetime_completed'];
+			$track_dt = $revision[0]['datetime_completed'];
+		};
+		
+	};
 	
 	if ($received) {
 		

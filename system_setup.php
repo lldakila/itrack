@@ -5,12 +5,12 @@ define('system_setup', array(
 		"id"=>1,
 		"description"=>"Initial",
 		"values"=>array(
-			2=>array( # OPA
+			24=>array( # OPA
 				"id"=>1,
 				"description"=>"Users for document action: initial",
 				"values"=>[9,8,2],
 			),
-			3=>array( # OPG
+			20=>array( # OPG
 				"id"=>1,
 				"description"=>"Users for document action: initial",
 				"values"=>[50,51],		
@@ -21,12 +21,12 @@ define('system_setup', array(
 		"id"=>2,
 		"description"=>"Signature",
 		"values"=>array(
-			2=>array( # OPA
+			24=>array( # OPA
 				"id"=>2,
 				"description"=>"Users for document action: signature",
 				"values"=>[9,8,2],
 			),
-			3=>array( # OPG
+			20=>array( # OPG
 				"id"=>2,
 				"description"=>"Users for document action: signature",
 				"values"=>[6],		
