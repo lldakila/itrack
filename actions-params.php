@@ -31,8 +31,8 @@ $users_for_initial = $con->getData("SELECT id, CONCAT(IF(ISNULL(title),'',CONCAT
 // $users_for_initial_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"),"value"=>false);
 foreach ($users_for_initial as $value) {
 	
-	$office = $con->getData("SELECT users.div_id id, (SELECT office FROM offices WHERE offices.id = users.div_id) office FROM users WHERE users.id = ".$value['id']);
-	
+	$sql = "SELECT users.div_id id, (SELECT office FROM offices WHERE offices.id = users.div_id) office FROM users WHERE users.id = ".$value['id'];
+	$office = $con->getData($sql);
 	$value['office'] = $office[0];
 	$value['value'] = false;	
 	

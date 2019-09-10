@@ -267,7 +267,7 @@ $app->get('/for/initial/{id}', function ($request, $response, $args) {
 	
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
 	$due_date = due_date($con,$id,null);
-	$document['due_date'] = ($due_date=="file")?$due_date:date("M j, Y h:i A",strtotime($due_date));
+	$document['due_date'] = ($due_date['status'])?date("M j, Y h:i A",strtotime($due_date['dt'])):null;
 
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];	
@@ -545,7 +545,7 @@ $app->get('/action/{id}', function ($request, $response, $args) {
 	
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
 	$due_date = due_date($con,$id,$setup);
-	$document['due_date'] = ($due_date=="filed")?$due_date:date("M j, Y h:i A",strtotime($due_date));
+	$document['due_date'] = ($due_date['status'])?date("M j, Y h:i A",strtotime($due_date['dt'])):null;
 	$document['current_location'] = document_current_location($con,$id);	
 	
     return $this->view->render($response, 'action.html', [
@@ -591,7 +591,7 @@ $app->get('/doc/actions/{id}', function ($request, $response, $args) {
 		if ($track['track_action']==6) continue; # skip revised
 		
 		$staffs = get_staffs_actions($con,$track);
-	
+
 		$actions[] = array(
 			"track_id"=>$track['id'],
 			"track_action"=>$track['track_action'],
@@ -1432,7 +1432,7 @@ $app->get('/doc/track/{id}', function ($request, $response, $args) {
 
 	$document['document_date'] = date("M j, Y h:i A",strtotime($document['document_date']));
 	$due_date = due_date($con,$id,$setup);
-	$document['due_date'] = ($due_date=="filed")?$due_date:date("M j, Y h:i A",strtotime($due_date));
+	$document['due_date'] = ($due_date['status'])?date("M j, Y h:i A",strtotime($due_date['dt'])):null;
 	$document['current_location'] = document_current_location($con,$id);
 
 	$document['tracks'] = tracks($con,$setup,$id,$document);

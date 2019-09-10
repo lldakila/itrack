@@ -95,8 +95,8 @@ function due_date($con,$id,$setup) {
 		# if filed no due date
 		if ($track['track_action_status']=="filed") {
 			
-			return "filed";
-			exit();
+			$return = array("status"=>false,"dt"=>null);
+			return $return;
 			
 		};		
 		
@@ -112,8 +112,8 @@ function due_date($con,$id,$setup) {
 		# if for revision
 		if ($track['track_action']==5) {
 			
-			return "For revision";
-			exit();
+			$return = array("status"=>false,"dt"=>null);		
+			return $return;
 			
 		};
 		
@@ -178,7 +178,9 @@ function due_date($con,$id,$setup) {
 	$weekdays_only = $days+$weekends;
 	$due_date = date("Y-m-d H:i:s",strtotime("+$weekdays_only Day",strtotime($track_dt)));
 	
-	return $due_date;
+	$return = array("status"=>true,"dt"=>$due_date);
+	
+	return $return;
 	
 };
 
