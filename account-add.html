@@ -143,7 +143,7 @@
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Offices</label>
-													<select class="form-control" name="div_id" ng-class="{'border-danger': formHolder.user.div_id.$touched && formHolder.user.div_id.$invalid}" ng-model="user.div_id" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select>
+													<select class="form-control" name="div_id" ng-class="{'border-danger': formHolder.user.div_id.$touched && formHolder.user.div_id.$invalid}" ng-model="user.div_id" ng-options="o.shortname for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select>
 													<span class="help-block danger" ng-show="formHolder.user.div_id.$touched && formHolder.user.div_id.$invalid">Office is required</span>
 												</div>
 											</div>

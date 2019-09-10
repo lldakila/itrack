@@ -419,7 +419,6 @@ function is_office_admin($office) {
 	
 	return $office == $setup->get_setup(13);
 	
-	
 };
 
 function is_office_opg($office) {
