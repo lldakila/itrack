@@ -40,8 +40,8 @@ define('system_setup', array(
 	),
 	array(
 		"id"=>4,
-		"description"=>"Office for document action",
-		"values"=>[2],
+		"description"=>"Office for document action", # initial office
+		"values"=>[24],
 	),
 	array(
 		"id"=>5,
@@ -81,12 +81,12 @@ define('system_setup', array(
 	array(
 		"id"=>12,
 		"description"=>"OPG Office",
-		"values"=>3,
+		"values"=>20,
 	),
 	array(
 		"id"=>13,
 		"description"=>"OPA Office",
-		"values"=>2,
+		"values"=>24,
 	)	
 ));
 
