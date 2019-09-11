@@ -279,6 +279,8 @@ angular.module('app-module', ['ui.bootstrap','form-validator','bootstrap-modal',
 					scope.controls.labels.cancel = 'Close';
 					
 					bui.hide();
+					
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document added successfully. You can now print the receipt.');						
 
 				}, function myError(response) {
 					

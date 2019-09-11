@@ -27,7 +27,7 @@ angular.module('receive-document',['module-access','block-ui','bootstrap-growl',
 					
 					} else if (response.data==2) {
 						
-						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document was picked up. You can file the document or define actions for it.');						
+						growl.show('alert alert-info no-border mb-2',{from: 'top', amount: 60},'Document was picked up. You can file the document or define actions for it.');						
 						
 					} else {
 
