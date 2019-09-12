@@ -944,7 +944,8 @@ $app->post('/doc/actions/comment', function ($request, $response, $args) {
 		"document_id"=>$id,
 		"office_id"=>$session_office,
 		"track_action"=>4,
-		"track_action_staff"=>$data['comment']['staff']['id'],		
+		// "track_action_staff"=>$data['comment']['staff']['id'],
+		"track_action_staff"=>$session_user_id,
 		"track_action_status"=>$document_action_done_status,
 		"track_user"=>$session_user_id,
 		"transit"=>json_encode($track_transit),
@@ -958,14 +959,14 @@ $app->post('/doc/actions/comment', function ($request, $response, $args) {
 
 	# notify Liaisons AOs AAsts AAs in originating office
 	$all = $setup->get_setup_as_string(10);
-	notify($con,"commented",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$data['comment']['staff']['id'],"track_action_status"=>$document_action_done_status));
+	notify($con,"commented",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$document_action_done_status,"track_action_office"=>$session_office));
 
 	# notify PA Staffs
 	$pa_staffs = $setup->get_setup_as_string(11);
 	$notify_pa_staffs = get_staffs_by_group_only($con,$pa_staffs);
 	foreach ($notify_pa_staffs as $nps) {
 		
-		notify($con,"commented",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$data['comment']['staff']['id'],"track_action_status"=>$document_action_done_status),false);
+		notify($con,"commented",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$document_action_done_status,"track_action_office"=>$session_office),false);
 		
 	};
 

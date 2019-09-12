@@ -61,7 +61,10 @@ function tracks($con,$setup,$id,$document) {
 		# comment
 		if ($track['track_action'] == 4) {
 			
-			$status = get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document";
+			$comment_office = get_office_shortname($con,$track['office_id']);			
+			
+			// $status = get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document";
+			$status = $comment_office." ".$track['track_action_status']." on the document";
 			$status .= '<blockquote class="blockquote">';
 			$status .= '<p class="mb-0">'.$track['comment'].'</p>';
 			$status .= '</blockquote>';
@@ -69,7 +72,8 @@ function tracks($con,$setup,$id,$document) {
 			$list[] = array(
 				"status"=>array(
 					"text"=>$status,
-					"comment"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document",
+					// "comment"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." on the document",
+					"comment"=>$comment_office." ".$track['track_action_status']." on the document",
 				)
 			);			
 			

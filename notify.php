@@ -529,7 +529,8 @@ function notify($con,$state,$params,$notify_group = true) {
 
 				foreach ($staffs as $staff) {
 
-					$message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." on the document";
+					$comment_office = get_office_shortname($con,$params['track_action_office']);
+					$message = $comment_office." ".$params['track_action_status']." on the document";
 
 					$notification = array(
 						"doc_id"=>$params['doc_id'],
