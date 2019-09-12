@@ -7,7 +7,9 @@ angular.module('app-module', ['ui.bootstrap','form-validator','bootstrap-modal',
 		self.startup = function(scope) {
 			
 			scope.controls.add = true;
-			scope.controls.edit = false;					
+			scope.controls.edit = false;
+			
+			scope.views.started = false;
 			
 		};
 
@@ -144,7 +146,20 @@ angular.module('app-module', ['ui.bootstrap','form-validator','bootstrap-modal',
 			}, function myError(response) {
 		
 		
-			});				
+			});
+
+			if (scope.views.started) {
+
+				var actions = ['for_initial','for_signature','for_routing'];
+				angular.forEach(actions, function(action,i) {
+					$('#'+action).removeClass('in');
+				});
+				
+				validate.cancel(scope,'doc');
+			
+			};
+
+			scope.views.started = true;
 
 		};
 		

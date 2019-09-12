@@ -73,29 +73,33 @@ function deleteFiles($con,$files,$path=null) {
 	
 };
 
-function barcode($con,$origin,$office,$com) {
+function barcode($con,$params) {
 	
 	$barcode = "";
 	
-	$incr = 1;
+	$series = 1;
 	
-	$sql = "SELECT documents.id, documents.barcode FROM documents WHERE documents.origin = $origin ORDER BY documents.id DESC LIMIT 1";
+	$sql = "SELECT documents.id, documents.barcode, documents.doctype_series FROM documents WHERE documents.origin = ".$params['origin']." AND documents.doc_type = ".$params['doctype']." ORDER BY documents.doctype_series DESC LIMIT 1";
 
 	$last_barcode = $con->getData($sql);	
 	
 	if (count($last_barcode)) {
-
-		$last_no = explode("-",$last_barcode[0]['barcode']);
 		
-		$incr = (isset($last_no[3]))?(int)$last_no[3]:0;
+		$series = $last_barcode[0]['doctype_series'];
 		
-		$incr+=1;
+		$series+=1;
 		
 	};
 	
-	$barcode = substr($office,0,3)."-".date("m")."-".date("Y")."-".str_pad($incr, 5, '0', STR_PAD_LEFT);
+	// $barcode = substr($params['office'],0,3)."-".date("m")."-".date("Y")."-".str_pad($series, 5, '0', STR_PAD_LEFT);
+	$barcode = substr($params['office'],0,3)."-".$params['doctype_shortname']."-".date("Y")."-".str_pad($series, 5, '0', STR_PAD_LEFT);
 	
-	return $barcode;
+	$response = array(
+		"barcode"=>$barcode,
+		"series"=>$series
+	);
+	
+	return $response;
 	
 };
 

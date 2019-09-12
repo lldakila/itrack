@@ -1,1 +1,1 @@
-ALTER TABLE `revisions`  ADD `uploaded_file` VARCHAR(1000) NULL  AFTER `revision_ok`;
+ALTER TABLE `documents`  ADD `doctype_series` INT NULL  AFTER `barcode`;

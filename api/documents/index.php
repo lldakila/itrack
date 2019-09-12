@@ -91,16 +91,18 @@ $app->delete('/delete/{id}', function (Request $request, Response $response, arr
 	};
 	
 	# delete revisions files
-	$revisions_dir = "../../revisions/$id";	
-	$revisions = scandir($revisions_dir);
-	
-	foreach ($revisions as $revision) {
+	$revisions_dir = "../../revisions/$id";
+	if (folder_exist($revisions_dir)) {
+		$revisions = scandir($revisions_dir);
 		
-		if ($revision==".") continue;
-		if ($revision=="..") continue;
-		
-		if (file_exists($revisions_dir."/$revision")) unlink($revisions_dir."/$revision");
-		
+		foreach ($revisions as $revision) {
+			
+			if ($revision==".") continue;
+			if ($revision=="..") continue;
+			
+			if (file_exists($revisions_dir."/$revision")) unlink($revisions_dir."/$revision");
+			
+		};
 	};
 	
 	# delete folder-files

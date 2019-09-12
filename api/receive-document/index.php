@@ -71,7 +71,7 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 	$con = $this->con;
 	$con->table = "document_types";
 	
-	$doc_types = $con->all(["id","document_type","transaction_id"]);
+	$doc_types = $con->all(["id","document_type","shortname","transaction_id"]);
 	
     return $response->withJson($doc_types);
 
@@ -154,8 +154,12 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	session_start();
 
 	# for barcode
-	$com = $data['communication']['shortname'];
-	$office = $data['origin']['shortname'];
+	$to_barcode = array(
+		"origin"=>$data['origin']['id'],
+		"office"=>$data['origin']['shortname'],
+		"doctype"=>$data['doc_type']['id'],
+		"doctype_shortname"=>$data['doc_type']['shortname']
+	);
 	#
 
 	# document_dt_add_params
@@ -179,7 +183,8 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$uploads = array("files"=>$data['files']);	
 	unset($data['files']);
 
-	$data['barcode'] = barcode($con,$data['origin'],$office,$com);
+	$data['barcode'] = barcode($con,$to_barcode)['barcode'];
+	$data['doctype_series'] = barcode($con,$to_barcode)['series'];
 
 	$data['dt_add_params'] = json_encode($document_dt_add_params);
 	
