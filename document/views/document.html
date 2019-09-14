@@ -175,7 +175,7 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-lg-6">
+											<div class="col-lg-4">
 												<div class="form-group">
 													<label>Originating Office</label>
 													<!-- <select class="form-control" name="origin" ng-class="{'border-danger': formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid}" ng-model="doc.origin" ng-options="o.office for o in offices track by o.id" ng-disabled="controls.btns.save" required></select> -->
@@ -183,7 +183,7 @@
 													<span class="help-block danger" ng-show="formHolder.doc.origin.$touched && formHolder.doc.origin.$invalid">Office is required</span>
 												</div>
 											</div>
-											<div class="col-lg-6">
+											<div class="col-lg-4">
 												<div class="form-group">
 													<label>Document Type</label>
 													<select class="form-control" name="doc_type" ng-class="{'border-danger': formHolder.doc.doc_type.$touched && formHolder.doc.doc_type.$invalid}" ng-model="doc.doc_type" ng-options="d.document_type for d in document_types track by d.id" ng-change="app.dtParams(this,doc.doc_type)" ng-disabled="controls.btns.save" required></select>
@@ -195,10 +195,17 @@
 													<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value">
 												</div>												
 											</div>
+											<div class="col-lg-4">
+												<div class="form-group">
+													<label>Communication</label>
+													<select class="form-control" name="communication" ng-class="{'border-danger': formHolder.doc.communication.$touched && formHolder.doc.communication.$invalid}" ng-model="doc.communication" ng-options="c.communication for c in communications track by c.id" ng-disabled="controls.btns.save" required></select>
+													<span class="help-block danger" ng-show="formHolder.doc.communication.$touched && formHolder.doc.communication.$invalid">Communication is required</span>
+												</div>
+											</div>											
 										</div>
 										
 										<div class="row" ng-show="doc.origin.id === 1">
-											<div class="col-lg-6">
+											<div class="col-lg-4">
 												<div class="form-group">
 													<label>If Other Office</label>
 													<input type="text" class="form-control" name="other_origin" ng-class="{'border-danger': formHolder.doc.other_origin.$touched && formHolder.doc.other_origin.$invalid}" ng-model="doc.other_origin" ng-disabled="controls.btns.save" ng-required="doc.origin.id === 1">
@@ -215,14 +222,7 @@
 													<span class="help-block danger" ng-show="formHolder.doc.document_transaction_type.$touched && formHolder.doc.document_transaction_type.$invalid">Transaction is required</span>
 												</div>
 											</div>
-											<div class="col-lg-4">
-												<div class="form-group">
-													<label>Communication</label>
-													<select class="form-control" name="communication" ng-class="{'border-danger': formHolder.doc.communication.$touched && formHolder.doc.communication.$invalid}" ng-model="doc.communication" ng-options="c.communication for c in communications track by c.id" ng-disabled="controls.btns.save" required></select>
-													<span class="help-block danger" ng-show="formHolder.doc.communication.$touched && formHolder.doc.communication.$invalid">Communication is required</span>
-												</div>
-											</div>
-											<div class="col-lg-4">
+											<div class="col-lg-8">
 												<div class="form-group">
 													<label>Subject</label>
 													<input type="text" class="form-control" name="doc_name" ng-class="{'border-danger': formHolder.doc.doc_name.$touched && formHolder.doc.doc_name.$invalid}" ng-model="doc.doc_name" ng-disabled="controls.btns.save" required>

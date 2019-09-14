@@ -22,6 +22,26 @@ $container['view'] = function ($container) {
     return new \Slim\Views\PhpRenderer('views/');
 };
 
+$app->get('/doc/office/{id}', function ($request, $response, $args) {
+	
+	$con = $this->con;
+	$con->table = "documents";		
+	
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];
+	
+	$id = $args['id'];
+	
+	$office_is_origin = 0;
+	$document = $con->getData("SELECT origin FROM documents WHERE id = $id");
+	if ($document[0]['origin']==$session_office) $office_is_origin = 1;
+	
+	return $response->write($office_is_origin);	
+	
+});
+
 $app->get('/view/{id}', function ($request, $response, $args) {
 
 	require_once '../path_url.php';
@@ -1126,45 +1146,29 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 		if (get_transit_office_id($con,$is_picked_up[0]['transit'])==$session_office) return $response->write(2);
 	}
 	
+	// verify if document was released
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'released'";
+	$is_released = $con->getData($sql);
+	
+	$release_for_revision = false;
+	if (count($is_released)) {
+		if (was_released($is_released[0]['transit'])) {
+			if (get_released_to_office($is_released[0]['transit'])!=$session_office) {
+				if (!is_release_for_revision($is_released[0]['transit'])) { # returning revised document
+					return $response->write(3);							
+				}
+			} else {
+				$release_for_revision = true;
+			}
+		} else {
+			return $response->write(3);
+		}
+	} else {
+		return $response->write(3);
+	}
+	
 	$transit = transit;	
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");		
-	
-	// add release track
-	
-/* 	$release = 4;
-
-	$release_track_transit = array(
-		"id"=>$release,
-		"picked_up_by"=>null,
-		"received_by"=>null,
-		"office"=>$session_office,
-		"released_to"=>null,
-		"filed"=>false,		
-	);
-
-	$release_transit_description = transit_description($transit,$release);
-	$release_track = array(
-		"document_id"=>$id,
-		"office_id"=>$session_office,
-		"track_action_staff"=>0,
-		"track_action_status"=>$release_transit_description,
-		"track_user"=>$session_user_id,
-		"transit"=>json_encode($release_track_transit),
-	);
-
-	$insert_release_track = $con->insertData($release_track);
-	$release_track_id = $con->insertId;	
-	
-	# notify
-	# notify Liaisons AOs AAsts AAs
-	$all = $setup->get_setup_as_string(10);
-	notify($con,"released",array("doc_id"=>$id,"track_id"=>$release_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>0,"track_action_status"=>$release_transit_description,"track_office"=>$session_office,"release_to"=>$session_office));
-	
-	# notify admin recipient
-	$admin_recipient = get_admin_recipient($con,$id);
-	notify($con,"released",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$release_track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>0,"track_action_status"=>$release_transit_description,"track_office"=>$session_office,"release_to"=>$session_office),false);	 */
-	
-	//
 	
 	// add receive track
 	
@@ -1175,8 +1179,9 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 		"picked_up_by"=>null,
 		"received_by"=>$session_user_id,
 		"office"=>$session_office,
+		"release_for_revision"=>$release_for_revision,
 		"released_to"=>null,
-		"filed"=>$data['file'],		
+		"filed"=>$data['file'],	
 	);
 
 	$receive_transit_description = transit_description($transit,$receive);	
@@ -1287,6 +1292,7 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 	$session_office = $_SESSION['office'];	
 
 	$release = 4;
+	$release_for_revision = $data['release']['revision'];
 
 	$track_transit = array(
 		"id"=>$release,
@@ -1295,9 +1301,10 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 		// "office"=>$data['release']['office']['id'],
 		"office"=>$session_office,
 		"release_to_office"=>$data['release']['office']['id'],
+		"release_for_revision"=>$release_for_revision,
 		// "released_to"=>$data['release']['staff']['id'],
 		"released_to"=>null,
-		"filed"=>false,		
+		"filed"=>false,	
 	);
 
 	$transit = transit;

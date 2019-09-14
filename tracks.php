@@ -231,7 +231,7 @@ function tracks($con,$setup,$id,$document) {
 
 				$received_next_office[] = array(
 					"status"=>array(
-						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document at ".get_office_description($con,$track['office_id']),
+						"text"=>get_staff_name($con,$track['track_action_staff'])." $status the document at ".get_office_shortname($con,$track['office_id']),
 						"comment"=>null,
 					)
 				);
@@ -254,10 +254,14 @@ function tracks($con,$setup,$id,$document) {
 
 			if ($track['track_action_status']=="released") { # released
 
+				$text = "The document was ".$track['track_action_status']." to the ".get_transit_release_to_office($con,$track['transit']);
+				
+				if (is_release_for_revision($track['transit'])) $text .= " for revision";
+				
 				$list[] = array(
 					"status"=>array(
 						// "text"=>get_staff_name($con,$track['track_action_staff'])." ".$track['track_action_status']." the document to ".get_transit_staff($con,$track['transit'],"released_to"),
-						"text"=>"The document was ".$track['track_action_status']." to the ".get_transit_release_to_office($con,$track['transit']),
+						"text"=>$text,
 						"comment"=>null,
 					)
 				);
@@ -304,7 +308,7 @@ function tracks($con,$setup,$id,$document) {
 	# first track
 	$initial_list[] = array(
 		"status"=>array(
-			"text"=>"Received at ".get_office_description($con,$initial_office)." by ".get_staff_name($con,$document['user_id']),
+			"text"=>"Received at ".get_office_shortname($con,$initial_office)." by ".get_staff_name($con,$document['user_id']),
 			"comment"=>null,
 		)
 	);

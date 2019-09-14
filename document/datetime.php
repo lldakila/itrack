@@ -92,11 +92,23 @@ function due_date($con,$id,$setup) {
 	# get last system_log from last office where it was received
 	foreach ($tracks as $track) {
 		
-		# if filed no due date
+		# if filed - no due date
 		if ($track['track_action_status']=="filed") {
 			
 			$return = array("status"=>false,"dt"=>null);
 			return $return;
+			
+		};
+		
+		# if released for revision no - due date
+		if ($track['track_action_status']=="released") {
+			
+			if (is_release_for_revision($track['transit'])) {
+			
+				$return = array("status"=>false,"dt"=>null);
+				return $return;
+				
+			};
 			
 		};		
 		
@@ -117,16 +129,25 @@ function due_date($con,$id,$setup) {
 			
 		};
 		
-		if ($track['track_action_status']=="received") {
+		if ($track['track_action_status']=="received") { # received
 
-			$system_log = $track['system_log'];
-			$office_id = get_transit_office_id($con,$track['transit']);
-			$received = true;
-			break;
+			if (is_release_for_revision($track['transit'])) {
+
+				$return = array("status"=>false,"dt"=>null);		
+				return $return;
+				
+			} else {
+				
+				$system_log = $track['system_log'];
+				$office_id = get_transit_office_id($con,$track['transit']);
+				$received = true;
+				break;			
+				
+			}
 
 		};
 		
-		if ($track['track_action_status']=="picked up") {
+		if ($track['track_action_status']=="picked up") { # picked up
 
 			$system_log = $track['system_log'];
 			$office_id = get_transit_office_id($con,$track['transit']);

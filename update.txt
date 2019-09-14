@@ -2,6 +2,8 @@ Release for revision
 Returning document
 auto suggest validation
 
+If picked up by originating office and document is ok - no due date
+
 Fix undefined resource
 
 View file uploaded in tracking

@@ -46,7 +46,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			scope.documentFiles = [];
 			
 			initDoc(scope,id);
-			check_pickup_release(scope,id);
+			// check_pickup_release(scope,id);
 
 			scope.preview = {};
 			scope.preview.file = {};
@@ -238,7 +238,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			}).then(function mySuccess(response) {
 
 				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
-				check_pickup_release(scope,scope.doc.id);
+				// check_pickup_release(scope,scope.doc.id);
 
 				bui.hide();
 
@@ -272,7 +272,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			}).then(function mySuccess(response) {
 
 				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
-				check_pickup_release(scope,scope.doc.id);			
+				// check_pickup_release(scope,scope.doc.id);			
 
 				bui.hide();
 

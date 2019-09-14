@@ -14,7 +14,7 @@ angular.module('receive-document',['module-access','block-ui','bootstrap-growl',
 			var onOk = function() {
 			
 				bui.show();
-			
+				
 				$http({
 				  method: 'POST',
 				  url: 'document/doc/transit/receive/'+id,
@@ -23,12 +23,16 @@ angular.module('receive-document',['module-access','block-ui','bootstrap-growl',
 
 					if (response.data==1) {
 
-						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document has already been received in your office');
+						growl.show('alert alert-info no-border mb-2',{from: 'top', amount: 60},'Document has already been received in your office');
 					
 					} else if (response.data==2) {
 						
 						growl.show('alert alert-info no-border mb-2',{from: 'top', amount: 60},'Document was picked up. You can file the document or define actions for it.');						
 						
+					} else if (response.data==3) {
+
+						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'You cannot receive this document. It is not released to your office.');
+
 					} else {
 
 						growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
@@ -45,9 +49,19 @@ angular.module('receive-document',['module-access','block-ui','bootstrap-growl',
 				
 				return true;
 				
-			};
+			};		
 			
-			bootstrapModal.box(scope,'Receive document','/dialogs/receive.html',onOk);			
+			$http({
+			  method: 'GET',
+			  url: 'document/doc/office/'+id,
+			}).then(function mySuccess(response) {
+
+				if (response.data==1) bootstrapModal.box(scope,'Receive document','/dialogs/receive.html',onOk);
+				else bootstrapModal.box(scope,'Receive document','/dialogs/receive-only.html',onOk);
+
+			}, function myError(response) {
+				
+			});
 			
 		};
 		

@@ -112,8 +112,8 @@
 				<div class="breadcrumb-wrapper col-xs-12">
 				  <ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="../../index.html" class="info">iTrack</a></li>
-					<li class="breadcrumb-item active"><a href="../../update-tracks.html" class="info">Update Tracks</a></li>
-					<li class="breadcrumb-item active">Document</li>
+					<li class="breadcrumb-item active"><a href="../../update-tracks.html" class="info">Update</a></li>
+					<li class="breadcrumb-item active"><?=$document['barcode']?></li>
 				  </ol>
 				</div>
 			</div>
@@ -330,6 +330,14 @@
 														<select class="form-control" name="office" ng-model="release.office" ng-options="office.shortname for office in offices track by office.id" ng-change="staffs.release = release.office.staffs" required ng-disabled="disabled.transit.release"></select>
 													</div>
 												</div>												
+												<div class="col-md-12">
+													<fieldset class="checkboxsas">
+														 <label>
+															<input type="checkbox" ng-model="release.revision" ng-checked="release.revision">
+															For revision
+														 </label>
+													 </fieldset>																					
+												</div>
 												<!-- <div class="col-md-12">
 													<div class="form-group">
 														<label>Staff</label>

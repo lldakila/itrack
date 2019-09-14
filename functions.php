@@ -334,9 +334,37 @@ function get_transit_release_to_office($con,$transit) {
 	
 	$_transit = json_decode($transit, true);	
 	
-	$transit_office = get_office_description($con,$_transit['release_to_office']);
+	$transit_office = get_office_shortname($con,$_transit['release_to_office']);
 	
 	return $transit_office;
+	
+};
+
+function was_released($transit) {
+	
+	$_transit = json_decode($transit, true);
+	
+	return isset($_transit['release_to_office']);
+	
+};
+
+function get_released_to_office($transit) {
+	
+	$release_to_office = null;
+	
+	$_transit = json_decode($transit, true);
+	
+	$release_to_office = $_transit['release_to_office'];
+	
+	return $release_to_office;
+	
+};
+
+function is_release_for_revision($transit) {
+	
+	$_transit = json_decode($transit, true);
+
+	return $_transit['release_for_revision'];
 	
 };
 
@@ -442,7 +470,16 @@ function document_current_location($con,$id) {
 	if (count($tracks)) {
 	
 		$recent_track = $tracks[0];
-		$current_location = get_transit_office_shortname($con,$recent_track['transit']);
+		
+		switch ($recent_track['track_action_status']) {
+			
+			default:
+			
+				$current_location = get_transit_office_shortname($con,$recent_track['transit']);			
+			
+			break;
+			
+		};
 		
 	};
 	
