@@ -8,23 +8,29 @@ angular.module('file-document',['module-access','block-ui','bootstrap-growl','bo
 
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.file)) return;			
 
-			bui.show();
+			var onOk = function() {
 
-			$http({
-			  method: 'POST',
-			  url: 'document/doc/transit/file/'+id,
-			  data: scope.doc,
-			}).then(function mySuccess(response) {
+				bui.show();
 
-				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
+				$http({
+				  method: 'POST',
+				  url: 'document/doc/transit/file/'+id,
+				  data: scope.doc,
+				}).then(function mySuccess(response) {
 
-				bui.hide();
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
 
-			}, function myError(response) {
+					bui.hide();
 
-				bui.hide();
+				}, function myError(response) {
 
-			});
+					bui.hide();
+
+				});
+			
+			};
+			
+			bootstrapModal.box(scope,'File document','/dialogs/file.html',onOk);
 			
 		};
 		
