@@ -448,6 +448,76 @@ function notify($con,$state,$params,$notify_group = true) {
 
 		break;
 		
+		case "released_for_receive":			
+		
+			// if ($params['track_action_staff']>0) $message = get_staff_name($con,$params['track_action_staff'])." ".$params['track_action_status']." the document to ".get_office_description($con,$params['release_to']);		
+			// else $message = "The document was ".$params['track_action_status']." to ".get_office_description($con,$params['release_to']);		
+
+			$message = "A document is on its to your office for receiving";
+
+			if ($notify_group) {
+			
+				$staffs = get_staffs_by_group($con,$params['group'],$params['office']);
+
+				foreach ($staffs as $staff) {
+
+					# exclude if track_action_staff released the document
+					if ($staff['id']==$params['track_action_staff']) continue;
+
+					$notification = array(
+						"doc_id"=>$params['doc_id'],
+						"track_id"=>$params['track_id'],					
+						"user_id"=>$staff['id'],
+						"icon"=>"icon-arrow44",
+						"icon_bg"=>"icon-bg-circle",
+						"icon_color"=>"bg-danger",
+						"header"=>$params['header'],
+						"header_color"=>"red darken-3",
+						"message"=>$message,
+						"url"=>"/track-document.html#!/".$params['doc_id'],
+					);	
+
+					$notifications[] = $notification;
+					
+					$email = array(
+						"user"=>get_staff_info($con,$staff['id']),
+						"subject"=>$params['header'],
+						"message"=>$message
+					);
+
+					$emails[] = $email;					
+
+				};
+			
+			} else {
+				
+				$notification = array(
+					"doc_id"=>$params['doc_id'],
+					"track_id"=>$params['track_id'],
+					"user_id"=>$params['notify_user'],
+					"icon"=>"icon-arrow44",
+					"icon_bg"=>"icon-bg-circle",
+					"icon_color"=>"bg-danger",
+					"header"=>$params['header'],
+					"header_color"=>"red darken-3",
+					"message"=>$message,
+					"url"=>"/track-document.html#!/".$params['doc_id'],
+				);	
+
+				$notifications[] = $notification;				
+				
+				$email = array(
+					"user"=>get_staff_info($con,$params['notify_user']),
+					"subject"=>$params['header'],
+					"message"=>$message
+				);
+
+				$emails[] = $email;					
+				
+			};
+
+		break;		
+		
 		case "filed":
 
 			if ($notify_group) {

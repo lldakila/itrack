@@ -1328,6 +1328,10 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 	$all = $setup->get_setup_as_string(10);
 	notify($con,"released",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['office']['id']));
 	
+	# notify receiving office
+	$liaisons_receiving = $setup->get_setup_as_string(4);
+	notify($con,"released_for_receive",array("doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$data['release']['office']['id'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['office']['id']));	
+	
 	# notify admin recipient
 	$admin_recipient = get_admin_recipient($con,$id);
 	notify($con,"released",array("notify_user"=>$admin_recipient,"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>$all,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['office']['id']),false);
@@ -1341,7 +1345,7 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 		if ($nps['id']==$admin_recipient) continue;					
 		notify($con,"released",array("notify_user"=>$nps['id'],"doc_id"=>$id,"track_id"=>$track_id,"header"=>$document[0]['doc_name'],"group"=>0,"office"=>$document[0]['origin'],"track_action_staff"=>$session_user_id,"track_action_status"=>$transit_description,"track_office"=>$session_office,"release_to"=>$data['release']['office']['id']),false);
 		
-	};	
+	};
 	
 	// return $response->withJson([]);
 
