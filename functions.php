@@ -305,13 +305,13 @@ function is_received_filed($transit) {
 
 };
 
-function is_filed($transit) {
+function is_filed($con,$id) {
 
 	$is_filed = false;
 
-	$_transit = json_decode($transit, true);
-	if ($_transit['filed']) $is_filed = true;
-
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'filed'");
+	$is_filed = (count($tracks))?true:false;
+	
 	return $is_filed;	
 
 };

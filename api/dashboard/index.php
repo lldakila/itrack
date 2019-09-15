@@ -68,11 +68,20 @@ $app->post('/data', function (Request $request, Response $response, array $args)
 	if ($opa_office) {
 		
 		$dashboard['opa']['show'] = true;
+		$dashboard['opa']['new_documents'] = $dashboard_counters->new_documents();
+		$dashboard['opa']['for_initial'] = $dashboard_counters->for_initial();
+		$dashboard['opa']['initialed_documents'] = $dashboard_counters->initialed();
+		$dashboard['opa']['for_approval'] = $dashboard_counters->for_approval();
+		$dashboard['opa']['approved_documents'] = $dashboard_counters->approved();
 		
 		
 	} elseif ($opg_office) {
 		
 		$dashboard['opg']['show'] = true;
+		$dashboard['opg']['for_initial'] = $dashboard_counters->for_initial();
+		$dashboard['opg']['initialed_documents'] = $dashboard_counters->initialed();
+		$dashboard['opg']['for_approval'] = $dashboard_counters->for_approval();
+		$dashboard['opg']['approved_documents'] = $dashboard_counters->approved();	
 		
 	} else { # other_office
 		

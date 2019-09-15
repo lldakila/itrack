@@ -65,7 +65,15 @@ class dashboard_counters {
 		$this->filters = $filters;
 
 		$sql = "SELECT * FROM documents WHERE ".$this->filters['documents'][$this->selected];
-		$this->documents = $this->con->getData($sql);
+		$documents = $this->con->getData($sql);
+		
+		$this->documents = [];
+		foreach ($documents as $document) {
+			
+			if (is_filed($con,$document['id'])) continue;
+			$this->documents[] = $document;
+			
+		};
 
 	}
 
@@ -73,18 +81,14 @@ class dashboard_counters {
 
 		$documents = $this->documents;
 		
+		$count = 0;
 		foreach ($documents as $document) {
-			
-			$tracks = $this->con->getData("SELECT * FROM tracks WHERE document_id = ".$document['id']);
-			
-			foreach ($tracks as $track) {
-				
-				// var_dump($this->transit($track));
-				var_dump($this->track_action_add_params($track));
-				
-			};
+
+			$count++;
 			
 		};
+
+		return $count;
 
 	}
 	
@@ -102,10 +106,10 @@ class dashboard_counters {
 			
 			foreach ($tracks as $track) {
 				
-				if ($track['track_action'] != $for_initial) continue;
-				
-				$track_action_add_params = $this->track_action_add_params($track);
-				if ( ($track_action_add_params['action_id'] == $for_initial) && (in_array($this->office,$this->get_initial_actors_offices($track_action_add_params))) ) $count++;
+				if (($track['track_action'] == $for_initial) && ($track['office_id'] == $this->office)) {
+					$count++;
+					break;
+				}
 				
 			};
 			
@@ -129,10 +133,10 @@ class dashboard_counters {
 			
 			foreach ($tracks as $track) {
 				
-				if ($track['track_action'] != $for_approval) continue;
-				
-				$track_action_add_params = $this->track_action_add_params($track);
-				if ( ($track_action_add_params['action_id'] == $for_approval) && (in_array($this->office,$this->get_approval_actors_offices($track_action_add_params))) )  $count++;
+				if (($track['track_action'] == $for_approval) && ($track['office_id'] == $this->office)) {
+					$count++;
+					break;
+				}
 				
 			};
 			
@@ -154,25 +158,15 @@ class dashboard_counters {
 		foreach ($documents as $document) {
 			
 			$tracks = $this->con->getData("SELECT * FROM tracks WHERE document_id = ".$document['id']);
-			$no_actors = 0;
-			$done = 0;
 			
-			foreach ($tracks as $track) {					
+			foreach ($tracks as $track) {				
 				
-				if ($track['track_action'] == $for_initial) {
-
-					$track_action_add_params = $this->track_action_add_params($track);
-					$no_actors = count($this->get_initial_actors_offices($track_action_add_params));
-				
-				};
-
-				if (in_array($this->office,$this->get_initial_actors_offices($track_action_add_params))) {
-					if ($track['track_action_status'] == $initialed) $done++;
-				};
+				if (($track['track_action_status'] == $initialed) && ($track['office_id']==$this->office)) {
+					$count++;
+					break;
+				}
 				
 			};
-			
-			if ($done == $no_actors) $count++;
 
 		};
 		
@@ -192,25 +186,15 @@ class dashboard_counters {
 		foreach ($documents as $document) {
 			
 			$tracks = $this->con->getData("SELECT * FROM tracks WHERE document_id = ".$document['id']);
-			$no_actors = 0;
-			$done = 0;
 			
 			foreach ($tracks as $track) {					
-				var_dump($track);
-				if ($track['track_action'] == $for_approval) {
 
-					$track_action_add_params = $this->track_action_add_params($track);
-					$no_actors = count($this->get_approval_actors_offices($track_action_add_params));
-				
-				};
-
-				/* if (in_array($this->office,$this->get_approval_actors_offices($track_action_add_params))) {
-					if ($track['track_action_status'] == $approved) $done++;
-				}; */
+				if (($track['track_action_status'] == $approved) && ($track['office_id']==$this->office)) {
+					$count++;
+					break;
+				}
 				
 			};
-			
-			if ($done == $no_actors) $count++;
 
 		};
 		

@@ -209,8 +209,16 @@ angular.module('app-module', ['ui.bootstrap','form-validator','bootstrap-modal',
 		
 		self.save = function(scope) {
 			
-			if (validate.form(scope,'doc')) return;
-				
+			if (validate.form(scope,'doc')) {
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please fill up required fields');				
+				return;
+			};
+			
+			if (scope.doc.origin.id==undefined) {
+				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please enter originating office. Click on the name to select');						
+				return;
+			};
+			
 			var actions = 'false';
 			var options = 'true'; 
 			
