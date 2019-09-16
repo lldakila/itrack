@@ -1,6 +1,4 @@
-Release for revision
-Returning document
-auto suggest validation
+If all actions are ok - no due date, remove from documents in dashboard
 
 If picked up by originating office and document is ok - no due date
 
