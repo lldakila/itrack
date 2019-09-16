@@ -92,7 +92,7 @@ function barcode($con,$params) {
 	};
 	
 	// $barcode = substr($params['office'],0,3)."-".date("m")."-".date("Y")."-".str_pad($series, 5, '0', STR_PAD_LEFT);
-	$barcode = substr($params['office'],0,3)."-".$params['doctype_shortname']."-".date("Y")."-".str_pad($series, 5, '0', STR_PAD_LEFT);
+	$barcode = $params['office']."-".$params['doctype_shortname']."-".date("Y")."-".str_pad($series, 5, '0', STR_PAD_LEFT);
 	
 	$response = array(
 		"barcode"=>$barcode,
