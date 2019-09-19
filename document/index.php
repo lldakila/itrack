@@ -1147,20 +1147,20 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	}
 	
 	// verify if document was released
-	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'released'";
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'released' ORDER BY id DESC";
 	$is_released = $con->getData($sql);
-	
+
 	$release_for_revision = false;
 	if (count($is_released)) {
 		if (was_released($is_released[0]['transit'])) {
 			if (get_released_to_office($is_released[0]['transit'])!=$session_office) {
-				if (!is_release_for_revision($is_released[0]['transit'])) { # returning revised document
+				if (!is_release_for_revision($is_released[0]['transit'])) { # returning revised document				
 					return $response->write(3);							
 				}
 			} else {
 				$release_for_revision = true;
 			}
-		} else {
+		} else {			
 			return $response->write(3);
 		}
 	} else {
