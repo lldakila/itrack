@@ -225,7 +225,8 @@
 											<div class="col-lg-8">
 												<div class="form-group">
 													<label>Subject</label>
-													<input type="text" class="form-control" name="doc_name" ng-class="{'border-danger': formHolder.doc.doc_name.$touched && formHolder.doc.doc_name.$invalid}" ng-model="doc.doc_name" ng-disabled="controls.btns.save" required>
+													<!-- <input type="text" class="form-control" name="doc_name" ng-class="{'border-danger': formHolder.doc.doc_name.$touched && formHolder.doc.doc_name.$invalid}" ng-model="doc.doc_name" ng-disabled="controls.btns.save" required> -->
+													<textarea rows="5" class="form-control" name="doc_name" ng-class="{'border-danger': formHolder.doc.doc_name.$touched && formHolder.doc.doc_name.$invalid}" ng-model="doc.doc_name" ng-disabled="controls.btns.save" required></textarea>
 													<span class="help-block danger" ng-show="formHolder.doc.doc_name.$touched && formHolder.doc.doc_name.$invalid">Subject is required</span>
 												</div>
 											</div>
