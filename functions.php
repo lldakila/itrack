@@ -487,4 +487,30 @@ function document_current_location($con,$id) {
 	
 };
 
+// use in receiving, if last track is released for revision then allow receiving /doc/transit/receive/{id}
+function was_released_for_revision($con,$id) {
+	
+	$was_released_for_revision = false;
+	
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC LIMIT 1");
+	$was_released_for_revision = is_release_for_revision($tracks[0]['transit']);
+
+	return $was_released_for_revision;
+	
+};
+
+// use in /doc/transit/receive/{id} to check if last track is received in same office
+function last_track_is_received($con,$office_id,$id) {
+
+	$last_track_is_received = false;
+	
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND office_id = $office_id ORDER BY id DESC");
+	if (count($tracks)) {
+		if ($tracks[0]['track_action_status']=="received") $last_track_is_received = true;
+	};
+
+	return $last_track_is_received;
+	
+};
+
 ?>

@@ -1131,19 +1131,21 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];	
 	
-	// check if document is already received
-	$sql = "SELECT * FROM tracks WHERE document_id = $id AND office_id = $session_office AND track_action_status = 'received'";
-	$is_received = $con->getData($sql);
-		
-	if (count($is_received)) return $response->write(1);
+	// check if document is already received - last track
+	$already_received = last_track_is_received($con,$session_office,$id);	
 	
+	// check if it was released for revision
+	$was_released_for_revision = was_released_for_revision($con,$id);	
+	
+	if (($already_received) && (!$was_released_for_revision)) return $response->withJson(array("status"=>1));
+
 	// check if document is picked up
 	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'picked up'";
 	$is_picked_up = $con->getData($sql);
 	
 	if (count($is_picked_up)) {
 		// check if picked up by office
-		if (get_transit_office_id($con,$is_picked_up[0]['transit'])==$session_office) return $response->write(2);
+		if (get_transit_office_id($con,$is_picked_up[0]['transit'])==$session_office) return $response->withJson(array("status"=>2));
 	}
 	
 	// verify if document was released
@@ -1152,21 +1154,28 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 
 	$release_for_revision = false;
 	if (count($is_released)) {
-		if (was_released($is_released[0]['transit'])) {
+		
+		if (is_release_for_revision($is_released[0]['transit'])) {
+			
+		};
+		
+		$was_released = was_released($is_released[0]['transit']);
+		if ($was_released) {
 			if (get_released_to_office($is_released[0]['transit'])!=$session_office) {
 				if (!is_release_for_revision($is_released[0]['transit'])) { # returning revised document				
-					return $response->write(3);							
+					return $response->withJson(array("status"=>3,"message"=>""));
 				}
 			} else {
 				$release_for_revision = true;
 			}
-		} else {			
-			return $response->write(3);
+		} else {
+			return $response->withJson(array("status"=>3,"message"=>""));
 		}
+		
 	} else {
-		return $response->write(3);
+		return $response->withJson(array("status"=>3,"message"=>"Document was never released to be received."));
 	}
-	
+	exit();
 	$transit = transit;	
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");		
 	
@@ -1219,7 +1228,7 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	
 	//	
 	// return $response->withJson([]);
-	return $response->write(0);	
+	return $response->withJson(array("status"=>0));
 
 });
 
