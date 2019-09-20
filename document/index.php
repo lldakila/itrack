@@ -1155,27 +1155,30 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	$release_for_revision = false;
 	if (count($is_released)) {
 		
-		if (is_release_for_revision($is_released[0]['transit'])) {
+		if (get_released_to_office($is_released[0]['transit'])==$session_office) {
+		
+			$release_for_revision = true;
+		
+		} else {
+			
+			if (is_release_for_revision($is_released[0]['transit'])) {
+
+				$release_for_revision = true;
+				
+			} else {
+				
+				return $response->withJson(array("status"=>3,"message"=>"You cannot receive this document. It is not released to your office."));
+				
+			};
 			
 		};
 		
-		$was_released = was_released($is_released[0]['transit']);
-		if ($was_released) {
-			if (get_released_to_office($is_released[0]['transit'])!=$session_office) {
-				if (!is_release_for_revision($is_released[0]['transit'])) { # returning revised document				
-					return $response->withJson(array("status"=>3,"message"=>""));
-				}
-			} else {
-				$release_for_revision = true;
-			}
-		} else {
-			return $response->withJson(array("status"=>3,"message"=>""));
-		}
-		
 	} else {
+		
 		return $response->withJson(array("status"=>3,"message"=>"Document was never released to be received."));
+		
 	}
-	exit();
+
 	$transit = transit;	
 	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, remarks, document_date FROM documents WHERE id = $id");		
 	
@@ -1307,11 +1310,9 @@ $app->post('/doc/transit/release', function ($request, $response, $args) {
 		"id"=>$release,
 		"picked_up_by"=>null,
 		"received_by"=>null,
-		// "office"=>$data['release']['office']['id'],
 		"office"=>$session_office,
 		"release_to_office"=>$data['release']['office']['id'],
 		"release_for_revision"=>$release_for_revision,
-		// "released_to"=>$data['release']['staff']['id'],
 		"released_to"=>null,
 		"filed"=>false,	
 	);
