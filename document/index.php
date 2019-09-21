@@ -647,6 +647,12 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 	$session_user_id = $_SESSION['itrack_user_id'];
 	$session_office = $_SESSION['office'];		
 
+	# check if document is in office
+	if (!is_doc_in_office($con,$id,$session_office)) {
+		$res = array("action_track_id"=>null,"status"=>false,"status_false_code"=>1);
+		return $response->withJson($res);
+	};
+
 	$transit = array(
 		"id"=>1,
 		"picked_up_by"=>null,
@@ -672,9 +678,10 @@ $app->post('/doc/actions/update', function ($request, $response, $args) {
 	$action_track_id = $data['staff']['action_track_id'];
 	
 	$status = ($session_office == $data['staff']['office']['id']);
+	$status_false_code = ($status)?0:2;
 	
-	$res = array("action_track_id"=>$action_track_id,"status"=>$status);
-	
+	$res = array("action_track_id"=>$action_track_id,"status"=>$status,"status_false_code"=>$status_false_code);
+
 	if ($status) {
 	
 		if ($data['staff']['done']) {
@@ -942,8 +949,8 @@ $app->post('/doc/actions/comment', function ($request, $response, $args) {
 	session_start();	
 
 	$session_user_id = $_SESSION['itrack_user_id'];
-	$session_office = $_SESSION['office'];	
-
+	$session_office = $_SESSION['office'];
+	
 	$data = $request->getParsedBody();
 
 	$id = $data['document']['id'];
@@ -2044,6 +2051,23 @@ $app->get('/check/pickup_release/{id}', function ($request, $response, $args) {
 	};
 	
 	return $response->withJson($transit);	
+
+});
+
+$app->get('/check/in_office/{id}', function ($request, $response, $args) {
+	
+	require_once '../functions.php';	
+	
+	$id = $args['id'];
+	
+	session_start();
+	
+	$session_user_id = $_SESSION['itrack_user_id'];
+	$session_office = $_SESSION['office'];
+
+	$con = $this->con;
+
+	return $response->withJson(array("in_office"=>is_doc_in_office($con,$id,$session_office)));
 
 });
 

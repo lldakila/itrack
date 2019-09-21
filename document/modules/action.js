@@ -1,4 +1,4 @@
-angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','barcode-listener-action','form-validator-dialog','file-uploader']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files,validateDialog,fileUpload) {
+angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module','upload-files','block-ui','module-access','notifications-module','app-url','bootstrap-growl','files-module','barcode-listener-action','form-validator-dialog','file-uploader']).factory('app', function($http,$timeout,$window,validate,bootstrapModal,jspdf,uploadFiles,bui,access,url,growl,files,validateDialog,fileUpload,$q) {
 	
 	function app() {
 
@@ -187,7 +187,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				}).then(function mySuccess(response) {
 
 					var action_i = scope.doc.actions.indexOf(action);
-					var staff_i = scope.doc.actions[action_i].staffs.indexOf(staff);			
+					var staff_i = scope.doc.actions[action_i].staffs.indexOf(staff);		
 					
 					if (response.data.status) {				
 						
@@ -197,10 +197,14 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 						
 						growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
 						
-					} else {
+					} else {												
 						
 						scope.doc.actions[action_i].staffs[staff_i].done = !scope.doc.actions[action_i].staffs[staff_i].done;
-						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Sorry, you are not allowed to update document tracks.');
+						if (response.data.status_false_code==1) {
+							growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document is not in your office, document track cannot be updated.');
+						} else {
+							growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Sorry, you are not allowed to update document tracks.');
+						}
 						
 					};
 
@@ -227,26 +231,42 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Please select office and staff. Enter name of staff if other is selected.');				
 				return;
 				
+			};		
+		
+			check_in_office(scope,scope.doc.id).then(function success(res) {
+				
+				if (res) {
+					pickup();
+				} else {
+					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document is not in your office, pick up is not possible.');
+				};
+				
+			}, function error(res) {
+				
+			});			
+		
+			function pickup() {
+				
+				bui.show();
+				
+				$http({
+				  method: 'POST',
+				  url: scope.url.view+'document/doc/transit/pickup',
+				  data: {document: scope.doc, transit: scope.transit},
+				}).then(function mySuccess(response) {
+
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
+					// check_pickup_release(scope,scope.doc.id);
+
+					bui.hide();
+
+				}, function myError(response) {
+
+					bui.hide();
+
+				});
+
 			};
-			
-			bui.show();
-			
-			$http({
-			  method: 'POST',
-			  url: scope.url.view+'document/doc/transit/pickup',
-			  data: {document: scope.doc, transit: scope.transit},
-			}).then(function mySuccess(response) {
-
-				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
-				// check_pickup_release(scope,scope.doc.id);
-
-				bui.hide();
-
-			}, function myError(response) {
-
-				bui.hide();
-
-			});				
 			
 		};
 		
@@ -263,24 +283,40 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				
 			};
 			
-			bui.show();
-			
-			$http({
-			  method: 'POST',
-			  url: scope.url.view+'document/doc/transit/release',
-			  data: {document: scope.doc, release: scope.release},
-			}).then(function mySuccess(response) {
-
-				growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
-				// check_pickup_release(scope,scope.doc.id);			
-
-				bui.hide();
-
-			}, function myError(response) {
-
-				bui.hide();
-
+			check_in_office(scope,scope.doc.id).then(function success(res) {
+				
+				if (res) {
+					release();
+				} else {
+					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document is not in your office, release is not possible.');
+				};
+				
+			}, function error(res) {
+				
 			});				
+			
+			function release() {
+			
+				bui.show();
+				
+				$http({
+				  method: 'POST',
+				  url: scope.url.view+'document/doc/transit/release',
+				  data: {document: scope.doc, release: scope.release},
+				}).then(function mySuccess(response) {
+
+					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
+					// check_pickup_release(scope,scope.doc.id);			
+
+					bui.hide();
+
+				}, function myError(response) {
+
+					bui.hide();
+
+				});
+
+			};
 			
 		};
 		
@@ -290,34 +326,50 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 				return;
 			};		
 		
-			if (scope.comment.staff != undefined) delete scope.comment.staff;
-			if (scope.comment.text != undefined) delete scope.comment.text;
-		
-			var onOk = function() {
-
-				if (validateDialog.form(scope,'comment')) return false;
-
-				$http({
-				  method: 'POST',
-				  url: scope.url.view+'document/doc/actions/comment',
-				  data: {document: scope.doc, comment: scope.comment},
-				}).then(function mySuccess(response) {
-
-					growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');				
-
-					bui.hide();
-
-				}, function myError(response) {
-
-					bui.hide();
-
-				});					
+			check_in_office(scope,scope.doc.id).then(function success(res) {
 				
-				return true;
+				if (res) {
+					comment();
+				} else {
+					growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 60},'Document is not in your office, you cannot add comment.');
+				};
+				
+			}, function error(res) {
+				
+			});
+		
+			function comment() {
+		
+				if (scope.comment.staff != undefined) delete scope.comment.staff;
+				if (scope.comment.text != undefined) delete scope.comment.text;
+			
+				var onOk = function() {
 
+					if (validateDialog.form(scope,'comment')) return false;
+
+					$http({
+					  method: 'POST',
+					  url: scope.url.view+'document/doc/actions/comment',
+					  data: {document: scope.doc, comment: scope.comment},
+					}).then(function mySuccess(response) {
+							
+						growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 60},'Document track updated.');
+
+						bui.hide();
+
+					}, function myError(response) {
+
+						bui.hide();
+
+					});					
+					
+					return true;
+
+				};
+
+				bootstrapModal.box(scope,'Document comment','/dialogs/comment.html',onOk,function() {});
+			
 			};
-
-			bootstrapModal.box(scope,'Document comment','/dialogs/comment.html',onOk,function() {});			
 
 		};
 		
@@ -549,6 +601,27 @@ angular.module('app-module', ['form-validator','bootstrap-modal','jspdf-module',
 			});
 			
 		};
+		
+		function check_in_office(scope,id) {
+			
+			return $q(function(resolve,reject) {
+			
+				$http({
+					method: 'GET',
+					url: '/document/check/in_office/'+id,
+				}).then(function succes(response) {
+					
+					resolve(response.data.in_office);
+					
+				}, function error(response) {
+					
+					reject(null);
+					
+				});
+			
+			});
+			
+		};		
 		
 	};
 	

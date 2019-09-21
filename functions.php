@@ -392,6 +392,30 @@ function get_transit_office_id($con,$transit) {
 	
 };
 
+function get_transit_release_to_office_shortname($con,$transit) {
+	
+	$transit_release_to_office_shortname = null;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_release_to_office_shortname = get_office_shortname($con,$_transit['release_to_office']);
+	
+	return $transit_release_to_office_shortname;
+	
+};
+
+function get_transit_release_to_office_id($con,$transit) {
+	
+	$transit_release_to_office_id = 0;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_release_to_office_id = $_transit['release_to_office'];
+	
+	return $transit_release_to_office_id;
+	
+};
+
 function get_transit_staff($con,$transit,$p) {
 
 	$transit_staff = null;
@@ -459,7 +483,7 @@ function is_office_opg($office) {
 	
 };
 
-function document_current_location($con,$id) {
+function document_current_location($con,$id,$id_only=false) {
 	
 	$current_location = "";
 	
@@ -473,9 +497,17 @@ function document_current_location($con,$id) {
 		
 		switch ($recent_track['track_action_status']) {
 			
+			case "released":
+				
+				$current_location = get_transit_release_to_office_shortname($con,$recent_track['transit']);
+				if ($id_only) $current_location = get_transit_release_to_office_id($con,$recent_track['transit']);
+			
+			break;
+			
 			default:
 			
-				$current_location = get_transit_office_shortname($con,$recent_track['transit']);			
+				$current_location = get_transit_office_shortname($con,$recent_track['transit']);
+				if ($id_only) $current_location = get_transit_office_id($con,$recent_track['transit']);
 			
 			break;
 			
@@ -511,6 +543,17 @@ function last_track_is_received($con,$office_id,$id) {
 
 	return $last_track_is_received;
 	
+};
+
+/*
+** use in actions e.g.: initial, approve, comment, pick up/ release
+** no action if document is not is user's office
+** document/index.php: /doc/actions/update , /check/in_office
+*/
+function is_doc_in_office($con,$id,$session_office) {
+
+	return (document_current_location($con,$id,true) == $session_office);
+
 };
 
 ?>
