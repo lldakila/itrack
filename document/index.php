@@ -459,6 +459,63 @@ $app->get('/filters', function($request, $response, $args) {
 
 });
 
+$app->get('/filters/reports', function($request, $response, $args) {
+
+	$con = $this->con;
+	$con->table = "documents";
+	
+	$filters = [];
+	
+	$con->table = "offices";
+	$_offices = $con->all(['id','office','shortname']);
+	
+	$offices[] = array("id"=>0,"office"=>"All","shortname"=>"All");
+	foreach ($_offices as $_office) {
+		
+		$offices[] = $_office;
+		
+	};
+	
+	$con->table = "communications";	
+	$_communications = $con->all(['id','communication','shortname']);	
+	
+	$communications[] = array("id"=>0,"communication"=>"All","shortname"=>"All");
+	foreach ($_communications as $_communication) {
+		
+		$communications[] = $_communication;
+		
+	};	
+	
+	$con->table = "transactions";	
+	$_transactions = $con->all(['id','transaction','days']);	
+	
+	$transactions[] = array("id"=>0,"transaction"=>"All","days"=>"All");
+	foreach ($_transactions as $_transaction) {
+		
+		$transactions[] = $_transaction;
+		
+	};		
+	
+	$con->table = "document_types";	
+	$_doc_types = $con->all(['id','document_type']);	
+	
+	$doc_types[] = array("id"=>0,"document_type"=>"All");
+	foreach ($_doc_types as $_doc_type) {
+		
+		$doc_types[] = $_doc_type;
+		
+	};	
+	
+	$actions = array(
+		array("id"=>0,"description"=>"All","key"=>"","value"=>""),
+	);
+	
+	$filters = array("offices"=>$offices,"communications"=>$communications,"transactions"=>$transactions,"doc_types"=>$doc_types,"actions"=>$actions);
+	
+    return $response->withJson($filters);	
+
+});
+
 $app->get('/offices', function($request, $response, $args) {
 
 	$con = $this->con;
@@ -1174,7 +1231,7 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 				
 			} else {
 				
-				return $response->withJson(array("status"=>3,"message"=>"You cannot receive this document. It is not released to your office."));
+				// return $response->withJson(array("status"=>3,"message"=>"You cannot receive this document. It is not released to your office."));
 				
 			};
 			

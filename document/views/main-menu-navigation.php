@@ -10,6 +10,11 @@
 		  <li><a href="<?=$url?>documents.html" class="menu-item" ng-show="profile.pages_access.documents.value">Documents</a></li>
 		</ul>
 	</li>
+	<li class="nav-item"><a href="#"><i class="icon-android-clipboard"></i><span class="menu-title">Reports</span></a>
+		<ul class="menu-content">
+		  <li class="<?=($page=="reports_documents")?'active':''?>"><a href="<?=$url?>reports-documents.html" class="menu-item">Documents</a></li>
+		</ul>
+	</li>	
 	<li class=" nav-item" ng-show="profile.pages_access.accounts.value"><a href="#"><i class="icon-group"></i><span class="menu-title">Accounts</span></a>
 		<ul class="menu-content">
 		  <li ng-show="profile.pages_access.accounts.value"><a href="<?=$url?>account-add.html" class="menu-item">Add Account</a></li>

@@ -1,18 +1,10 @@
-var app = angular.module('trackDocument',['account-module','app-module']);
+var app = angular.module('reportsDocuments',['account-module','app-module']);
 
-app.controller('trackDocumentCtrl',function($scope,app) {
+app.controller('reportsDocumentsCtrl', function($scope,app) {
 	
 	$scope.app = app;
 	
 	$scope.app.data($scope);
-	
-	$scope.module = {
-		id: 'track_document',
-		privileges: {
-			show: 1,
-			track: 2,
-		}
-	};
 	
 });
 
