@@ -256,11 +256,14 @@
 			
 	// Load the report definition (here, a static file; in production, might be in a database)
 	$.getJSON("grouping-report-def.json", function(report_def) {
+		console.log(report_def);
 		var designer = new jsreports.Designer({
 			embedded: true,
 			container: $(".report-designer-container"),
-			data_sources: data_sources,
+			// data_sources: data_sources,
+			data_sources: [],
 			report_def: report_def,
+			// report_def: [],
 			images: [{
 				name: "ACME logo",
 				url: "acme-logo.png"
@@ -268,7 +271,7 @@
 		});
 		designer.on("save", function(def) {
 			// Capture the modified report definition here ("def" parameter)
-			console.log(JSON.parse(def));
+			console.log(def);
 		});
 	});
 
