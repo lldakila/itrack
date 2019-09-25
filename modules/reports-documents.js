@@ -50,6 +50,10 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 			
 			popFilter(scope);
 			
+			scope.reports = {};
+			
+			generateReport(scope);
+			
 		};		
 		
 		self.periodChange = function(scope) {
@@ -179,7 +183,43 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 		
 			});
 			
-		};		
+		};
+		
+		function generateReport(scope) {
+		
+			$.getJSON("/jsreports/designs/documents.json", function(report_def) {			
+				
+				scope.reports.report_def = report_def;				
+				
+				scope.reports.dataSources = [{
+						"id": "documents",
+						"name": "Documents Report",
+						"data": [
+							{"msg1":"Hello World!","msg2": "Lorem Ipsum"}
+						]
+					}];
+				
+				jsreports.render({
+					report_def: scope.reports.report_def,
+					target: $("#reports-results"),
+					datasets: scope.reports.dataSources,
+					showToolbar: false,
+					scaleFonts: true
+				});
+				
+			});
+
+		};
+		
+		self.print = function(scope) {
+			
+            jsreports.export({
+                report_def: scope.reports.report_def,
+                format: 'pdf',
+                datasets: scope.reports.dataSources
+            });
+			
+		};
 		
 	};	
 	

@@ -1,0 +1,60 @@
+/*
+body {
+	padding: 20px;
+	margin: 0;
+	font: 16px/22px "Source Sans Pro", Helvetica, sans-serif;
+	font-size-adjust: none;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	background: #f4f6ec;
+	color: #333;
+}
+*/
+.nav-category {
+	color: #777;
+	font-weight: normal;
+	margin-bottom: 0.75em;
+}
+h1, h2, h3 {
+	margin: 0;
+	padding: 0;
+}
+.report-output {
+	background: white;
+	border: 1px solid #ccc;
+	width: 770px;
+	height: 595px;
+}
+
+button {
+	font-size: 120%;
+	margin-bottom: 10px;
+}
+
+code.hljs.javascript {
+	padding: 0.5em 0.85em;
+	font-size: 12px;
+	font-family: 'Roboto Mono', monospace;
+}
+pre {
+	margin: 0;
+}
+
+.jsr-table thead th {
+	border-bottom: 1pt solid black;
+}
+
+.jsr-table tfoot td {
+	border-top: 2pt solid black;
+	font-weight: bold;
+}
+
+.jsr-table-group-0-header {
+	font-weight: bold;
+}
+
+.report-designer-container {
+	height: 600px;
+	border: 1px solid #aaa;
+}
