@@ -195,7 +195,14 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 						"id": "documents",
 						"name": "Documents Report",
 						"data": [
-							{"msg1":"Hello World!","msg2": "Lorem Ipsum"}
+							{
+								"msg1":"Hello World!",
+								"msg2":"Lorem Ipsum",
+								"rows":[
+									{"id":1,"first":"lorem","last":"ipsum"},
+									{"id":2,"first":"lorem","last":"ipsum"}
+								]
+							}
 						]
 					}];
 				

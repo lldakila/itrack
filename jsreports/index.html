@@ -15,7 +15,7 @@
 <!-- <div class="report-output"></div> -->
 <div id="rdc" class="report-designer-container"></div>
 <div class="report-designer-container" style="background-color: #f8f8f8; margin-top: 25px;">
-	<div style="width: 100%; position: relative; border: 1px solid red;">
+	<div style="width: 100%; height: 100%; position: relative;">
 		<div style="width: 45%; position: absolute; top: 0; left: 0; padding-left: 25px;">
 			<p style="font: 16px/22px 'Source Sans Pro', Helvetica, sans-serif;">JSON String (Load)</p>
 			<textarea rows="25" id="report-json-string-load" style="width: 98%;"></textarea>
@@ -205,15 +205,23 @@
 			"name": "Time",
 			"url": "time-data.json",
 			"schema_url": "time-data-schema.json"
-		},{
+		},
+		/*{
 			"id": "documents",
 			"name": "Documents"
-		}
-		];
-			
+		},
+		{
+			"id": "rows",
+			"name": "Rows"
+		}*/
+	];
+
+	var rd = null;
+	
 	// Load the report definition (here, a static file; in production, might be in a database)
-	$.getJSON("grouping-report-def.json", function(report_def) {
-	//$.getJSON("grouping-report-def-bak.json", function(report_def) {
+	//$.getJSON("grouping-report-def.json", function(report_def) {
+	$.getJSON("grouping-report-def-bak.json", function(report_def) {
+		rd = report_def;
 		var designer = new jsreports.Designer({
 			embedded: true,
 			container: $("#rdc"),
@@ -231,6 +239,13 @@
 			console.log(def);
 			$('#report-json-string-output').html('');
 			$('#report-json-string-output').html(def);
+			
+            jsreports.export({
+                report_def: rd,
+                format: 'pdf',
+                datasets: data_sources
+            });			
+			
 		});
 	});
 
