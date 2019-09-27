@@ -200,27 +200,69 @@
 	});
 
 	// Set up variables that apply to all reports
-	var data_sources = [{
+	var data_sources = [
+		{
 			"id": "time",
 			"name": "Time",
 			"url": "time-data.json",
 			"schema_url": "time-data-schema.json"
 		},
-		/*{
-			"id": "documents",
-			"name": "Documents"
-		},
 		{
-			"id": "rows",
-			"name": "Rows"
-		}*/
+			"id": "account_detail",
+			"name": "Account Detail",
+			"data": [{
+				"accountHolder": "John Q. Public",
+				"accountNumber": "Z04-20049713",
+				"accountValue": 9040.17,
+				"freeCredit": 7482.57,
+				"startDate": new Date(2015, 11, 1),
+				"endDate": new Date(2015, 11, 31),
+				"netChange": -194.64,
+				"changeItems": [{
+					"category": "Beginning Account Value",
+					"description": "",
+					"currentPeriod": 9234.81,
+					"ytd": 0
+				},{
+					"category": "Additions",
+					"description": "Exchanges In",
+					"currentPeriod": 0.1,
+					"ytd": 10000
+				},{
+					"category": "Subtractions",
+					"description": "Transaction Costs & Fees",
+					"currentPeriod": 0.2,
+					"ytd": -28.54
+				},{
+					"category": "Change in Investment Value",
+					"description": "",
+					"currentPeriod": -194.94,
+					"ytd": -931.29
+				}],
+				"holdings": [{
+					"name": "Core Account",
+					"amount": 7482,
+					"color": "#E0E0E0"
+				},{
+					"name": "Stocks",
+					"amount": 1557,
+					"color": "#9CCC65"
+				}],
+				"incomeItems": [{
+					"category": "Taxable",
+					"description": "Interest",
+					"currentPeriod": 0.06,
+					"ytd": 0.31
+				}]
+			}]
+        }		
 	];
 
 	var rd = null;
 	
 	// Load the report definition (here, a static file; in production, might be in a database)
-	//$.getJSON("grouping-report-def.json", function(report_def) {
-	$.getJSON("grouping-report-def-bak.json", function(report_def) {
+	$.getJSON("grouping-report-def.json", function(report_def) {
+	//$.getJSON("grouping-report-def-bak.json", function(report_def) {
 		rd = report_def;
 		var designer = new jsreports.Designer({
 			embedded: true,
