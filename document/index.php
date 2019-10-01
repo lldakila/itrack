@@ -1204,7 +1204,7 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 	if (($already_received) && (!$was_released_for_revision)) return $response->withJson(array("status"=>1));
 
 	// check if document is picked up
-	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'picked up'";
+	$sql = "SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'picked up' ORDER BY id DESC";
 	$is_picked_up = $con->getData($sql);
 	
 	if (count($is_picked_up)) {
@@ -1239,7 +1239,11 @@ $app->post('/doc/transit/receive/{id}', function ($request, $response, $args) {
 		
 	} else {
 		
-		return $response->withJson(array("status"=>3,"message"=>"Document was never released to be received."));
+		if (count($is_picked_up)==0) { # check if not picked up
+			
+			return $response->withJson(array("status"=>3,"message"=>"Document was never released to be received."));
+		
+		};
 		
 	}
 

@@ -362,9 +362,13 @@ function get_released_to_office($transit) {
 
 function is_release_for_revision($transit) {
 	
+	$is_release_for_revision = false;
+	
 	$_transit = json_decode($transit, true);
 
-	return $_transit['release_for_revision'];
+	if (isset($_transit['release_for_revision'])) $is_release_for_revision = $_transit['release_for_revision'];
+	
+	return $is_release_for_revision;
 	
 };
 
