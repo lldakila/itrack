@@ -42,6 +42,14 @@
 	<!-- BEGIN jsreports-->	
 	<link href="jsreports/css/tomorrow-night-eighties.css" rel="stylesheet" type='text/css' />	
 	<link href="jsreports/css/style.css" rel="stylesheet" type='text/css' />
+	<style type="text/css">
+
+		#reports-results {
+			background: white;
+			border: 1px solid #ccc;
+		}
+
+	</style>	
 	<!-- END jsreports-->	
   </head>
   <body ng-app="reportsDocuments" ng-controller="reportsDocumentsCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile listen-barcode>
@@ -225,7 +233,7 @@
 							</div>							
 						</div>
 						<div class="card-body collapse in">
-							<div class="card-block report-output" id="reports-results"></div>
+							<div class="card-block report-output" id="reports-results" style="width: 100%;"></div>
 						</div>
 					</div>					
 				</div>

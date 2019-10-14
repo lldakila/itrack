@@ -19,7 +19,6 @@
 				"width":2.9836427939876216,
 				"height":0.9920424403183024,
 				"visible":true,
-				"dataSource":"rows",
 				"hasHeader":true,
 				"hasFooter":false,
 				"columns":[
@@ -44,7 +43,8 @@
 				"borderRightWidth":0,
 				"borderRightColor":"",
 				"cellWrap":true,
-				sortBy":[]
+				"sortBy":[],
+				"data":"rows"
 			}
 		],
 		"sublevels":[],

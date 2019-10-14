@@ -508,7 +508,7 @@ $app->get('/filters/reports', function($request, $response, $args) {
 	
 	$actions = array(
 		array("id"=>0,"description"=>"All","key"=>"","value"=>""),
-	);
+	);	
 	
 	$filters = array("offices"=>$offices,"communications"=>$communications,"transactions"=>$transactions,"doc_types"=>$doc_types,"actions"=>$actions);
 	

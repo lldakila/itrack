@@ -184,27 +184,38 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 			});
 			
 		};
+
+		self.filter = function(scope) {
+
+			$http({
+				method: 'POST',
+				url: '/api/reports/documents',
+				data: scope.filter
+			}).then(function mySuccess(response) {
+				
+				generateReport(scope,response.data)
+					
+			}, function myError(response) {
+				
 		
-		function generateReport(scope) {
+			});
+
+		};
+
+		function generateReport(scope,data) {
 		
 			$.getJSON("/jsreports/designs/documents.json", function(report_def) {			
-				
+												
 				scope.reports.report_def = report_def;				
 				
-				scope.reports.dataSources = [{
+				scope.reports.dataSources = [
+					{
 						"id": "documents",
 						"name": "Documents Report",
-						"data": [
-							{
-								"msg1":"Hello World!",
-								"msg2":"Lorem Ipsum",
-								"rows":[
-									{"id":1,"first":"lorem","last":"ipsum"},
-									{"id":2,"first":"lorem","last":"ipsum"}
-								]
-							}
-						]
-					}];
+						// "url": "/api/reports/documents"
+						"data": data
+					}
+				];		
 				
 				jsreports.render({
 					report_def: scope.reports.report_def,
