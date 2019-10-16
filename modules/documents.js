@@ -1,4 +1,52 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-document','ngSanitize']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-document','ngSanitize']).service('myPagination',function($http) {
+	
+	var self = this;
+	
+	self.init = function(scope) {		
+	
+		scope.pageChanged = function() {
+            self.getList(scope.pagination.currentPage,scope.pagination.entryLimit).then((response)=>{
+				scope.documents = response.data;
+          });
+        };
+		
+	};
+	
+	self.count = function() {
+
+		return $http.post('api/documents/list/0/0');
+		
+	};
+	
+	this.getList = function(currentPage, limit) {
+		console.log(currentPage);
+		offset = (currentPage - 1) * limit;		
+
+		return $http.post('api/documents/list/'+limit+'/'+offset);
+
+	};
+
+	
+	/* $http({
+	  method: 'GET',
+	  url: 'api/documents/list'
+	}).then(function mySuccess(response) {
+
+	}, function myError(response) {
+
+	});	 */
+	
+}).directive('myPagination', function () {
+    return {
+        restrict: 'A',
+        require: 'uibPagination',
+        link: function ($scope, $element, $attr, uibPaginationCtrl) {
+            uibPaginationCtrl.ShouldHighlightPage = function (pageNum) {
+                return true;
+            };
+        }
+    }
+}).factory('app', function($http,$timeout,$compile,$window,myPagination,bootstrapModal,bui,access,growl) {
 	
 	function app() {
 
@@ -26,11 +74,22 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 		
 		self.list = function(scope) {
 
-			if (scope.$id > 2) scope = scope.$parent;
+			myPagination.init(scope);
+
+            scope.orderByAttribute = 'id';
+            scope.sortReverse = false; // set the default sort order
+			scope.pagination = {
+				count: 0,
+                currentPage: 1,
+                entryLimit: 25,
+                noOfPages: 5				
+			};
+
+			/* if (scope.$id > 2) scope = scope.$parent;
 		
 			scope.currentPage = scope.views.currentPage;
 			scope.pageSize = 10;
-			scope.maxSize = 5;
+			scope.maxSize = 5;			
 			
 			$http({
 			  method: 'GET',
@@ -44,7 +103,16 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 
 			}, function myError(response) {
 
-			});
+			}); */
+
+			myPagination.count().then((response) => {
+                // scope.pagination.count = Math.ceil(response.data.count/scope.pagination.entryLimit);
+                scope.pagination.count = response.data.count;
+                pagesLinks = [];
+                myPagination.getList(scope.pagination.currentPage, scope.pagination.entryLimit).then((response) => {
+					scope.documents = response.data;
+                });
+            });
 
 		};
 		

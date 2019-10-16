@@ -19,20 +19,30 @@ $container['con'] = function ($container) {
 };
 
 # list documents
-$app->get('/list', function (Request $request, Response $response, array $args) {
+$app->post('/list/{entryLimit}/{currentPage}', function (Request $request, Response $response, array $args) {
+
+	$currentPage = $args['currentPage'];
+	$entryLimit = $args['entryLimit'];
 
 	$con = $this->con;
 	$con->table = "documents";
 	
 	require_once '../../functions.php';
 	require_once '../../document-info.php';
-	require_once '../../system_setup.php';	
+	require_once '../../system_setup.php';
 	require_once '../../tracks.php';
 	
 	$system_setup = system_setup;
-	$setup = new setup($system_setup);		
-	
-	$documents = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents");	
+	$setup = new setup($system_setup);	
+
+	$init = ((intval($entryLimit)==0) && (intval($currentPage)==0));
+
+	$limit = " LIMIT $currentPage, $entryLimit";
+	if ($init) $limit = "";
+	$sql = "SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents".$limit;
+	$documents = $con->getData($sql);
+
+	if ($init) return $response->withJson(array("count"=>count($documents)));
 
 	foreach ($documents as $i => $document) {
 		

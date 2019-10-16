@@ -151,8 +151,8 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="d in filterData = (documents | filter:search) | pagination: currentPage:pageSize">
-											<td>{{$index+1}}</td>
+										<tr ng-repeat="d in documents | filter:search">
+											<td>{{d.id}}</td>
 											<td>{{d.barcode}}</td>
 											<td>{{d.doc_name}}</td>
 											<td>{{d.doc_type.document_type}}</td>
@@ -169,7 +169,7 @@
 									<tfoot>
 										<tr>
 											<td colspan="9" style="text-align: right;">
-												<div class="float-right"><ul uib-pagination direction-links="false" boundary-links="true" total-items="filterData.length" ng-model="currentPage" max-size="maxSize"></ul></div>
+												<div class="float-right"><ul uib-pagination direction-links="false" boundary-links="true" total-items="pagination.count" ng-model="pagination.currentPage" max-size="pagination.noOfPages" template-url="templates/my-pagination.html" ng-click="pageChanged()"></ul></div>
 											</td>
 										</tr>											
 									</tfoot>
@@ -221,7 +221,7 @@
 	<script src="angular/angular.min.js"></script>
 	<script src="angular/angular-route.min.js"></script>
 	<script src="angular/angular-sanitize.min.js"></script>
-	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>	
+	<script src="angular/ui-bootstrap-tpls-3.0.6.min.js"></script>	
 
 	<script src="angular/modules/account/account.js"></script>
 	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
