@@ -4,37 +4,28 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 	
 	self.init = function(scope) {		
 	
+		let filters = {};
 		scope.pageChanged = function() {
-            self.getList(scope.pagination.currentPage,scope.pagination.entryLimit).then((response)=>{
+            self.getList(scope.pagination.currentPage,scope.pagination.entryLimit, filters).then((response)=>{
 				scope.documents = response.data;
           });
         };
 		
 	};
 	
-	self.count = function() {
+	self.count = function(filters) {
 
-		return $http.post('api/documents/list/0/0');
+		return $http.post('api/documents/list/0/0',filters);
 		
 	};
 	
-	this.getList = function(currentPage, limit) {
-		console.log(currentPage);
+	this.getList = function(currentPage, limit, filters) {
+
 		offset = (currentPage - 1) * limit;		
 
-		return $http.post('api/documents/list/'+limit+'/'+offset);
+		return $http.post('api/documents/list/'+limit+'/'+offset,filters);
 
 	};
-
-	
-	/* $http({
-	  method: 'GET',
-	  url: 'api/documents/list'
-	}).then(function mySuccess(response) {
-
-	}, function myError(response) {
-
-	});	 */
 	
 }).directive('myPagination', function () {
     return {
@@ -85,31 +76,11 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
                 noOfPages: 5				
 			};
 
-			/* if (scope.$id > 2) scope = scope.$parent;
-		
-			scope.currentPage = scope.views.currentPage;
-			scope.pageSize = 10;
-			scope.maxSize = 5;			
-			
-			$http({
-			  method: 'GET',
-			  url: 'api/documents/list'
-			}).then(function mySuccess(response) {
-				
-				scope.documents = response.data;			
-				
-				scope.filterData = scope.documents;
-				scope.currentPage = scope.views.currentPage;
-
-			}, function myError(response) {
-
-			}); */
-
-			myPagination.count().then((response) => {
-                // scope.pagination.count = Math.ceil(response.data.count/scope.pagination.entryLimit);
+			let filters = {};
+			myPagination.count(filters).then((response) => {
                 scope.pagination.count = response.data.count;
                 pagesLinks = [];
-                myPagination.getList(scope.pagination.currentPage, scope.pagination.entryLimit).then((response) => {
+                myPagination.getList(scope.pagination.currentPage, scope.pagination.entryLimit, filters).then((response) => {
 					scope.documents = response.data;
                 });
             });
