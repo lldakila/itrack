@@ -35,11 +35,14 @@ $app->post('/list/{entryLimit}/{currentPage}', function (Request $request, Respo
 	$system_setup = system_setup;
 	$setup = new setup($system_setup);	
 
-	$init = ((intval($entryLimit)==0) && (intval($currentPage)==0));
+	$init = ((intval($entryLimit)==0) && (intval($currentPage)==1));
 
-	$limit = " LIMIT $currentPage, $entryLimit";
-	if ($init) $limit = "";
+	$offset = ($currentPage*$entryLimit)-1;
+	if ($init) $offset = 0;
+	$limit = " LIMIT $offset, $entryLimit";	
+	var_dump($init); exit();
 	$sql = "SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents".$limit;
+
 	$documents = $con->getData($sql);
 
 	if ($init) return $response->withJson(array("count"=>count($documents)));

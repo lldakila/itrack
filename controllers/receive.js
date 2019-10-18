@@ -16,7 +16,7 @@ app.controller('receiveCtrl',function($scope,app) {
 	
 });
 
-app.filter('pagination', function() {
+/* app.filter('pagination', function() {
 	  return function(input, currentPage, pageSize) {
 	    if(angular.isArray(input)) {
 	      var start = (currentPage-1)*pageSize;
@@ -24,4 +24,4 @@ app.filter('pagination', function() {
 	      return input.slice(start, end);
 	    }
 	  };
-});
+}); */

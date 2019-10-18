@@ -4,9 +4,9 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 	
 	self.init = function(scope) {		
 	
-		let filters = {};
 		scope.pageChanged = function() {
-            self.getList(scope.pagination.currentPage,scope.pagination.entryLimit, filters).then((response)=>{
+			let filters = {};			
+            self.getList(scope.pagination.currentPage,scope.pagination.entryLimit, filters).then((response)=> {
 				scope.documents = response.data;
           });
         };
@@ -15,15 +15,13 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 	
 	self.count = function(filters) {
 
-		return $http.post('api/documents/list/0/0',filters);
+		return $http.post('api/documents/list/0/1',filters);
 		
 	};
 	
-	this.getList = function(currentPage, limit, filters) {
+	self.getList = function(currentPage, limit, filters) {
 
-		offset = (currentPage - 1) * limit;		
-
-		return $http.post('api/documents/list/'+limit+'/'+offset,filters);
+		return $http.post('api/documents/list/'+limit+'/'+currentPage,filters);
 
 	};
 	

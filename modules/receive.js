@@ -1,4 +1,33 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-receive','receive-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,receive,$q) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-receive','receive-document']).service('myPagination',function($http) {
+	
+	var self = this;
+	
+	self.init = function(scope) {		
+	
+		scope.pageChanged = function() {
+			let filters = scope.filter;			
+            self.getList(scope.pagination.currentPage,scope.pagination.entryLimit, filters).then((response)=>{
+				scope.documents = response.data;
+          });
+        };
+		
+	};
+	
+	self.count = function(filters) {
+
+		return $http.post('api/documents/list/0/0',filters);
+		
+	};
+	
+	self.getList = function(currentPage, limit, filters) {
+
+		offset = (currentPage - 1) * limit;		
+
+		return $http.post('api/documents/list/'+limit+'/'+offset,filters);
+
+	};	
+	
+}).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,receive,$q) {
 	
 	function app() {
 
