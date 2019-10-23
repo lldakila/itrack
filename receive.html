@@ -1,6 +1,7 @@
 <?php
 
 	require_once 'authentication.php';
+	require_once 'updates.php';
 	$page = "receive";
 
 ?>
@@ -197,7 +198,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr ng-repeat="d in filterData = (documents | filter:search) | pagination: currentPage:pageSize">
+											<tr ng-repeat="d in documents | filter:search">
 												<td>{{$index+1}}</td>
 												<td>{{d.barcode}}</td>
 												<td>{{d.doc_name}}</td>
@@ -211,7 +212,7 @@
 										<tfoot>
 											<tr>
 												<td colspan="5" style="text-align: right;">
-													<div class="float-right"><ul uib-pagination direction-links="false" boundary-links="true" total-items="filterData.length" ng-model="currentPage" max-size="maxSize"></ul></div>
+													<div class="float-right"><ul uib-pagination direction-links="false" boundary-links="true" total-items="pagination.count" items-per-page="pagination.entryLimit" ng-model="pagination.currentPage" max-size="pagination.noOfPages" template-url="angular/modules/my-pagination/my-pagination.html" ng-click="pageChanged()"></ul></div>
 												</td>
 											</tr>											
 										</tfoot>
@@ -255,34 +256,35 @@
 
     <script src="app-assets/js/jquery-barcode-scanner/jquery.scannerdetection.js" type="text/javascript"></script>	
 
-	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css">	
-	<script src="angular/modules/bootbox/bootbox.min.js"></script>
-	<script src="angular/modules/growl/jquery.bootstrap-growl.min.js"></script>
-	<script src="angular/modules/blockui/jquery.blockUI.js"></script>
-	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css">
+	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css<?=$ver?>">	
+	<script src="angular/modules/bootbox/bootbox.min.js<?=$ver?>"></script>
+	<script src="angular/modules/growl/jquery.bootstrap-growl.min.js<?=$ver?>"></script>
+	<script src="angular/modules/blockui/jquery.blockUI.js<?=$ver?>"></script>
+	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css<?=$ver?>">
 
 	<!-- dependencies -->
-	<script src="angular/angular.min.js"></script>
-	<script src="angular/angular-route.min.js"></script>
-	<script src="angular/angular-sanitize.min.js"></script>
-	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>	
+	<script src="angular/angular.min.js<?=$ver?>"></script>
+	<script src="angular/angular-route.min.js<?=$ver?>"></script>
+	<script src="angular/angular-sanitize.min.js<?=$ver?>"></script>
+	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js<?=$ver?>"></script>	
 
-	<script src="angular/modules/account/account.js"></script>
-	<script src="angular/modules/bootbox/bootstrap-modal.js"></script>
-	<script src="angular/modules/growl/growl.js"></script>
-	<script src="angular/modules/blockui/blockui.js"></script>
-	<script src="angular/modules/validation/validate.js"></script>
-	<script src="angular/modules/validation/validate-dialog.js"></script>
-	<script src="angular/modules/post/window-open-post.js"></script>
+	<script src="angular/modules/account/account.js<?=$ver?>"></script>
+	<script src="angular/modules/bootbox/bootstrap-modal.js<?=$ver?>"></script>
+	<script src="angular/modules/growl/growl.js<?=$ver?>"></script>
+	<script src="angular/modules/blockui/blockui.js<?=$ver?>"></script>
+	<script src="angular/modules/validation/validate.js<?=$ver?>"></script>
+	<script src="angular/modules/validation/validate-dialog.js<?=$ver?>"></script>
+	<script src="angular/modules/post/window-open-post.js<?=$ver?>"></script>
+	<script src="angular/modules/my-pagination/my-pagination.js<?=$ver?>"></script>	
 
 	<!-- modules -->
-	<script src="modules/notifications.js"></script>
-	<script src="modules/module-access.js"></script>
-	<script src="modules/barcode-listener-receive.js"></script>	
-	<script src="common/receive.js?updated=09.21.2019"></script>
-	<script src="modules/receive.js"></script>
+	<script src="modules/notifications.js<?=$ver?>"></script>
+	<script src="modules/module-access.js<?=$ver?>"></script>
+	<script src="modules/barcode-listener-receive.js<?=$ver?>"></script>	
+	<script src="common/receive.js<?=$ver?>"></script>
+	<script src="modules/receive.js<?=$ver?>"></script>
 
 	<!-- controller -->
-	<script src="controllers/receive.js"></script>
+	<script src="controllers/receive.js<?=$ver?>"></script>
   </body>
 </html>

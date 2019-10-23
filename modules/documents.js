@@ -35,7 +35,8 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 				count: 0,
                 currentPage: 1,
                 entryLimit: 25,
-                noOfPages: 5				
+                noOfPages: 5,
+				filters: {}
 			};
 
 			let filters = {};

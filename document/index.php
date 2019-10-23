@@ -566,14 +566,24 @@ $app->get('/office/staffs', function($request, $response, $args) {
 
 });
 
-$app->post('/filter', function($request, $response, $args) {
+$app->post('/filter/{entryLimit}/{currentPage}', function($request, $response, $args) {
+
+	$currentPage = $args['currentPage'];
+	$entryLimit = $args['entryLimit'];
+	
+	$init = ((intval($entryLimit)==0) && (intval($currentPage)==1));
+
+	$offset = ($currentPage-1)*$entryLimit;
+	$limit = " LIMIT $offset, $entryLimit";
+
+	if ($init) $limit = "";	
 
 	$con = $this->con;
 	$con->table = "documents";
 	
-	require_once '../document-info.php';	
+	require_once '../document-info.php';
 	
-	$data = $request->getParsedBody();	
+	$data = $request->getParsedBody();
 	
 	$criteria = ["origin","communication","document_transaction_type","doc_type"];
 	
@@ -587,7 +597,11 @@ $app->post('/filter', function($request, $response, $args) {
 
 	};
 
-	$documents = $con->getData("SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents$filters");
+	$sql = "SELECT id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents".$filters.$limit;
+	$documents = $con->getData($sql);
+	
+	if ($init) return $response->withJson(array("count"=>count($documents)));	
+	
 	foreach ($documents as $i => $document) {
 		
 		$documents[$i] = document_info($con,$document);
@@ -595,7 +609,7 @@ $app->post('/filter', function($request, $response, $args) {
 		
 	};
 	
-    return $response->withJson($documents);	
+    return $response->withJson($documents);
 
 });
 

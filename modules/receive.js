@@ -1,33 +1,4 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-receive','receive-document']).service('myPagination',function($http) {
-	
-	var self = this;
-	
-	self.init = function(scope) {		
-	
-		scope.pageChanged = function() {
-			let filters = scope.filter;			
-            self.getList(scope.pagination.currentPage,scope.pagination.entryLimit, filters).then((response)=>{
-				scope.documents = response.data;
-          });
-        };
-		
-	};
-	
-	self.count = function(filters) {
-
-		return $http.post('api/documents/list/0/0',filters);
-		
-	};
-	
-	self.getList = function(currentPage, limit, filters) {
-
-		offset = (currentPage - 1) * limit;		
-
-		return $http.post('api/documents/list/'+limit+'/'+offset,filters);
-
-	};	
-	
-}).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,receive,$q) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-receive','receive-document','my-pagination']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,receive,$q,myPagination) {
 	
 	function app() {
 
@@ -72,31 +43,28 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			
 			bui.show();
 			
-			scope.currentPage = 1;
-			scope.pageSize = 10;
-			scope.maxSize = 5;			
-			
-			$http({
-				method: 'POST',
-				url: 'document/filter',
-				data: scope.filter,
-			}).then(function mySuccess(response) {
-				
+			myPagination.init(scope);
+
+            scope.orderByAttribute = 'id';
+            scope.sortReverse = false; // set the default sort order
+			scope.pagination = {
+				url: 'document/filter/',
+				count: 0,
+                currentPage: 1,
+                entryLimit: 25,
+                noOfPages: 5,
+				filters: scope.filter
+			};			
+
+			myPagination.count(scope.pagination.url+'0/1',scope.filter).then((response) => {
+                scope.pagination.count = response.data.count;
+                pagesLinks = [];
 				bui.hide();
-				
-				scope.documents = response.data;
-				scope.filterData = scope.documents;
-				scope.currentPage = 1;
-				
-				$(function() {
-				  $('[data-toggle="tooltip"]').tooltip();
-				});
-				
-			}, function myError(response) {
-				
-				bui.hide();				
-		
-			});		
+                myPagination.getList(scope.pagination.url+scope.pagination.entryLimit+'/'+scope.pagination.currentPage, scope.filter).then((response) => {
+					scope.documents = response.data;
+					bui.hide();
+                });
+            });	
 			
 		};
 		

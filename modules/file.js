@@ -1,4 +1,4 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-file','file-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,file) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-file','file-document','my-pagination']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl,file,myPagination) {
 	
 	function app() {
 
@@ -43,31 +43,28 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			
 			bui.show();
 			
-			scope.currentPage = 1;
-			scope.pageSize = 10;
-			scope.maxSize = 5;			
-			
-			$http({
-				method: 'POST',
-				url: 'document/filter',
-				data: scope.filter,
-			}).then(function mySuccess(response) {
-				
+			myPagination.init(scope);
+
+            scope.orderByAttribute = 'id';
+            scope.sortReverse = false; // set the default sort order
+			scope.pagination = {
+				url: 'document/filter/',
+				count: 0,
+                currentPage: 1,
+                entryLimit: 25,
+                noOfPages: 5,
+				filters: scope.filter
+			};			
+
+			myPagination.count(scope.pagination.url+'0/1',scope.filter).then((response) => {
+                scope.pagination.count = response.data.count;
+                pagesLinks = [];
 				bui.hide();
-				
-				scope.documents = response.data;
-				scope.filterData = scope.documents;
-				scope.currentPage = 1;
-				
-				$(function() {
-				  $('[data-toggle="tooltip"]').tooltip();
-				});
-				
-			}, function myError(response) {
-				
-				bui.hide();				
-		
-			});			
+                myPagination.getList(scope.pagination.url+scope.pagination.entryLimit+'/'+scope.pagination.currentPage, scope.filter).then((response) => {
+					scope.documents = response.data;
+					bui.hide();
+                });
+            });		
 			
 		};
 		

@@ -5,8 +5,7 @@ angular.module('my-pagination',[]).service('myPagination',function($http) {
 	self.init = function(scope) {		
 	
 		scope.pageChanged = function() {
-			let filters = {};			
-            self.getList(scope.pagination.url+scope.pagination.entryLimit+'/'+scope.pagination.currentPage, filters).then((response)=> {
+            self.getList(scope.pagination.url+scope.pagination.entryLimit+'/'+scope.pagination.currentPage, scope.pagination.filters).then((response)=> {
 				scope.documents = response.data;
           });
         };
