@@ -1,41 +1,4 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-document','ngSanitize']).service('myPagination',function($http) {
-	
-	var self = this;
-	
-	self.init = function(scope) {		
-	
-		scope.pageChanged = function() {
-			let filters = {};			
-            self.getList(scope.pagination.currentPage,scope.pagination.entryLimit, filters).then((response)=> {
-				scope.documents = response.data;
-          });
-        };
-		
-	};
-	
-	self.count = function(filters) {
-
-		return $http.post('api/documents/list/0/1',filters);
-		
-	};
-	
-	self.getList = function(currentPage, limit, filters) {
-
-		return $http.post('api/documents/list/'+limit+'/'+currentPage,filters);
-
-	};
-	
-}).directive('myPagination', function () {
-    return {
-        restrict: 'A',
-        require: 'uibPagination',
-        link: function ($scope, $element, $attr, uibPaginationCtrl) {
-            uibPaginationCtrl.ShouldHighlightPage = function (pageNum) {
-                return true;
-            };
-        }
-    }
-}).factory('app', function($http,$timeout,$compile,$window,myPagination,bootstrapModal,bui,access,growl) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-document','ngSanitize','my-pagination']).factory('app', function($http,$timeout,$compile,$window,myPagination,bootstrapModal,bui,access,growl) {
 	
 	function app() {
 
@@ -68,6 +31,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
             scope.orderByAttribute = 'id';
             scope.sortReverse = false; // set the default sort order
 			scope.pagination = {
+				url: 'api/documents/list/',
 				count: 0,
                 currentPage: 1,
                 entryLimit: 25,
@@ -75,10 +39,10 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			};
 
 			let filters = {};
-			myPagination.count(filters).then((response) => {
+			myPagination.count(scope.pagination.url+'0/1',filters).then((response) => {
                 scope.pagination.count = response.data.count;
                 pagesLinks = [];
-                myPagination.getList(scope.pagination.currentPage, scope.pagination.entryLimit, filters).then((response) => {
+                myPagination.getList(scope.pagination.url+scope.pagination.entryLimit+'/'+scope.pagination.currentPage, filters).then((response) => {
 					scope.documents = response.data;
                 });
             });
