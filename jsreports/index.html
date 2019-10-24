@@ -7,6 +7,33 @@
 <link href='https://fonts.googleapis.com/css?family=Roboto+Mono:300' rel='stylesheet' type='text/css'>
 <link href="css/tomorrow-night-eighties.css" rel="stylesheet" type='text/css' />
 <link href="css/style.css" rel="stylesheet" type='text/css' />
+<style type="text/css">
+
+	pre {
+		outline: 1px solid #ccc; padding: 5px; margin: 5px;
+	}
+	
+	.string {
+		color: green;
+	}
+	
+	.number {
+		color: darkorange;
+	}
+	
+	.boolean {
+		color: blue;
+	}
+	
+	.null {
+		color: magenta;
+	}
+	
+	.key {
+		color: red;
+	}
+
+</style>
 </head>
 
 <body>
@@ -15,14 +42,14 @@
 <!-- <div class="report-output"></div> -->
 <div id="rdc" class="report-designer-container"></div>
 <div class="report-designer-container" style="background-color: #f8f8f8; margin-top: 25px;">
-	<div style="width: 100%; height: 100%; position: relative;">
+	<div style="width: 100%; height: 100%; position: relative; overflow: auto;">
 		<div style="width: 45%; position: absolute; top: 0; left: 0; padding-left: 25px;">
 			<p style="font: 16px/22px 'Source Sans Pro', Helvetica, sans-serif;">JSON String (Load)</p>
 			<textarea rows="25" id="report-json-string-load" style="width: 98%;"></textarea>
 		</div>
 		<div style="width: 45%; position: absolute; top: 0; right: 0; padding-right: 25px;">
-			<p style="font: 16px/22px 'Source Sans Pro', Helvetica, sans-serif;">JSON String (Output)</p>
-			<textarea rows="25" id="report-json-string-output" style="width: 98%;"></textarea>
+			<p style="font: 16px/22px 'Source Sans Pro', Helvetica, sans-serif;">JSON String (Output)<!--&nbsp;<a href="javascript: textToClipboard($('#report-json-string-output').html())">Copy</a>--></p>
+			<pre id="report-json-string-output" style="width: 98%;"></pre>
 		</div>
 	</div>
 </div>
@@ -964,8 +991,8 @@
 	// Load the report definition (here, a static file; in production, might be in a database)
 	//$.getJSON("blank.json", function(report_def) {
 	//$.getJSON("grouping-report-def.json", function(report_def) {
-	$.getJSON("test.json", function(report_def) {
-	//$.getJSON("grouping-report-def-orig.json", function(report_def) {
+	//$.getJSON("grouping-report-def-orig.json", function(report_def) {	
+	$.getJSON("designs/documents.json", function(report_def) {
 		rd = report_def;
 		var designer = new jsreports.Designer({
 			embedded: true,
@@ -981,9 +1008,12 @@
 		});
 		designer.on("save", function(def) {
 			// Capture the modified report definition here ("def" parameter)
-			console.log(def);
+
+			let json = JSON.parse(def);
+			let str = JSON.stringify(json, undefined, 4);
+
 			$('#report-json-string-output').html('');
-			$('#report-json-string-output').html(def);
+			$('#report-json-string-output').html(syntaxHighlight(str));
 			
             jsreports.export({
                 report_def: def,
@@ -993,6 +1023,38 @@
 			
 		});
 	});
+
+	function output(inp) {
+		document.body.appendChild(document.createElement('pre')).innerHTML = inp;
+	}
+
+	function syntaxHighlight(json) {
+		json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+			var cls = 'number';
+			if (/^"/.test(match)) {
+				if (/:$/.test(match)) {
+					cls = 'key';
+				} else {
+					cls = 'string';
+				}
+			} else if (/true|false/.test(match)) {
+				cls = 'boolean';
+			} else if (/null/.test(match)) {
+				cls = 'null';
+			}
+			return '<span class="' + cls + '">' + match + '</span>';
+		});
+	}
+	
+	function textToClipboard (text) {
+		var dummy = document.createElement("textarea");
+		document.body.appendChild(dummy);
+		dummy.value = text;
+		dummy.select();
+		document.execCommand("copy");
+		document.body.removeChild(dummy);
+	}	
 
 </script>
 </body>

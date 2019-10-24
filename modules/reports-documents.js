@@ -50,9 +50,7 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 			
 			popFilter(scope);
 			
-			scope.reports = {};
-			
-			generateReport(scope);
+			scope.reports = {};			
 			
 		};		
 		

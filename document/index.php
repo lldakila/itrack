@@ -585,15 +585,21 @@ $app->post('/filter/{entryLimit}/{currentPage}', function($request, $response, $
 	
 	$data = $request->getParsedBody();
 	
-	$criteria = ["origin","communication","document_transaction_type","doc_type"];
+	$criteria = ["origin","communication","document_transaction_type","doc_type","barcode"];
 	
 	$filters = "";
 	foreach ($criteria as $i => $criterion) {
-
-		if ($data[$criterion]['id']==0) continue;
 		
-		if ($filters=="") $filters.=" WHERE $criterion = ".$data[$criterion]['id'];
-		else $filters.=" AND $criterion = ".$data[$criterion]['id'];
+		if (isset($data[$criterion]['id'])) {
+			if ($data[$criterion]['id']==0) continue;			
+			if ($filters=="") $filters.=" WHERE $criterion = ".$data[$criterion]['id'];
+			else $filters.=" AND $criterion = ".$data[$criterion]['id'];
+		} else {
+			if (isset($data[$criterion])) {
+				if ($filters=="") $filters.=" WHERE $criterion = '".$data[$criterion]."'";
+				else $filters.=" AND $criterion = '".$data[$criterion]."'";
+			};
+		};
 
 	};
 
