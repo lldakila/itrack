@@ -50,8 +50,8 @@ function document_info_reports($con,$document) {
 	$document['doc_type'] = $doc_type[0]['document_type'];
 
 	$origin = $con->getData("SELECT id, office, shortname, dept_id FROM offices WHERE id = ".$document['origin']);
-	if ($document['origin'] == 1) $origin[0]['office'] = $origin[0]['office']." (".$document['other_origin'].")";
-	$document['origin'] = $origin[0]['office'];
+	if ($document['origin'] == 1) $origin[0]['shortname'] = $origin[0]['shortname']." (".$document['other_origin'].")";
+	$document['origin'] = $origin[0]['shortname'];
 	
 	$communication = $con->getData("SELECT id, communication, shortname FROM communications WHERE id = ".$document['communication']);
 	$document['communication'] = $communication[0]['communication'];

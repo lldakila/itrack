@@ -49,7 +49,7 @@
 		</div>
 		<div style="width: 45%; position: absolute; top: 0; right: 0; padding-right: 25px;">
 			<p style="font: 16px/22px 'Source Sans Pro', Helvetica, sans-serif;">JSON String (Output)<!--&nbsp;<a href="javascript: textToClipboard($('#report-json-string-output').html())">Copy</a>--></p>
-			<pre id="report-json-string-output" style="width: 98%;"></pre>
+			<pre id="report-json-string-output" style="width: 98%;" onclick="clip(this);"></pre>
 		</div>
 	</div>
 </div>
@@ -1054,7 +1054,15 @@
 		dummy.select();
 		document.execCommand("copy");
 		document.body.removeChild(dummy);
-	}	
+	}
+	
+	var clip = function(el) {
+	  var range = document.createRange();
+	  range.selectNodeContents(el);
+	  var sel = window.getSelection();
+	  sel.removeAllRanges();
+	  sel.addRange(range);
+	};	
 
 </script>
 </body>

@@ -50,7 +50,9 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 			
 			popFilter(scope);
 			
-			scope.reports = {};			
+			scope.reports = {};
+
+			jsreports.libraryPath = "jsreports";			
 			
 		};		
 		
@@ -200,7 +202,7 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 
 		};
 
-		function generateReport(scope,data) {
+		function generateReport(scope,data) {		
 		
 			$.getJSON("/jsreports/designs/documents.json", function(report_def) {			
 												
@@ -217,17 +219,22 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 				
 				jsreports.render({
 					report_def: scope.reports.report_def,
-					target: $("#reports-results"),
+					// target: $("#reports-results"),
+					target: $(".report-output"),
 					datasets: scope.reports.dataSources,
-					showToolbar: false,
+					showToolbar: true,
 					scaleFonts: true
 				});
+				
+				hljs.initHighlightingOnLoad();				
 				
 			});
 
 		};
 		
 		self.print = function(scope) {
+			
+			console.log(scope.reports.dataSources);
 			
             jsreports.export({
                 report_def: scope.reports.report_def,

@@ -1,21 +1,21 @@
 {
-    "title": "",
+    "title": "Documents Report",
     "id": "jsr-auto-id-0",
     "default_format": "html",
     "version": "1.4.133",
     "page": {
         "units": "inches",
         "paper_size": {
-            "name": "Letter",
+            "name": "A4",
             "inches": [
-                "8.5",
-                "11"
+                "8.27",
+                "11.69"
             ],
             "mm": [
-                "216",
-                "279"
+                "210",
+                "297"
             ],
-            "id": "letter"
+            "id": "a4"
         },
         "margins": {
             "top": 0.5,
@@ -34,10 +34,10 @@
             {
                 "id": "jsr-element-1",
                 "type": "table",
-                "left": "0.004150390625",
-                "top": "0.3790690104166667",
-                "width": "7.495743815104167",
-                "height": "0.9289957682291667",
+                "left": 0.0040380859375,
+                "top": 0.37904166666666667,
+                "width": 7.245806803385416,
+                "height": 0.9288943684895833,
                 "visible": true,
                 "hasHeader": true,
                 "hasFooter": false,
@@ -47,7 +47,7 @@
                         "header": {
                             "text": "Barcode",
                             "textColor": "",
-                            "backgroundColor": "",
+                            "backgroundColor": "#d9d9d9",
                             "bold": false,
                             "italic": false,
                             "align": "center",
@@ -59,9 +59,7 @@
                             "borderBottomColor": "#000000",
                             "borderRightWidth": "1",
                             "borderRightColor": "#000000",
-                            "paddingTop": "",
                             "paddingLeft": "",
-                            "paddingBottom": "",
                             "paddingRight": ""
                         },
                         "footer": {
@@ -86,16 +84,16 @@
                             "backgroundColor": "",
                             "bold": false,
                             "italic": false,
-                            "align": "",
-                            "borderTopWidth": 0,
-                            "borderTopColor": "",
-                            "borderLeftWidth": 0,
-                            "borderLeftColor": "",
-                            "borderBottomWidth": 0,
-                            "borderBottomColor": "",
-                            "borderRightWidth": 0,
-                            "borderRightColor": "",
-                            "conditionalRules": []
+                            "align": "left",
+                            "borderTopWidth": "1",
+                            "borderTopColor": "#757575",
+                            "borderLeftWidth": "1",
+                            "borderLeftColor": "#757575",
+                            "borderBottomWidth": "1",
+                            "borderBottomColor": "#757575",
+                            "borderRightWidth": "1",
+                            "borderRightColor": "#757575",
+                            "conditionalRules": "",
                         }
                     },
                     {
@@ -103,7 +101,7 @@
                         "header": {
                             "text": "Name",
                             "textColor": "",
-                            "backgroundColor": "",
+                            "backgroundColor": "#d9d9d9",
                             "bold": false,
                             "italic": false,
                             "align": "center",
@@ -115,9 +113,7 @@
                             "borderBottomColor": "#000000",
                             "borderRightWidth": "1",
                             "borderRightColor": "#000000",
-                            "paddingTop": "",
                             "paddingLeft": "",
-                            "paddingBottom": "",
                             "paddingRight": "",
                             "left": "0.004150390625",
                             "top": "0.3790690104166667",
@@ -164,7 +160,7 @@
                             "borderBottomWidth": 0,
                             "borderBottomColor": "",
                             "borderRightWidth": 0,
-                            "borderRightColor": ""
+                            "borderRightColor": "",
                         }
                     },
                     {
@@ -172,7 +168,7 @@
                         "header": {
                             "text": "Document Type",
                             "textColor": "",
-                            "backgroundColor": "",
+                            "backgroundColor": "#d9d9d9",
                             "bold": false,
                             "italic": false,
                             "align": "center",
@@ -184,9 +180,7 @@
                             "borderBottomColor": "#000000",
                             "borderRightWidth": "1",
                             "borderRightColor": "#000000",
-                            "paddingTop": "",
                             "paddingLeft": "",
-                            "paddingBottom": "",
                             "paddingRight": ""
                         },
                         "footer": {
@@ -219,7 +213,7 @@
                             "borderBottomWidth": 0,
                             "borderBottomColor": "",
                             "borderRightWidth": 0,
-                            "borderRightColor": ""
+                            "borderRightColor": "",
                         }
                     },
                     {
@@ -239,16 +233,14 @@
                             "borderBottomColor": "#000000",
                             "borderRightWidth": "1",
                             "borderRightColor": "#000000",
-                            "paddingTop": "",
                             "paddingLeft": "",
-                            "paddingBottom": "",
                             "paddingRight": "",
                             "conditionalRules": ""
                         },
                         "footer": {
                             "text": "Footer 5",
                             "textColor": "",
-                            "backgroundColor": "",
+                            "backgroundColor": "#d9d9d9",
                             "bold": false,
                             "italic": false,
                             "align": "",
@@ -275,7 +267,7 @@
                             "borderBottomWidth": 0,
                             "borderBottomColor": "",
                             "borderRightWidth": 0,
-                            "borderRightColor": ""
+                            "borderRightColor": "",
                         }
                     },
                     {
@@ -295,15 +287,13 @@
                             "borderBottomColor": "#000000",
                             "borderRightWidth": "1",
                             "borderRightColor": "#000000",
-                            "paddingTop": "",
                             "paddingLeft": "",
-                            "paddingBottom": "",
                             "paddingRight": ""
                         },
                         "footer": {
                             "text": "Footer 6",
                             "textColor": "",
-                            "backgroundColor": "",
+                            "backgroundColor": "#d9d9d9",
                             "bold": false,
                             "italic": false,
                             "align": "",
@@ -330,15 +320,15 @@
                             "borderBottomWidth": 0,
                             "borderBottomColor": "",
                             "borderRightWidth": 0,
-                            "borderRightColor": ""
+                            "borderRightColor": "",
                         }
                     },
                     {
-                        "width": "14.285714285714285%",
+                        "width": "11.31%",
                         "header": {
                             "text": "Transaction",
                             "textColor": "",
-                            "backgroundColor": "",
+                            "backgroundColor": "#d9d9d9",
                             "bold": false,
                             "italic": false,
                             "align": "center",
@@ -350,9 +340,7 @@
                             "borderBottomColor": "#000000",
                             "borderRightWidth": "1",
                             "borderRightColor": "#000000",
-                            "paddingTop": "",
                             "paddingLeft": "",
-                            "paddingBottom": "",
                             "paddingRight": ""
                         },
                         "footer": {
@@ -385,15 +373,15 @@
                             "borderBottomWidth": 0,
                             "borderBottomColor": "",
                             "borderRightWidth": 0,
-                            "borderRightColor": ""
+                            "borderRightColor": "",
                         }
                     },
                     {
-                        "width": "14.285714285714285%",
+                        "width": "17.26%",
                         "header": {
                             "text": "Date",
                             "textColor": "",
-                            "backgroundColor": "",
+                            "backgroundColor": "#d9d9d9",
                             "bold": false,
                             "italic": false,
                             "align": "center",
@@ -405,9 +393,7 @@
                             "borderBottomColor": "#000000",
                             "borderRightWidth": "1",
                             "borderRightColor": "#000000",
-                            "paddingTop": "",
                             "paddingLeft": "",
-                            "paddingBottom": "",
                             "paddingRight": ""
                         },
                         "footer": {
@@ -440,7 +426,9 @@
                             "borderBottomWidth": 0,
                             "borderBottomColor": "",
                             "borderRightWidth": 0,
-                            "borderRightColor": ""
+                            "borderRightColor": "",
+                            "paddingLeft": "",
+                            "paddingRight": ""
                         }
                     }
                 ],
@@ -510,5 +498,6 @@
         "visible": false,
         "elements": [],
         "height": 1
-    }
+    },
+    "defaultFontSize": 9
 }

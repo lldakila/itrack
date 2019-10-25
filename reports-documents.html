@@ -15,8 +15,8 @@
     <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
     <title>Document Tracking System</title>
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,700,700italic,400italic,300italic' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Roboto+Mono:300' rel='stylesheet' type='text/css'>	
+	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,700,700italic,400italic,300italic' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Roboto+Mono:300' rel='stylesheet' type='text/css'>	
     <link rel="shortcut icon" type="image/x-icon" href="images/ico/itrack-icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
@@ -45,14 +45,6 @@
 	<!-- BEGIN jsreports-->	
 	<link href="jsreports/css/tomorrow-night-eighties.css" rel="stylesheet" type='text/css' />	
 	<link href="jsreports/css/style.css" rel="stylesheet" type='text/css' />
-	<style type="text/css">
-
-		#reports-results {
-			background: white;
-			border: 1px solid #ccc;
-		}
-
-	</style>	
 	<!-- END jsreports-->	
   </head>
   <body ng-app="reportsDocuments" ng-controller="reportsDocumentsCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile listen-barcode>
@@ -226,7 +218,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="card">
-						<div class="card-header">
+						<!-- <div class="card-header">
 							<h4 class="card-title">Results</h4>
 							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 							<div class="heading-elements">
@@ -234,9 +226,9 @@
 									<li><a href="javascript:;" ng-click="app.print(this)" data-toggle="tooltip" data-placement="top" title="Print"><i class="icon-print"></i></a></li>
 								</ul>
 							</div>							
-						</div>
+						</div> -->
 						<div class="card-body collapse in">
-							<div class="card-block report-output" id="reports-results" style="width: 100%;"></div>
+							<div class="card-block report-output" style="width: 100%;"></div>
 						</div>
 					</div>					
 				</div>
@@ -281,10 +273,10 @@
 	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css<?=$ver?>">
 
 	<!-- dependencies -->
-	<script src="angular/angular.min.js<?=$ver?>"></script>
-	<script src="angular/angular-route.min.js<?=$ver?>"></script>
-	<script src="angular/angular-sanitize.min.js<?=$ver?>"></script>
-	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js<?=$ver?>"></script>	
+	<script src="angular/angular.min.js"></script>
+	<script src="angular/angular-route.min.js"></script>
+	<script src="angular/angular-sanitize.min.js"></script>
+	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js"></script>	
 
 	<script src="angular/modules/account/account.js<?=$ver?>"></script>
 	<script src="angular/modules/bootbox/bootstrap-modal.js<?=$ver?>"></script>
@@ -295,8 +287,8 @@
 	<script src="angular/modules/post/window-open-post.js<?=$ver?>"></script>
 
 	<!-- jsreports -->
-	<script type="text/javascript" src="jsreports/js/highlight.pack.js<?=$ver?>"></script>
-	<script type="text/javascript" src="jsreports/js/jsreports-all.min.js<?=$ver?>"></script>
+	<script type="text/javascript" src="jsreports/js/highlight.pack.js"></script>
+	<script type="text/javascript" src="jsreports/js/jsreports-all.min.js?1.4.91"></script>
 
 	<!-- modules -->
 	<script src="modules/notifications.js<?=$ver?>"></script>

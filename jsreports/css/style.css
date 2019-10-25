@@ -34,9 +34,11 @@ button {
 
 code.hljs.javascript {
 	padding: 0.5em 0.85em;
-	font-size: 12px;
 	font-family: 'Roboto Mono', monospace;
+	border-radius: 5px;
+	padding: 0.5em 0.85em;	
 }
+
 pre {
 	margin: 0;
 }
@@ -56,5 +58,9 @@ pre {
 
 .report-designer-container {
 	height: 600px;
-	border: 1px solid #aaa;
+	border: 1px solid #ccc;
 }
+
+.report-output .dropdown-toggle:after {
+	content: ""!important;
+}	

@@ -102,6 +102,7 @@ $app->post('/documents', function (Request $request, Response $response, array $
 
 	$report = [
 		array(
+			"report_type"=>"My Reports",
 			"rows"=>$documents
 		)
 	];
