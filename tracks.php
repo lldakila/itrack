@@ -169,7 +169,7 @@ function tracks($con,$setup,$id,$document) {
 			$bg = "bg-info";
 			$track_action = get_track_track_action($con,$track['preceding_track']);
 			if ($track_action==2) $bg = "bg-success";
-			
+
 			$document_tracks[] = array(
 				"track_id"=>$track['id'],			
 				"id"=>$track['track_action'],			

@@ -475,6 +475,7 @@ $app->get('/filters/reports', function($request, $response, $args) {
 		$offices[] = $_office;
 		
 	};
+	$offices[] = array("id"=>1,"office"=>"Others","shortname"=>"OTH");	
 	
 	$con->table = "communications";	
 	$_communications = $con->all(['id','communication','shortname']);	

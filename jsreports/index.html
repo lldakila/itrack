@@ -7,6 +7,7 @@
 <link href='https://fonts.googleapis.com/css?family=Roboto+Mono:300' rel='stylesheet' type='text/css'>
 <link href="css/tomorrow-night-eighties.css" rel="stylesheet" type='text/css' />
 <link href="css/style.css" rel="stylesheet" type='text/css' />
+<link href="css/jquery-ui.min.css" rel="stylesheet" type='text/css' />
 <style type="text/css">
 
 	pre {
@@ -41,20 +42,27 @@
 <!-- <button class="generate-pdf">Generate</button> -->
 <!-- <div class="report-output"></div> -->
 <div id="rdc" class="report-designer-container"></div>
-<div class="report-designer-container" style="background-color: #f8f8f8; margin-top: 25px;">
+
+<div id="dialog-output" title="JSON String">
+	<pre id="report-json-string-output" style="width: 98%;" onclick="clip(this);"></pre>
+</div>
+
+<!--<div class="report-designer-container" style="background-color: #f8f8f8; margin-top: 25px;">
 	<div style="width: 100%; height: 100%; position: relative; overflow: auto;">
 		<div style="width: 45%; position: absolute; top: 0; left: 0; padding-left: 25px;">
 			<p style="font: 16px/22px 'Source Sans Pro', Helvetica, sans-serif;">JSON String (Load)</p>
 			<textarea rows="25" id="report-json-string-load" style="width: 98%;"></textarea>
 		</div>
 		<div style="width: 45%; position: absolute; top: 0; right: 0; padding-right: 25px;">
-			<p style="font: 16px/22px 'Source Sans Pro', Helvetica, sans-serif;">JSON String (Output)<!--&nbsp;<a href="javascript: textToClipboard($('#report-json-string-output').html())">Copy</a>--></p>
+			<p style="font: 16px/22px 'Source Sans Pro', Helvetica, sans-serif;">JSON String (Output)</p>
 			<pre id="report-json-string-output" style="width: 98%;" onclick="clip(this);"></pre>
 		</div>
 	</div>
-</div>
+</div>-->
+
 <script type="text/javascript" src="js/highlight.pack.js"></script>
 <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jsreports-all.min.js"></script>
 <script type="text/javascript">
 
@@ -308,658 +316,7 @@
 					"description": "",
 					"currentPeriod": -194.94,
 					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				},
-				{
-					"category": "Beginning Account Value",
-					"description": "",
-					"currentPeriod": 9234.81,
-					"ytd": 0
-				},{
-					"category": "Additions",
-					"description": "Exchanges In",
-					"currentPeriod": 0.1,
-					"ytd": 10000
-				},{
-					"category": "Subtractions",
-					"description": "Transaction Costs & Fees",
-					"currentPeriod": 0.2,
-					"ytd": -28.54
-				},{
-					"category": "Change in Investment Value",
-					"description": "",
-					"currentPeriod": -194.94,
-					"ytd": -931.29
-				}				
+				}		
 				],
 				"holdings": [{
 					"name": "Core Account",
@@ -993,6 +350,20 @@
 	//$.getJSON("grouping-report-def.json", function(report_def) {
 	//$.getJSON("grouping-report-def-orig.json", function(report_def) {	
 	$.getJSON("designs/documents.json", function(report_def) {
+	
+		var	dialog = $("#dialog-output").dialog({
+			  autoOpen: false,
+			  dialogClass: 'no-close',
+			  height: 600,
+			  width: 1024,
+			  modal: true,
+			  buttons: {
+				"Close": function() {
+					dialog.dialog( "close" );
+				}
+			  }
+			});	
+	
 		rd = report_def;
 		var designer = new jsreports.Designer({
 			embedded: true,
@@ -1006,20 +377,25 @@
 				url: "acme-logo.png"
 			}]
 		});
+		
 		designer.on("save", function(def) {
 			// Capture the modified report definition here ("def" parameter)
 
 			let json = JSON.parse(def);
 			let str = JSON.stringify(json, undefined, 4);
 
-			$('#report-json-string-output').html('');
+			$('#report-json-string-output').empty();
 			$('#report-json-string-output').html(syntaxHighlight(str));
 			
+			/*
             jsreports.export({
                 report_def: def,
                 format: 'pdf',
                 datasets: data_sources
-            });			
+            });
+			*/
+			
+			dialog.dialog("open");			
 			
 		});
 	});

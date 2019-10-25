@@ -32,7 +32,7 @@ $app->post('/documents', function (Request $request, Response $response, array $
 	$con = $this->con;
 	
 	$data = $request->getParsedBody();
-	$meta = $data['meta'];
+	$metas = $data['meta'];
 	$period = $data['period'];
 	
 	$selected = $period['selected']['period'];
@@ -82,27 +82,38 @@ $app->post('/documents', function (Request $request, Response $response, array $
 		
 		break;
 		
-	};	
+	};
 	
-	$sql = "SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents WHERE ".$filters['documents'][$selected];
+	# meta
+	$meta_filters = "";
+	
+	$meta_fields = array("origin","communication","document_transaction_type","doc_type");
+	
+	foreach ($metas as $key => $meta) {
+		
+		if ($meta['id']==0) continue;
+		
+		if (in_array($key,$meta_fields)) {
+			
+			$meta_filters .= " AND $key = ".$meta['id'];
+			
+		};
+		
+	};
+
+	$sql = "SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents WHERE ".$filters['documents'][$selected].$meta_filters;
 	$documents = $con->getData($sql);	
 	
 	foreach ($documents as $i => $document) {
-		
-		$tracks = tracks($con,$setup,$document['id'],$document);
 		
 		$documents[$i] = document_info_reports($con,$document);
 		
 		$documents[$i]['date'] = date("M j, Y",strtotime($document['document_date']));
 		
-		$recent_status = ($tracks[0]['list'][0]['status']['comment']==null)?$tracks[0]['list'][0]['status']['text']:$tracks[0]['list'][0]['status']['comment'];		
-		$documents[$i]['recent_status'] = $recent_status;
-		
 	};
 
 	$report = [
 		array(
-			"report_type"=>"My Reports",
 			"rows"=>$documents
 		)
 	];

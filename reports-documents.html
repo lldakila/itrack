@@ -180,6 +180,12 @@
 											</div>
 											<div class="col-md-3">
 												<div class="form-group">
+													<label>Document Type</label>
+													<select class="form-control" ng-model="filter.meta.doc_type" ng-options="doc_type.document_type for doc_type in criteria.doc_types track by doc_type.id" name="doc_type"></select>
+												</div>
+											</div>											
+											<div class="col-md-3">
+												<div class="form-group">
 													<label>Communication</label>
 													<select class="form-control" ng-model="filter.meta.communication" ng-options="communication.communication for communication in criteria.communications track by communication.id" name="communication"></select>
 												</div>
@@ -188,12 +194,6 @@
 												<div class="form-group">
 													<label>Transaction</label>
 													<select class="form-control" ng-model="filter.meta.document_transaction_type" ng-options="transaction.transaction for transaction in criteria.transactions track by transaction.id" name="document_transaction_type"></select>
-												</div>
-											</div>
-											<div class="col-md-3">
-												<div class="form-group">
-													<label>Document Type</label>
-													<select class="form-control" ng-model="filter.meta.doc_type" ng-options="doc_type.document_type for doc_type in criteria.doc_types track by doc_type.id" name="doc_type"></select>
 												</div>
 											</div>											
 										</div>
