@@ -52,12 +52,16 @@ $app->post('/documents', function (Request $request, Response $response, array $
 		),		
 	);
 	
+	$coverage = "";
+	
 	switch ($selected) {
 
 		case 'date':
 
 			$filters['documents'][$selected] = "document_date LIKE '".date("Y-m-d",strtotime($period['date']))."%'";
 			$filters['tracks'][$selected] = "system_log LIKE '".date("Y-m-d",strtotime($period['date']))."%'";
+			
+			$coverage = date("M j, Y",strtotime($period['date']));
 
 		break;
 
@@ -65,6 +69,8 @@ $app->post('/documents', function (Request $request, Response $response, array $
 
 			$filters['documents'][$selected] = "document_date BETWEEN '".date("Y-m-d",strtotime($period['week']['from']))."' AND '".date("Y-m-d",strtotime($period['week']['to']))."'";
 			$filters['tracks'][$selected] = "system_log BETWEEN '".date("Y-m-d",strtotime($period['week']['from']))."' AND '".date("Y-m-d",strtotime($period['week']['to']))."'";
+			
+			$coverage = date("M j - ",strtotime($period['week']['from'])).date("M j, Y",strtotime($period['week']['to']));
 
 		break;
 
@@ -72,6 +78,8 @@ $app->post('/documents', function (Request $request, Response $response, array $
 		
 			$filters['documents'][$selected] = "document_date LIKE '".$period['year']."-".$period['month']['month']."-%'";
 			$filters['tracks'][$selected] = "system_log LIKE '".$period['year']."-".$period['month']['month']."-%'";
+			
+			$coverage = $period['month']['text'].", ".$period['year'];
 		
 		break;
 		
@@ -79,6 +87,8 @@ $app->post('/documents', function (Request $request, Response $response, array $
 		
 			$filters['documents'][$selected] = "document_date LIKE '".$period['year']."-%'";
 			$filters['tracks'][$selected] = "system_log LIKE '".$period['year']."-%'";
+		
+			$coverage = $period['year'];
 		
 		break;
 		
@@ -114,6 +124,12 @@ $app->post('/documents', function (Request $request, Response $response, array $
 
 	$report = [
 		array(
+			"coverage"=>$coverage,
+			"origin"=>$metas['origin']['shortname'],
+			"doc_type"=>$metas['doc_type']['document_type'],
+			"communication"=>$metas['communication']['communication'],
+			"document_transaction_type"=>$metas['document_transaction_type']['transaction'],
+			"action"=>"",
 			"rows"=>$documents
 		)
 	];
