@@ -2,7 +2,7 @@
 	
 	require_once 'authentication.php';
 	require_once 'updates.php';
-	$page = "reports_documents";
+	$page = "reports_transactions";
 	
 ?>
 <!DOCTYPE html>
@@ -105,7 +105,7 @@
         <div class="content-body">
 			<div class="row">
 				<div class="content-header-left col-md-6 col-xs-12 mb-1">
-					<h2 class="content-header-title">Generate Reports</h2>
+					<h2 class="content-header-title">Tracks</h2>
 				</div>
 				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-xs-12">
 					<div class="breadcrumb-wrapper col-xs-12">
@@ -174,8 +174,8 @@
 										<div class="row">
 											<div class="col-md-3">
 												<div class="form-group">
-													<label>Office</label>
-													<select class="form-control" ng-model="filter.meta.origin" ng-options="office.shortname for office in criteria.offices track by office.id" name="origin"></select>
+													<label>Origin</label>
+													<select class="form-control" ng-model="filter.meta.origin" ng-options="origin.shortname for origin in criteria.origins track by origin.id" name="origin"></select>
 												</div>
 											</div>
 											<div class="col-md-3">
@@ -198,6 +198,12 @@
 											</div>											
 										</div>
 										<div class="row">
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>Office</label>
+													<select class="form-control" ng-model="filter.meta.office" ng-options="office.shortname for office in criteria.offices track by office.id" name="office"></select>
+												</div>
+											</div>										
 											<div class="col-md-3">
 												<div class="form-group">
 													<label>Action</label>

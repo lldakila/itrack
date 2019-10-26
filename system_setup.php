@@ -87,6 +87,11 @@ define('system_setup', array(
 		"id"=>13,
 		"description"=>"OPA Office",
 		"values"=>24,
+	),
+	array( # Offices for document actions
+		"id"=>14,
+		"description"=>"OPA Office",
+		"values"=>[24,20]
 	)	
 ));
 

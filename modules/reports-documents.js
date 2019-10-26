@@ -176,6 +176,7 @@ angular.module('app-module',['bootstrap-modal','ui.bootstrap','notifications-mod
 				scope.filter.meta.communication = {"id":0,"communication":"All","shortname":"All"};
 				scope.filter.meta.document_transaction_type = {"id":0,"transaction":"All","days":"All"};
 				scope.filter.meta.doc_type = {"id":0,"document_type":"All"};
+				scope.filter.meta.office = {"id":0,"office":"All","shortname":"All"};
 				scope.filter.meta.action = {"id":0,"description":"All","key":"","value":""};
 					
 			}, function myError(response) {

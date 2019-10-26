@@ -543,7 +543,7 @@
                 "syntax": "plain"
             }
         ],
-        "visible": true
+        "visible": false
     },
     "page_header": {
         "visible": true,
@@ -698,18 +698,6 @@
                 "pattern": "",
                 "syntax": "plain",
                 "fontsize": "8"
-            },
-            {
-                "id": "jsr-element-14",
-                "type": "line",
-                "left": 0.007660745422842196,
-                "top": 0.37979276964741365,
-                "width": 7.2468851812174755,
-                "height": 0.07210113339145596,
-                "visible": "true",
-                "thickness": ".5",
-                "direction": "horizontal",
-                "color": "#d9d9d9"
             },
             {
                 "id": "jsr-element-15",

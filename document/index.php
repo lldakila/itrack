@@ -461,21 +461,26 @@ $app->get('/filters', function($request, $response, $args) {
 
 $app->get('/filters/reports', function($request, $response, $args) {
 
+	require_once '../system_setup.php';
+	
+	$system_setup = system_setup;
+	$setup = new setup($system_setup);		
+
 	$con = $this->con;
 	$con->table = "documents";
 	
 	$filters = [];
 	
 	$con->table = "offices";
-	$_offices = $con->all(['id','office','shortname']);
+	$_origins = $con->all(['id','office','shortname']);
 	
-	$offices[] = array("id"=>0,"office"=>"All","shortname"=>"All");
-	foreach ($_offices as $_office) {
+	$origins[] = array("id"=>0,"office"=>"All","shortname"=>"All");
+	foreach ($_origins as $_origin) {
 		
-		$offices[] = $_office;
+		$origins[] = $_origin;
 		
 	};
-	$offices[] = array("id"=>1,"office"=>"Others","shortname"=>"OTH");	
+	$origins[] = array("id"=>1,"office"=>"Others","shortname"=>"OTH");	
 	
 	$con->table = "communications";	
 	$_communications = $con->all(['id','communication','shortname']);	
@@ -507,11 +512,28 @@ $app->get('/filters/reports', function($request, $response, $args) {
 		
 	};	
 	
+	$actions_offices = $setup->get_setup_as_string(14);
+	$_offices = $con->getData("SELECT id, office, shortname FROM offices WHERE id IN ($actions_offices)");
+	$offices = [];
+	$offices[] = array("id"=>0,"office"=>"All","shortname"=>"All");	
+	foreach ($_offices as $_office) {
+		
+		$offices[] = $_office;
+		
+	};
+	
 	$actions = array(
 		array("id"=>0,"description"=>"All","key"=>"","value"=>""),
 	);	
 	
-	$filters = array("offices"=>$offices,"communications"=>$communications,"transactions"=>$transactions,"doc_types"=>$doc_types,"actions"=>$actions);
+	$filters = array(
+		"origins"=>$origins,
+		"communications"=>$communications,
+		"transactions"=>$transactions,
+		"doc_types"=>$doc_types,
+		"offices"=>$offices,
+		"actions"=>$actions
+	);
 	
     return $response->withJson($filters);	
 
