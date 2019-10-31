@@ -619,6 +619,14 @@ $app->post('/filter/{entryLimit}/{currentPage}', function($request, $response, $
 			else $filters.=" AND $criterion = ".$data[$criterion]['id'];
 		} else {
 			if (isset($data[$criterion])) {
+				
+				if ($criterion=="barcode") {
+					if ($data[$criterion]=="") {
+						unset($data[$criterion]);
+						continue;
+					}
+				}				
+				
 				if ($filters=="") $filters.=" WHERE $criterion = '".$data[$criterion]."'";
 				else $filters.=" AND $criterion = '".$data[$criterion]."'";
 			};
