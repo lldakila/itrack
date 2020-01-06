@@ -79,7 +79,8 @@ function barcode($con,$params) {
 	
 	$series = 1;
 	
-	$sql = "SELECT documents.id, documents.barcode, documents.doctype_series FROM documents WHERE documents.origin = ".$params['origin']." AND documents.doc_type = ".$params['doctype']." ORDER BY documents.doctype_series DESC LIMIT 1";
+	$current_year = date("Y");	
+	$sql = "SELECT documents.id, documents.barcode, documents.doctype_series FROM documents WHERE documents.barcode LIKE '%-".$current_year."-%' AND  documents.origin = ".$params['origin']." AND documents.doc_type = ".$params['doctype']." ORDER BY documents.doctype_series DESC LIMIT 1";
 
 	$last_barcode = $con->getData($sql);	
 	
