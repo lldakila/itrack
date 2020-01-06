@@ -62,15 +62,16 @@ function barcode($con,$origin,$office,$com) {
 	
 	$incr = 1;
 	
-	$sql = "SELECT documents.id, documents.barcode FROM documents WHERE documents.origin = $origin ORDER BY documents.id DESC LIMIT 1";
+	$current_year = date("Y");
+	$sql = "SELECT documents.id, documents.barcode FROM documents WHERE documents.origin = $origin AND barcode LIKE '%-$current_year-%' ORDER BY documents.id DESC LIMIT 1";
 
 	$last_barcode = $con->getData($sql);	
 	
 	if (count($last_barcode)) {
 
-		$last_no = explode("-",$last_barcode[0]['barcode']);
+		$last_gen = explode("-",$last_barcode[0]['barcode']);		
 		
-		$incr = (isset($last_no[3]))?(int)$last_no[3]:0;
+		$incr = (isset($last_gen[3]))?(int)$last_gen[3]:0;
 		
 		$incr+=1;
 		
