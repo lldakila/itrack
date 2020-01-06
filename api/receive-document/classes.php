@@ -88,12 +88,24 @@ function barcode($con,$params) {
 		
 		$series = $last_barcode[0]['doctype_series'];
 		
-		$series+=1;
+		$series += 1;
 		
 	};
 	
 	// $barcode = substr($params['office'],0,3)."-".date("m")."-".date("Y")."-".str_pad($series, 5, '0', STR_PAD_LEFT);
 	$barcode = $params['office']."-".$params['doctype_shortname']."-".date("Y")."-".str_pad($series, 5, '0', STR_PAD_LEFT);
+	
+	// check for duplicancy
+	$check = $con->getData("SELECT * FROM documents WHERE barcode = '$barcode'");	
+	while (count($check)) {
+		
+		$new_barcode = resolve_duplicate_barcode($barcode,$series);
+		$barcode = $new_barcode['barcode'];
+		$series = $new_barcode['series'];
+		
+		$check = $con->getData("SELECT * FROM documents WHERE barcode = '$barcode'");		
+		
+	}; // until unique barcode is generated
 	
 	$response = array(
 		"barcode"=>$barcode,
@@ -101,6 +113,22 @@ function barcode($con,$params) {
 	);
 	
 	return $response;
+	
+};
+
+function resolve_duplicate_barcode($barcode,$series) {
+	
+	$extracts = explode("-",$barcode);	
+	
+	$new_series = $series + 1;
+	$new_barcode = $extracts[0]."-".$extracts[1]."-".$extracts[2]."-".str_pad($new_series, 5, '0', STR_PAD_LEFT);
+	
+	$response = array(
+		"barcode"=>$new_barcode,
+		"series"=>$new_series
+	);
+	
+	return $response;	
 	
 };
 
