@@ -8,7 +8,8 @@ define('system_setup', array(
 			24=>array( # OPA
 				"id"=>1,
 				"description"=>"Users for document action: initial",
-				"values"=>[9,8,2],
+				// "values"=>[9,8,2],
+				"values"=>[61,9,8],
 			),
 			20=>array( # OPG
 				"id"=>1,
@@ -24,7 +25,8 @@ define('system_setup', array(
 			24=>array( # OPA
 				"id"=>2,
 				"description"=>"Users for document action: signature",
-				"values"=>[9,8,2],
+				// "values"=>[9,8,2],
+				"values"=>[61,9,8],
 			),
 			20=>array( # OPG
 				"id"=>2,
@@ -51,7 +53,8 @@ define('system_setup', array(
 	array(
 		"id"=>6,
 		"description"=>"Exclude from selections/autosuggest",
-		"values"=>[2,6,8],
+		// "values"=>[2,6,8],
+		"values"=>[61,6,8],
 	),
 	array(
 		"id"=>7,
