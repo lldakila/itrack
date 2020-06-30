@@ -8,6 +8,6 @@ if (isset($_SESSION['office'])) unset($_SESSION['office']);
 
 echo "Logout Successful";
 
-header("location: ../../../login.html");
+header("location: ../../../login.php");
 
 ?>
