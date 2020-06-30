@@ -6,8 +6,6 @@ app.controller('documentsCtrl',function($scope,app) {
 	
 	$scope.app.data($scope);
 	
-	app.list($scope);
-	
 	$scope.module = {
 		id: 'documents',
 		privileges: {

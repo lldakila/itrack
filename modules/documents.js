@@ -7,14 +7,39 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 		self.data = function(scope) {
 
 			scope.formHolder = {};
-			
+
 			scope.views = {};
-			
+
+			scope.criteria = {};
+			scope.filter = {};
+			scope.documents = [];
+
 			scope.views.currentPage = 1;
 			
-			scope.documents = [];
+			popFilter(scope);
 			
 		};
+		
+		function popFilter(scope) {
+			
+			$http({
+				method: 'GET',
+				url: 'document/filters'
+			}).then(function mySuccess(response) {
+				
+				scope.criteria = angular.copy(response.data);
+				
+				scope.filter.origin = {"id":0,"office":"All","shortname":"All"};
+				scope.filter.communication = {"id":0,"communication":"All","shortname":"All"};
+				scope.filter.document_transaction_type = {"id":0,"transaction":"All","days":"All"};
+				scope.filter.doc_type = {"id":0,"document_type":"All"};
+					
+			}, function myError(response) {
+				
+		
+			});
+			
+		};		
 		
 		self.view = function(scope,d) {
 			
@@ -24,7 +49,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			
 		};
 		
-		self.list = function(scope) {
+		self.filter = function(scope) {
 
 			myPagination.init(scope);
 
@@ -36,10 +61,10 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
                 currentPage: 1,
                 entryLimit: 25,
                 noOfPages: 5,
-				filters: {}
+				filters: scope.filter
 			};
 
-			let filters = {};
+			let filters = scope.filter;
 			myPagination.count(scope.pagination.url+'0/1',filters).then((response) => {
                 scope.pagination.count = response.data.count;
                 pagesLinks = [];

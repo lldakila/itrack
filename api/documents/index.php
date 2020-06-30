@@ -42,8 +42,35 @@ $app->post('/list/{entryLimit}/{currentPage}', function (Request $request, Respo
 
 	if ($init) $limit = "";
 
-	$sql = "SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents".$limit;
+	$data = $request->getParsedBody();
+	
+	$criteria = ["origin","communication","document_transaction_type","doc_type","barcode"];
+	
+	$filters = "";
+	foreach ($criteria as $i => $criterion) {
+		
+		if (isset($data[$criterion]['id'])) {
+			if ($data[$criterion]['id']==0) continue;			
+			if ($filters=="") $filters.=" WHERE $criterion = ".$data[$criterion]['id'];
+			else $filters.=" AND $criterion = ".$data[$criterion]['id'];
+		} else {
+			if (isset($data[$criterion])) {
+				
+				if ($criterion=="barcode") {
+					if ($data[$criterion]=="") {
+						unset($data[$criterion]);
+						continue;
+					}
+				}				
+				
+				if ($filters=="") $filters.=" WHERE $criterion = '".$data[$criterion]."'";
+				else $filters.=" AND $criterion = '".$data[$criterion]."'";
+			};
+		};
 
+	};
+
+	$sql = "SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents".$filters.$limit;
 	$documents = $con->getData($sql);
 
 	if ($init) return $response->withJson(array("count"=>count($documents)));

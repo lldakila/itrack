@@ -111,16 +111,65 @@
 				</div>
 			  </div>
 			</div>
+			
 			<div class="row">
-				<div class="position-relative has-icon-left col-lg-4">
-					<input type="text" ng-model="search" class="form-control" placeholder="Search. . . " style="height: 35px;">
-					<div class="form-control-position">
-						<i class="icon-search"></i>
+				<div class="col-lg-12">
+					<div class="card" style="margin-top: 15px;">
+						<div class="card-header">
+							<h4 class="card-title" id="basic-layout-form">Filter Documents</h4>						
+						</div>
+						<div class="card-body collapse in">
+							<div class="card-block">
+								<div class="card-text"></div>
+								<form class="form" name="formHolder.filter">
+									<div class="form-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Office</label>
+													<select class="form-control" ng-model="filter.origin" ng-options="office.shortname for office in criteria.offices track by office.id" name="origin"></select>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Communication</label>
+													<select class="form-control" ng-model="filter.communication" ng-options="communication.communication for communication in criteria.communications track by communication.id" name="communication"></select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Transaction</label>
+													<select class="form-control" ng-model="filter.document_transaction_type" ng-options="transaction.transaction for transaction in criteria.transactions track by transaction.id" name="document_transaction_type"></select>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Document Type</label>
+													<select class="form-control" ng-model="filter.doc_type" ng-options="doc_type.document_type for doc_type in criteria.doc_types track by doc_type.id" name="doc_type"></select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Barcode</label>
+													<input class="form-control" ng-model="filter.barcode">
+												</div>
+											</div>											
+										</div>										
+									</div>
+									<div class="form-actions">
+										<button type="button" class="btn btn-primary float-lg-right float-xs-right" ng-click="app.filter(this)">Go!</button>
+									</div>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="col-lg-8"></div>
-			</div>
-			<br>
+			</div>			
+			
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="card">
@@ -136,7 +185,18 @@
 							</div>
 						</div>
 						<div class="card-body collapse in">
-							<div class="table-hover">
+						
+							<div class="card-block">
+							<div class="row">
+								<div class="position-relative has-icon-left col-lg-4 offset-lg-8">
+									<input type="text" ng-model="search" class="form-control" placeholder="Search. . . " style="height: 35px;">
+									<div class="form-control-position">
+										<i class="icon-search"></i>
+									</div>
+								</div>
+							</div>						
+						
+							<div class="table-hover" style="margin-top: 25px;">
 								<table class="table table-bordered" style="font-size: 12px;">
 									<thead>
 										<tr>
@@ -176,6 +236,8 @@
 									</tfoot>
 								</table>
 							</div>
+							</div>
+							
 						</div>
 					</div>
 				</div>
