@@ -1,4 +1,4 @@
-angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-document']).factory('app', function($http,$timeout,$compile,$window,bootstrapModal,bui,access,growl) {
+angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-module','block-ui','bootstrap-growl','module-access','barcode-listener-document','ngSanitize','my-pagination']).factory('app', function($http,$timeout,$compile,$window,myPagination,bootstrapModal,bui,access,growl) {
 	
 	function app() {
 
@@ -7,14 +7,39 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 		self.data = function(scope) {
 
 			scope.formHolder = {};
-			
+
 			scope.views = {};
-			
+
+			scope.criteria = {};
+			scope.filter = {};
+			scope.documents = [];
+
 			scope.views.currentPage = 1;
 			
-			scope.documents = [];
+			popFilter(scope);
 			
 		};
+		
+		function popFilter(scope) {
+			
+			$http({
+				method: 'GET',
+				url: 'document/filters'
+			}).then(function mySuccess(response) {
+				
+				scope.criteria = angular.copy(response.data);
+				
+				scope.filter.origin = {"id":0,"office":"All","shortname":"All"};
+				scope.filter.communication = {"id":0,"communication":"All","shortname":"All"};
+				scope.filter.document_transaction_type = {"id":0,"transaction":"All","days":"All"};
+				scope.filter.doc_type = {"id":0,"document_type":"All"};
+					
+			}, function myError(response) {
+				
+		
+			});
+			
+		};		
 		
 		self.view = function(scope,d) {
 			
@@ -24,27 +49,29 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','notifications-mo
 			
 		};
 		
-		self.list = function(scope) {
+		self.filter = function(scope) {
 
-			if (scope.$id > 2) scope = scope.$parent;
-		
-			scope.currentPage = scope.views.currentPage;
-			scope.pageSize = 10;
-			scope.maxSize = 5;
-			
-			$http({
-			  method: 'GET',
-			  url: 'api/documents/list'
-			}).then(function mySuccess(response) {
-				
-				scope.documents = response.data;			
-				
-				scope.filterData = scope.documents;
-				scope.currentPage = scope.views.currentPage;
+			myPagination.init(scope);
 
-			}, function myError(response) {
+            scope.orderByAttribute = 'id';
+            scope.sortReverse = false; // set the default sort order
+			scope.pagination = {
+				url: 'api/documents/list/',
+				count: 0,
+                currentPage: 1,
+                entryLimit: 25,
+                noOfPages: 5,
+				filters: scope.filter
+			};
 
-			});
+			let filters = scope.filter;
+			myPagination.count(scope.pagination.url+'0/1',filters).then((response) => {
+                scope.pagination.count = response.data.count;
+                pagesLinks = [];
+                myPagination.getList(scope.pagination.url+scope.pagination.entryLimit+'/'+scope.pagination.currentPage, filters).then((response) => {
+					scope.documents = response.data;
+                });
+            });
 
 		};
 		

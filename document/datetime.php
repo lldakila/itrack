@@ -77,12 +77,117 @@ function less_weekends_tracks($origin,$date) {
 
 };
 
-function due_date($origin,$days) {
+function due_date($con,$id,$setup) {
 
-	$all_days = date("Y-m-d H:i:s",strtotime("+$days Days",strtotime($origin)));
+	$document = $con->getData("SELECT * FROM documents WHERE id = $id");
+
+	$origin = $document[0]['document_date'];
+	
+	$originating_office = $document[0]['origin'];
+	$initial_office = $setup->get_setup_as_string(4);
+	
+	$received = false;
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = ".$document[0]['id']." ORDER BY id DESC");
+
+	# get last system_log from last office where it was received
+	foreach ($tracks as $track) {
+		
+		# if filed - no due date
+		if ($track['track_action_status']=="filed") {
+			
+			$return = array("status"=>false,"dt"=>null);
+			return $return;
+			
+		};
+		
+		# if released for revision no - due date
+		if ($track['track_action_status']=="released") {
+			
+			if (is_release_for_revision($track['transit'])) {
+			
+				$return = array("status"=>false,"dt"=>null);
+				return $return;
+				
+			};
+			
+		};		
+		
+		# if revision ok
+		$revised = false;
+		if ($track['track_action']==6) {
+			
+			$revised = true;
+			break;
+			
+		};
+		
+		# if for revision
+		if ($track['track_action']==5) {
+			
+			$return = array("status"=>false,"dt"=>null);		
+			return $return;
+			
+		};
+		
+		if ($track['track_action_status']=="received") { # received
+
+			if (is_release_for_revision($track['transit'])) {
+
+				$return = array("status"=>false,"dt"=>null);		
+				return $return;
+				
+			} else {
+				
+				$system_log = $track['system_log'];
+				$office_id = get_transit_office_id($con,$track['transit']);
+				$received = true;
+				break;			
+				
+			}
+
+		};
+		
+		if ($track['track_action_status']=="picked up") { # picked up
+
+			$system_log = $track['system_log'];
+			$office_id = get_transit_office_id($con,$track['transit']);
+			$received = true;
+			break;
+
+		};		
+
+	};
+
+	$transaction = $con->getData("SELECT days FROM transactions WHERE id = ".$document[0]['document_transaction_type']);
+	
+	$days = $transaction[0]['days'];
 
 	$weekends = 0;
+	
 	$start = $origin;
+	$track_dt = $origin;
+	
+	if ($revised) {
+		
+		# get revision
+		$revision = $con->getData("SELECT datetime_completed FROM revisions WHERE id = ".$track['revision_id']);
+
+		if (count($revision)) {
+			$start = $revision[0]['datetime_completed'];
+			$track_dt = $revision[0]['datetime_completed'];
+		};
+		
+	};
+	
+	if ($received) {
+		
+		$start = $system_log;
+		$track_dt = $system_log;
+		
+	};
+	
+	$all_days = date("Y-m-d H:i:s",strtotime("+$days Days",strtotime($start)));	
+	
 	while (strtotime($start) <= strtotime($all_days)) {
 
 		if ( (date("D",strtotime($start)) == "Sat") || (date("D",strtotime($start)) == "Sun") ) $weekends++;
@@ -90,12 +195,13 @@ function due_date($origin,$days) {
 		$start = date("Y-m-d",strtotime("+1 Day",strtotime($start)));
 
 	};
-	#
 
 	$weekdays_only = $days+$weekends;
-	$due_date = date("Y-m-d H:i:s",strtotime("+$weekdays_only Day",strtotime($origin)));
+	$due_date = date("Y-m-d H:i:s",strtotime("+$weekdays_only Day",strtotime($track_dt)));
 	
-	return $due_date;
+	$return = array("status"=>true,"dt"=>$due_date);
+	
+	return $return;
 	
 };
 

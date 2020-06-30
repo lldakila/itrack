@@ -1,6 +1,6 @@
-var app = angular.module('receive',['account-module','app-module']);
+var app = angular.module('trackDocument',['account-module','app-module']);
 
-app.controller('receiveCtrl',function($scope,app) {
+app.controller('trackDocumentCtrl',function($scope,app) {
 	
 	$scope.app = app;
 	

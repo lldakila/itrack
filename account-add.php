@@ -1,0 +1,326 @@
+<?php
+	
+	require_once 'authentication.php';	
+	require_once 'updates.php';
+	$page = "account-add";
+	
+?>
+<!DOCTYPE html>
+<html lang="en" data-textdirection="ltr" class="loading">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Robust admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Document Tracking System</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/ico/itrack-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap.css">
+    <!-- font icons-->
+    <link rel="stylesheet" type="text/css" href="app-assets/fonts/icomoon.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/fonts/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/vendors/css/extensions/pace.css">
+    <!-- END VENDOR CSS-->
+    <!-- BEGIN ROBUST CSS-->
+    <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/app.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/switch.css">
+    <!-- END ROBUST CSS-->
+    <!-- BEGIN Page Level CSS-->
+    <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-overlay-menu.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/core/colors/palette-gradient.css">
+    <!-- END Page Level CSS-->
+    <!-- BEGIN Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <!-- END Custom CSS-->
+  </head>
+  <body ng-app="account" ng-controller="accountCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar" account-profile>
+
+    <!-- navbar-fixed-top-->
+    <nav class="header-navbar navbar navbar-with-menu navbar-fixed-top navbar-semi-dark navbar-shadow">
+      <div class="navbar-wrapper">
+        <div class="navbar-header">
+          <ul class="nav navbar-nav">
+            <li class="nav-item mobile-menu hidden-md-up float-xs-left"><a class="nav-link nav-menu-main menu-toggle hidden-xs"><i class="icon-menu5 font-large-1"></i></a></li>
+            <li class="nav-item"><a href="index.html" class="navbar-brand nav-link"><img alt="branding logo" src="images/logo/itrack-logo-large.png" data-expand="images/logo/itrack-logo-large.png" data-collapse="images/logo/itrack-logo-small.png" class="brand-logo"></a></li>
+            <li class="nav-item hidden-md-up float-xs-right"><a data-toggle="collapse" data-target="#navbar-mobile" class="nav-link open-navbar-container"><i class="icon-ellipsis pe-2x icon-icon-rotate-right-right"></i></a></li>
+          </ul>
+        </div>
+        <div class="navbar-container content container-fluid">
+          <div id="navbar-mobile" class="collapse navbar-toggleable-sm">
+            <ul class="nav navbar-nav">
+              <li class="nav-item hidden-sm-down"><a class="nav-link nav-menu-main menu-toggle hidden-xs"><i class="icon-menu5">         </i></a></li>
+              <li class="nav-item hidden-sm-down"><a href="#" class="nav-link nav-link-expand"><i class="ficon icon-expand2"></i></a></li>
+            </ul>
+            <ul class="nav navbar-nav float-xs-right">
+			  <?php require_once 'notifications.php'; ?>
+              <li class="dropdown dropdown-user nav-item"><a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link dropdown-user-link"><span class="avatar avatar-online"><img src="{{profile.picture}}" alt="avatar"><i></i></span><span class="user-name">{{profile.user}}</span></a>
+                <div class="dropdown-menu dropdown-menu-right" drop-down></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+    <!-- main menu-->
+    <div data-scroll-to-active="true" class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
+      <!-- main menu header-->
+      <div class="main-menu-header">
+        <!-- <input type="text" placeholder="Search" class="menu-search form-control round"/> -->
+      </div>
+      <!-- / main menu header-->
+      <!-- main menu content-->
+      <div class="main-menu-content">
+		<?php require_once 'main-menu-navigation.php'; ?>
+      </div>
+      <!-- /main menu content-->
+      <!-- main menu footer-->
+      <!-- include includes/menu-footer-->
+      <!-- main menu footer-->
+    </div>
+    <!-- / main menu-->
+
+    <div class="app-content content container-fluid">
+      <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+		<!-- stats -->
+        <div class="content-body">
+			<div class="row">
+				<div class="col-lg-6">
+					<button class="btn btn-info" ng-click="app.add(this)" ng-show="controls.add" ng-disabled="!controls.btns.ok"><i class="icon-plus3"></i> Add</button>
+					<button class="btn btn-info" ng-click="app.edit(this)" ng-show="controls.edit" ng-disabled="!controls.btns.ok"><i class="icon-edit2"></i> Edit</button>
+				</div>
+				<div class="content-header-right breadcrumbs-right breadcrumbs-top col-lg-6">
+						<div class="breadcrumb-wrapper col-xs-12">
+						  <ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.html" class="info">iTrack</a>
+							</li>
+							<li class="breadcrumb-item"><a href="account-list.html" class="info">Accounts</a>
+							</li>
+							<li class="breadcrumb-item active">Add Account
+							</li>
+						  </ol>
+						</div>
+					</div>
+			</div><hr>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title" id="basic-layout-form">Account</h4>
+							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+							<div class="heading-elements">
+								<ul class="list-inline mb-0">
+									<li><a data-action="collapse"><i class="icon-minus4"></i></a></li>
+									<li><a data-action="reload"><i class="icon-reload"></i></a></li>
+									<li><a data-action="expand"><i class="icon-expand2"></i></a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="card-body collapse in" aria-expanded="true" style="">
+							<div class="card-block">
+								<form class="form" novalidate autocomplete="off" name="formHolder.user">
+									<div class="form-body">
+									
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Employee ID</label>
+													<input type="text" class="form-control" name="employee_id" ng-model="user.employee_id" ng-disabled="controls.btns.ok">
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Offices</label>
+													<select class="form-control" name="div_id" ng-class="{'border-danger': formHolder.user.div_id.$touched && formHolder.user.div_id.$invalid}" ng-model="user.div_id" ng-options="o.shortname for o in offices track by o.id" ng-disabled="controls.btns.ok" required></select>
+													<span class="help-block danger" ng-show="formHolder.user.div_id.$touched && formHolder.user.div_id.$invalid">Office is required</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Groups</label>
+													<select class="form-control" name="group_id" ng-class="{'border-danger': formHolder.user.group_id.$touched && formHolder.user.group_id.$invalid}" ng-model="user.group_id" ng-options="g.group_name for g in groups track by g.id" ng-disabled="controls.btns.ok" required></select>
+													<span class="help-block danger" ng-show="formHolder.user.group_id.$touched && formHolder.user.group_id.$invalid">Group is required</span>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Title</label>
+													<input type="text" class="form-control" name="title" ng-model="user.title" ng-disabled="controls.btns.ok">
+												</div>
+											</div>										
+										</div>
+										
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>First Name</label>
+													<input type="text" class="form-control" name="fname" ng-class="{'border-danger': formHolder.user.fname.$touched && formHolder.user.fname.$invalid}" ng-model="user.fname" ng-disabled="controls.btns.ok" required>
+													<span class="help-block danger" ng-show="formHolder.user.fname.$touched && formHolder.user.fname.$invalid">First Name is required</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Middle Name</label>
+													<input type="text" class="form-control" name="mname" ng-model="user.mname" ng-disabled="controls.btns.ok">
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Last Name</label>
+													<input type="text" class="form-control" name="lname" ng-class="{'border-danger': formHolder.user.lname.$touched && formHolder.user.lname.$invalid}" ng-model="user.lname" ng-disabled="controls.btns.ok" required>
+													<span class="help-block danger" ng-show="formHolder.user.lname.$touched && formHolder.user.lname.$invalid">Last Name is required</span>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Position</label>
+                                            <input type="text" class="form-control" name="position" ng-class="{'border-danger': formHolder.user.position.$touched && formHolder.user.position.$invalid}" ng-model="user.position" ng-disabled="controls.btns.ok" required>
+													<span class="help-block danger" ng-show="formHolder.user.position.$touched && formHolder.user.position.$invalid">Position is required</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>E-mail</label>
+													<input type="email" class="form-control" name="email_address" ng-model="user.email_address" ng-disabled="controls.btns.ok">
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label class="form-control-label">Phone Number</label>
+													<input type="text" class="form-control" name="phone_number" ng-model="user.phone_number" ng-disabled="controls.btns.ok">
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Username</label>
+													<input type="text" class="form-control" name="uname" ng-class="{'border-danger': formHolder.user.uname.$touched && formHolder.user.uname.$invalid}" ng-model="user.uname" ng-disabled="controls.btns.ok" required>
+													<span class="help-block danger" ng-show="formHolder.user.uname.$touched && formHolder.user.uname.$invalid">Username is required</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Password</label>
+													<input type="password" name="pw" ng-class="{'form-control': true, 'border-danger': formHolder.user.pw.$touched && formHolder.user.pw.$invalid}" ng-model="user.pw" ng-disabled="controls.btns.ok" required>
+													<span class="help-block danger" ng-show="formHolder.user.pw.$touched && formHolder.user.pw.$invalid">Password is required</span>
+												</div>
+											</div>
+										</div>
+										<h4 class="form-section">Special Privileges</h4>
+
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="card" ng-repeat="p in privileges">
+													<div class="card-header bg-light">
+													<h5>{{p.description}}</h5>
+													</div>
+													<div class="card-body">
+														<div class="row">
+															<div class="col-lg-3 col-md-6 col-xs-12" ng-repeat="pp in p.privileges" style="margin-bottom: 10px;">															
+																<label for="{{p.id}}{{$index}}" class="ts-label" style="margin-left: 10px;">{{pp.description}}</label>
+																<div class="checkbox" style="margin-left: 10px;">
+																	<label class="switch">
+																	  <input id="{{p.id}}{{$index}}" type="checkbox" hidden="hidden" ng-model="pp.value" ng-check="pp.value" ng-disabled="controls.btns.ok">
+																	  <span class="slider round"></span>
+																	</label>
+																</div>
+																 <!-- <label for="{{p.id}}{{$index}}" class="ts-helper"></label>-->
+															</div>													
+														</div>												
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-lg-12">
+												<button class="btn btn-info" ng-click="app.save(this)" ng-disabled="controls.btns.ok" ng-show="controls.ok">Save</button>
+												<button class="btn btn-secondary" ng-disabled="controls.btns.cancel" ng-click="app.cancel(this)" ng-show="controls.cancel">Cancel</button>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<!--/ stats -->
+      </div>
+    </div>
+    </div>
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+    <footer class="footer footer-static footer-light navbar-border">
+      <p class="clearfix text-muted text-sm-center mb-0 px-2"><span class="float-md-left d-xs-block d-md-inline-block">Copyright &copy; <b><?php echo date("Y"); ?></b> Document Tracking System. All rights reserved. </span></p>
+    </footer>
+
+    <!-- BEGIN VENDOR JS-->
+    <script src="app-assets/js/core/libraries/jquery.min.js" type="text/javascript"></script>
+    <script src="app-assets/vendors/js/ui/tether.min.js" type="text/javascript"></script>
+    <script src="app-assets/js/core/libraries/bootstrap.min.js" type="text/javascript"></script>
+    <script src="app-assets/vendors/js/ui/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
+    <script src="app-assets/vendors/js/ui/unison.min.js" type="text/javascript"></script>
+    <script src="app-assets/vendors/js/ui/blockUI.min.js" type="text/javascript"></script>
+    <script src="app-assets/vendors/js/ui/jquery.matchHeight-min.js" type="text/javascript"></script>
+    <script src="app-assets/vendors/js/ui/screenfull.min.js" type="text/javascript"></script>
+    <script src="app-assets/vendors/js/extensions/pace.min.js" type="text/javascript"></script>
+    <!-- BEGIN VENDOR JS-->
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN ROBUST JS-->
+    <script src="app-assets/js/core/app-menu.js" type="text/javascript"></script>
+    <script src="app-assets/js/core/app.js" type="text/javascript"></script>
+    <!-- END ROBUST JS-->
+	
+	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css<?=$ver?>">	
+	<script src="angular/modules/bootbox/bootbox.min.js<?=$ver?>"></script>
+	<script src="angular/modules/growl/jquery.bootstrap-growl.min.js<?=$ver?>"></script>
+	<script src="angular/modules/blockui/jquery.blockUI.js<?=$ver?>"></script>
+	<link rel="stylesheet" href="angular/modules/bootbox/bs4-fix.css<?=$ver?>">
+	
+	<!-- dependencies -->
+	<script src="angular/angular.min.js<?=$ver?>"></script>
+	<script src="angular/angular-route.min.js<?=$ver?>"></script>
+	<script src="angular/angular-sanitize.min.js<?=$ver?>"></script>
+	<script src="angular/ui-bootstrap-tpls-3.0.2.min.js<?=$ver?>"></script>
+
+	<script src="angular/modules/account/account.js<?=$ver?>"></script>
+	<script src="angular/modules/bootbox/bootstrap-modal.js<?=$ver?>"></script>
+	<script src="angular/modules/growl/growl.js<?=$ver?>"></script>
+	<script src="angular/modules/blockui/blockui.js<?=$ver?>"></script>
+	<script src="angular/modules/validation/validate.js<?=$ver?>"></script>
+	<script src="angular/modules/post/window-open-post.js<?=$ver?>"></script>
+	
+	<!-- modules -->
+	<script src="modules/notifications.js<?=$ver?>"></script>
+	<script src="modules/module-access.js<?=$ver?>"></script>
+	<script src="modules/accounts.js<?=$ver?>"></script>
+	
+	<!-- controller -->
+	<script src="controllers/accounts.js<?=$ver?>"></script>
+  </body>
+</html>

@@ -4,7 +4,7 @@ function get_files($dir,$barcode) {
 
 	$files = [];
 
-	if (!folder_exist($dir)) mkdir($dir);
+	// if (!folder_exist($dir)) mkdir($dir);
 	
 	$dir_files = scandir($dir);
 
@@ -29,6 +29,47 @@ function get_files($dir,$barcode) {
 				"file"=>$file,
 				"type"=>$file_type[1],
 				"name"=>$dir_file
+			);
+
+		};
+		
+	};
+
+	return $files;
+
+};
+
+function get_document_files($con,$dir,$url,$id) {
+
+	$base = str_replace("\\","/",__DIR__);
+	// $dir = str_replace("/","\\",$dir);
+
+	$files = [];
+
+	// if (!folder_exist($dir)) mkdir($dir);
+	
+	$dir_files = $con->getData("SELECT * FROM files WHERE document_id = $id");
+
+	foreach ($dir_files as $dir_file) {
+
+		if (file_exists($base.$dir.$dir_file['file_name'])) {
+			// Read image path, convert to base64 encoding
+
+			$dir_file_data = base64_encode(file_get_contents($url.$dir_file['file_name']));
+
+			// Format the image SRC:  data:{mime};base64,{data};
+			$type = mime_content_type($url.$dir_file['file_name']);
+
+			$file = 'data:'.$type.';base64,'.$dir_file_data;
+			
+			$file_type = explode("/",$type);
+
+			$files[] = array(
+				"id"=>$dir_file['id'],
+				"file"=>$file,
+				"type"=>$file_type[1],
+				"name"=>$dir_file['file_name'],
+				"initial_file"=>$dir_file['initial_file']
 			);
 
 		};
@@ -130,6 +171,8 @@ function get_office_description($con,$id) {
 	
 	$description = null;
 	
+	if ($id == null) return $description = "";
+	
 	$office = $con->getData("SELECT office FROM offices WHERE id = $id");
 	
 	if (count($office)) {
@@ -139,14 +182,32 @@ function get_office_description($con,$id) {
 	};
 	
 	return $description;
+
+};
+
+function get_office_shortname($con,$id) {
 	
+	$shortname = null;
+	
+	if ($id == null) return $description = "";
+	
+	$office = $con->getData("SELECT shortname FROM offices WHERE id = $id");
+	
+	if (count($office)) {
+		
+		$shortname = $office[0]['shortname'];
+		
+	};
+	
+	return $shortname;
+
 };
 
 function get_staff_name($con,$id) {
 	
 	$fullname = null;
 	
-	$staff = $con->getData("SELECT CONCAT(fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) fullname FROM users WHERE id = $id");
+	$staff = $con->getData("SELECT CONCAT(IF(ISNULL(title),'',CONCAT(title,' ')), fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) fullname FROM users WHERE id = $id");
 	
 	if (count($staff)) {
 		
@@ -233,13 +294,24 @@ function is_released($transit) {
 	
 };
 
-function is_filed($transit) {
+function is_received_filed($transit) {
+
+	$is_received_filed = false;
+
+	$_transit = json_decode($transit, true);
+	if (($_transit['filed']) && ($_transit['received_by']!=null)) $is_received_filed = true;
+
+	return $is_received_filed;	
+
+};
+
+function is_filed($con,$id) {
 
 	$is_filed = false;
 
-	$_transit = json_decode($transit, true);
-	if ($_transit['filed']) $is_filed = true;
-
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND track_action_status = 'filed'");
+	$is_filed = (count($tracks))?true:false;
+	
 	return $is_filed;	
 
 };
@@ -256,6 +328,98 @@ function get_transit_office($con,$transit) {
 	
 };
 
+function get_transit_release_to_office($con,$transit) {
+	
+	$transit_office = null;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_office = get_office_shortname($con,$_transit['release_to_office']);
+	
+	return $transit_office;
+	
+};
+
+function was_released($transit) {
+	
+	$_transit = json_decode($transit, true);
+	
+	return isset($_transit['release_to_office']);
+	
+};
+
+function get_released_to_office($transit) {
+	
+	$release_to_office = null;
+	
+	$_transit = json_decode($transit, true);
+	
+	$release_to_office = $_transit['release_to_office'];
+	
+	return $release_to_office;
+	
+};
+
+function is_release_for_revision($transit) {
+	
+	$is_release_for_revision = false;
+	
+	$_transit = json_decode($transit, true);
+
+	if (isset($_transit['release_for_revision'])) $is_release_for_revision = $_transit['release_for_revision'];
+	
+	return $is_release_for_revision;
+	
+};
+
+function get_transit_office_shortname($con,$transit) {
+	
+	$transit_office_shortname = null;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_office_shortname = get_office_shortname($con,$_transit['office']);
+	
+	return $transit_office_shortname;
+	
+};
+
+function get_transit_office_id($con,$transit) {
+	
+	$transit_office_id = 0;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_office_id = $_transit['office'];
+	
+	return $transit_office_id;
+	
+};
+
+function get_transit_release_to_office_shortname($con,$transit) {
+	
+	$transit_release_to_office_shortname = null;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_release_to_office_shortname = get_office_shortname($con,$_transit['release_to_office']);
+	
+	return $transit_release_to_office_shortname;
+	
+};
+
+function get_transit_release_to_office_id($con,$transit) {
+	
+	$transit_release_to_office_id = 0;
+	
+	$_transit = json_decode($transit, true);	
+	
+	$transit_release_to_office_id = $_transit['release_to_office'];
+	
+	return $transit_release_to_office_id;
+	
+};
+
 function get_transit_staff($con,$transit,$p) {
 
 	$transit_staff = null;
@@ -267,6 +431,132 @@ function get_transit_staff($con,$transit,$p) {
 	$transit_staff = get_staff_name($con,$id);
 	
 	return $transit_staff;
+
+};
+
+function is_picked_up_by_other($transit) {
+	
+	$picked_up_by_other = false;
+	
+	$_transit = json_decode($transit, true);
+	
+	if (isset($_transit['picked_up_by_other'])) $picked_up_by_other = true;
+	
+	return $picked_up_by_other;
+	
+};
+
+function get_transit_picked_up_other($transit) {
+	
+	$picked_up_by_other = "";
+	
+	$_transit = json_decode($transit, true);
+	
+	$picked_up_by_other = $_transit['picked_up_by_other'];
+	
+	return $picked_up_by_other;
+	
+};
+
+function add_track($con,$data) {
+
+	$table = $con->table;
+	$con->table = "tracks";
+
+	$insert_track = $con->insertData($data);
+
+	$con->table = $table;
+
+};
+
+function is_office_admin($office) {
+	
+	$setup = new setup(system_setup);
+	
+	return $office == $setup->get_setup(13);
+	
+};
+
+function is_office_opg($office) {
+
+	
+	$setup = new setup(system_setup);
+	
+	return $office == $setup->get_setup(12);	
+
+	
+};
+
+function document_current_location($con,$id,$id_only=false) {
+	
+	$current_location = "";
+	
+	$sql = "SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC LIMIT 1";
+	
+	$tracks = $con->getData($sql);
+	
+	if (count($tracks)) {
+	
+		$recent_track = $tracks[0];
+		
+		switch ($recent_track['track_action_status']) {
+			
+			case "released":
+				
+				$current_location = get_transit_release_to_office_shortname($con,$recent_track['transit']);
+				if ($id_only) $current_location = get_transit_release_to_office_id($con,$recent_track['transit']);
+			
+			break;
+			
+			default:
+			
+				$current_location = get_transit_office_shortname($con,$recent_track['transit']);
+				if ($id_only) $current_location = get_transit_office_id($con,$recent_track['transit']);
+			
+			break;
+			
+		};
+		
+	};
+	
+	return $current_location;
+	
+};
+
+// use in receiving, if last track is released for revision then allow receiving /doc/transit/receive/{id}
+function was_released_for_revision($con,$id) {
+	
+	$was_released_for_revision = false;
+	
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id ORDER BY id DESC LIMIT 1");
+	$was_released_for_revision = is_release_for_revision($tracks[0]['transit']);
+
+	return $was_released_for_revision;
+	
+};
+
+// use in /doc/transit/receive/{id} to check if last track is received in same office
+function last_track_is_received($con,$office_id,$id) {
+
+	$last_track_is_received = false;
+	
+	$tracks = $con->getData("SELECT * FROM tracks WHERE document_id = $id AND office_id = $office_id ORDER BY id DESC");
+	if (count($tracks)) {
+		if ($tracks[0]['track_action_status']=="received") $last_track_is_received = true;
+	};
+
+	return $last_track_is_received;
+	
+};
+
+/*
+** use in actions e.g.: initial, approve, comment, pick up/ release
+** no action if document is not is user's office
+** document/index.php: /doc/actions/update , /check/in_office
+*/
+function is_doc_in_office($con,$id,$session_office) {
+
+	return (document_current_location($con,$id,true) == $session_office);
 
 };
 

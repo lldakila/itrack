@@ -22,6 +22,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 			scope.doc_types = [];
 			
+			scope.transactions = [];
 			scope.staffs = [];
 			
 			scope.views.currentPage = 1;
@@ -65,6 +66,22 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 		};
 		
+		function transactions(scope) {
+			
+			$http({
+				method: 'GET',
+				url: 'api/receive-document/transactions'
+			}).then(function mySuccess(response) {
+				
+				scope.transactions = angular.copy(response.data);
+					
+			}, function myError(response) {
+				
+		
+			});			
+			
+		};
+		
 		function staffs(scope) {
 			
 			$http({
@@ -93,7 +110,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 					url: 'api/document-types/delete/'+row.id
 				}).then(function mySuccess(response) {
 						
-						growl.show('alert alert-danger no-border mb-2',{from: 'top', amount: 55},'Document Type Information successfully deleted.');
+						growl.show('alert alert-success no-border mb-2',{from: 'top', amount: 55},'Document Type Information successfully deleted.');
 						self.list(scope);
 						
 				}, function myError(response) {
@@ -106,7 +123,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 			var onCancel = function() { };
 			
-			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to Delete?',onOk,onCancel);
+			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to delete this document type?',onOk,onCancel);
 			
 		};
 		
@@ -144,6 +161,7 @@ angular.module('app-module', ['bootstrap-modal','ui.bootstrap','module-access','
 			
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add)) return;
 			
+			transactions(scope);
 			staffs(scope);
 			mode(scope,doc_type);
 			

@@ -1,8 +1,18 @@
-angular.module('notifications-module', ['ngSanitize']).directive('notifications', function($interval,$timeout,$http) {		
+angular.module('notifications-module', ['ngSanitize']).directive('notifications', function($interval,$timeout,$http,$window) {		
 	
 	function notifications(scope) {
 
-		$http({
+		var source = new EventSource("/handlers/notifications.php");
+
+		source.onmessage = function(event) {
+			
+			var notifications = JSON.parse(event.data);
+			scope.notifications = notifications;
+			scope.$apply();
+
+		};
+		
+		/* $http({
 		  method: 'GET',
 		  url: '/api/notifications/fetch'
 		}).then(function mySucces(response) {
@@ -11,23 +21,40 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 
 		}, function myError(response) {
 
-		});
+		}); */
 
 	};
 	
-	function dismissNotification(scope,notification) {
-		
+	function hideNotification(scope,notification) {
+
 		$http({
-		  method: 'POST',
-		  url: '/handlers/dismiss-notification.php',
-		  data: notification
+		  method: 'GET',
+		  url: '/api/notifications/hide/'+notification.id,
 		}).then(function mySucces(response) {
 
+			$window.location.href = notification.url;		
+		
 		}, function myError(response) {
 			
 		});
 
 	};
+	
+	function hideNotifySeen(scope,notification) {
+		
+		$http({
+		  method: 'POST',
+		  url: '/api/notifications/hide/seen/'+notification.id,
+		  data: notification
+		}).then(function mySucces(response) {
+
+			// $window.location.href = notification.url;		
+		
+		}, function myError(response) {
+			
+		});
+
+	};	
 	
 	return {
 		restrict: 'A',
@@ -45,15 +72,15 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 					scope.notifications = {};
 					scope.notifications.count = 0;
 
-					if (response.data.value) {
-
+					if (response.data.value) {					
+					
 						notifications(scope);
 					
-						var notification = $interval(function() {
+						/* var notification = $interval(function() {
 							
 							notifications(scope);
 
-						},1000);
+						},1000); */
 
 					};		
 
@@ -67,10 +94,11 @@ angular.module('notifications-module', ['ngSanitize']).directive('notifications'
 			}, 1000);				
 
 			scope.notificationAction = function(scope,notification) {
+
+				if (notification.inform_seen == "") hideNotification(scope,notification);
+				else hideNotifySeen(scope,notification);
 				
-				dismissNotification(scope,notification);
-				
-			};				
+			};
 
 		}
 	};

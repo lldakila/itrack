@@ -1,0 +1,101 @@
+<form name="formHolder.actions" autocomplete="off" novalidate>
+	<div class="row">
+		<div class="col-lg-12">
+			<label>Actions</label>
+			<div id="headingForInitial" class="card-header">
+				<div class="row">
+					<div class="col-lg-3">
+						<a data-toggle="collapse" href="#{{(!controls.btns.ok)?'for_initial':''}}" aria-expanded="false" aria-controls="for_initial" class="card-title collapsed" ng-click="app.headerActionParam(this,'for_initial')"><span class="text-muted">{{doc.actions.for_initial.description}}</span></a>
+					</div>
+					<div class="col-lg-8">
+						<div class="checkbox">
+							<label class="switch">
+							  <input type="checkbox" hidden="hidden" name="for_initial" ng-model="doc.actions.for_initial.value" ng-checked="doc.actions.for_initial.value" ng-click="app.checkboxActionParam(this,'for_initial')" ng-disabled="controls.btns.ok">
+							  <span class="slider round"></span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="for_initial" role="tabpanel" aria-labelledby="headingForInitial" class="card-collapse collapse" aria-expanded="false" style="">
+				<div class="card-body">
+					<div class="card-block">
+						<div class="form-group" ng-repeat="param in doc.actions.for_initial.params">
+							<label>{{param.description}}</label>
+							<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.ok"></select>
+							<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.ok">
+							<div ng-show="param.type=='checkbox'" style="margin-left: 20px;" class="form-check" ng-repeat="po in param.options">
+								<input type="checkbox" class="form-check-input" ng-model="po.value" ng-checked="po.value" id="fi{{$index}}" ng-disabled="controls.btns.ok">
+								<label class="form-check-label" for="fi{{$index}}">{{po.description}}</label>
+							</div>															
+						</div>														
+					</div>
+				</div>
+			</div>
+			<div id="headingForSignature" class="card-header">
+				<div class="row">
+					<div class="col-lg-3">												
+						<a data-toggle="collapse" href="#{{(!controls.btns.ok)?'for_signature':''}}" aria-expanded="false" aria-controls="for_signature" class="card-title collapsed" ng-click="app.headerActionParam(this,'for_signature')"><span class="text-muted">{{doc.actions.for_signature.description}}</span></a>
+					</div>
+					<div class="col-lg-8">
+						<div class="checkbox">
+							<label class="switch">
+							  <input type="checkbox" hidden="hidden" name="for_signature" ng-model="doc.actions.for_signature.value" ng-checked="doc.actions.for_signature.value" ng-click="app.checkboxActionParam(this,'for_signature')" ng-disabled="controls.btns.ok">
+							  <span class="slider round"></span>
+							</label>
+						</div>
+					</div>														
+				</div>
+			</div>
+			<div id="for_signature" role="tabpanel" aria-labelledby="headingForSignature" class="card-collapse collapse" aria-expanded="false" style="">
+				<div class="card-body">
+					<div class="card-block">
+						<div class="form-group" ng-repeat="param in doc.actions.for_signature.params">
+							<label>{{param.description}}</label>
+							<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.ok"></select>
+							<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.ok">
+							<div ng-show="param.type=='checkbox'" style="margin-left: 20px;" class="form-check" ng-repeat="po in param.options">
+								<input type="checkbox" class="form-check-input" ng-model="po.value" ng-checked="po.value" id="fs{{$index}}" ng-disabled="controls.btns.ok">
+								<label class="form-check-label" for="fs{{$index}}">{{po.description}}</label>
+							</div>															
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ng-show="for_routing.params.length>0" id="headingForRouting" class="card-header">
+				<div class="row">
+					<div class="col-lg-3">													
+						<a data-toggle="collapse" href="#{{(!controls.btns.ok)?'for_routing':''}}" aria-expanded="false" aria-controls="for_routing" class="card-title collapsed" ng-click="app.headerActionParam(this,'for_routing')"><span class="text-muted" style="">{{doc.actions.for_routing.description}}</span></a>
+					</div>
+					<div class="col-lg-8">
+						<div class="checkbox">
+							<label class="switch">
+							  <input type="checkbox" hidden="hidden" name="for_routing" ng-model="doc.actions.for_routing.value" ng-checked="doc.actions.for_routing.value" ng-click="app.checkboxActionParam(this,'for_routing')" ng-disabled="controls.btns.ok">
+							  <span class="slider round"></span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ng-show="for_routing.params.length>0" id="for_routing" role="tabpanel" aria-labelledby="headingForRouting" class="card-collapse collapse" aria-expanded="false" style="">
+				<div class="card-body">
+					<div class="card-block">
+						<div class="form-group" ng-repeat="param in doc.actions.for_routing.params">
+							<label>{{param.description}}</label>
+							<select ng-show="param.type=='select'" class="form-control" name="{{param.model}}" ng-model="param.value" ng-options="p.description for p in param.options track by p.id" ng-disabled="controls.btns.ok"></select>
+							<input ng-show="param.type=='input'" type="text" class="form-control" name="{{param.model}}" ng-model="param.value" ng-disabled="controls.btns.ok">
+							<div ng-show="param.type=='checkbox'" style="margin-left: 20px;" class="form-check" ng-repeat="po in param.options">
+								<input type="checkbox" class="form-check-input" ng-model="po.value" ng-checked="po.value" id="fr{{$index}}" ng-disabled="controls.btns.ok">
+								<label class="form-check-label" for="fr{{$index}}">{{po.description}}</label>
+							</div>															
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="alert alert-danger mb-2" role="alert" ng-show="views.alert.actions.show">
+				{{views.alert.actions.message}}
+			</div>
+		</div>
+	</div>
+	
+</form>

@@ -21,14 +21,18 @@ require_once 'system_setup.php';
 
 $system_setup = new setup(system_setup);
 
-$users_ids_initial = $system_setup->get_setup_as_string(1); # users for document action: initial
-$users_for_initiale = $con->getData("SELECT id, CONCAT(fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_initial)");
+if (!isset($_SESSION)) session_start();
+
+$users_for_initial_selects = [];
+$users_ids_initial = $system_setup->get_setup(1); # users for document action: initial
+$initial_users = (isset($users_ids_initial[$_SESSION['office']]))?implode(",",$users_ids_initial[$_SESSION['office']]['values']):"0";
+$users_for_initial = $con->getData("SELECT id, CONCAT(IF(ISNULL(title),'',CONCAT(title,' ')), fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($initial_users)");
 
 // $users_for_initial_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"),"value"=>false);
-foreach ($users_for_initiale as $value) {
+foreach ($users_for_initial as $value) {
 	
-	$office = $con->getData("SELECT users.div_id id, (SELECT office FROM offices WHERE offices.id = users.div_id) office FROM users WHERE users.id = ".$value['id']);
-	
+	$sql = "SELECT users.div_id id, (SELECT office FROM offices WHERE offices.id = users.div_id) office FROM users WHERE users.id = ".$value['id'];
+	$office = $con->getData($sql);
 	$value['office'] = $office[0];
 	$value['value'] = false;	
 	
@@ -36,8 +40,10 @@ foreach ($users_for_initiale as $value) {
 	
 };
 
-$users_ids_signature = $system_setup->get_setup_as_string(2); # users for document action: signature
-$users_for_signature = $con->getData("SELECT id, CONCAT(fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_signature)");
+$users_for_signature_selects = [];
+$users_ids_signature = $system_setup->get_setup(2); # users for document action: signature
+$approve_users = (isset($users_ids_signature[$_SESSION['office']]))?implode(",",$users_ids_signature[$_SESSION['office']]['values']):"0";
+$users_for_signature = $con->getData("SELECT id, CONCAT(IF(ISNULL(title),'',CONCAT(title,' ')), fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($approve_users)");
 
 // $users_for_signature_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"),"value"=>false);
 foreach ($users_for_signature as $value) {
@@ -53,7 +59,7 @@ foreach ($users_for_signature as $value) {
 
 
 $users_ids_route = $system_setup->get_setup_as_string(3); # users for document action: route
-$users_for_route = $con->getData("SELECT id, CONCAT(fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_route)");
+$users_for_route = $con->getData("SELECT id, CONCAT(IF(ISNULL(title),'',CONCAT(title,' ')), fname, ' ', IFNULL(SUBSTRING(mname,1,1),''), IF(ISNULL(mname),'','. '), lname) description FROM users WHERE id IN ($users_ids_route)");
 
 $users_for_route_selects[] = array("id"=>0,"description"=>"-","office"=>array("id"=>0,"office"=>"-"));
 foreach ($users_for_route as $value) {
@@ -95,7 +101,7 @@ $actions_params = array(
 			),
 		),
 	),
-	array(
+	/* array(
 		"id"=>3,
 		"description"=>"For Route",
 		"params"=>array(
@@ -109,7 +115,7 @@ $actions_params = array(
 				"options"=>$users_for_route_selects,			
 			),
 		),
-	),
+	), */
 );
 
 function get_params($actions_params,$id) {

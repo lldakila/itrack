@@ -1,0 +1,20 @@
+<form name="formHolder.revision" autocomplete="off" novalidate>
+	<div class="row">												
+		<div class="col-md-12">
+			<input type="file" name="file_revision" id="file_revision" file-model="files.revision">
+		</div>	
+	</div>
+	<div class="row">
+		<div class="col-md-12">	
+			<div class="progress" style="margin-top: 10px;">
+				<div ng-show="progress.show" class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{progress.status}}" aria-valuemin="0" aria-valuemax="100" style="width:{{progress.status}}%">{{progress.status}}%</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-12" style="text-align: right;">
+			<button class="btn btn-primary" ng-click="app.revisions.upload(this)">Upload</button>
+		</div>
+	</div>
+</form>

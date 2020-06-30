@@ -1,3 +1,1 @@
-ALTER TABLE `notifications`  ADD `icon_color` VARCHAR(100) NULL  AFTER `icon_bg`;
-ALTER TABLE `notifications` CHANGE `header_bg` `header_color` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-ALTER TABLE `notifications`  ADD `url` VARCHAR(100) NULL  AFTER `message`;
+ALTER TABLE `documents`  ADD `doctype_series` INT NULL  AFTER `barcode`;

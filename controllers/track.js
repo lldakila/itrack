@@ -1,6 +1,6 @@
-var app = angular.module('tracks',['account-module','app-module']);
+var app = angular.module('track',['app-module']);
 
-app.controller('tracksCtrl',function($scope,app) {
+app.controller('trackCtrl',function($scope,app) {
 	
 	$scope.app = app;
 	

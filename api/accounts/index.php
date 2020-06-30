@@ -42,9 +42,16 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$con->table = "users";
 
 	$data = $request->getParsedBody();
+	$user = $data['user'];
+	$privileges = $data['privileges'];
 	
-	unset($data['id']);
-	$con->insertObj($data);
+	require_once '../../classes.php';	
+	
+	$arrayHex = new ArrayHex();
+	$user['privileges'] = $arrayHex->toHex(json_encode($privileges));	
+	
+	unset($user['id']);
+	$con->insertObj($user);
 
 });
 
@@ -55,8 +62,15 @@ $app->put('/update', function (Request $request, Response $response, array $args
 	$con->table = "users";
 
 	$data = $request->getParsedBody();
+	$user = $data['user'];
+	$privileges = $data['privileges'];	
 
-	$con->updateObj($data,'id');
+	require_once '../../classes.php';
+
+	$arrayHex = new ArrayHex();
+	$user['privileges'] = $arrayHex->toHex(json_encode($privileges));
+
+	$con->updateObj($user,'id');
 
 });
 

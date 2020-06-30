@@ -1,15 +1,19 @@
 <div class="row">
 	<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
-		<p><span class="text-muted">Barcode:</span> <span class="text-bold-700">{{document.barcode}}</span></p>
+		<p><span class="text-muted">Barcode:</span> <span class="text-bold-700">{{document.barcode}}&nbsp;&nbsp;<span ng-show="document.is_rush" class="tag tag-pill tag-danger">RUSH</span></span></p>
 		<p><span class="text-muted">Document Type: </span><span class="text-bold-700">{{document.doc_type.document_type}}</span></p>
 		<p><span class="text-muted">Originating Office: </span><span class="text-bold-700">{{(document.other_origin==null)?document.origin.office:document.other_origin}}</span></p>
-		<p><span class="text-muted">Subject: </span><span class="text-bold-700">{{document.doc_name}}</span></p>							
+		<p>
+			<span class="text-muted">Subject: </span>
+			<span class="text-bold-700">{{document.doc_name}}</span>
+		</p>
 	</div>
 	<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
 		<p><span class="text-muted">Communication: </span><span class="text-bold-700">{{document.communication.communication}}</span></p>
 		<p><span class="text-muted">Transaction: </span><span class="text-bold-700"> {{document.document_transaction_type.transaction}} ({{document.document_transaction_type.days}} working days)</span></p>
 		<p><span class="text-muted">Date:</span> <span class="text-bold-700">{{document.document_date}}</span></p>
-		<p><span class="text-muted">Due Date:</span> <span class="text-bold-700">{{document.due_date}}</span></p>							
+		<p><span class="text-muted">Current Location:</span> <span class="text-bold-700">{{document.current_location}}</span></p>							
+		<p ng-show="document.due_date!=null"><span class="text-muted">Due Date:</span> <span class="text-bold-700">{{document.due_date}}</span></p>							
 	</div>
 </div>
 <div class="row">
@@ -26,7 +30,7 @@
 				<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 				<div class="heading-elements">
 					<ul class="list-inline mb-0">
-						<li><a data-action="reload"><i class="icon-reload"></i></a></li>
+						<li><a data-action="reload" ng-click="app.reload(this)"><i class="icon-reload"></i></a></li>
 					</ul>
 				</div>
 			</div>
@@ -38,7 +42,8 @@
 								<time class="timeline-time" datetime="" style="margin-left: -35px!important;"><span>{{track.track_time}}</span><span>{{track.track_date}}</span></time>
 								<div class="timeline-icon {{track.bg}}"><i class="{{track.icon}}"></i></div>
 								<div class="timeline-label">
-									<h2 ng-repeat="l in track.list">{{l.status}}</h2>
+									<!-- <h2 ng-repeat="l in track.list">{{l.status}}</h2> -->
+									<h2 ng-repeat="l in track.list" ng-bind-html="l.status.text | unsafe"></h2>
 								</div>
 							</div>
 						</article>

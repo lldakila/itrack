@@ -71,7 +71,7 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 	$con = $this->con;
 	$con->table = "document_types";
 	
-	$doc_types = $con->all(['id','document_type']);
+	$doc_types = $con->all(["id","document_type","shortname","transaction_id"]);
 	
     return $response->withJson($doc_types);
 
@@ -80,13 +80,15 @@ $app->get('/doctype', function (Request $request, Response $response, array $arg
 # actions
 $app->get('/actions', function (Request $request, Response $response, array $args) {
 
+	session_start();
+
 	$con = $this->con;
 
 	require_once '../../document-actions.php';
 	require_once '../../actions-params.php';
 
 	$document_actions = document_actions;
-
+	
 	foreach ($document_actions as $da) {
 
 		$actions[$da['key']] = array(
@@ -108,9 +110,10 @@ $app->get('/dt_add_params/{id}', function (Request $request, Response $response,
 	
 	require_once '../../dt-additional-params.php';
 	
-	$dt_add_params = get_params(dt_add_params,$id);
+	// $dt_add_params = get_params(dt_add_params,$id);
 	
-    return $response->withJson($dt_add_params);
+    // return $response->withJson($dt_add_params);
+    return $response->withJson([]);
 
 });
 
@@ -130,7 +133,6 @@ $app->get('/action_params/{id}', function (Request $request, Response $response,
 
 });
 
-
 # add document
 $app->post('/add', function (Request $request, Response $response, array $args) {
 
@@ -140,6 +142,7 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$data = $request->getParsedBody();
 
 	require_once '../../handlers/folder-files.php';
+	require_once '../../document-info.php';	
 	require_once '../../system_setup.php';
 	require_once 'classes.php';
 	require_once '../../functions.php';
@@ -151,8 +154,12 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	session_start();
 
 	# for barcode
-	$com = $data['communication']['shortname'];
-	$office = $data['origin']['shortname'];
+	$to_barcode = array(
+		"origin"=>$data['origin']['id'],
+		"office"=>$data['origin']['shortname'],
+		"doctype"=>$data['doc_type']['id'],
+		"doctype_shortname"=>$data['doc_type']['shortname']
+	);
 	#
 
 	# document_dt_add_params
@@ -171,10 +178,13 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$data['communication'] = $data['communication']['id'];
 	$data['document_transaction_type'] = $data['document_transaction_type']['id'];	
 	
+	$data['is_rush'] = ($data['is_rush'])?1:0;
+	
 	$uploads = array("files"=>$data['files']);	
 	unset($data['files']);
 
-	$data['barcode'] = barcode($con,$data['origin'],$office,$com);
+	$data['barcode'] = barcode($con,$to_barcode)['barcode'];
+	$data['doctype_series'] = barcode($con,$to_barcode)['series'];
 
 	$data['dt_add_params'] = json_encode($document_dt_add_params);
 	
@@ -183,16 +193,26 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	$con->insertData($data);
 
 	$id = $con->insertId;
+	
+	# notify Liaisons AOs AAsts AAs in originating office
+	$initial_office = $setup->get_setup_as_string(4);	
+	$all = $setup->get_setup_as_string(10);
+	notify($con,"added",array("doc_id"=>$id,"header"=>$data['doc_name'],"group"=>$all,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']));	
 
-	# notify liaisons
-	$initial_office = $setup->get_setup_as_string(4);
-	$liaisons = $setup->get_setup_as_string(5);
-	notify($con,"added",array("doc_id"=>$id,"header"=>$data['doc_name'],"group"=>$liaisons,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']));
+	# notify admin staffs
+	$admin_staffs = $setup->get_setup_as_string(11);
+	$notify_pa_staffs = get_staffs_by_group_only($con,$admin_staffs);
+
+	foreach ($notify_pa_staffs as $nps) {
+	
+		notify($con,"added",array("notify_user"=>$nps['id'],"doc_id"=>$id,"header"=>$data['doc_name'],"group"=>0,"office"=>$data['origin'],"initial_office"=>$initial_office,"recipient"=>$_SESSION['itrack_user_id']),false);
+	
+	};
 
 	# tracks
 	$con->table = "tracks";
 	
-	foreach ($actions as $action) {
+	foreach ($actions as $action) {				
 		
 		if ($action['value']) {						
 
@@ -225,14 +245,24 @@ $app->post('/add', function (Request $request, Response $response, array $args) 
 	};
 	#
 	
-	$con->table = "documents";	
-	$barcode = $con->get(array("id"=>$id),["id","barcode","document_date","(SELECT document_type FROM document_types WHERE id = ".$data['doc_type'].") doc_type"]);
+	$document = $con->getData("SELECT id, user_id, barcode, doc_name, doc_type, origin, other_origin, communication, document_transaction_type, document_date FROM documents WHERE id = $id");
+	if (count($document)) {
+		
+		$staff = $con->getData("SELECT CONCAT(fname, ' ', lname) fullname FROM users WHERE id = ".$document[0]['user_id']);
+		$document[0]['receiver'] = $staff[0]['fullname'];
+		unset($document[0]['user_id']);
+		
+		$document[0]['document_date_barcode'] = date("M j, Y h:i:s A",strtotime($document[0]['document_date']));
+		$document[0]['date'] = date("M j, Y",strtotime($document[0]['document_date']));
+		$document[0]['time'] = date("h:i:s A",strtotime($document[0]['document_date']));
 
-	uploadFiles($con,$uploads,$barcode[0]['barcode'],$id);	
+		$document = document_info($con,$document[0]);
+		
+	};
+	
+	uploadFiles($con,$uploads,$data['barcode'],$id,"../../files",true);
 
-	$barcode[0]['document_date'] = date("M j, Y h:i:s A",strtotime($barcode[0]['document_date']));
-
-	return $response->withJson($barcode[0]);
+	return $response->withJson($document);
 
 });
 

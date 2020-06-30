@@ -21,7 +21,7 @@ angular.module('account-module', ['bootstrap-modal']).directive('dropDown', func
 			},
 			function myError(response) {
 				
-				$window.location.href = '../../login.html';
+				$window.location.href = '../../login.php';
 				
 			});	
 			

@@ -39,10 +39,19 @@ class pdo_db {
 
 	function getData($sql) {
 
+		try {
+	
 		$stmt = $this->db->query($sql);
 		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		$this->rows = $stmt->rowCount();
 		return $results;
+		
+		} catch (PDOException $ex) {
+			
+			echo "Error occured in getData<br>QUERY = '$sql'<br>".$ex->getMessage();
+			exit();
+			
+		};
 
 	}	
 	

@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/app.css">
     <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/colors.css">
     <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/switch.css">
+    <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/switch-sm.css">
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="<?=$url?>app-assets/css/core/menu/menu-types/vertical-menu.css">
@@ -35,6 +36,21 @@
     <link rel="stylesheet" type="text/css" href="<?=$url?>assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="<?=$url?>assets/css/files.css">
     <!-- END Custom CSS-->
+	<style type="text/css">
+	
+		.revision-files {
+		
+			margin-bottom: 5px;
+		
+		}
+		
+		.table-revisions {
+		
+			font-size: 12px;
+		
+		}
+	
+	</style>
   </head>
   <body ng-app="action" ng-controller="actionCtrl" data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns fixed-navbar" account-profile listen-barcode>
 
@@ -96,8 +112,8 @@
 				<div class="breadcrumb-wrapper col-xs-12">
 				  <ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="../../index.html" class="info">iTrack</a></li>
-					<li class="breadcrumb-item active"><a href="../../update-tracks.html" class="info">Update Tracks</a></li>
-					<li class="breadcrumb-item active">Document</li>
+					<li class="breadcrumb-item active"><a href="../../update-tracks.html" class="info">Update</a></li>
+					<li class="breadcrumb-item active"><?=$document['barcode']?></li>
 				  </ol>
 				</div>
 			</div>
@@ -112,44 +128,117 @@
 			<div class="row">
 				<div class="col-lg-8">
 					<section class="card">
-						<div class="card-block">
-							<div class="row">
-								<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
-									<p><span class="text-muted">Barcode:</span> <span class="text-bold-700"><?=$document['barcode']?></span></p>
-									<p><span class="text-muted">Document Type: </span><span class="text-bold-700"><?=$document['doc_type']['document_type']?></span></p>
-									<p><span class="text-muted">Originating Office: </span><span class="text-bold-700"><?=($document['other_origin']==null)?$document['origin']['office']:$document['other_origin']?></span></p>
-									<p><span class="text-muted">Subject: </span><span class="text-bold-700"><?=$document['doc_name']?></span></p>							
+						<div class="card-header">
+							<h4 class="card-title" id="basic-layout-form">Primary Info</h4>
+						</div>
+						<div class="card-body collapse in" aria-expanded="true">
+							<div class="card-block">
+								<div class="row">
+									<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
+										<p><span class="text-muted">Barcode:</span> <span class="text-bold-700" id="barcode"><?=$document['barcode']?></span></p>
+										<p><span class="text-muted">Document Type: </span><span class="text-bold-700"><?=$document['doc_type']['document_type']?></span></p>
+										<p><span class="text-muted">Originating Office: </span><span class="text-bold-700"><?=($document['other_origin']==null)?$document['origin']['office']:$document['other_origin']?></span></p>
+										<p><span class="text-muted">Subject: </span><span class="text-bold-700"><?=$document['doc_name']?></span></p>							
+									</div>
+									<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
+										<p><span class="text-muted">Communication: </span><span class="text-bold-700"><?=$document['communication']['communication']?></span></p>
+										<p><span class="text-muted">Transaction: </span><span class="text-bold-700"><?=$document['document_transaction_type']['transaction']?> (<?=$document['document_transaction_type']['days']?> working days)</span></p>
+										<p><span class="text-muted">Date:</span> <span class="text-bold-700"><?=$document['document_date']?></span></p>
+										<p><span class="text-muted">Current Location:</span> <span class="text-bold-700"><?=$document['current_location']?></p>							
+										<p><span class="text-muted">Due Date:</span> <span class="text-bold-700"><?=$document['due_date']?></p>							
+									</div>
 								</div>
-								<div class="col-md-6 col-sm-12 text-xs-center text-md-left">
-									<p><span class="text-muted">Communication: </span><span class="text-bold-700"><?=$document['communication']['communication']?></span></p>
-									<p><span class="text-muted">Transaction: </span><span class="text-bold-700"><?=$document['document_transaction_type']['transaction']?> (<?=$document['document_transaction_type']['days']?> working days)</span></p>
-									<p><span class="text-muted">Date:</span> <span class="text-bold-700"><?=$document['document_date']?></span></p>
-									<p><span class="text-muted">Due Date:</span> <span class="text-bold-700"><?=$document['due_date']?></p>							
+								<div class="row">
+									<div class="col-md-12 col-sm-12 text-xs-center text-md-left">
+										<p><span class="text-muted">Remarks: </span><span class="text-bold-700"><?=$document['remarks']?></span></p>
+									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12 col-sm-12 text-xs-center text-md-left">
-									<p><span class="text-muted">Remarks: </span><span class="text-bold-700"><?=$document['remarks']?></span></p>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-12">
-									<hr>
-									<div class="form-group">
-										<label>Files:</label>
-										<div class="images-container">
-											<div class="image-container" ng-repeat="df in documentFiles">
-												<div class="controls">
-													<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df,'../dialogs/preview.html')">
-														<i class="icon-search7"></i>
-													</a>																
+								<div class="row">
+									<div class="col-lg-12">
+										<hr>
+										<div class="form-group">
+											<label>Files:</label>
+											<div class="images-container">
+												<div class="image-container" ng-repeat="df in documentFiles">
+													<div class="controls">
+														<a href="javascript:;" class="control-btn" ng-click="app.previewThumbnail(this,df,'../dialogs/preview.html')">
+															<i class="icon-search7"></i>
+														</a>																
+														<a ng-show="df.initial_file==0" href="javascript:;" class="control-btn" action-remove-file="{{$index}}">
+															<i class="icon-trash4"></i>
+														</a>														
+													</div>
+													<object id="dfpdf{{$index}}" class="object" data="" ng-show="df.type == 'pdf'"></object>
+													<img id="dfimg{{$index}}" class="image" src="" ng-show="df.type == 'jpeg' || df.type == 'png'">
 												</div>
-												<object id="dfpdf{{$index}}" class="object" data="" ng-show="df.type == 'pdf'"></object>
-												<img id="dfimg{{$index}}" class="image" src="" ng-show="df.type == 'jpeg' || df.type == 'png'">
-											</div>														
+												<input type="file" style="display: none;" id="upload-files" action-upload-files>
+												<a href="javascript:;" class="add-image" ng-click="app.addFile(this)">
+													<div class="image-container new">
+														<div class="image">
+															<i class="icon-plus4"></i>
+														</div>
+													</div>
+												</a>												
+											</div>
 										</div>
 									</div>
 								</div>
+								
+							</div>
+						</div>
+					</section>
+					<section class="card">
+						<div class="card-header">
+							<h4 class="card-title" id="basic-layout-form">Revisions</h4>
+							<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+							<div class="heading-elements">
+								<ul class="list-inline mb-0">
+									<li><a href="javascript:;" ng-click="app.revisions.revision(this,null)"><i class="icon-plus"></i></a></li>
+								</ul>
+							</div>							
+						</div>	
+						<div class="card-body collapse in" aria-expanded="true">
+							<div class="card-block">
+								<div class="row">
+									<div class="col-lg-6 offset-lg-6">
+										<div class="form-group">
+											<div class="has-icon-left">
+												<input type="text" class="form-control" ng-model="views.search">
+												<div class="form-control-position">
+													<i class="icon-search5"></i>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>						
+								</div>
+								
+									<table class="table table-responsive table-revisions">
+										<thead>
+											<tr><th>#</th><th>Date Added</th><th>Notes</th><th>Status</th><th>Date Completed</th><th>Revise</th><th>Remove</th></tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="r in revisions | filter:views.search">
+												<td>{{$index+1}}</td>
+												<td>{{r.datetime}}</td>
+												<td><a href="javascript:;" ng-click="app.revisions.preview_uploaded_file(this,r)">{{r.uploaded_file}}</a></td>
+												<td>{{(r.revision_ok)?'Ok':''}}</td>
+												<td>{{r.datetime_completed}}</td>											
+												<td>
+													<div class="checkbox">
+														<label class="switch-sm">
+														  <input type="checkbox" hidden="hidden" ng-model="r.revision_ok" ng-checked="r.revision_ok" ng-click="app.revisions.updateStatus(this,r)">
+														  <span class="slider-sm round"></span>
+														</label>
+													</div>
+												</td>
+												<td>
+													<!-- <a href="javascript:;" style="margin-right: 5px; color: #373a3c!important;" ng-click="app.revisions.revision(this,r)"><i class="icon-edit"></i></a> -->
+													<a href="javascript:;" style="color: #373a3c!important;" ng-click="app.revisions.delete(this,r)" ng-show="profile.pages_access.update_tracks.delete.delete_revision"><i class="icon-remove"></i></a>
+												</td>											
+											</tr>
+										</tbody>
+									</table>
 							</div>
 						</div>
 					</section>
@@ -177,6 +266,18 @@
 					</div>
 					<div class="card">
 						<div id="headingCollapse" class="card-header">
+							<a href="javascript:;" aria-expanded="true" aria-controls="comment" class="card-title lead">Comment</a>
+						</div>
+						<div id="comment" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
+							<div class="card-body">
+								<div class="card-block">
+									<button type="button" class="btn btn-primary" ng-click="app.comment(this)">Add</button>
+								</div>
+							</div>
+						</div>
+					</div>					
+					<div class="card" ng-disabled="disabled.transit.pickup">
+						<div id="headingCollapse" class="card-header">
 							<a href="javascript:;" aria-expanded="true" aria-controls="transit" class="card-title lead">Pick up</a>
 						</div>
 						<div id="transit" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
@@ -188,19 +289,25 @@
 												<div class="col-md-12">
 													<div class="form-group">
 														<label>Office</label>
-														<select class="form-control" name="office" ng-model="transit.office" ng-options="office.office for office in offices track by office.office" ng-change="staffs.transit = transit.office.staffs" required></select>
+														<select class="form-control" name="office" ng-model="transit.office" ng-options="office.shortname for office in offices track by office.id" ng-change="staffs.transit = transit.office.staffs" required ng-disabled="disabled.transit.pickup"></select>
 													</div>
 												</div>												
 												<div class="col-md-12">
 													<div class="form-group">
 														<label>Staff</label>
-														<select class="form-control" name="staff" ng-model="transit.staff" ng-options="staff.fullname for staff in staffs.transit track by staff.id" required></select>
+														<select class="form-control" name="staff" ng-model="transit.staff" ng-options="staff.fullname for staff in staffs.transit track by staff.id" required ng-disabled="disabled.transit.pickup"></select>
 													</div>
-												</div>											
+												</div>
+												<div class="col-md-12" ng-show="transit.staff.id==0">
+													<div class="form-group">
+														<label>Name</label>
+														<input type="text" class="form-control" ng-model="transit.other" ng-required="transit.staff.id==0" ng-disabled="disabled.transit.pickup">
+													</div>
+												</div>
 											</div>
 										</div>
 										<div class="form-actions">
-											<button type="button" class="btn btn-primary float-lg-right float-xs-right" ng-click="app.transit(this)">Ok</button>
+											<button type="button" class="btn btn-primary float-lg-right float-xs-right" ng-click="app.transit(this)" ng-disabled="disabled.transit.pickup">Ok</button>
 										</div>
 									</form>
 								</div>
@@ -209,9 +316,9 @@
 					</div>
 					<div class="card">
 						<div id="headingCollapse" class="card-header">
-							<a href="javascript:;" aria-expanded="true" aria-controls="transit" class="card-title lead">Release</a>
+							<a href="javascript:;" aria-expanded="true" aria-controls="release" class="card-title lead">Release</a>
 						</div>
-						<div id="transit" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
+						<div id="release" role="tabpanel" aria-labelledby="headingCollapse" class="card-collapse collapse in" aria-expanded="true" style="">
 							<div class="card-body">
 								<div class="card-block">
 									<form class="form" name="formHolder.release">
@@ -220,19 +327,27 @@
 												<div class="col-md-12">
 													<div class="form-group">
 														<label>Office</label>
-														<select class="form-control" name="office" ng-model="release.office" ng-options="office.office for office in offices track by office.office" ng-change="staffs.release = release.office.staffs" required></select>
+														<select class="form-control" name="office" ng-model="release.office" ng-options="office.shortname for office in offices track by office.id" ng-change="staffs.release = release.office.staffs" required ng-disabled="disabled.transit.release"></select>
 													</div>
 												</div>												
 												<div class="col-md-12">
+													<fieldset class="checkboxsas">
+														 <label>
+															<input type="checkbox" ng-model="release.revision" ng-checked="release.revision">
+															For revision
+														 </label>
+													 </fieldset>																					
+												</div>
+												<!-- <div class="col-md-12">
 													<div class="form-group">
 														<label>Staff</label>
 														<select class="form-control" name="staff" ng-model="release.staff" ng-options="staff.fullname for staff in staffs.release track by staff.id" required></select>
 													</div>
-												</div>											
+												</div> -->											
 											</div>
 										</div>
 										<div class="form-actions">
-											<button type="button" class="btn btn-primary float-lg-right float-xs-right" ng-click="app.release(this)">Ok</button>
+											<button type="button" class="btn btn-primary float-lg-right float-xs-right" ng-click="app.release(this)" ng-disabled="disabled.transit.release">Ok</button>
 										</div>
 									</form>
 								</div>
@@ -241,6 +356,14 @@
 					</div>					
 				</div>
 			</div>
+			
+			<div class="row">
+				<div class="col-lg-12">
+					<button class="btn btn-secondary float-lg-right" ng-click="app.close(this)" style="margin-top: 15px; margin-right: 15px;">Close</button>
+					<div class="clearfix"></div>
+				</div>
+			</div>			
+			
 		</div>
 	  </div>
     </div>
@@ -306,7 +429,8 @@
 	<script src="../modules/url.js"></script>
 	<script src="../modules/files.js"></script>
 	<script src="../modules/barcode-listener-action.js"></script>
-	<script src="../modules/action.js"></script>
+	<script src="../../common/file-uploader.js"></script>
+	<script src="../modules/action.js?updated=09.21.2019"></script>
 	
 	<!-- controller -->
 	<script src="../controllers/action.js"></script>

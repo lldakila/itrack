@@ -6,8 +6,6 @@ app.controller('documentsCtrl',function($scope,app) {
 	
 	$scope.app.data($scope);
 	
-	app.list($scope);
-	
 	$scope.module = {
 		id: 'documents',
 		privileges: {
@@ -20,12 +18,16 @@ app.controller('documentsCtrl',function($scope,app) {
 	
 });
 
-app.filter('pagination', function() {
-	  return function(input, currentPage, pageSize) {
-	    if(angular.isArray(input)) {
-	      var start = (currentPage-1)*pageSize;
-	      var end = currentPage*pageSize;
-	      return input.slice(start, end);
-	    }
-	  };
-});
+/* app.filter('orderObjectBy', function() {
+	return function(items, field, reverse) {
+		var filtered = [];
+		angular.forEach(items, function(item) {
+			filtered.push(item);
+		});
+		filtered.sort(function(a, b) {
+			return (a[field] > b[field] ? 1 : -1);
+		});
+		if (reverse) filtered.reverse();
+		return filtered;
+	};
+}); */

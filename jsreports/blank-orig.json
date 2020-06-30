@@ -1,0 +1,15 @@
+{
+	"title":"",
+	"id":"jsr-auto-id-0",
+	"default_format":"html",
+	"version":"1.4.133",
+	"page":{"units":"inches","paper_size":{"name":"Letter","inches":["8.5","11"],"mm":["216","279"],"id":"letter"},"margins":{"top":0.5,"left":0.5,"right":0.5,"bottom":0.5}},
+	"filters":[],
+	"inputs":[],
+	"body":{"data_source":"","show_detail":false,"height":1.54302203567681,"elements":[],"sublevels":[],"column_count":1,"pivot_enabled":false,"pivot_expression":"","pivot_column_sort_by":"","pivot_column_bucket_type":"","pivot_value_aggregate":"","order_detail_by":"","pivot_column_left":3.325,"pivot_column_right":4.175,"pivot_area_right":5.449999999999999,"extraSections":[]},
+	"type":"hierarchical",
+	"header":{"height":1,"elements":[],"visible":false},
+	"footer":{"height":1,"elements":[],"visible":false},
+	"page_header":{"visible":false,"elements":[],"height":1},
+	"page_footer":{"visible":false,"elements":[],"height":1}
+}

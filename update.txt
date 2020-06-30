@@ -1,0 +1,22 @@
+If all actions are ok - no due date, remove from documents in dashboard
+
+If picked up by originating office and document is ok - no due date
+
+Fix undefined resource
+
+View file uploaded in tracking
+
+**Travel Orders w/ In
+**Travel Orders Out
+**Barcode series doc type
+**Anonymous comment
+
+Other document
+
+Improve buttons in accounts/groups
+Consider revising terms
+
+Desktop Notification
+
+Users accounts
+Flowchart guide

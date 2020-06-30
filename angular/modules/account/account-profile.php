@@ -23,12 +23,16 @@ if (!file_exists("../".$picture)) $picture = $avatar;
 
 $con->table = "groups";
 $group_privileges = $con->get(array("id"=>$user[0]['group_id']),["privileges"]);
+$con->table = "users";
+$user_privileges = $con->get(array("id"=>$_SESSION['itrack_user_id']),["privileges"]);
+
+// var_dump($user_privileges[0]['privileges']);
 
 $pages_access = [];
 if (count($group_privileges)) {
 	if ($group_privileges[0]['privileges']!=NULL) {
 
-		$privileges_obj = new privileges(system_privileges,$group_privileges[0]['privileges']);
+		$privileges_obj = new privileges(system_privileges,$group_privileges[0]['privileges'],$user_privileges[0]['privileges']);
 		$pages_access = $privileges_obj->getPagesPrivileges();
 
 	};

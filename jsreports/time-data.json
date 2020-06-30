@@ -1,0 +1,16 @@
+[
+    {
+        "EmployeeName": "Elizabeth Stewart",
+        "EntryDate": "3/19/2016",
+        "ClientName": "Nakatomi Trading Corp.",
+        "JobName": "Project Molybdenum",
+        "TaskName": "Meeting",
+        "Hours": 2.25,
+        "IsBillable": false,
+        "BillingRate": 190,
+        "EmployeeID": "100000003",
+        "ClientID": "100000000",
+        "JobID": "100000001",
+        "TaskID": "100000002"
+    }
+]

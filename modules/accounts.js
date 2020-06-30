@@ -94,7 +94,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 		
 		
 		
-			});			
+			});
+			
 			$http({
 				method: 'GET',
 				url: 'handlers/groups.php'
@@ -106,7 +107,9 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 		
 		
 		
-			});			
+			});
+
+			privileges(scope);
 
 		};
 		
@@ -115,7 +118,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.add)) return;
 			
 			scope.controls.btns.ok = false;
-			scope.controls.btns.cancel = false;
+			scope.controls.btns.cancel = false;						
 			
 		};
 		
@@ -138,7 +141,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			
 		};
 
-		self.delete = function(scope,row){
+		self.delete = function(scope,row) {
 			
 			if (!access.has(scope,scope.profile.group,scope.module.id,scope.module.privileges.delete)) return;
 			
@@ -191,7 +194,8 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			  url: 'api/accounts/view/'+id,
 			}).then(function mySuccess(response) {
 				
-				scope.user = angular.copy(response.data);			
+				scope.user = angular.copy(response.data);
+				privileges(scope);
 				
 			}, function myError(response) {
 				
@@ -218,7 +222,7 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			$http({
 			  method: method,
 			  url: url,
-			  data: scope.user
+			  data: {user: scope.user, privileges: scope.privileges}
 			}).then(function mySuccess(response) {
 				
 				if (scope.user.id == 0) {
@@ -263,6 +267,23 @@ angular.module('app-module', ['form-validator','bootstrap-modal','ui.bootstrap',
 			});				
 			
 		};
+		
+		function privileges(scope) {			
+			
+			$http({
+			  method: 'GET',
+			  url: 'api/groups/privileges/special/'+scope.user.id,
+			}).then(function mySuccess(response) {
+
+				scope.privileges = response.data;
+				
+			}, function myError(response) {
+				
+				//
+				
+			});				
+			
+		};		
 
 	};
 
